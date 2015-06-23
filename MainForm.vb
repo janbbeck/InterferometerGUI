@@ -323,8 +323,8 @@ Public Class MainForm
         If velocitySeries.Points.Count = 1024 Then
             Try
                 For outerLoopCounter = 0 To 512
-                    RealPartOfDFT(outerLoopCounter) = 0
-                    ImaginaryPartOfDFT(outerLoopCounter) = 0
+                    RealPartOfDFT(outerLoopCounter) = 0 'probably redundant. will be removed at some point
+                    ImaginaryPartOfDFT(outerLoopCounter) = 0 'probably redundant. will be removed at some point
                 Next outerLoopCounter
                 For outerLoopCounter = 0 To 512
                     For innerLoopCounter = 0 To 1023
