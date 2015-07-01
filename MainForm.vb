@@ -57,17 +57,17 @@ Public Class MainForm
         Chart1.ChartAreas(0).AxisY.LabelAutoFitStyle = LabelAutoFitStyles.None
         Chart1.ChartAreas(0).AxisX.LabelStyle.Font = New System.Drawing.Font("Trebuchet MS", 2.25F, System.Drawing.FontStyle.Bold)
 
-        positionSeries.ChartType = SeriesChartType.Line
+        positionSeries.ChartType = SeriesChartType.FastLine
 
         For chartcounter = 0 To 1023
             positionSeries.Points.AddXY(chartcounter, Math.Sin(chartcounter / 10))
         Next
-        velocitySeries.ChartType = SeriesChartType.Line
+        velocitySeries.ChartType = SeriesChartType.FastLine
         Chart1.Series.Add(positionSeries)
         For chartcounter = 0 To 1023
             velocitySeries.Points.AddXY(chartcounter, Math.Sin(chartcounter / 10))
         Next
-        fftSeries.ChartType = SeriesChartType.Line
+        fftSeries.ChartType = SeriesChartType.FastLine
 
 
         Dim myMenuItemNew As New MenuItem("&New")
