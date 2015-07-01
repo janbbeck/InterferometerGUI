@@ -157,4 +157,44 @@ Public Class Dialog1
             MainForm.velocitySeries.Points.RemoveAt(0)
         Next
     End Sub
+
+    Private Sub Buttonin_Click(sender As Object, e As EventArgs) Handles Buttonin.Click
+        Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttonin.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
+        MainForm.UnitLabel.Text = "in"
+        MainForm.unitCorrectionFactor = 0.00000003937
+        My.Settings.UnitCorrectionFactor = 0.00000003937
+        My.Settings.Save()
+        For MainForm.chartcounter = 0 To 1023
+            MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
+            MainForm.positionSeries.Points.RemoveAt(0)
+            MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
+            MainForm.velocitySeries.Points.RemoveAt(0)
+        Next
+    End Sub
+
+    Private Sub Buttonft_Click(sender As Object, e As EventArgs) Handles Buttonft.Click
+        Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Buttonft.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        MainForm.UnitLabel.Text = "ft"
+        MainForm.unitCorrectionFactor = 0.0000000032808
+        My.Settings.UnitCorrectionFactor = 0.0000000032808
+        My.Settings.Save()
+        For MainForm.chartcounter = 0 To 1023
+            MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
+            MainForm.positionSeries.Points.RemoveAt(0)
+            MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
+            MainForm.velocitySeries.Points.RemoveAt(0)
+        Next
+    End Sub
 End Class
