@@ -8,7 +8,7 @@ Imports System.Windows.Forms.DataVisualization.Charting
 Imports System.Text.RegularExpressions
 Imports System.IO.Ports
 Imports System.ComponentModel
-Imports SoundAnalysis
+
 
 Public Class MainForm
     Public positionSeries As New Series
@@ -97,6 +97,10 @@ Public Class MainForm
             UnitLabel.Text = "cm"
         ElseIf unitCorrectionFactor = 0.000000001 Then
             UnitLabel.Text = "m"
+        ElseIf unitCorrectionFactor = 0.00000003937 Then
+            UnitLabel.Text = "in"
+        ElseIf unitCorrectionFactor = 0.0000000032808 Then
+            UnitLabel.Text = "ft"
         End If
         averagingValue = My.Settings.AveragingValue
         TrackBar1.Value = CInt(averagingValue)
@@ -199,6 +203,10 @@ Public Class MainForm
                             ValueDisplay.Text = displayValue.ToString("###,##0.000,000,0000") 'cm
                         ElseIf unitCorrectionFactor = 0.000000001 Then
                             ValueDisplay.Text = displayValue.ToString("##0.000,000,000,000") 'm
+                        ElseIf unitCorrectionFactor = 0.00000003937 Then
+                            ValueDisplay.Text = displayValue.ToString("###,##0.000,000,0000") 'in
+                        ElseIf unitCorrectionFactor = 0.0000000032808 Then
+                            ValueDisplay.Text = displayValue.ToString("##0.000,000,000,000") 'ft
                         End If
                         If GraphControl.Text.Equals("Disable Graph") Then
                             positionSeries.Points.AddXY(chartcounter, straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
@@ -300,6 +308,22 @@ Public Class MainForm
             Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
             Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
             Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
+        ElseIf unitCorrectionFactor = 0.00000003937 Then
+            Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
+        ElseIf unitCorrectionFactor = 0.0000000032808 Then
+            Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         End If
         Dialog1.ShowDialog()
     End Sub
