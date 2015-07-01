@@ -29,9 +29,9 @@ Partial Public Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Title2 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Title1 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
         Me.VelocityButton = New System.Windows.Forms.Button()
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.ValueDisplay = New System.Windows.Forms.Label()
@@ -48,6 +48,7 @@ Partial Public Class MainForm
         Me.TrackBar1 = New System.Windows.Forms.TrackBar()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.AverageLabel = New System.Windows.Forms.Label()
+        Me.GraphControl = New System.Windows.Forms.Button()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -96,20 +97,20 @@ Partial Public Class MainForm
         'Chart1
         '
         Me.Chart1.BackColor = System.Drawing.Color.Transparent
-        ChartArea2.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea2)
+        ChartArea1.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea1)
         Me.Chart1.Location = New System.Drawing.Point(207, 129)
         Me.Chart1.Name = "Chart1"
-        Series2.ChartArea = "ChartArea1"
-        Series2.Name = "Series1"
-        Me.Chart1.Series.Add(Series2)
+        Series1.ChartArea = "ChartArea1"
+        Series1.Name = "Series1"
+        Me.Chart1.Series.Add(Series1)
         Me.Chart1.Size = New System.Drawing.Size(638, 283)
         Me.Chart1.TabIndex = 36
         Me.Chart1.Text = "Chart1"
-        Title2.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Title2.Name = "Title1"
-        Title2.Text = "Position"
-        Me.Chart1.Titles.Add(Title2)
+        Title1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Title1.Name = "Title1"
+        Title1.Text = "Position"
+        Me.Chart1.Titles.Add(Title1)
         '
         'SerialPort1
         '
@@ -215,9 +216,21 @@ Partial Public Class MainForm
         Me.AverageLabel.TabIndex = 48
         Me.AverageLabel.Text = "Display=Display*0.00+NewData*1.00"
         '
+        'GraphControl
+        '
+        Me.GraphControl.AccessibleDescription = "Button to send an AT command to the modem."
+        Me.GraphControl.AccessibleName = "Send AT Command Button"
+        Me.GraphControl.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.GraphControl.Location = New System.Drawing.Point(12, 364)
+        Me.GraphControl.Name = "GraphControl"
+        Me.GraphControl.Size = New System.Drawing.Size(162, 23)
+        Me.GraphControl.TabIndex = 49
+        Me.GraphControl.Text = "Disable Graph"
+        '
         'MainForm
         '
-        Me.ClientSize = New System.Drawing.Size(932, 436)
+        Me.ClientSize = New System.Drawing.Size(932, 452)
+        Me.Controls.Add(Me.GraphControl)
         Me.Controls.Add(Me.AverageLabel)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TrackBar1)
@@ -258,5 +271,6 @@ Partial Public Class MainForm
     Friend WithEvents TrackBar1 As System.Windows.Forms.TrackBar
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents AverageLabel As System.Windows.Forms.Label
+    Friend WithEvents GraphControl As System.Windows.Forms.Button
 
 End Class

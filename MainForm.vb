@@ -70,6 +70,7 @@ Public Class MainForm
         fftSeries.ChartType = SeriesChartType.FastLine
 
 
+
         Dim myMenuItemNew As New MenuItem("&New")
         Dim myMenuItemConfigure As New MenuItem("&Configure")
         menuItems.Add(myMenuItemNew)    ' need a list to be able to delete/change them at runtime
@@ -199,17 +200,18 @@ Public Class MainForm
                         ElseIf unitCorrectionFactor = 0.000000001 Then
                             ValueDisplay.Text = displayValue.ToString("##0.000,000,000,000") 'm
                         End If
-                        positionSeries.Points.AddXY(chartcounter, straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
-                        positionSeries.Points.RemoveAt(0)
-                        velocitySeries.Points.AddXY(chartcounter, unitCorrectionFactor * velocityValue / multiplier)
-                        velocitySeries.Points.RemoveAt(0)
-                        chartcounter = CULng(chartcounter + 1)
-
+                        If GraphControl.Text.Equals("Disable Graph") Then
+                            positionSeries.Points.AddXY(chartcounter, straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
+                            positionSeries.Points.RemoveAt(0)
+                            velocitySeries.Points.AddXY(chartcounter, unitCorrectionFactor * velocityValue / multiplier)
+                            velocitySeries.Points.RemoveAt(0)
+                            chartcounter = CULng(chartcounter + 1)
+                        End If
                     End If
                 Next
+                Chart1.ResetAutoValues()
                 Dim counter As Integer
-                If (chartcounter Mod 2) = 0 Then    ' only have about 500 pixels to show 1000 points
-                    Chart1.ResetAutoValues()
+                If Color.FromKnownColor(KnownColor.ActiveCaption) = FrequencyButton.BackColor Then    ' only have about 500 pixels to show 1000 points
                     fftSeries.Points.Clear()
                     For counter = 0 To 255
                         fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
@@ -413,5 +415,15 @@ Public Class MainForm
         Chart1.Series.Add(positionSeries)
         TimeLabel.Visible = False
         straightnessMultiplier = 36
+    End Sub
+
+    Private Sub GraphControl_Click(sender As Object, e As EventArgs) Handles GraphControl.Click
+        If GraphControl.Text.Equals("Disable Graph") Then
+            GraphControl.Text = "Enable Graph"
+            Chart1.Hide()
+        Else
+            GraphControl.Text = "Disable Graph"
+            Chart1.Show()
+        End If
     End Sub
 End Class
