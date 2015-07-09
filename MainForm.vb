@@ -53,6 +53,8 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
+        System.Windows.Forms.Application.EnableVisualStyles()
+        DisplacementButton_Click(sender, e)
         Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         Chart1.Series.Clear()
         Chart1.ChartAreas(0).AxisX.LabelStyle.Enabled = False
@@ -82,18 +84,18 @@ Public Class MainForm
 
         'adding the menu items to the main menu bar
 
-        myMenuItemoptions.MenuItems.Add(myMenuItemNew)
-        mnuBar.MenuItems.Add(myMenuItemoptions)
-        AddHandler myMenuItemoptions.Popup, AddressOf Me.myMenuItemFile1_Click
+        myMenuItemOptions.MenuItems.Add(myMenuItemNew)
+        mnuBar.MenuItems.Add(myMenuItemOptions)
+        AddHandler myMenuItemOptions.Popup, AddressOf Me.myMenuItemFile1_Click
 
-        AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemoptions_Click
-        myMenuItemoptions.MenuItems.Add(myMenuItemConfiguration)
+        AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemOptions_Click
+        myMenuItemOptions.MenuItems.Add(myMenuItemConfiguration)
 
         AddHandler myMenuItemCompensation.Click, AddressOf Me.myMenuItemCompensation_Click
-        myMenuItemoptions.MenuItems.Add(myMenuItemCompensation)
+        myMenuItemOptions.MenuItems.Add(myMenuItemCompensation)
 
         AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
-        myMenuItemoptions.MenuItems.Add(myMenuItemTestMode)
+        myMenuItemOptions.MenuItems.Add(myMenuItemTestMode)
 
         myMenuItemComPort.MenuItems.Add(myMenuItemNew)
         mnuBar.MenuItems.Add(myMenuItemComPort)
@@ -195,9 +197,14 @@ Public Class MainForm
         ' InvokeRequired required compares the thread ID of the 
         ' calling thread to the thread ID of the creating thread. 
         ' If these threads are different, it returns true. 
-        If (chartcounter Mod 2) = 0 Then    ' only have about 500 pixels to show 1000 points
-            DFT()
+        If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
+            If FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then  ' are we doing dft?
+                If (chartcounter Mod 2) = 0 Then    ' calculate every 2 values
+                    DFT()
+                End If
+            End If
         End If
+
 
         If Me.Chart1.InvokeRequired Then    'what is good for chart1 is also good for chart2
             Dim d As New SetTextCallback(AddressOf SetText)
@@ -310,9 +317,6 @@ Public Class MainForm
         Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.Control)
         Dialog1.Button2x.BackColor = Color.FromKnownColor(KnownColor.Control)
         Dialog1.Button4x.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Button1x.UseVisualStyleBackColor = True
-        Dialog1.Button2x.UseVisualStyleBackColor = True
-        Dialog1.Button4x.UseVisualStyleBackColor = True
 
         If multiplier.Equals(1) Then
             Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
@@ -329,13 +333,7 @@ Public Class MainForm
         Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
         Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
         Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttonnm.UseVisualStyleBackColor = True
-        Dialog1.Buttonum.UseVisualStyleBackColor = True
-        Dialog1.Buttonmm.UseVisualStyleBackColor = True
-        Dialog1.Buttoncm.UseVisualStyleBackColor = True
-        Dialog1.Buttonm.UseVisualStyleBackColor = True
-        Dialog1.Buttonin.UseVisualStyleBackColor = True
-        Dialog1.Buttonft.UseVisualStyleBackColor = True
+
 
         If unitCorrectionFactor = 1.0 Then
             Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
@@ -356,9 +354,7 @@ Public Class MainForm
         Dialog1.Buttonarcsec.BackColor = Color.FromKnownColor(KnownColor.Control)
         Dialog1.Buttonarcmin.BackColor = Color.FromKnownColor(KnownColor.Control)
         Dialog1.Buttondegree.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttonarcsec.UseVisualStyleBackColor = True
-        Dialog1.Buttonarcmin.UseVisualStyleBackColor = True
-        Dialog1.Buttondegree.UseVisualStyleBackColor = True
+
 
         If angleCorrectionFactor = 3600.0 Then
             Dialog1.Buttonarcsec.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
@@ -370,8 +366,7 @@ Public Class MainForm
 
         Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         Dialog1.Test_Button_On.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Test_Button_Off.UseVisualStyleBackColor = True
-        Dialog1.Test_Button_On.UseVisualStyleBackColor = True
+
 
         If TestmodeFlag = 0 Then
             Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
@@ -411,16 +406,16 @@ Public Class MainForm
 
         If velocitySeries.Points.Count = 1024 Then
             Try
-                'For outerLoopCounter = 0 To 512
-                'RealPartOfDFT(outerLoopCounter) = 0 'probably redundant. will be removed at some point
-                'ImaginaryPartOfDFT(outerLoopCounter) = 0 'probably redundant. will be removed at some point
-                'Next outerLoopCounter
-                'For outerLoopCounter = 0 To 512
-                ' For innerLoopCounter = 0 To 1023
-                'RealPartOfDFT(outerLoopCounter) = RealPartOfDFT(outerLoopCounter) + velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Cos(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
-                'ImaginaryPartOfDFT(outerLoopCounter) = ImaginaryPartOfDFT(outerLoopCounter) - velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Sin(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
-                'Next innerLoopCounter
-                'Next outerLoopCounter
+                For outerLoopCounter = 0 To 512
+                    RealPartOfDFT(outerLoopCounter) = 0
+                    ImaginaryPartOfDFT(outerLoopCounter) = 0
+                Next outerLoopCounter
+                For outerLoopCounter = 0 To 512
+                    For innerLoopCounter = 0 To 1023
+                        RealPartOfDFT(outerLoopCounter) = RealPartOfDFT(outerLoopCounter) + velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Cos(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
+                        ImaginaryPartOfDFT(outerLoopCounter) = ImaginaryPartOfDFT(outerLoopCounter) - velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Sin(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
+                    Next innerLoopCounter
+                Next outerLoopCounter
             Catch ex As Exception
                 MsgBox(ex.ToString)
             End Try
@@ -434,11 +429,6 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        VelocityButton.UseVisualStyleBackColor = True
-        AngleButton.UseVisualStyleBackColor = True
-        StraightnessLongButton.UseVisualStyleBackColor = True
-        StraightnessShortButton.UseVisualStyleBackColor = True
-        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
@@ -454,11 +444,6 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        DisplacementButton.UseVisualStyleBackColor = True
-        AngleButton.UseVisualStyleBackColor = True
-        StraightnessLongButton.UseVisualStyleBackColor = True
-        StraightnessShortButton.UseVisualStyleBackColor = True
-        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(velocitySeries)
         UnitLabel.Visible = True
@@ -473,11 +458,6 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        DisplacementButton.UseVisualStyleBackColor = True
-        VelocityButton.UseVisualStyleBackColor = True
-        StraightnessLongButton.UseVisualStyleBackColor = True
-        StraightnessShortButton.UseVisualStyleBackColor = True
-        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = False
@@ -493,11 +473,6 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        DisplacementButton.UseVisualStyleBackColor = True
-        VelocityButton.UseVisualStyleBackColor = True
-        AngleButton.UseVisualStyleBackColor = True
-        StraightnessShortButton.UseVisualStyleBackColor = True
-        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
@@ -513,11 +488,6 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        DisplacementButton.UseVisualStyleBackColor = True
-        VelocityButton.UseVisualStyleBackColor = True
-        AngleButton.UseVisualStyleBackColor = True
-        StraightnessLongButton.UseVisualStyleBackColor = True
-        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
@@ -533,11 +503,6 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        DisplacementButton.UseVisualStyleBackColor = True
-        VelocityButton.UseVisualStyleBackColor = True
-        AngleButton.UseVisualStyleBackColor = True
-        StraightnessLongButton.UseVisualStyleBackColor = True
-        StraightnessShortButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(fftSeries)
         UnitLabel.Visible = True
@@ -571,22 +536,9 @@ Public Class MainForm
         If Suspend.Text.Equals("Resume") Then
             Suspend.Text = "Suspend"
             Suspend.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Suspend.UseVisualStyleBackColor = True
         Else
             Suspend.Text = "Resume"
             Suspend.BackColor = Color.FromKnownColor(KnownColor.Yellow)
         End If
-    End Sub
-
-    Private Sub TimeLabel_Click(sender As Object, e As EventArgs) Handles TimeLabel.Click
-    End Sub
-
-    Private Sub AngleLabel_Click(sender As Object, e As EventArgs) Handles AngleLabel.Click
-    End Sub
-
-    Private Sub ValueDisplay_Click(sender As Object, e As EventArgs) Handles ValueDisplay.Click
-    End Sub
-
-    Private Sub Chart1_Click(sender As Object, e As EventArgs) Handles Chart1.Click
     End Sub
 End Class

@@ -57,8 +57,8 @@ Partial Public Class MainForm
         '
         'VelocityButton
         '
-        Me.VelocityButton.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.VelocityButton.AccessibleName = "Send AT Command Button"
+        Me.VelocityButton.AccessibleDescription = ""
+        Me.VelocityButton.AccessibleName = ""
         Me.VelocityButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.VelocityButton.Location = New System.Drawing.Point(167, 145)
         Me.VelocityButton.Name = "VelocityButton"
@@ -68,8 +68,8 @@ Partial Public Class MainForm
         '
         'ZeroButton
         '
-        Me.ZeroButton.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.ZeroButton.AccessibleName = "Send AT Command Button"
+        Me.ZeroButton.AccessibleDescription = ""
+        Me.ZeroButton.AccessibleName = ""
         Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.ZeroButton.Location = New System.Drawing.Point(633, 96)
         Me.ZeroButton.Name = "ZeroButton"
@@ -110,8 +110,8 @@ Partial Public Class MainForm
         '
         'DisplacementButton
         '
-        Me.DisplacementButton.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.DisplacementButton.AccessibleName = "Send AT Command Button"
+        Me.DisplacementButton.AccessibleDescription = ""
+        Me.DisplacementButton.AccessibleName = ""
         Me.DisplacementButton.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.DisplacementButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.DisplacementButton.Location = New System.Drawing.Point(34, 145)
@@ -119,12 +119,12 @@ Partial Public Class MainForm
         Me.DisplacementButton.Size = New System.Drawing.Size(114, 23)
         Me.DisplacementButton.TabIndex = 40
         Me.DisplacementButton.Text = "Displacement"
-        Me.DisplacementButton.UseVisualStyleBackColor = False
+        Me.DisplacementButton.UseVisualStyleBackColor = True
         '
         'AngleButton
         '
-        Me.AngleButton.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.AngleButton.AccessibleName = "Send AT Command Button"
+        Me.AngleButton.AccessibleDescription = ""
+        Me.AngleButton.AccessibleName = ""
         Me.AngleButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.AngleButton.Location = New System.Drawing.Point(303, 145)
         Me.AngleButton.Name = "AngleButton"
@@ -134,8 +134,8 @@ Partial Public Class MainForm
         '
         'StraightnessLongButton
         '
-        Me.StraightnessLongButton.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.StraightnessLongButton.AccessibleName = "Send AT Command Button"
+        Me.StraightnessLongButton.AccessibleDescription = ""
+        Me.StraightnessLongButton.AccessibleName = ""
         Me.StraightnessLongButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.StraightnessLongButton.Location = New System.Drawing.Point(439, 145)
         Me.StraightnessLongButton.Name = "StraightnessLongButton"
@@ -145,8 +145,8 @@ Partial Public Class MainForm
         '
         'StraightnessShortButton
         '
-        Me.StraightnessShortButton.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.StraightnessShortButton.AccessibleName = "Send AT Command Button"
+        Me.StraightnessShortButton.AccessibleDescription = ""
+        Me.StraightnessShortButton.AccessibleName = ""
         Me.StraightnessShortButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.StraightnessShortButton.Location = New System.Drawing.Point(575, 145)
         Me.StraightnessShortButton.Name = "StraightnessShortButton"
@@ -180,8 +180,8 @@ Partial Public Class MainForm
         '
         'FrequencyButton
         '
-        Me.FrequencyButton.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.FrequencyButton.AccessibleName = "Send AT Command Button"
+        Me.FrequencyButton.AccessibleDescription = ""
+        Me.FrequencyButton.AccessibleName = ""
         Me.FrequencyButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.FrequencyButton.Location = New System.Drawing.Point(731, 145)
         Me.FrequencyButton.Name = "FrequencyButton"
@@ -211,13 +211,13 @@ Partial Public Class MainForm
         '
         'GraphControl
         '
-        Me.GraphControl.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.GraphControl.AccessibleName = "Send AT Command Button"
+        Me.GraphControl.AccessibleDescription = ""
+        Me.GraphControl.AccessibleName = ""
         Me.GraphControl.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.GraphControl.Location = New System.Drawing.Point(34, 96)
         Me.GraphControl.Name = "GraphControl"
         Me.GraphControl.Size = New System.Drawing.Size(114, 23)
-        Me.GraphControl.TabIndex = 49
+        Me.GraphControl.TabIndex = 1
         Me.GraphControl.Text = "Disable Graph"
         '
         'AverageLabel
@@ -241,8 +241,8 @@ Partial Public Class MainForm
         '
         'Suspend
         '
-        Me.Suspend.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.Suspend.AccessibleName = "Send AT Command Button"
+        Me.Suspend.AccessibleDescription = ""
+        Me.Suspend.AccessibleName = ""
         Me.Suspend.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Suspend.Location = New System.Drawing.Point(764, 96)
         Me.Suspend.Name = "Suspend"
