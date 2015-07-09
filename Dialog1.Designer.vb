@@ -24,7 +24,6 @@ Partial Class Dialog1
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Button2x = New System.Windows.Forms.Button()
         Me.Button4x = New System.Windows.Forms.Button()
@@ -37,6 +36,13 @@ Partial Class Dialog1
         Me.Buttonm = New System.Windows.Forms.Button()
         Me.Buttonin = New System.Windows.Forms.Button()
         Me.Buttonft = New System.Windows.Forms.Button()
+        Me.Buttonarcsec = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Buttonarcmin = New System.Windows.Forms.Button()
+        Me.Buttondegree = New System.Windows.Forms.Button()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Test_Button_On = New System.Windows.Forms.Button()
+        Me.Test_Button_Off = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -44,10 +50,10 @@ Partial Class Dialog1
         '
         Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.68493!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.31507!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(175, 146)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(179, 240)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -61,74 +67,69 @@ Partial Class Dialog1
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(18, 28)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(162, 13)
-        Me.Label7.TabIndex = 52
-        Me.Label7.Text = "(affected by interferometer setup)"
+        Me.OK_Button.Text = "DONE"
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(18, 12)
+        Me.Label6.Location = New System.Drawing.Point(18, 19)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(103, 13)
+        Me.Label6.Size = New System.Drawing.Size(313, 13)
         Me.Label6.TabIndex = 51
-        Me.Label6.Text = "Resolution multiplier:"
+        Me.Label6.Text = "Interferometer Type (affects Displaement and Velocity resolution):" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'Button2x
         '
         Me.Button2x.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Button2x.AccessibleName = "Send AT Command Button"
+        Me.Button2x.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.Button2x.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Button2x.Location = New System.Drawing.Point(74, 44)
+        Me.Button2x.Location = New System.Drawing.Point(133, 49)
         Me.Button2x.Name = "Button2x"
-        Me.Button2x.Size = New System.Drawing.Size(50, 23)
+        Me.Button2x.Size = New System.Drawing.Size(106, 23)
         Me.Button2x.TabIndex = 50
-        Me.Button2x.Text = "2X"
+        Me.Button2x.Text = "PMI (2X)"
+        Me.Button2x.UseVisualStyleBackColor = False
         '
         'Button4x
         '
         Me.Button4x.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Button4x.AccessibleName = "Send AT Command Button"
         Me.Button4x.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Button4x.Location = New System.Drawing.Point(130, 44)
+        Me.Button4x.Location = New System.Drawing.Point(245, 49)
         Me.Button4x.Name = "Button4x"
-        Me.Button4x.Size = New System.Drawing.Size(50, 23)
+        Me.Button4x.Size = New System.Drawing.Size(106, 23)
         Me.Button4x.TabIndex = 49
-        Me.Button4x.Text = "4X"
+        Me.Button4x.Text = "HR PMI (4X)"
         '
         'Button1x
         '
         Me.Button1x.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Button1x.AccessibleName = "Send AT Command Button"
+        Me.Button1x.BackColor = System.Drawing.SystemColors.Control
         Me.Button1x.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Button1x.Location = New System.Drawing.Point(18, 44)
+        Me.Button1x.Location = New System.Drawing.Point(21, 49)
         Me.Button1x.Name = "Button1x"
-        Me.Button1x.Size = New System.Drawing.Size(50, 23)
+        Me.Button1x.Size = New System.Drawing.Size(106, 23)
         Me.Button1x.TabIndex = 48
-        Me.Button1x.Text = "1X"
+        Me.Button1x.Text = "LI / Other  (1X)"
+        Me.Button1x.UseVisualStyleBackColor = True
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(15, 80)
+        Me.Label1.Location = New System.Drawing.Point(15, 89)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(71, 13)
+        Me.Label1.Size = New System.Drawing.Size(221, 13)
         Me.Label1.TabIndex = 53
-        Me.Label1.Text = "Distance Unit"
+        Me.Label1.Text = "Displacement / Velocity / Straightness  Units:"
         '
         'Buttonnm
         '
         Me.Buttonnm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonnm.AccessibleName = "Send AT Command Button"
         Me.Buttonnm.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Buttonnm.Location = New System.Drawing.Point(18, 109)
+        Me.Buttonnm.Location = New System.Drawing.Point(21, 114)
         Me.Buttonnm.Name = "Buttonnm"
         Me.Buttonnm.Size = New System.Drawing.Size(50, 23)
         Me.Buttonnm.TabIndex = 54
@@ -139,7 +140,7 @@ Partial Class Dialog1
         Me.Buttonum.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonum.AccessibleName = "Send AT Command Button"
         Me.Buttonum.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Buttonum.Location = New System.Drawing.Point(74, 109)
+        Me.Buttonum.Location = New System.Drawing.Point(77, 114)
         Me.Buttonum.Name = "Buttonum"
         Me.Buttonum.Size = New System.Drawing.Size(50, 23)
         Me.Buttonum.TabIndex = 57
@@ -149,19 +150,21 @@ Partial Class Dialog1
         '
         Me.Buttonmm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonmm.AccessibleName = "Send AT Command Button"
+        Me.Buttonmm.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.Buttonmm.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Buttonmm.Location = New System.Drawing.Point(130, 109)
+        Me.Buttonmm.Location = New System.Drawing.Point(133, 114)
         Me.Buttonmm.Name = "Buttonmm"
         Me.Buttonmm.Size = New System.Drawing.Size(50, 23)
         Me.Buttonmm.TabIndex = 58
         Me.Buttonmm.Text = "mm"
+        Me.Buttonmm.UseVisualStyleBackColor = False
         '
         'Buttoncm
         '
         Me.Buttoncm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttoncm.AccessibleName = "Send AT Command Button"
         Me.Buttoncm.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Buttoncm.Location = New System.Drawing.Point(186, 109)
+        Me.Buttoncm.Location = New System.Drawing.Point(189, 114)
         Me.Buttoncm.Name = "Buttoncm"
         Me.Buttoncm.Size = New System.Drawing.Size(50, 23)
         Me.Buttoncm.TabIndex = 59
@@ -172,7 +175,7 @@ Partial Class Dialog1
         Me.Buttonm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonm.AccessibleName = "Send AT Command Button"
         Me.Buttonm.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Buttonm.Location = New System.Drawing.Point(242, 109)
+        Me.Buttonm.Location = New System.Drawing.Point(245, 114)
         Me.Buttonm.Name = "Buttonm"
         Me.Buttonm.Size = New System.Drawing.Size(50, 23)
         Me.Buttonm.TabIndex = 60
@@ -183,7 +186,7 @@ Partial Class Dialog1
         Me.Buttonin.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonin.AccessibleName = "Send AT Command Button"
         Me.Buttonin.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Buttonin.Location = New System.Drawing.Point(298, 109)
+        Me.Buttonin.Location = New System.Drawing.Point(301, 114)
         Me.Buttonin.Name = "Buttonin"
         Me.Buttonin.Size = New System.Drawing.Size(50, 23)
         Me.Buttonin.TabIndex = 61
@@ -194,18 +197,104 @@ Partial Class Dialog1
         Me.Buttonft.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonft.AccessibleName = "Send AT Command Button"
         Me.Buttonft.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Buttonft.Location = New System.Drawing.Point(354, 109)
+        Me.Buttonft.Location = New System.Drawing.Point(357, 114)
         Me.Buttonft.Name = "Buttonft"
         Me.Buttonft.Size = New System.Drawing.Size(50, 23)
         Me.Buttonft.TabIndex = 62
         Me.Buttonft.Text = "ft"
+        '
+        'Buttonarcsec
+        '
+        Me.Buttonarcsec.AccessibleDescription = "Button to send an AT command to the modem."
+        Me.Buttonarcsec.AccessibleName = "Send AT Command Button"
+        Me.Buttonarcsec.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.Buttonarcsec.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Buttonarcsec.Location = New System.Drawing.Point(21, 182)
+        Me.Buttonarcsec.Name = "Buttonarcsec"
+        Me.Buttonarcsec.Size = New System.Drawing.Size(50, 23)
+        Me.Buttonarcsec.TabIndex = 63
+        Me.Buttonarcsec.Text = " arcsec"
+        Me.Buttonarcsec.UseVisualStyleBackColor = False
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(18, 156)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(64, 13)
+        Me.Label2.TabIndex = 64
+        Me.Label2.Text = "Angle Units:"
+        '
+        'Buttonarcmin
+        '
+        Me.Buttonarcmin.AccessibleDescription = "Button to send an AT command to the modem."
+        Me.Buttonarcmin.AccessibleName = "Send AT Command Button"
+        Me.Buttonarcmin.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Buttonarcmin.Location = New System.Drawing.Point(77, 182)
+        Me.Buttonarcmin.Name = "Buttonarcmin"
+        Me.Buttonarcmin.Size = New System.Drawing.Size(50, 23)
+        Me.Buttonarcmin.TabIndex = 65
+        Me.Buttonarcmin.Text = "arcmin"
+        '
+        'Buttondegree
+        '
+        Me.Buttondegree.AccessibleDescription = "Button to send an AT command to the modem."
+        Me.Buttondegree.AccessibleName = "Send AT Command Button"
+        Me.Buttondegree.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Buttondegree.Location = New System.Drawing.Point(133, 182)
+        Me.Buttondegree.Name = "Buttondegree"
+        Me.Buttondegree.Size = New System.Drawing.Size(50, 23)
+        Me.Buttondegree.TabIndex = 66
+        Me.Buttondegree.Text = "degrees"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(298, 156)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(61, 13)
+        Me.Label3.TabIndex = 67
+        Me.Label3.Text = "Test Mode:"
+        '
+        'Test_Button_On
+        '
+        Me.Test_Button_On.AccessibleDescription = "Button to send an AT command to the modem."
+        Me.Test_Button_On.AccessibleName = "Send AT Command Button"
+        Me.Test_Button_On.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Test_Button_On.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Test_Button_On.Location = New System.Drawing.Point(357, 182)
+        Me.Test_Button_On.Name = "Test_Button_On"
+        Me.Test_Button_On.Size = New System.Drawing.Size(50, 23)
+        Me.Test_Button_On.TabIndex = 68
+        Me.Test_Button_On.Text = "On"
+        '
+        'Test_Button_Off
+        '
+        Me.Test_Button_Off.AccessibleDescription = "Button to send an AT command to the modem."
+        Me.Test_Button_Off.AccessibleName = "Send AT Command Button"
+        Me.Test_Button_Off.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.Test_Button_Off.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Test_Button_Off.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Test_Button_Off.Location = New System.Drawing.Point(301, 182)
+        Me.Test_Button_Off.Name = "Test_Button_Off"
+        Me.Test_Button_Off.Size = New System.Drawing.Size(50, 23)
+        Me.Test_Button_Off.TabIndex = 69
+        Me.Test_Button_Off.Text = "Off"
+        Me.Test_Button_Off.UseVisualStyleBackColor = False
         '
         'Dialog1
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(424, 187)
+        Me.ClientSize = New System.Drawing.Size(428, 292)
+        Me.Controls.Add(Me.Test_Button_Off)
+        Me.Controls.Add(Me.Test_Button_On)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.Buttondegree)
+        Me.Controls.Add(Me.Buttonarcmin)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Buttonarcsec)
         Me.Controls.Add(Me.Buttonft)
         Me.Controls.Add(Me.Buttonin)
         Me.Controls.Add(Me.Buttonm)
@@ -214,7 +303,6 @@ Partial Class Dialog1
         Me.Controls.Add(Me.Buttonum)
         Me.Controls.Add(Me.Buttonnm)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Button2x)
         Me.Controls.Add(Me.Button4x)
@@ -224,7 +312,6 @@ Partial Class Dialog1
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "Dialog1"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Configuration"
         Me.TableLayoutPanel1.ResumeLayout(False)
@@ -233,7 +320,6 @@ Partial Class Dialog1
 
     End Sub
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Button2x As System.Windows.Forms.Button
     Friend WithEvents Button4x As System.Windows.Forms.Button
@@ -247,5 +333,12 @@ Partial Class Dialog1
     Friend WithEvents Buttonm As System.Windows.Forms.Button
     Friend WithEvents Buttonin As System.Windows.Forms.Button
     Friend WithEvents Buttonft As System.Windows.Forms.Button
+    Friend WithEvents Buttonarcsec As System.Windows.Forms.Button
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Buttonarcmin As System.Windows.Forms.Button
+    Friend WithEvents Buttondegree As System.Windows.Forms.Button
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents Test_Button_On As System.Windows.Forms.Button
+    Friend WithEvents Test_Button_Off As System.Windows.Forms.Button
 
 End Class

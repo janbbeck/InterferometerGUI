@@ -2,13 +2,12 @@
 'https://eshkay.wordpress.com/2013/03/25/vb-net-serial-port-communication-with-datareceived-event/
 'https://msdn.microsoft.com/en-us/library/ms171728.aspx
 
-
+Imports System.Math
 Imports System.Text
 Imports System.Windows.Forms.DataVisualization.Charting
 Imports System.Text.RegularExpressions
 Imports System.IO.Ports
 Imports System.ComponentModel
-
 
 Public Class MainForm
     Public positionSeries As New Series
@@ -18,32 +17,40 @@ Public Class MainForm
     'defining the menu items for the main menu bar
     Dim menuItems As New List(Of MenuItem)
     Dim myMenuItemComPort As New MenuItem("&Com Port")
-    Dim myMenuItemCofiguration As New MenuItem("Configuration")
+    Dim myMenuItemOptions As New MenuItem("&Options")
+    Dim myMenuItemCompensation As New MenuItem("&Environmental Compensation")
+    Dim myMenuItemTestMode As New MenuItem("&TestMode")
+    Dim myMenuItemNew As New MenuItem("&New")
+    Dim myMenuItemConfiguration As New MenuItem("&Configuration")
     'defining the main menu bar
     Dim mnuBar As New MainMenu()
     ' buffer for serial port object
     Dim spDrLine As String = ""
     Dim spBuffer As String = ""
-    Dim zeroAdjustment As Double = 0.0  ' this is what we need to set the data back to zero
+    Dim zeroAdjustment As Double = 0  ' this is what we need to set the data back to zero
     Public unitCorrectionFactor As Double = 1.0 ' 1.0 = nm 0.001 = um etc
+    Public angleCorrectionFactor As Double = 3600.0 ' 3600 = arcsec 60 = arcmin 1 = degree
     Public multiplier As Integer = 1    ' needed for interferometer type 1x 2x 4x
     Public straightnessMultiplier As Integer = 1 ' needed for straightness measurements
-    Dim currentValue As Double = 0.0
-    Dim previousValue As Double = 0.0
-    Dim velocityValue As Double = 0.0
-    Dim averagingValue As Double = 0.0
-    Dim displayValue As Double
+    Dim currentValue As Double = 0
+    Dim previousValue As Double = 0
+    Dim velocityValue As Double = 0
+    Dim angleValue As Double = 0
+    Dim averagingValue As Double = 0
+    Dim displayValue As Double = 0
     Dim RealPartOfDFT(512) As Double
+    Dim averagingFromCurrent As Double = 0
     Dim ImaginaryPartOfDFT(512) As Double
-
-
+    Dim averagingFromPrevious As Double = 0
+    Dim average As Double = 0
+    Public TestmodeFlag As Integer = 0
+    Dim Dimension As Integer = 1024
+    Dim outerLoopCounter, innerLoopCounter As Integer
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
         'End
     End Sub
-
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
@@ -69,23 +76,34 @@ Public Class MainForm
         Next
         fftSeries.ChartType = SeriesChartType.FastLine
 
-
-
-        Dim myMenuItemNew As New MenuItem("&New")
-        Dim myMenuItemConfigure As New MenuItem("&Configure")
         menuItems.Add(myMenuItemNew)    ' need a list to be able to delete/change them at runtime
-        myMenuItemComPort.MenuItems.Add(myMenuItemNew)
-        AddHandler myMenuItemConfigure.Click, AddressOf Me.myMenuItemCofiguration_Click
-        myMenuItemCofiguration.MenuItems.Add(myMenuItemConfigure)
-        ' Add functionality to the menu items using the Click event.  
-        AddHandler myMenuItemComPort.Popup, AddressOf Me.myMenuItemFile1_Click
+
+        ' Add functionality to the menu items using the Click event.
+
         'adding the menu items to the main menu bar
-        mnuBar.MenuItems.Add(myMenuItemCofiguration)
+
+        myMenuItemoptions.MenuItems.Add(myMenuItemNew)
+        mnuBar.MenuItems.Add(myMenuItemoptions)
+        AddHandler myMenuItemoptions.Popup, AddressOf Me.myMenuItemFile1_Click
+
+        AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemoptions_Click
+        myMenuItemoptions.MenuItems.Add(myMenuItemConfiguration)
+
+        AddHandler myMenuItemCompensation.Click, AddressOf Me.myMenuItemCompensation_Click
+        myMenuItemoptions.MenuItems.Add(myMenuItemCompensation)
+
+        AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
+        myMenuItemoptions.MenuItems.Add(myMenuItemTestMode)
+
+        myMenuItemComPort.MenuItems.Add(myMenuItemNew)
         mnuBar.MenuItems.Add(myMenuItemComPort)
-        'add the main menu to the form
+        AddHandler myMenuItemComPort.Popup, AddressOf Me.myMenuItemFile1_Click
+
         Me.Menu = mnuBar
         ' load user settings
+
         multiplier = My.Settings.Multiplier
+
         unitCorrectionFactor = My.Settings.UnitCorrectionFactor
         If unitCorrectionFactor = 1.0 Then
             UnitLabel.Text = "nm"
@@ -102,10 +120,21 @@ Public Class MainForm
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
             UnitLabel.Text = "ft"
         End If
+
+        angleCorrectionFactor = My.Settings.AngleCorrectionFactor
+        If angleCorrectionFactor = 1.0 Then
+            AngleLabel.Text = "degree"
+        ElseIf angleCorrectionFactor = 60.0 Then
+            AngleLabel.Text = "arcmin"
+        ElseIf angleCorrectionFactor = 3600.0 Then
+            AngleLabel.Text = "arcsec"
+        End If
+
         averagingValue = My.Settings.AveragingValue
         TrackBar1.Value = CInt(averagingValue)
-        AverageLabel.Text = "Display=Display*" + (0 + TrackBar1.Value / 100).ToString("F") + "+NewData*" + (1.0 - TrackBar1.Value / 100).ToString("F")
+        AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
         Timer1.Start()
+
     End Sub
 
 
@@ -136,6 +165,7 @@ Public Class MainForm
             MsgBox(ex.ToString)
         End Try
     End Sub
+
     Private Sub DataReceivedHandler(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
         Try
             If SerialPort1.IsOpen Then
@@ -182,32 +212,50 @@ Public Class MainForm
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
                         Console.Write(values(3) + vbCrLf)
-                        currentValue = Convert.ToDouble(values(3)) * 632.816759
-                        previousValue = Convert.ToDouble(values(6)) * 632.816759
+                        currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2  ' Difference in nm
+                        previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2
                         velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
-                        If VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' velocity mode
-                            displayValue = unitCorrectionFactor * velocityValue / multiplier
+
+                        If VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' velocity mode, no averaging
+                            average = velocityValue / multiplier
+
                         Else
-                            Dim averagingFromPrevious As Double = (0 + TrackBar1.Value / 100) * displayValue
-                            Dim averagingFromCurrent As Double = (1.0 - TrackBar1.Value / 100) * straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier
-                            displayValue = averagingFromPrevious + averagingFromCurrent
+                            averagingFromPrevious = (0 + TrackBar1.Value / 100) * average ' nm
+                            averagingFromCurrent = (1.0 - TrackBar1.Value / 100) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
+                            average = averagingFromPrevious + averagingFromCurrent
                         End If
 
-                        If unitCorrectionFactor = 1 Then
-                            ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'nm
-                        ElseIf unitCorrectionFactor = 0.001 Then
-                            ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'um
-                        ElseIf unitCorrectionFactor = 0.000001 Then
-                            ValueDisplay.Text = displayValue.ToString("###,##0.000,000,000") 'mm
-                        ElseIf unitCorrectionFactor = 0.0000001 Then
-                            ValueDisplay.Text = displayValue.ToString("###,##0.000,000,0000") 'cm
-                        ElseIf unitCorrectionFactor = 0.000000001 Then
-                            ValueDisplay.Text = displayValue.ToString("##0.000,000,000,000") 'm
-                        ElseIf unitCorrectionFactor = 0.00000003937 Then
-                            ValueDisplay.Text = displayValue.ToString("###,##0.000,000,0000") 'in
-                        ElseIf unitCorrectionFactor = 0.0000000032808 Then
-                            ValueDisplay.Text = displayValue.ToString("##0.000,000,000,000") 'ft
+                        If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
+                            displayValue = Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
+                            If angleCorrectionFactor = 3600.0 Then
+                                ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
+                            ElseIf angleCorrectionFactor = 60.0 Then
+                                ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
+                            ElseIf angleCorrectionFactor = 1.0 Then
+                                ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
+                            End If
+
+                        Else
+                            displayValue = average * unitCorrectionFactor
+
+                            If unitCorrectionFactor = 1 Then
+                                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
+                            ElseIf unitCorrectionFactor = 0.001 Then
+                                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
+                            ElseIf unitCorrectionFactor = 0.000001 Then
+                                ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
+                            ElseIf unitCorrectionFactor = 0.0000001 Then
+                                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
+                            ElseIf unitCorrectionFactor = 0.000000001 Then
+                                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
+                            ElseIf unitCorrectionFactor = 0.00000003937 Then
+                                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
+                            ElseIf unitCorrectionFactor = 0.0000000032808 Then
+                                ValueDisplay.Text = displayValue.ToString("###,###.##0.000,000") 'ft
+                            End If
+
                         End If
+
                         If GraphControl.Text.Equals("Disable Graph") Then
                             positionSeries.Points.AddXY(chartcounter, straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
                             positionSeries.Points.RemoveAt(0)
@@ -215,7 +263,9 @@ Public Class MainForm
                             velocitySeries.Points.RemoveAt(0)
                             chartcounter = CULng(chartcounter + 1)
                         End If
+
                     End If
+
                 Next
                 Chart1.ResetAutoValues()
                 Dim counter As Integer
@@ -253,79 +303,94 @@ Public Class MainForm
             mnuBar.MenuItems.Add(myMenuItemComPort)
         Next
     End Sub
-    Private Sub myMenuItemCofiguration_Click(sender As Object, e As EventArgs)
+
+    Private Sub myMenuItemOptions_Click(sender As Object, e As EventArgs)
         ' pop up configuration window
+
+        Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Button2x.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Button4x.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Button1x.UseVisualStyleBackColor = True
+        Dialog1.Button2x.UseVisualStyleBackColor = True
+        Dialog1.Button4x.UseVisualStyleBackColor = True
+
         If multiplier.Equals(1) Then
             Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            Dialog1.Button2x.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Button4x.BackColor = Color.FromKnownColor(KnownColor.Control)
         ElseIf multiplier.Equals(2) Then
-            Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.Control)
             Dialog1.Button2x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            Dialog1.Button4x.BackColor = Color.FromKnownColor(KnownColor.Control)
         Else
-            Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Button2x.BackColor = Color.FromKnownColor(KnownColor.Control)
             Dialog1.Button4x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         End If
+
+        Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonnm.UseVisualStyleBackColor = True
+        Dialog1.Buttonum.UseVisualStyleBackColor = True
+        Dialog1.Buttonmm.UseVisualStyleBackColor = True
+        Dialog1.Buttoncm.UseVisualStyleBackColor = True
+        Dialog1.Buttonm.UseVisualStyleBackColor = True
+        Dialog1.Buttonin.UseVisualStyleBackColor = True
+        Dialog1.Buttonft.UseVisualStyleBackColor = True
+
         If unitCorrectionFactor = 1.0 Then
             Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
         ElseIf unitCorrectionFactor = 0.001 Then
-            Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
             Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
         ElseIf unitCorrectionFactor = 0.000001 Then
-            Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
             Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
         ElseIf unitCorrectionFactor = 0.0000001 Then
-            Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
             Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
         ElseIf unitCorrectionFactor = 0.000000001 Then
-            Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
             Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
         ElseIf unitCorrectionFactor = 0.00000003937 Then
-            Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
             Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-            Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
-            Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
             Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         End If
+
+        Dialog1.Buttonarcsec.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonarcmin.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttondegree.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonarcsec.UseVisualStyleBackColor = True
+        Dialog1.Buttonarcmin.UseVisualStyleBackColor = True
+        Dialog1.Buttondegree.UseVisualStyleBackColor = True
+
+        If angleCorrectionFactor = 3600.0 Then
+            Dialog1.Buttonarcsec.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        ElseIf angleCorrectionFactor = 60.0 Then
+            Dialog1.Buttonarcmin.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        ElseIf angleCorrectionFactor = 1.0 Then
+            Dialog1.Buttondegree.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        End If
+
+        Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        Dialog1.Test_Button_On.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Test_Button_Off.UseVisualStyleBackColor = True
+        Dialog1.Test_Button_On.UseVisualStyleBackColor = True
+
+        If TestmodeFlag = 0 Then
+            Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        Else : Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Dialog1.Test_Button_On.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        End If
+
         Dialog1.ShowDialog()
+
+    End Sub
+
+    Private Sub myMenuItemCompensation_Click(sender As Object, e As EventArgs)
+        ' pop up compensation window
+        Compensation.ShowDialog()
+    End Sub
+
+    Private Sub myMenuItemTestMode_Click(sender As Object, e As EventArgs)
+        ' pop up Test Mode window
+        TestMode.ShowDialog()
     End Sub
 
     Private Sub ZeroButton_Click(sender As Object, e As EventArgs) Handles ZeroButton.Click
@@ -337,108 +402,159 @@ Public Class MainForm
             velocitySeries.Points.RemoveAt(0)
         Next
         displayValue = 0
+        average = 0
     End Sub
-
-
 
     Private Sub DFT()
         ' not the fastest, but easy to implement
         ' https://en.wikipedia.org/wiki/Discrete_Fourier_transform
-        Dim Dimension As Integer = 1024
-        Dim outerLoopCounter, innerLoopCounter As Integer
+
         If velocitySeries.Points.Count = 1024 Then
             Try
-                For outerLoopCounter = 0 To 512
-                    RealPartOfDFT(outerLoopCounter) = 0 'probably redundant. will be removed at some point
-                    ImaginaryPartOfDFT(outerLoopCounter) = 0 'probably redundant. will be removed at some point
-                Next outerLoopCounter
-                For outerLoopCounter = 0 To 512
-                    For innerLoopCounter = 0 To 1023
-                        RealPartOfDFT(outerLoopCounter) = RealPartOfDFT(outerLoopCounter) + velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Cos(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
-                        ImaginaryPartOfDFT(outerLoopCounter) = ImaginaryPartOfDFT(outerLoopCounter) - velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Sin(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
-                    Next innerLoopCounter
-                Next outerLoopCounter
+                'For outerLoopCounter = 0 To 512
+                'RealPartOfDFT(outerLoopCounter) = 0 'probably redundant. will be removed at some point
+                'ImaginaryPartOfDFT(outerLoopCounter) = 0 'probably redundant. will be removed at some point
+                'Next outerLoopCounter
+                'For outerLoopCounter = 0 To 512
+                ' For innerLoopCounter = 0 To 1023
+                'RealPartOfDFT(outerLoopCounter) = RealPartOfDFT(outerLoopCounter) + velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Cos(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
+                'ImaginaryPartOfDFT(outerLoopCounter) = ImaginaryPartOfDFT(outerLoopCounter) - velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Sin(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
+                'Next innerLoopCounter
+                'Next outerLoopCounter
             Catch ex As Exception
                 MsgBox(ex.ToString)
             End Try
         End If
     End Sub
 
-
-
-
-
-
-
-
     Private Sub DisplacementButton_Click(sender As Object, e As EventArgs) Handles DisplacementButton.Click
         DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        VelocityButton.UseVisualStyleBackColor = True
+        AngleButton.UseVisualStyleBackColor = True
+        StraightnessLongButton.UseVisualStyleBackColor = True
+        StraightnessShortButton.UseVisualStyleBackColor = True
+        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
+        UnitLabel.Visible = True
         TimeLabel.Visible = False
+        AngleLabel.Visible = False
         straightnessMultiplier = 1
     End Sub
-    Private Sub VelocityButton_Click(sender As Object, e As EventArgs) Handles VelocityButton.Click
 
+    Private Sub VelocityButton_Click(sender As Object, e As EventArgs) Handles VelocityButton.Click
         DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        DisplacementButton.UseVisualStyleBackColor = True
+        AngleButton.UseVisualStyleBackColor = True
+        StraightnessLongButton.UseVisualStyleBackColor = True
+        StraightnessShortButton.UseVisualStyleBackColor = True
+        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(velocitySeries)
+        UnitLabel.Visible = True
         TimeLabel.Visible = True
+        AngleLabel.Visible = False
     End Sub
 
-    Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
+    Private Sub AngleButton_Click(sender As Object, e As EventArgs) Handles AngleButton.Click
         DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        DisplacementButton.UseVisualStyleBackColor = True
+        VelocityButton.UseVisualStyleBackColor = True
+        StraightnessLongButton.UseVisualStyleBackColor = True
+        StraightnessShortButton.UseVisualStyleBackColor = True
+        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
-        Chart1.Series.Add(fftSeries)
+        Chart1.Series.Add(positionSeries)
+        UnitLabel.Visible = False
         TimeLabel.Visible = False
+        AngleLabel.Visible = True
         straightnessMultiplier = 1
-    End Sub
-
-    Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
-        averagingValue = TrackBar1.Value
-        AverageLabel.Text = "Display=Display*" + (0 + TrackBar1.Value / 100).ToString("F") + "+NewData*" + (1.0 - TrackBar1.Value / 100).ToString("F")
-        My.Settings.AveragingValue = averagingValue
-        My.Settings.Save()
-    End Sub
-
-    Private Sub AverageLabel_Click(sender As Object, e As EventArgs) Handles AverageLabel.Click
-
     End Sub
 
     Private Sub StraightnessLongButton_Click(sender As Object, e As EventArgs) Handles StraightnessLongButton.Click
         DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        DisplacementButton.UseVisualStyleBackColor = True
+        VelocityButton.UseVisualStyleBackColor = True
+        AngleButton.UseVisualStyleBackColor = True
+        StraightnessShortButton.UseVisualStyleBackColor = True
+        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
+        UnitLabel.Visible = True
         TimeLabel.Visible = False
+        AngleLabel.Visible = False
         straightnessMultiplier = 360
     End Sub
 
     Private Sub StraightnessShortButton_Click(sender As Object, e As EventArgs) Handles StraightnessShortButton.Click
         DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        DisplacementButton.UseVisualStyleBackColor = True
+        VelocityButton.UseVisualStyleBackColor = True
+        AngleButton.UseVisualStyleBackColor = True
+        StraightnessLongButton.UseVisualStyleBackColor = True
+        FrequencyButton.UseVisualStyleBackColor = True
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
+        UnitLabel.Visible = True
         TimeLabel.Visible = False
+        AngleLabel.Visible = False
         straightnessMultiplier = 36
+    End Sub
+
+    Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
+        DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        DisplacementButton.UseVisualStyleBackColor = True
+        VelocityButton.UseVisualStyleBackColor = True
+        AngleButton.UseVisualStyleBackColor = True
+        StraightnessLongButton.UseVisualStyleBackColor = True
+        StraightnessShortButton.UseVisualStyleBackColor = True
+        Chart1.Series.Clear()
+        Chart1.Series.Add(fftSeries)
+        UnitLabel.Visible = True
+        TimeLabel.Visible = False
+        AngleLabel.Visible = False
+        straightnessMultiplier = 1
+    End Sub
+
+    Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
+        averagingValue = TrackBar1.Value
+        AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
+        My.Settings.AveragingValue = averagingValue
+        My.Settings.Save()
+    End Sub
+
+    Private Sub AverageLabel_Click(sender As Object, e As EventArgs) Handles AverageLabel.Click
+0:
     End Sub
 
     Private Sub GraphControl_Click(sender As Object, e As EventArgs) Handles GraphControl.Click
@@ -449,5 +565,28 @@ Public Class MainForm
             GraphControl.Text = "Disable Graph"
             Chart1.Show()
         End If
+    End Sub
+
+    Private Sub Suspend_Click(sender As Object, e As EventArgs) Handles Suspend.Click
+        If Suspend.Text.Equals("Resume") Then
+            Suspend.Text = "Suspend"
+            Suspend.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Suspend.UseVisualStyleBackColor = True
+        Else
+            Suspend.Text = "Resume"
+            Suspend.BackColor = Color.FromKnownColor(KnownColor.Yellow)
+        End If
+    End Sub
+
+    Private Sub TimeLabel_Click(sender As Object, e As EventArgs) Handles TimeLabel.Click
+    End Sub
+
+    Private Sub AngleLabel_Click(sender As Object, e As EventArgs) Handles AngleLabel.Click
+    End Sub
+
+    Private Sub ValueDisplay_Click(sender As Object, e As EventArgs) Handles ValueDisplay.Click
+    End Sub
+
+    Private Sub Chart1_Click(sender As Object, e As EventArgs) Handles Chart1.Click
     End Sub
 End Class

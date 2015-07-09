@@ -29,13 +29,12 @@ Partial Public Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Title1 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Title2 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
         Me.VelocityButton = New System.Windows.Forms.Button()
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.ValueDisplay = New System.Windows.Forms.Label()
-        Me.UnitLabel = New System.Windows.Forms.Label()
         Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.DisplacementButton = New System.Windows.Forms.Button()
@@ -44,11 +43,14 @@ Partial Public Class MainForm
         Me.StraightnessShortButton = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.TimeLabel = New System.Windows.Forms.Label()
+        Me.AngleLabel = New System.Windows.Forms.Label()
         Me.FrequencyButton = New System.Windows.Forms.Button()
         Me.TrackBar1 = New System.Windows.Forms.TrackBar()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.AverageLabel = New System.Windows.Forms.Label()
         Me.GraphControl = New System.Windows.Forms.Button()
+        Me.AverageLabel = New System.Windows.Forms.Label()
+        Me.UnitLabel = New System.Windows.Forms.Label()
+        Me.Suspend = New System.Windows.Forms.Button()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -58,9 +60,9 @@ Partial Public Class MainForm
         Me.VelocityButton.AccessibleDescription = "Button to send an AT command to the modem."
         Me.VelocityButton.AccessibleName = "Send AT Command Button"
         Me.VelocityButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.VelocityButton.Location = New System.Drawing.Point(12, 161)
+        Me.VelocityButton.Location = New System.Drawing.Point(167, 145)
         Me.VelocityButton.Name = "VelocityButton"
-        Me.VelocityButton.Size = New System.Drawing.Size(162, 23)
+        Me.VelocityButton.Size = New System.Drawing.Size(114, 23)
         Me.VelocityButton.TabIndex = 32
         Me.VelocityButton.Text = "Velocity"
         '
@@ -69,48 +71,39 @@ Partial Public Class MainForm
         Me.ZeroButton.AccessibleDescription = "Button to send an AT command to the modem."
         Me.ZeroButton.AccessibleName = "Send AT Command Button"
         Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.ZeroButton.Location = New System.Drawing.Point(12, 335)
+        Me.ZeroButton.Location = New System.Drawing.Point(633, 96)
         Me.ZeroButton.Name = "ZeroButton"
-        Me.ZeroButton.Size = New System.Drawing.Size(162, 23)
+        Me.ZeroButton.Size = New System.Drawing.Size(105, 23)
         Me.ZeroButton.TabIndex = 33
-        Me.ZeroButton.Text = "Zero"
+        Me.ZeroButton.Text = "Reset Display"
         '
         'ValueDisplay
         '
         Me.ValueDisplay.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ValueDisplay.Location = New System.Drawing.Point(36, 24)
+        Me.ValueDisplay.Location = New System.Drawing.Point(128, 26)
         Me.ValueDisplay.Name = "ValueDisplay"
-        Me.ValueDisplay.Size = New System.Drawing.Size(626, 55)
+        Me.ValueDisplay.Size = New System.Drawing.Size(541, 48)
         Me.ValueDisplay.TabIndex = 34
         Me.ValueDisplay.Text = "0.000"
         Me.ValueDisplay.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'UnitLabel
-        '
-        Me.UnitLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UnitLabel.Location = New System.Drawing.Point(668, 24)
-        Me.UnitLabel.Name = "UnitLabel"
-        Me.UnitLabel.Size = New System.Drawing.Size(104, 55)
-        Me.UnitLabel.TabIndex = 35
-        Me.UnitLabel.Text = "nm"
-        '
         'Chart1
         '
         Me.Chart1.BackColor = System.Drawing.Color.Transparent
-        ChartArea1.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea1)
-        Me.Chart1.Location = New System.Drawing.Point(207, 129)
+        ChartArea2.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea2)
+        Me.Chart1.Location = New System.Drawing.Point(145, 195)
         Me.Chart1.Name = "Chart1"
-        Series1.ChartArea = "ChartArea1"
-        Series1.Name = "Series1"
-        Me.Chart1.Series.Add(Series1)
-        Me.Chart1.Size = New System.Drawing.Size(638, 283)
+        Series2.ChartArea = "ChartArea1"
+        Series2.Name = "Series1"
+        Me.Chart1.Series.Add(Series2)
+        Me.Chart1.Size = New System.Drawing.Size(627, 283)
         Me.Chart1.TabIndex = 36
         Me.Chart1.Text = "Chart1"
-        Title1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Title1.Name = "Title1"
-        Title1.Text = "Position"
-        Me.Chart1.Titles.Add(Title1)
+        Title2.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Title2.Name = "Title1"
+        Title2.Text = "Position"
+        Me.Chart1.Titles.Add(Title2)
         '
         'SerialPort1
         '
@@ -121,9 +114,9 @@ Partial Public Class MainForm
         Me.DisplacementButton.AccessibleName = "Send AT Command Button"
         Me.DisplacementButton.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.DisplacementButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.DisplacementButton.Location = New System.Drawing.Point(12, 129)
+        Me.DisplacementButton.Location = New System.Drawing.Point(34, 145)
         Me.DisplacementButton.Name = "DisplacementButton"
-        Me.DisplacementButton.Size = New System.Drawing.Size(162, 23)
+        Me.DisplacementButton.Size = New System.Drawing.Size(114, 23)
         Me.DisplacementButton.TabIndex = 40
         Me.DisplacementButton.Text = "Displacement"
         Me.DisplacementButton.UseVisualStyleBackColor = False
@@ -133,9 +126,9 @@ Partial Public Class MainForm
         Me.AngleButton.AccessibleDescription = "Button to send an AT command to the modem."
         Me.AngleButton.AccessibleName = "Send AT Command Button"
         Me.AngleButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.AngleButton.Location = New System.Drawing.Point(12, 190)
+        Me.AngleButton.Location = New System.Drawing.Point(303, 145)
         Me.AngleButton.Name = "AngleButton"
-        Me.AngleButton.Size = New System.Drawing.Size(162, 23)
+        Me.AngleButton.Size = New System.Drawing.Size(114, 23)
         Me.AngleButton.TabIndex = 41
         Me.AngleButton.Text = "Angle"
         '
@@ -144,9 +137,9 @@ Partial Public Class MainForm
         Me.StraightnessLongButton.AccessibleDescription = "Button to send an AT command to the modem."
         Me.StraightnessLongButton.AccessibleName = "Send AT Command Button"
         Me.StraightnessLongButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.StraightnessLongButton.Location = New System.Drawing.Point(12, 219)
+        Me.StraightnessLongButton.Location = New System.Drawing.Point(439, 145)
         Me.StraightnessLongButton.Name = "StraightnessLongButton"
-        Me.StraightnessLongButton.Size = New System.Drawing.Size(162, 23)
+        Me.StraightnessLongButton.Size = New System.Drawing.Size(114, 23)
         Me.StraightnessLongButton.TabIndex = 42
         Me.StraightnessLongButton.Text = "Straightness Long"
         '
@@ -155,9 +148,9 @@ Partial Public Class MainForm
         Me.StraightnessShortButton.AccessibleDescription = "Button to send an AT command to the modem."
         Me.StraightnessShortButton.AccessibleName = "Send AT Command Button"
         Me.StraightnessShortButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.StraightnessShortButton.Location = New System.Drawing.Point(12, 248)
+        Me.StraightnessShortButton.Location = New System.Drawing.Point(575, 145)
         Me.StraightnessShortButton.Name = "StraightnessShortButton"
-        Me.StraightnessShortButton.Size = New System.Drawing.Size(162, 23)
+        Me.StraightnessShortButton.Size = New System.Drawing.Size(114, 23)
         Me.StraightnessShortButton.TabIndex = 43
         Me.StraightnessShortButton.Text = "Straightness Short"
         '
@@ -168,27 +161,37 @@ Partial Public Class MainForm
         'TimeLabel
         '
         Me.TimeLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TimeLabel.Location = New System.Drawing.Point(763, 24)
+        Me.TimeLabel.Location = New System.Drawing.Point(706, 26)
         Me.TimeLabel.Name = "TimeLabel"
-        Me.TimeLabel.Size = New System.Drawing.Size(96, 55)
+        Me.TimeLabel.Size = New System.Drawing.Size(96, 48)
         Me.TimeLabel.TabIndex = 44
         Me.TimeLabel.Text = "/s"
         Me.TimeLabel.Visible = False
+        '
+        'AngleLabel
+        '
+        Me.AngleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AngleLabel.Location = New System.Drawing.Point(665, 26)
+        Me.AngleLabel.Name = "AngleLabel"
+        Me.AngleLabel.Size = New System.Drawing.Size(177, 48)
+        Me.AngleLabel.TabIndex = 44
+        Me.AngleLabel.Text = "arcsec"
+        Me.AngleLabel.Visible = False
         '
         'FrequencyButton
         '
         Me.FrequencyButton.AccessibleDescription = "Button to send an AT command to the modem."
         Me.FrequencyButton.AccessibleName = "Send AT Command Button"
         Me.FrequencyButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.FrequencyButton.Location = New System.Drawing.Point(12, 277)
+        Me.FrequencyButton.Location = New System.Drawing.Point(731, 145)
         Me.FrequencyButton.Name = "FrequencyButton"
-        Me.FrequencyButton.Size = New System.Drawing.Size(162, 23)
+        Me.FrequencyButton.Size = New System.Drawing.Size(114, 23)
         Me.FrequencyButton.TabIndex = 45
         Me.FrequencyButton.Text = "Frequency"
         '
         'TrackBar1
         '
-        Me.TrackBar1.Location = New System.Drawing.Point(365, 79)
+        Me.TrackBar1.Location = New System.Drawing.Point(309, 96)
         Me.TrackBar1.Maximum = 99
         Me.TrackBar1.Name = "TrackBar1"
         Me.TrackBar1.Size = New System.Drawing.Size(252, 45)
@@ -200,42 +203,64 @@ Partial Public Class MainForm
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(177, 79)
+        Me.Label1.Location = New System.Drawing.Point(219, 98)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(161, 20)
+        Me.Label1.Size = New System.Drawing.Size(84, 20)
         Me.Label1.TabIndex = 47
-        Me.Label1.Text = "Averaging coefficient:"
-        '
-        'AverageLabel
-        '
-        Me.AverageLabel.AutoSize = True
-        Me.AverageLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AverageLabel.Location = New System.Drawing.Point(623, 79)
-        Me.AverageLabel.Name = "AverageLabel"
-        Me.AverageLabel.Size = New System.Drawing.Size(269, 20)
-        Me.AverageLabel.TabIndex = 48
-        Me.AverageLabel.Text = "Display=Display*0.00+NewData*1.00"
+        Me.Label1.Text = "Averaging:"
         '
         'GraphControl
         '
         Me.GraphControl.AccessibleDescription = "Button to send an AT command to the modem."
         Me.GraphControl.AccessibleName = "Send AT Command Button"
         Me.GraphControl.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.GraphControl.Location = New System.Drawing.Point(12, 364)
+        Me.GraphControl.Location = New System.Drawing.Point(34, 96)
         Me.GraphControl.Name = "GraphControl"
-        Me.GraphControl.Size = New System.Drawing.Size(162, 23)
+        Me.GraphControl.Size = New System.Drawing.Size(114, 23)
         Me.GraphControl.TabIndex = 49
         Me.GraphControl.Text = "Disable Graph"
         '
+        'AverageLabel
+        '
+        Me.AverageLabel.AutoSize = True
+        Me.AverageLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AverageLabel.Location = New System.Drawing.Point(571, 96)
+        Me.AverageLabel.Name = "AverageLabel"
+        Me.AverageLabel.Size = New System.Drawing.Size(18, 20)
+        Me.AverageLabel.TabIndex = 48
+        Me.AverageLabel.Text = "0"
+        '
+        'UnitLabel
+        '
+        Me.UnitLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UnitLabel.Location = New System.Drawing.Point(665, 26)
+        Me.UnitLabel.Name = "UnitLabel"
+        Me.UnitLabel.Size = New System.Drawing.Size(104, 48)
+        Me.UnitLabel.TabIndex = 35
+        Me.UnitLabel.Text = "nm"
+        '
+        'Suspend
+        '
+        Me.Suspend.AccessibleDescription = "Button to send an AT command to the modem."
+        Me.Suspend.AccessibleName = "Send AT Command Button"
+        Me.Suspend.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Suspend.Location = New System.Drawing.Point(764, 96)
+        Me.Suspend.Name = "Suspend"
+        Me.Suspend.Size = New System.Drawing.Size(81, 23)
+        Me.Suspend.TabIndex = 51
+        Me.Suspend.Text = "Suspend"
+        '
         'MainForm
         '
-        Me.ClientSize = New System.Drawing.Size(932, 452)
+        Me.ClientSize = New System.Drawing.Size(880, 536)
+        Me.Controls.Add(Me.Suspend)
         Me.Controls.Add(Me.GraphControl)
         Me.Controls.Add(Me.AverageLabel)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TrackBar1)
         Me.Controls.Add(Me.FrequencyButton)
         Me.Controls.Add(Me.TimeLabel)
+        Me.Controls.Add(Me.AngleLabel)
         Me.Controls.Add(Me.StraightnessShortButton)
         Me.Controls.Add(Me.StraightnessLongButton)
         Me.Controls.Add(Me.AngleButton)
@@ -258,7 +283,6 @@ Partial Public Class MainForm
     Friend WithEvents VelocityButton As System.Windows.Forms.Button
     Friend WithEvents ZeroButton As System.Windows.Forms.Button
     Friend WithEvents ValueDisplay As System.Windows.Forms.Label
-    Friend WithEvents UnitLabel As System.Windows.Forms.Label
     Friend WithEvents Chart1 As System.Windows.Forms.DataVisualization.Charting.Chart
     Friend WithEvents SerialPort1 As System.IO.Ports.SerialPort
     Friend WithEvents DisplacementButton As System.Windows.Forms.Button
@@ -267,10 +291,13 @@ Partial Public Class MainForm
     Friend WithEvents StraightnessShortButton As System.Windows.Forms.Button
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents TimeLabel As System.Windows.Forms.Label
+    Friend WithEvents AngleLabel As System.Windows.Forms.Label
     Friend WithEvents FrequencyButton As System.Windows.Forms.Button
     Friend WithEvents TrackBar1 As System.Windows.Forms.TrackBar
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents AverageLabel As System.Windows.Forms.Label
     Friend WithEvents GraphControl As System.Windows.Forms.Button
+    Friend WithEvents AverageLabel As System.Windows.Forms.Label
+    Friend WithEvents UnitLabel As System.Windows.Forms.Label
+    Friend WithEvents Suspend As System.Windows.Forms.Button
 
 End Class
