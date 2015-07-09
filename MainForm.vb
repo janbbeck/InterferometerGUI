@@ -136,7 +136,6 @@ Public Class MainForm
         TrackBar1.Value = CInt(averagingValue)
         AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
         Timer1.Start()
-
     End Sub
 
 
@@ -193,21 +192,18 @@ Public Class MainForm
     End Sub
 
     Private Sub SetText(ByVal [text] As String)
-
         ' InvokeRequired required compares the thread ID of the 
         ' calling thread to the thread ID of the creating thread. 
         ' If these threads are different, it returns true. 
-        If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
-            If FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then  ' are we doing dft?
-                If (chartcounter Mod 2) = 0 Then    ' calculate every 2 values
-                    DFT()
-                End If
-            End If
-        End If
-
-
         If Me.Chart1.InvokeRequired Then    'what is good for chart1 is also good for chart2
             Dim d As New SetTextCallback(AddressOf SetText)
+            If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
+                If FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then  ' are we doing dft?
+                    If (chartcounter Mod 2) = 0 Then    ' calculate every 2 values
+                        DFT()
+                    End If
+                End If
+            End If
             Me.Invoke(d, New Object() {[text]})
         Else
             Try
@@ -219,48 +215,20 @@ Public Class MainForm
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
                         Console.Write(values(3) + vbCrLf)
-                        currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2  ' Difference in nm
+                        currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2  ' Difference in nm; half the wavelength, because the path is traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2
                         velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
-
                         If VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' velocity mode, no averaging
                             average = velocityValue / multiplier
-
                         Else
                             averagingFromPrevious = (0 + TrackBar1.Value / 100) * average ' nm
                             averagingFromCurrent = (1.0 - TrackBar1.Value / 100) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
                             average = averagingFromPrevious + averagingFromCurrent
                         End If
-
                         If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
                             displayValue = Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
-                            If angleCorrectionFactor = 3600.0 Then
-                                ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
-                            ElseIf angleCorrectionFactor = 60.0 Then
-                                ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
-                            ElseIf angleCorrectionFactor = 1.0 Then
-                                ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
-                            End If
-
                         Else
                             displayValue = average * unitCorrectionFactor
-
-                            If unitCorrectionFactor = 1 Then
-                                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
-                            ElseIf unitCorrectionFactor = 0.001 Then
-                                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
-                            ElseIf unitCorrectionFactor = 0.000001 Then
-                                ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
-                            ElseIf unitCorrectionFactor = 0.0000001 Then
-                                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
-                            ElseIf unitCorrectionFactor = 0.000000001 Then
-                                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
-                            ElseIf unitCorrectionFactor = 0.00000003937 Then
-                                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
-                            ElseIf unitCorrectionFactor = 0.0000000032808 Then
-                                ValueDisplay.Text = displayValue.ToString("###,###.##0.000,000") 'ft
-                            End If
-
                         End If
 
                         If GraphControl.Text.Equals("Disable Graph") Then
@@ -275,12 +243,14 @@ Public Class MainForm
 
                 Next
                 Chart1.ResetAutoValues()
-                Dim counter As Integer
-                If Color.FromKnownColor(KnownColor.ActiveCaption) = FrequencyButton.BackColor Then    ' only have about 500 pixels to show 1000 points
-                    fftSeries.Points.Clear()
-                    For counter = 0 To 255
-                        fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
-                    Next
+                If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
+                    Dim counter As Integer
+                    If Color.FromKnownColor(KnownColor.ActiveCaption) = FrequencyButton.BackColor Then    ' only have about 500 pixels to show 1000 points
+                        fftSeries.Points.Clear()
+                        For counter = 0 To 255
+                            fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
+                        Next
+                    End If
                 End If
             Catch ex As Exception
                 'MsgBox(ex.ToString)
@@ -539,6 +509,39 @@ Public Class MainForm
         Else
             Suspend.Text = "Resume"
             Suspend.BackColor = Color.FromKnownColor(KnownColor.Yellow)
+        End If
+    End Sub
+
+    Private Sub ValueDisplay_Click(sender As Object, e As EventArgs) Handles ValueDisplay.Click
+
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        ' limit the update rate of the value to about 60 Hz
+        If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
+            If angleCorrectionFactor = 3600.0 Then
+                ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
+            ElseIf angleCorrectionFactor = 60.0 Then
+                ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
+            ElseIf angleCorrectionFactor = 1.0 Then
+                ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
+            End If
+        Else
+            If unitCorrectionFactor = 1 Then
+                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
+            ElseIf unitCorrectionFactor = 0.001 Then
+                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
+            ElseIf unitCorrectionFactor = 0.000001 Then
+                ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
+            ElseIf unitCorrectionFactor = 0.0000001 Then
+                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
+            ElseIf unitCorrectionFactor = 0.000000001 Then
+                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
+            ElseIf unitCorrectionFactor = 0.00000003937 Then
+                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
+            ElseIf unitCorrectionFactor = 0.0000000032808 Then
+                ValueDisplay.Text = displayValue.ToString("###,###.##0.000,000") 'ft
+            End If
         End If
     End Sub
 End Class
