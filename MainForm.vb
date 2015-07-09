@@ -14,6 +14,11 @@ Public Class MainForm
     Public velocitySeries As New Series
     Public fftSeries As New Series
     Public chartcounter As UInt64
+    ' Creates and initializes a new Queue.
+    Dim displacementQueuex As New Queue()
+    Dim displacementQueuey As New Queue()
+    Dim velocityQueuex As New Queue()
+    Dim velocityQueuey As New Queue()
     'defining the menu items for the main menu bar
     Dim menuItems As New List(Of MenuItem)
     Dim myMenuItemComPort As New MenuItem("&Com Port")
@@ -214,7 +219,7 @@ Public Class MainForm
                     Dim values() As String = sets(k).Split(" ".ToCharArray)
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
-                        Console.Write(values(3) + vbCrLf)
+                        'Console.Write(values(3) + vbCrLf)
                         currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2  ' Difference in nm; half the wavelength, because the path is traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2
                         velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
@@ -232,17 +237,17 @@ Public Class MainForm
                         End If
 
                         If GraphControl.Text.Equals("Disable Graph") Then
-                            positionSeries.Points.AddXY(chartcounter, straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
-                            positionSeries.Points.RemoveAt(0)
-                            velocitySeries.Points.AddXY(chartcounter, unitCorrectionFactor * velocityValue / multiplier)
-                            velocitySeries.Points.RemoveAt(0)
+                            displacementQueuex.Enqueue(chartcounter)
+                            displacementQueuey.Enqueue(straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
+                            velocityQueuex.Enqueue(chartcounter)
+                            velocityQueuey.Enqueue(unitCorrectionFactor * velocityValue / multiplier)
                             chartcounter = CULng(chartcounter + 1)
                         End If
 
                     End If
 
                 Next
-                Chart1.ResetAutoValues()
+                'Chart1.ResetAutoValues()
                 If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
                     Dim counter As Integer
                     If Color.FromKnownColor(KnownColor.ActiveCaption) = FrequencyButton.BackColor Then    ' only have about 500 pixels to show 1000 points
@@ -366,6 +371,9 @@ Public Class MainForm
             velocitySeries.Points.AddXY(chartcounter, 0.0)
             velocitySeries.Points.RemoveAt(0)
         Next
+        'clear queues
+        displacementQueuex.Clear()
+        displacementQueuey.Clear()
         displayValue = 0
         average = 0
     End Sub
@@ -542,6 +550,21 @@ Public Class MainForm
             ElseIf unitCorrectionFactor = 0.0000000032808 Then
                 ValueDisplay.Text = displayValue.ToString("###,###.##0.000,000") 'ft
             End If
+        End If
+        If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
+            Dim x As Double
+            Dim y As Double
+            While displacementQueuex.Count > 0
+                x = CDbl(displacementQueuex.Dequeue())
+                y = CDbl(displacementQueuey.Dequeue())
+                positionSeries.Points.AddXY(x, y)
+                positionSeries.Points.RemoveAt(0)
+                x = CDbl(velocityQueuex.Dequeue())
+                y = CDbl(velocityQueuey.Dequeue())
+                velocitySeries.Points.AddXY(x, y)
+                velocitySeries.Points.RemoveAt(0)
+            End While
+            Chart1.ResetAutoValues()
         End If
     End Sub
 End Class
