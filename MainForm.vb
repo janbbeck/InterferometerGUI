@@ -52,6 +52,20 @@ Public Class MainForm
     Dim Dimension As Integer = 1024
     Dim needsInitialZero As Integer = 0
     Dim outerLoopCounter, innerLoopCounter As Integer
+    Dim DifferenceValue As Double = 0
+    Dim CurrentREFCount As UInt64 = 0
+    Dim PreviousREFCount As UInt64 = 0
+    Dim CurrentMEASCount As UInt64 = 0
+    Dim PreviousMEASCount As UInt64 = 0
+    Dim ErrorFlag As Integer = 0
+    Dim SuspendFlag As Integer = 0
+    Dim MeasCountCorrection As UInt64 = 0
+    Dim CurrentValueCorrection As Double = 0
+    Dim SuspenREFCount As UInt64 = 0
+    Dim SuspendMEASCount As UInt64 = 0
+    Dim SuspendCurrentValue As Double = 0
+    Dim REFFrequency As Double = 0
+    Dim MEASFrequency As Double = 0
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -59,7 +73,7 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
-
+        System.Windows.Forms.Application.EnableVisualStyles()
         DisplacementButton_Click(sender, e)
         Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         Chart1.Series.Clear()
@@ -71,7 +85,9 @@ Public Class MainForm
         Chart1.ChartAreas(0).AxisY.LabelStyle.Format = "e2" 'https://msdn.microsoft.com/en-us/library/dwhawy9k.aspx
         Chart1.ChartAreas(0).AxisY.LabelAutoFitStyle = LabelAutoFitStyles.None
         Chart1.ChartAreas(0).AxisX.LabelStyle.Font = New System.Drawing.Font("Trebuchet MS", 2.25F, System.Drawing.FontStyle.Bold)
+
         positionSeries.ChartType = SeriesChartType.FastLine
+
         For chartcounter = 0 To 1023
             positionSeries.Points.AddXY(chartcounter, Math.Sin(chartcounter / 10))
         Next
@@ -81,24 +97,35 @@ Public Class MainForm
             velocitySeries.Points.AddXY(chartcounter, Math.Sin(chartcounter / 10))
         Next
         fftSeries.ChartType = SeriesChartType.FastLine
+
         menuItems.Add(myMenuItemNew)    ' need a list to be able to delete/change them at runtime
+
         ' Add functionality to the menu items using the Click event.
+
         'adding the menu items to the main menu bar
+
         myMenuItemOptions.MenuItems.Add(myMenuItemNew)
         mnuBar.MenuItems.Add(myMenuItemOptions)
         AddHandler myMenuItemOptions.Popup, AddressOf Me.myMenuItemFile1_Click
+
         AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemOptions_Click
         myMenuItemOptions.MenuItems.Add(myMenuItemConfiguration)
+
         AddHandler myMenuItemCompensation.Click, AddressOf Me.myMenuItemCompensation_Click
         myMenuItemOptions.MenuItems.Add(myMenuItemCompensation)
+
         AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
         myMenuItemOptions.MenuItems.Add(myMenuItemTestMode)
+
         myMenuItemComPort.MenuItems.Add(myMenuItemNew)
         mnuBar.MenuItems.Add(myMenuItemComPort)
         AddHandler myMenuItemComPort.Popup, AddressOf Me.myMenuItemFile1_Click
+
         Me.Menu = mnuBar
         ' load user settings
+
         multiplier = My.Settings.Multiplier
+
         unitCorrectionFactor = My.Settings.UnitCorrectionFactor
         If unitCorrectionFactor = 1.0 Then
             UnitLabel.Text = "nm"
@@ -115,6 +142,7 @@ Public Class MainForm
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
             UnitLabel.Text = "ft"
         End If
+
         angleCorrectionFactor = My.Settings.AngleCorrectionFactor
         If angleCorrectionFactor = 1.0 Then
             AngleLabel.Text = "degree"
@@ -123,11 +151,11 @@ Public Class MainForm
         ElseIf angleCorrectionFactor = 3600.0 Then
             AngleLabel.Text = "arcsec"
         End If
+
         averagingValue = My.Settings.AveragingValue
         TrackBar1.Value = CInt(averagingValue)
         AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
         Timer1.Start()
-
     End Sub
 
 
@@ -208,39 +236,58 @@ Public Class MainForm
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
                         'Console.Write(values(3) + vbCrLf)
-                        Dim meas As UInt64
-                        Dim ref As UInt64
-                        meas = Convert.ToUInt64(values(0))
-                        ref = Convert.ToUInt64(values(1))
+                
+                        currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
+                        previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2 - CurrentValueCorrection
 
-                        currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2  ' Difference in nm; half the wavelength, because the path is traveled at least twice
-                        If 1 = needsInitialZero Then
-                            zeroAdjustment = currentValue
-                            needsInitialZero = 0 ' make sure to zero out the reference system only once
-                        End If
-                        previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2
-                        velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
-                        If VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' velocity mode, no averaging
-                            average = velocityValue / multiplier
-                        Else
-                            averagingFromPrevious = (0 + TrackBar1.Value / 100) * average ' nm
-                            averagingFromCurrent = (1.0 - TrackBar1.Value / 100) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
-                            average = averagingFromPrevious + averagingFromCurrent
-                        End If
-                        If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
-                            displayValue = Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
-                        Else
-                            displayValue = average * unitCorrectionFactor
-                        End If
+                        If SuspendFlag = 0 Then
 
-                        If GraphControl.Text.Equals("Disable Graph") Then
-                            displacementQueuex.Enqueue(chartcounter)
-                            displacementQueuey.Enqueue(straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
-                            velocityQueuex.Enqueue(chartcounter)
-                            velocityQueuey.Enqueue(unitCorrectionFactor * velocityValue / multiplier)
-                            chartcounter = CULng(chartcounter + 1)
-                        End If
+                            PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
+                            CurrentREFCount = Convert.ToUInt64(values(1))
+                            REFFrequency = (CurrentREFCount - PreviousREFCount) / 610.35 / 81
 
+                            PreviousMEASCount = CurrentMEASCount
+                            CurrentMEASCount = Convert.ToUInt64(values(0))
+                            MEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 610.35 / 81
+
+                            If ErrorFlag = 0 Then
+                                If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => Head Error
+                                    ErrorFlag = 1
+                                End If
+
+                                If CurrentMEASCount - PreviousMEASCount < 100 Then  ' MEAS is dead => Path Error
+                                    ErrorFlag = ErrorFlag Or 2 ' Both => Loss of Signals (LOS) Error
+                                End If
+                            End If
+
+                            If needsInitialZero = 1 Then
+                                zeroAdjustment = currentValue
+                                needsInitialZero = 0 ' make sure to zero out the reference system only once
+                            End If
+
+                            velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
+
+                            If VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' velocity mode, no averaging
+                                average = velocityValue / multiplier
+                            Else
+                                averagingFromPrevious = (0 + TrackBar1.Value / 100) * average ' nm
+                                averagingFromCurrent = (1.0 - TrackBar1.Value / 100) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
+                                average = averagingFromPrevious + averagingFromCurrent
+                            End If
+                            If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
+                                displayValue = Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
+                            Else
+                                displayValue = average * unitCorrectionFactor
+                            End If
+
+                            If GraphControl.Text.Equals("Disable Graph") Then
+                                displacementQueuex.Enqueue(chartcounter)
+                                displacementQueuey.Enqueue(straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
+                                velocityQueuex.Enqueue(chartcounter)
+                                velocityQueuey.Enqueue(unitCorrectionFactor * velocityValue / multiplier)
+                                chartcounter = CULng(chartcounter + 1)
+                            End If
+                        End If
                     End If
 
                 Next
@@ -306,7 +353,6 @@ Public Class MainForm
         Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
         Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
 
-
         If unitCorrectionFactor = 1.0 Then
             Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         ElseIf unitCorrectionFactor = 0.001 Then
@@ -327,7 +373,6 @@ Public Class MainForm
         Dialog1.Buttonarcmin.BackColor = Color.FromKnownColor(KnownColor.Control)
         Dialog1.Buttondegree.BackColor = Color.FromKnownColor(KnownColor.Control)
 
-
         If angleCorrectionFactor = 3600.0 Then
             Dialog1.Buttonarcsec.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         ElseIf angleCorrectionFactor = 60.0 Then
@@ -338,7 +383,6 @@ Public Class MainForm
 
         Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         Dialog1.Test_Button_On.BackColor = Color.FromKnownColor(KnownColor.Control)
-
 
         If TestmodeFlag = 0 Then
             Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
@@ -362,6 +406,8 @@ Public Class MainForm
 
     Private Sub ZeroButton_Click(sender As Object, e As EventArgs) Handles ZeroButton.Click
         zeroAdjustment = currentValue
+        ErrorFlag = 0
+        DifferenceValue = 0
         For chartcounter = 0 To 1023
             positionSeries.Points.AddXY(chartcounter, 0.0)
             positionSeries.Points.RemoveAt(0)
@@ -497,11 +543,12 @@ Public Class MainForm
 0:
     End Sub
 
+
     Private Sub GraphControl_Click(sender As Object, e As EventArgs) Handles GraphControl.Click
         If GraphControl.Text.Equals("Disable Graph") Then
             GraphControl.Text = "Enable Graph"
             Chart1.Hide()
-            Me.Height = 300
+            Me.Height = 275
         Else
             GraphControl.Text = "Disable Graph"
             Chart1.Show()
@@ -509,13 +556,30 @@ Public Class MainForm
         End If
     End Sub
 
+
+    ' Private Sub GraphControl_Click(sender As Object, e As EventArgs) Handles GraphControl.Click
+    '     If GraphControl.Text.Equals("Disable Graph") Then
+    '         GraphControl.Text = "Enable Graph"
+    '         Chart1.Hide()
+    '     Else
+    '         GraphControl.Text = "Disable Graph"
+    '         Chart1.Show()
+    '     End If
+    ' End Sub
+
     Private Sub Suspend_Click(sender As Object, e As EventArgs) Handles Suspend.Click
-        If Suspend.Text.Equals("Resume") Then
-            Suspend.Text = "Suspend"
-            Suspend.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Else
+        If Suspend.Text.Equals("Suspend") Then  ' Enter Suspend mode
             Suspend.Text = "Resume"
             Suspend.BackColor = Color.FromKnownColor(KnownColor.Yellow)
+            SuspendCurrentValue = currentValue
+            SuspendFlag = 1
+
+        Else                                     ' Exit Suspend mode
+            Suspend.Text = "Suspend"
+            Suspend.BackColor = Color.FromKnownColor(KnownColor.Control)
+            CurrentValueCorrection = CurrentValueCorrection + currentValue - SuspendCurrentValue
+            SuspendFlag = 0
+            ErrorFlag = 0
         End If
     End Sub
 
@@ -525,31 +589,47 @@ Public Class MainForm
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' limit the update rate of the value to about 60 Hz
-        If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
-            If angleCorrectionFactor = 3600.0 Then
-                ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
-            ElseIf angleCorrectionFactor = 60.0 Then
-                ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
-            ElseIf angleCorrectionFactor = 1.0 Then
-                ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
-            End If
+
+        If SuspendFlag = 1 Then
+            ' ValueDisplay.Text = "Suspend   "
+        ElseIf ErrorFlag = 3 Then
+            ValueDisplay.Text = "LOS Error   "
+        ElseIf ErrorFlag = 1 Then
+            ValueDisplay.Text = "Head Error   "
+        ElseIf ErrorFlag = 2 Then
+            ValueDisplay.Text = "Path Error   "
+
         Else
-            If unitCorrectionFactor = 1 Then
-                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
-            ElseIf unitCorrectionFactor = 0.001 Then
-                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
-            ElseIf unitCorrectionFactor = 0.000001 Then
-                ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
-            ElseIf unitCorrectionFactor = 0.0000001 Then
-                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
-            ElseIf unitCorrectionFactor = 0.000000001 Then
-                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
-            ElseIf unitCorrectionFactor = 0.00000003937 Then
-                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
-            ElseIf unitCorrectionFactor = 0.0000000032808 Then
-                ValueDisplay.Text = displayValue.ToString("###,###.##0.000,000") 'ft
+            MEAS.Text = MEASFrequency.ToString("0.000")
+            REF.Text = REFFrequency.ToString("0.000")
+
+            If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
+                If angleCorrectionFactor = 3600.0 Then
+                    ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
+                ElseIf angleCorrectionFactor = 60.0 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
+                ElseIf angleCorrectionFactor = 1.0 Then
+                    ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
+                End If
+            Else
+                If unitCorrectionFactor = 1 Then
+                    ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
+                ElseIf unitCorrectionFactor = 0.001 Then
+                    ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
+                ElseIf unitCorrectionFactor = 0.000001 Then
+                    ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
+                ElseIf unitCorrectionFactor = 0.0000001 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
+                ElseIf unitCorrectionFactor = 0.000000001 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
+                ElseIf unitCorrectionFactor = 0.00000003937 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
+                ElseIf unitCorrectionFactor = 0.0000000032808 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###.##0.000,000") 'ft
+                End If
             End If
         End If
+
         If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
             Dim x As Double
             Dim y As Double
