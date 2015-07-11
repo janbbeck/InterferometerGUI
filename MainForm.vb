@@ -50,6 +50,7 @@ Public Class MainForm
     Dim average As Double = 0
     Public TestmodeFlag As Integer = 0
     Dim Dimension As Integer = 1024
+    Dim needsInitialZero As Integer = 0
     Dim outerLoopCounter, innerLoopCounter As Integer
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
@@ -58,7 +59,7 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
-        System.Windows.Forms.Application.EnableVisualStyles()
+
         DisplacementButton_Click(sender, e)
         Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         Chart1.Series.Clear()
@@ -70,9 +71,7 @@ Public Class MainForm
         Chart1.ChartAreas(0).AxisY.LabelStyle.Format = "e2" 'https://msdn.microsoft.com/en-us/library/dwhawy9k.aspx
         Chart1.ChartAreas(0).AxisY.LabelAutoFitStyle = LabelAutoFitStyles.None
         Chart1.ChartAreas(0).AxisX.LabelStyle.Font = New System.Drawing.Font("Trebuchet MS", 2.25F, System.Drawing.FontStyle.Bold)
-
         positionSeries.ChartType = SeriesChartType.FastLine
-
         For chartcounter = 0 To 1023
             positionSeries.Points.AddXY(chartcounter, Math.Sin(chartcounter / 10))
         Next
@@ -82,35 +81,24 @@ Public Class MainForm
             velocitySeries.Points.AddXY(chartcounter, Math.Sin(chartcounter / 10))
         Next
         fftSeries.ChartType = SeriesChartType.FastLine
-
         menuItems.Add(myMenuItemNew)    ' need a list to be able to delete/change them at runtime
-
         ' Add functionality to the menu items using the Click event.
-
         'adding the menu items to the main menu bar
-
         myMenuItemOptions.MenuItems.Add(myMenuItemNew)
         mnuBar.MenuItems.Add(myMenuItemOptions)
         AddHandler myMenuItemOptions.Popup, AddressOf Me.myMenuItemFile1_Click
-
         AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemOptions_Click
         myMenuItemOptions.MenuItems.Add(myMenuItemConfiguration)
-
         AddHandler myMenuItemCompensation.Click, AddressOf Me.myMenuItemCompensation_Click
         myMenuItemOptions.MenuItems.Add(myMenuItemCompensation)
-
         AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
         myMenuItemOptions.MenuItems.Add(myMenuItemTestMode)
-
         myMenuItemComPort.MenuItems.Add(myMenuItemNew)
         mnuBar.MenuItems.Add(myMenuItemComPort)
         AddHandler myMenuItemComPort.Popup, AddressOf Me.myMenuItemFile1_Click
-
         Me.Menu = mnuBar
         ' load user settings
-
         multiplier = My.Settings.Multiplier
-
         unitCorrectionFactor = My.Settings.UnitCorrectionFactor
         If unitCorrectionFactor = 1.0 Then
             UnitLabel.Text = "nm"
@@ -127,7 +115,6 @@ Public Class MainForm
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
             UnitLabel.Text = "ft"
         End If
-
         angleCorrectionFactor = My.Settings.AngleCorrectionFactor
         If angleCorrectionFactor = 1.0 Then
             AngleLabel.Text = "degree"
@@ -136,11 +123,11 @@ Public Class MainForm
         ElseIf angleCorrectionFactor = 3600.0 Then
             AngleLabel.Text = "arcsec"
         End If
-
         averagingValue = My.Settings.AveragingValue
         TrackBar1.Value = CInt(averagingValue)
         AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
         Timer1.Start()
+
     End Sub
 
 
@@ -170,6 +157,7 @@ Public Class MainForm
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
+        needsInitialZero = 1 ' make sure to zero out the reference system
     End Sub
 
     Private Sub DataReceivedHandler(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
@@ -220,7 +208,16 @@ Public Class MainForm
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
                         'Console.Write(values(3) + vbCrLf)
+                        Dim meas As UInt64
+                        Dim ref As UInt64
+                        meas = Convert.ToUInt64(values(0))
+                        ref = Convert.ToUInt64(values(1))
+
                         currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2  ' Difference in nm; half the wavelength, because the path is traveled at least twice
+                        If 1 = needsInitialZero Then
+                            zeroAdjustment = currentValue
+                            needsInitialZero = 0 ' make sure to zero out the reference system only once
+                        End If
                         previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2
                         velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
                         If VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' velocity mode, no averaging
@@ -504,9 +501,11 @@ Public Class MainForm
         If GraphControl.Text.Equals("Disable Graph") Then
             GraphControl.Text = "Enable Graph"
             Chart1.Hide()
+            Me.Height = 300
         Else
             GraphControl.Text = "Disable Graph"
             Chart1.Show()
+            Me.Height = 575
         End If
     End Sub
 

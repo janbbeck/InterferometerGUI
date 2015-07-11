@@ -29,9 +29,9 @@ Partial Public Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Title1 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
+        Dim ChartArea12 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series12 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Title12 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
         Me.VelocityButton = New System.Windows.Forms.Button()
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.ValueDisplay = New System.Windows.Forms.Label()
@@ -90,20 +90,20 @@ Partial Public Class MainForm
         'Chart1
         '
         Me.Chart1.BackColor = System.Drawing.Color.Transparent
-        ChartArea1.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea1)
+        ChartArea12.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea12)
         Me.Chart1.Location = New System.Drawing.Point(145, 195)
         Me.Chart1.Name = "Chart1"
-        Series1.ChartArea = "ChartArea1"
-        Series1.Name = "Series1"
-        Me.Chart1.Series.Add(Series1)
+        Series12.ChartArea = "ChartArea1"
+        Series12.Name = "Series1"
+        Me.Chart1.Series.Add(Series12)
         Me.Chart1.Size = New System.Drawing.Size(627, 283)
         Me.Chart1.TabIndex = 36
         Me.Chart1.Text = "Chart1"
-        Title1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Title1.Name = "Title1"
-        Title1.Text = "Position"
-        Me.Chart1.Titles.Add(Title1)
+        Title12.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Title12.Name = "Title1"
+        Title12.Text = "Position"
+        Me.Chart1.Titles.Add(Title12)
         '
         'SerialPort1
         '
@@ -112,7 +112,8 @@ Partial Public Class MainForm
         '
         Me.DisplacementButton.AccessibleDescription = ""
         Me.DisplacementButton.AccessibleName = ""
-        Me.DisplacementButton.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.DisplacementButton.BackColor = System.Drawing.SystemColors.Control
+        Me.DisplacementButton.ForeColor = System.Drawing.SystemColors.ControlText
         Me.DisplacementButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.DisplacementButton.Location = New System.Drawing.Point(34, 145)
         Me.DisplacementButton.Name = "DisplacementButton"
@@ -131,6 +132,7 @@ Partial Public Class MainForm
         Me.AngleButton.Size = New System.Drawing.Size(114, 23)
         Me.AngleButton.TabIndex = 41
         Me.AngleButton.Text = "Angle"
+        Me.AngleButton.UseVisualStyleBackColor = True
         '
         'StraightnessLongButton
         '
