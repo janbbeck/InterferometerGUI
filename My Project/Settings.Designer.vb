@@ -109,10 +109,10 @@ Namespace My
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Friend Module MySettingsProperty
         
-        <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.ComPort.Settings
+        <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")> _
+        Friend ReadOnly Property Settings() As Global.InterferometerGUI.Settings
             Get
-                Return Global.ComPort.Settings.Default
+                Return Global.InterferometerGUI.Settings.Default
             End Get
         End Property
     End Module

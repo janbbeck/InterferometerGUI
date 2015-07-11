@@ -157,7 +157,7 @@ Partial Public Class MainForm
         '
         Me.GraphControl.AccessibleDescription = ""
         Me.GraphControl.AccessibleName = ""
-        Me.GraphControl.BackgroundImage = Global.ComPort.My.Resources.Resources.InActiveButton4
+        Me.GraphControl.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.GraphControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.GraphControl.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.GraphControl.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -184,7 +184,7 @@ Partial Public Class MainForm
         '
         Me.FrequencyButton.AccessibleDescription = ""
         Me.FrequencyButton.AccessibleName = ""
-        Me.FrequencyButton.BackgroundImage = Global.ComPort.My.Resources.Resources.InActiveButton4
+        Me.FrequencyButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.FrequencyButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.FrequencyButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.FrequencyButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -198,7 +198,7 @@ Partial Public Class MainForm
         '
         Me.StraightnessShortButton.AccessibleDescription = ""
         Me.StraightnessShortButton.AccessibleName = ""
-        Me.StraightnessShortButton.BackgroundImage = Global.ComPort.My.Resources.Resources.InActiveButton4
+        Me.StraightnessShortButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.StraightnessShortButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.StraightnessShortButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.StraightnessShortButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -212,7 +212,7 @@ Partial Public Class MainForm
         '
         Me.StraightnessLongButton.AccessibleDescription = ""
         Me.StraightnessLongButton.AccessibleName = ""
-        Me.StraightnessLongButton.BackgroundImage = Global.ComPort.My.Resources.Resources.InActiveButton4
+        Me.StraightnessLongButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.StraightnessLongButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.StraightnessLongButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.StraightnessLongButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -226,7 +226,7 @@ Partial Public Class MainForm
         '
         Me.AngleButton.AccessibleDescription = ""
         Me.AngleButton.AccessibleName = ""
-        Me.AngleButton.BackgroundImage = Global.ComPort.My.Resources.Resources.InActiveButton4
+        Me.AngleButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.AngleButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.AngleButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.AngleButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -241,7 +241,7 @@ Partial Public Class MainForm
         Me.DisplacementButton.AccessibleDescription = ""
         Me.DisplacementButton.AccessibleName = ""
         Me.DisplacementButton.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.DisplacementButton.BackgroundImage = Global.ComPort.My.Resources.Resources.ActiveButton6
+        Me.DisplacementButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
         Me.DisplacementButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.DisplacementButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.DisplacementButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -256,7 +256,7 @@ Partial Public Class MainForm
         '
         Me.ZeroButton.AccessibleDescription = ""
         Me.ZeroButton.AccessibleName = ""
-        Me.ZeroButton.BackgroundImage = Global.ComPort.My.Resources.Resources.InActiveButton4
+        Me.ZeroButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.ZeroButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ZeroButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -270,7 +270,7 @@ Partial Public Class MainForm
         '
         Me.VelocityButton.AccessibleDescription = ""
         Me.VelocityButton.AccessibleName = ""
-        Me.VelocityButton.BackgroundImage = Global.ComPort.My.Resources.Resources.InActiveButton4
+        Me.VelocityButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.VelocityButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.VelocityButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.VelocityButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
