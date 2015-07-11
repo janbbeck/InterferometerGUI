@@ -450,6 +450,12 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
@@ -465,6 +471,12 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Chart1.Series.Clear()
         Chart1.Series.Add(velocitySeries)
         UnitLabel.Visible = True
@@ -479,6 +491,12 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = False
@@ -494,6 +512,12 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
@@ -509,6 +533,12 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
@@ -524,6 +554,12 @@ Public Class MainForm
         StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Chart1.Series.Clear()
         Chart1.Series.Add(fftSeries)
         UnitLabel.Visible = True

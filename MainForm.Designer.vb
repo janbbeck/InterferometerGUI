@@ -29,9 +29,9 @@ Partial Public Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Title3 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Title1 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
         Me.ValueDisplay = New System.Windows.Forms.Label()
         Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
@@ -72,20 +72,20 @@ Partial Public Class MainForm
         'Chart1
         '
         Me.Chart1.BackColor = System.Drawing.Color.Transparent
-        ChartArea3.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea3)
+        ChartArea1.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea1)
         Me.Chart1.Location = New System.Drawing.Point(145, 195)
         Me.Chart1.Name = "Chart1"
-        Series3.ChartArea = "ChartArea1"
-        Series3.Name = "Series1"
-        Me.Chart1.Series.Add(Series3)
+        Series1.ChartArea = "ChartArea1"
+        Series1.Name = "Series1"
+        Me.Chart1.Series.Add(Series1)
         Me.Chart1.Size = New System.Drawing.Size(627, 283)
         Me.Chart1.TabIndex = 36
         Me.Chart1.Text = "Chart1"
-        Title3.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Title3.Name = "Title1"
-        Title3.Text = "Position"
-        Me.Chart1.Titles.Add(Title3)
+        Title1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Title1.Name = "Title1"
+        Title1.Text = "Position"
+        Me.Chart1.Titles.Add(Title1)
         '
         'SerialPort1
         '
@@ -241,7 +241,7 @@ Partial Public Class MainForm
         Me.DisplacementButton.AccessibleDescription = ""
         Me.DisplacementButton.AccessibleName = ""
         Me.DisplacementButton.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.DisplacementButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.DisplacementButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.DisplacementButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.DisplacementButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.DisplacementButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
