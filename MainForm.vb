@@ -66,6 +66,7 @@ Public Class MainForm
     Dim SuspendCurrentValue As Double = 0
     Dim REFFrequency As Double = 0
     Dim MEASFrequency As Double = 0
+    Dim DIFFFrequency As Double = 0
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -244,11 +245,11 @@ Public Class MainForm
 
                             PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
                             CurrentREFCount = Convert.ToUInt64(values(1))
-                            REFFrequency = (CurrentREFCount - PreviousREFCount) / 610.35 / 81
+                            REFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
 
                             PreviousMEASCount = CurrentMEASCount
                             CurrentMEASCount = Convert.ToUInt64(values(0))
-                            MEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 610.35 / 81
+                            MEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
 
                             If ErrorFlag = 0 Then
                                 If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => Head Error
@@ -584,11 +585,11 @@ Public Class MainForm
         If GraphControl.Text.Equals("Disable Graph") Then
             GraphControl.Text = "Enable Graph"
             Chart1.Hide()
-            Me.Height = 275
+            Me.Height = 300
         Else
             GraphControl.Text = "Disable Graph"
             Chart1.Show()
-            Me.Height = 575
+            Me.Height = 600
         End If
     End Sub
 
@@ -631,13 +632,14 @@ Public Class MainForm
         ElseIf ErrorFlag = 3 Then
             ValueDisplay.Text = "LOS Error   "
         ElseIf ErrorFlag = 1 Then
-            ValueDisplay.Text = "Head Error   "
+            ValueDisplay.Text = "REF Error   "
         ElseIf ErrorFlag = 2 Then
-            ValueDisplay.Text = "Path Error   "
+            ValueDisplay.Text = "MEAS Error   "
 
         Else
             MEAS.Text = MEASFrequency.ToString("0.000")
             REF.Text = REFFrequency.ToString("0.000")
+            DIFF.Text = ((REFFrequency - MEASFrequency) * 1000).ToString("#,##0.0")
 
             If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
                 If angleCorrectionFactor = 3600.0 Then
@@ -681,5 +683,61 @@ Public Class MainForm
             End While
             Chart1.ResetAutoValues()
         End If
+    End Sub
+
+    Private Sub UnitLabel_Click(sender As Object, e As EventArgs) Handles UnitLabel.Click
+
+    End Sub
+
+    Private Sub DIFF_Click(sender As Object, e As EventArgs) Handles DIFF.Click
+
+    End Sub
+
+    Private Sub AngleLabel_Click(sender As Object, e As EventArgs) Handles AngleLabel.Click
+
+    End Sub
+
+    Private Sub TimeLabel_Click(sender As Object, e As EventArgs) Handles TimeLabel.Click
+
+    End Sub
+
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+
+    End Sub
+
+    Private Sub REFLabel_Click(sender As Object, e As EventArgs) Handles REFLabel.Click
+
+    End Sub
+
+    Private Sub MEASLabel_Click(sender As Object, e As EventArgs) Handles MEASLabel.Click
+
+    End Sub
+
+    Private Sub REF_Click(sender As Object, e As EventArgs) Handles REF.Click
+
+    End Sub
+
+    Private Sub MEAS_Click(sender As Object, e As EventArgs) Handles MEAS.Click
+
+    End Sub
+
+    Private Sub REFMHzLabel_Click(sender As Object, e As EventArgs) Handles REFMHzLabel.Click
+
+    End Sub
+
+    Private Sub MEASMHzLabel_Click(sender As Object, e As EventArgs) Handles MEASMHzLabel.Click
+
+    End Sub
+
+    Private Sub DIFFLabel_Click(sender As Object, e As EventArgs) Handles DIFFLabel.Click
+
+    End Sub
+
+    Private Sub DIFFKHzLabel_Click(sender As Object, e As EventArgs) Handles DIFFKHzLabel.Click
+
+    End Sub
+
+    Private Sub Chart1_Click(sender As Object, e As EventArgs) Handles Chart1.Click
+
     End Sub
 End Class

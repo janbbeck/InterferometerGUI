@@ -63,7 +63,7 @@ Partial Class Compensation
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.18367!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.81633!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 98.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 62.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 68.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.ComboBox_TempUnits, 2, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.TextBox_ECValue, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.TextBox_Pressure, 0, 2)
@@ -96,7 +96,7 @@ Partial Class Compensation
         Me.ComboBox_TempUnits.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_TempUnits.FormattingEnabled = True
         Me.ComboBox_TempUnits.Items.AddRange(New Object() {"Degrees C", "Degrees F", "Degrees K"})
-        Me.ComboBox_TempUnits.Location = New System.Drawing.Point(151, 30)
+        Me.ComboBox_TempUnits.Location = New System.Drawing.Point(145, 30)
         Me.ComboBox_TempUnits.Name = "ComboBox_TempUnits"
         Me.ComboBox_TempUnits.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_TempUnits.Size = New System.Drawing.Size(72, 21)
@@ -109,10 +109,10 @@ Partial Class Compensation
         Me.TextBox_ECValue.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox_ECValue.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_ECValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_ECValue.Location = New System.Drawing.Point(85, 6)
+        Me.TextBox_ECValue.Location = New System.Drawing.Point(81, 6)
         Me.TextBox_ECValue.Name = "TextBox_ECValue"
         Me.TextBox_ECValue.ReadOnly = True
-        Me.TextBox_ECValue.Size = New System.Drawing.Size(49, 14)
+        Me.TextBox_ECValue.Size = New System.Drawing.Size(47, 14)
         Me.TextBox_ECValue.TabIndex = 14
         Me.TextBox_ECValue.Text = "Value"
         Me.TextBox_ECValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -125,7 +125,7 @@ Partial Class Compensation
         Me.TextBox_Pressure.Location = New System.Drawing.Point(4, 61)
         Me.TextBox_Pressure.Name = "TextBox_Pressure"
         Me.TextBox_Pressure.ReadOnly = True
-        Me.TextBox_Pressure.Size = New System.Drawing.Size(74, 13)
+        Me.TextBox_Pressure.Size = New System.Drawing.Size(70, 13)
         Me.TextBox_Pressure.TabIndex = 4
         Me.TextBox_Pressure.Text = "Pressure"
         Me.TextBox_Pressure.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -133,7 +133,7 @@ Partial Class Compensation
         'NumericUpDown_Humidity
         '
         Me.NumericUpDown_Humidity.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown_Humidity.Location = New System.Drawing.Point(87, 86)
+        Me.NumericUpDown_Humidity.Location = New System.Drawing.Point(82, 86)
         Me.NumericUpDown_Humidity.Name = "NumericUpDown_Humidity"
         Me.NumericUpDown_Humidity.Size = New System.Drawing.Size(44, 20)
         Me.NumericUpDown_Humidity.TabIndex = 5
@@ -143,7 +143,7 @@ Partial Class Compensation
         'NumericUpDown_Pressure
         '
         Me.NumericUpDown_Pressure.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown_Pressure.Location = New System.Drawing.Point(87, 58)
+        Me.NumericUpDown_Pressure.Location = New System.Drawing.Point(82, 58)
         Me.NumericUpDown_Pressure.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         Me.NumericUpDown_Pressure.Name = "NumericUpDown_Pressure"
         Me.NumericUpDown_Pressure.Size = New System.Drawing.Size(45, 20)
@@ -153,7 +153,7 @@ Partial Class Compensation
         '
         'TextBox_HumiFactor
         '
-        Me.TextBox_HumiFactor.Location = New System.Drawing.Point(240, 86)
+        Me.TextBox_HumiFactor.Location = New System.Drawing.Point(234, 86)
         Me.TextBox_HumiFactor.Name = "TextBox_HumiFactor"
         Me.TextBox_HumiFactor.Size = New System.Drawing.Size(51, 20)
         Me.TextBox_HumiFactor.TabIndex = 10
@@ -161,7 +161,7 @@ Partial Class Compensation
         '
         'TextBox_PresFactor
         '
-        Me.TextBox_PresFactor.Location = New System.Drawing.Point(240, 57)
+        Me.TextBox_PresFactor.Location = New System.Drawing.Point(234, 57)
         Me.TextBox_PresFactor.Name = "TextBox_PresFactor"
         Me.TextBox_PresFactor.Size = New System.Drawing.Size(51, 20)
         Me.TextBox_PresFactor.TabIndex = 9
@@ -169,7 +169,7 @@ Partial Class Compensation
         '
         'TextBox_TempFactor
         '
-        Me.TextBox_TempFactor.Location = New System.Drawing.Point(240, 30)
+        Me.TextBox_TempFactor.Location = New System.Drawing.Point(234, 30)
         Me.TextBox_TempFactor.Name = "TextBox_TempFactor"
         Me.TextBox_TempFactor.Size = New System.Drawing.Size(51, 20)
         Me.TextBox_TempFactor.TabIndex = 3
@@ -184,7 +184,7 @@ Partial Class Compensation
         Me.TextBox_ECParameter.Location = New System.Drawing.Point(4, 6)
         Me.TextBox_ECParameter.Name = "TextBox_ECParameter"
         Me.TextBox_ECParameter.ReadOnly = True
-        Me.TextBox_ECParameter.Size = New System.Drawing.Size(74, 14)
+        Me.TextBox_ECParameter.Size = New System.Drawing.Size(70, 14)
         Me.TextBox_ECParameter.TabIndex = 13
         Me.TextBox_ECParameter.Text = "Parameter"
         Me.TextBox_ECParameter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -195,7 +195,7 @@ Partial Class Compensation
         Me.TextBox_ECFactor.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox_ECFactor.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_ECFactor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_ECFactor.Location = New System.Drawing.Point(243, 6)
+        Me.TextBox_ECFactor.Location = New System.Drawing.Point(240, 6)
         Me.TextBox_ECFactor.Name = "TextBox_ECFactor"
         Me.TextBox_ECFactor.ReadOnly = True
         Me.TextBox_ECFactor.Size = New System.Drawing.Size(51, 14)
@@ -208,7 +208,7 @@ Partial Class Compensation
         Me.ComboBox_Pressure_Units.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Pressure_Units.FormattingEnabled = True
         Me.ComboBox_Pressure_Units.Items.AddRange(New Object() {"mm/Hg", "mBar"})
-        Me.ComboBox_Pressure_Units.Location = New System.Drawing.Point(151, 57)
+        Me.ComboBox_Pressure_Units.Location = New System.Drawing.Point(145, 57)
         Me.ComboBox_Pressure_Units.Name = "ComboBox_Pressure_Units"
         Me.ComboBox_Pressure_Units.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Pressure_Units.Size = New System.Drawing.Size(71, 21)
@@ -220,7 +220,7 @@ Partial Class Compensation
         Me.ComboBox_Humidity_Units.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Humidity_Units.FormattingEnabled = True
         Me.ComboBox_Humidity_Units.Items.AddRange(New Object() {"Rel %", "Abs %"})
-        Me.ComboBox_Humidity_Units.Location = New System.Drawing.Point(151, 86)
+        Me.ComboBox_Humidity_Units.Location = New System.Drawing.Point(145, 86)
         Me.ComboBox_Humidity_Units.Name = "ComboBox_Humidity_Units"
         Me.ComboBox_Humidity_Units.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Humidity_Units.Size = New System.Drawing.Size(71, 21)
@@ -230,7 +230,7 @@ Partial Class Compensation
         'NumericUpDown1_Temperature
         '
         Me.NumericUpDown1_Temperature.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown1_Temperature.Location = New System.Drawing.Point(87, 30)
+        Me.NumericUpDown1_Temperature.Location = New System.Drawing.Point(82, 30)
         Me.NumericUpDown1_Temperature.Name = "NumericUpDown1_Temperature"
         Me.NumericUpDown1_Temperature.Size = New System.Drawing.Size(45, 20)
         Me.NumericUpDown1_Temperature.TabIndex = 2
@@ -245,7 +245,7 @@ Partial Class Compensation
         Me.TextBox_Temperature.Location = New System.Drawing.Point(4, 33)
         Me.TextBox_Temperature.Name = "TextBox_Temperature"
         Me.TextBox_Temperature.ReadOnly = True
-        Me.TextBox_Temperature.Size = New System.Drawing.Size(74, 13)
+        Me.TextBox_Temperature.Size = New System.Drawing.Size(70, 13)
         Me.TextBox_Temperature.TabIndex = 1
         Me.TextBox_Temperature.Text = "Temperature"
         Me.TextBox_Temperature.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -258,7 +258,7 @@ Partial Class Compensation
         Me.TextBox_Humidity.Location = New System.Drawing.Point(4, 89)
         Me.TextBox_Humidity.Name = "TextBox_Humidity"
         Me.TextBox_Humidity.ReadOnly = True
-        Me.TextBox_Humidity.Size = New System.Drawing.Size(74, 13)
+        Me.TextBox_Humidity.Size = New System.Drawing.Size(70, 13)
         Me.TextBox_Humidity.TabIndex = 11
         Me.TextBox_Humidity.Text = "Humidity"
         Me.TextBox_Humidity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -269,7 +269,7 @@ Partial Class Compensation
         Me.Textbox_ECUnits.BackColor = System.Drawing.SystemColors.Control
         Me.Textbox_ECUnits.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Textbox_ECUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Textbox_ECUnits.Location = New System.Drawing.Point(148, 6)
+        Me.Textbox_ECUnits.Location = New System.Drawing.Point(142, 6)
         Me.Textbox_ECUnits.Name = "Textbox_ECUnits"
         Me.Textbox_ECUnits.Size = New System.Drawing.Size(77, 14)
         Me.Textbox_ECUnits.TabIndex = 16
