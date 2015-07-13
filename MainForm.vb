@@ -2,7 +2,6 @@
 'https://eshkay.wordpress.com/2013/03/25/vb-net-serial-port-communication-with-datareceived-event/
 'https://msdn.microsoft.com/en-us/library/ms171728.aspx
 
-Imports System.Math
 Imports System.Text
 Imports System.Windows.Forms.DataVisualization.Charting
 Imports System.Text.RegularExpressions
@@ -64,9 +63,15 @@ Public Class MainForm
     Dim SuspenREFCount As UInt64 = 0
     Dim SuspendMEASCount As UInt64 = 0
     Dim SuspendCurrentValue As Double = 0
-    Dim REFFrequency As Double = 0
-    Dim MEASFrequency As Double = 0
+    Dim REFFrequency As Double = 10
+    Dim MEASFrequency As Double = 10
     Dim DIFFFrequency As Double = 0
+    Dim previousREFFrequency As Double = 10
+    Dim previousMEASFrequency As Double = 10
+    Dim currentREFFrequency As Double = 0
+    Dim currentMEASFrequency As Double = 0
+    Dim previousDIFFFrequency As Double = 0
+
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -237,19 +242,27 @@ Public Class MainForm
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
                         'Console.Write(values(3) + vbCrLf)
-                
+
                         currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2 - CurrentValueCorrection
 
+                        PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
+                        CurrentREFCount = Convert.ToUInt64(values(1))
+                        previousREFFrequency = REFFrequency
+                        currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
+                        If currentREFFrequency > (1.1 * previousREFFrequency) Then currentREFFrequency = previousREFFrequency
+                        REFFrequency = (currentREFFrequency / 60) + (59 / 60 * previousREFFrequency) ' Moving average to get finer resolution
+                        REFFrequency = currentREFFrequency
+
+                        PreviousMEASCount = CurrentMEASCount
+                        CurrentMEASCount = Convert.ToUInt64(values(0))
+                        previousMEASFrequency = MEASFrequency
+                        currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
+                        If currentMEASFrequency > (1.1 * previousMEASFrequency) Then currentMEASFrequency = previousMEASFrequency
+                        MEASFrequency = (currentMEASFrequency / 60) + (59 / 60 * previousMEASFrequency)
+                        MEASFrequency = currentMEASFrequency
+
                         If SuspendFlag = 0 Then
-
-                            PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
-                            CurrentREFCount = Convert.ToUInt64(values(1))
-                            REFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
-
-                            PreviousMEASCount = CurrentMEASCount
-                            CurrentMEASCount = Convert.ToUInt64(values(0))
-                            MEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
 
                             If ErrorFlag = 0 Then
                                 If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => Head Error
@@ -276,7 +289,7 @@ Public Class MainForm
                                 average = averagingFromPrevious + averagingFromCurrent
                             End If
                             If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
-                                displayValue = Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
+                                displayValue = Math.Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
                             Else
                                 displayValue = average * unitCorrectionFactor
                             End If
@@ -445,18 +458,18 @@ Public Class MainForm
     End Sub
 
     Private Sub DisplacementButton_Click(sender As Object, e As EventArgs) Handles DisplacementButton.Click
-        DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
@@ -466,18 +479,24 @@ Public Class MainForm
     End Sub
 
     Private Sub VelocityButton_Click(sender As Object, e As EventArgs) Handles VelocityButton.Click
-        DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        'DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        'VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        'AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        'StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        'StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
+        'FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Chart1.Series.Clear()
         Chart1.Series.Add(velocitySeries)
         UnitLabel.Visible = True
@@ -486,18 +505,18 @@ Public Class MainForm
     End Sub
 
     Private Sub AngleButton_Click(sender As Object, e As EventArgs) Handles AngleButton.Click
-        DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = False
@@ -507,18 +526,18 @@ Public Class MainForm
     End Sub
 
     Private Sub StraightnessLongButton_Click(sender As Object, e As EventArgs) Handles StraightnessLongButton.Click
-        DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
@@ -528,18 +547,18 @@ Public Class MainForm
     End Sub
 
     Private Sub StraightnessShortButton_Click(sender As Object, e As EventArgs) Handles StraightnessShortButton.Click
-        DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
@@ -549,18 +568,18 @@ Public Class MainForm
     End Sub
 
     Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
-        DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        VelocityButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Chart1.Series.Clear()
         Chart1.Series.Add(fftSeries)
         UnitLabel.Visible = True
@@ -607,13 +626,15 @@ Public Class MainForm
     Private Sub Suspend_Click(sender As Object, e As EventArgs) Handles Suspend.Click
         If Suspend.Text.Equals("Suspend") Then  ' Enter Suspend mode
             Suspend.Text = "Resume"
-            Suspend.BackColor = Color.FromKnownColor(KnownColor.Yellow)
+            Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.YelllowButton11
+            Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
             SuspendCurrentValue = currentValue
             SuspendFlag = 1
 
         Else                                     ' Exit Suspend mode
             Suspend.Text = "Suspend"
-            Suspend.BackColor = Color.FromKnownColor(KnownColor.Control)
+            Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
             CurrentValueCorrection = CurrentValueCorrection + currentValue - SuspendCurrentValue
             SuspendFlag = 0
             ErrorFlag = 0
@@ -627,19 +648,21 @@ Public Class MainForm
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' limit the update rate of the value to about 60 Hz
 
+        MEAS.Text = MEASFrequency.ToString("0.000")
+        REF.Text = REFFrequency.ToString("0.000")
+        DIFF.Text = ((REFFrequency - MEASFrequency) * 1000).ToString("#,##0.00")
+
         If SuspendFlag = 1 Then
             ' ValueDisplay.Text = "Suspend   "
-        ElseIf ErrorFlag = 3 Then
-            ValueDisplay.Text = "LOS Error   "
-        ElseIf ErrorFlag = 1 Then
-            ValueDisplay.Text = "REF Error   "
-        ElseIf ErrorFlag = 2 Then
-            ValueDisplay.Text = "MEAS Error   "
+            'ElseIf ErrorFlag = 3 Then
+            '    ValueDisplay.Text = "LOS Error   "
+            'ElseIf ErrorFlag = 1 Then
+            '    ValueDisplay.Text = "REF Error   "
+            'ElseIf ErrorFlag = 2 Then
+            '    ValueDisplay.Text = "MEAS Error   "
 
         Else
-            MEAS.Text = MEASFrequency.ToString("0.000")
-            REF.Text = REFFrequency.ToString("0.000")
-            DIFF.Text = ((REFFrequency - MEASFrequency) * 1000).ToString("#,##0.0")
+
 
             If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
                 If angleCorrectionFactor = 3600.0 Then
@@ -663,7 +686,7 @@ Public Class MainForm
                 ElseIf unitCorrectionFactor = 0.00000003937 Then
                     ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
                 ElseIf unitCorrectionFactor = 0.0000000032808 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###.##0.000,000") 'ft
+                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
                 End If
             End If
         End If

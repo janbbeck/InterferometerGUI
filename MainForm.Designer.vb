@@ -42,15 +42,6 @@ Partial Public Class MainForm
         Me.Label1 = New System.Windows.Forms.Label()
         Me.AverageLabel = New System.Windows.Forms.Label()
         Me.UnitLabel = New System.Windows.Forms.Label()
-        Me.GraphControl = New System.Windows.Forms.Button()
-        Me.Suspend = New System.Windows.Forms.Button()
-        Me.FrequencyButton = New System.Windows.Forms.Button()
-        Me.StraightnessShortButton = New System.Windows.Forms.Button()
-        Me.StraightnessLongButton = New System.Windows.Forms.Button()
-        Me.AngleButton = New System.Windows.Forms.Button()
-        Me.DisplacementButton = New System.Windows.Forms.Button()
-        Me.ZeroButton = New System.Windows.Forms.Button()
-        Me.VelocityButton = New System.Windows.Forms.Button()
         Me.DIFF = New System.Windows.Forms.Label()
         Me.DIFFKHzLabel = New System.Windows.Forms.Label()
         Me.DIFFLabel = New System.Windows.Forms.Label()
@@ -60,6 +51,15 @@ Partial Public Class MainForm
         Me.REF = New System.Windows.Forms.Label()
         Me.MEASLabel = New System.Windows.Forms.Label()
         Me.REFLabel = New System.Windows.Forms.Label()
+        Me.GraphControl = New System.Windows.Forms.Button()
+        Me.Suspend = New System.Windows.Forms.Button()
+        Me.FrequencyButton = New System.Windows.Forms.Button()
+        Me.StraightnessShortButton = New System.Windows.Forms.Button()
+        Me.StraightnessLongButton = New System.Windows.Forms.Button()
+        Me.AngleButton = New System.Windows.Forms.Button()
+        Me.DisplacementButton = New System.Windows.Forms.Button()
+        Me.ZeroButton = New System.Windows.Forms.Button()
+        Me.VelocityButton = New System.Windows.Forms.Button()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -81,6 +81,8 @@ Partial Public Class MainForm
         Me.Chart1.ChartAreas.Add(ChartArea1)
         Me.Chart1.Location = New System.Drawing.Point(146, 233)
         Me.Chart1.Name = "Chart1"
+        Me.Chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
+        Me.Chart1.PaletteCustomColors = New System.Drawing.Color() {System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(150, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(150, Byte), Integer), CType(CType(120, Byte), Integer), CType(CType(0, Byte), Integer))}
         Series1.ChartArea = "ChartArea1"
         Series1.Name = "Series1"
         Me.Chart1.Series.Add(Series1)
@@ -158,149 +160,22 @@ Partial Public Class MainForm
         Me.UnitLabel.TabIndex = 35
         Me.UnitLabel.Text = "nm"
         '
-        'GraphControl
-        '
-        Me.GraphControl.AccessibleDescription = ""
-        Me.GraphControl.AccessibleName = ""
-        Me.GraphControl.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.GraphControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.GraphControl.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.GraphControl.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.GraphControl.Location = New System.Drawing.Point(35, 134)
-        Me.GraphControl.Name = "GraphControl"
-        Me.GraphControl.Size = New System.Drawing.Size(114, 23)
-        Me.GraphControl.TabIndex = 1
-        Me.GraphControl.Text = "Disable Graph"
-        '
-        'Suspend
-        '
-        Me.Suspend.AccessibleDescription = ""
-        Me.Suspend.AccessibleName = ""
-        Me.Suspend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Suspend.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.Suspend.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Suspend.Location = New System.Drawing.Point(765, 134)
-        Me.Suspend.Name = "Suspend"
-        Me.Suspend.Size = New System.Drawing.Size(81, 23)
-        Me.Suspend.TabIndex = 51
-        Me.Suspend.Text = "Suspend"
-        '
-        'FrequencyButton
-        '
-        Me.FrequencyButton.AccessibleDescription = ""
-        Me.FrequencyButton.AccessibleName = ""
-        Me.FrequencyButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.FrequencyButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.FrequencyButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.FrequencyButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.FrequencyButton.Location = New System.Drawing.Point(732, 183)
-        Me.FrequencyButton.Name = "FrequencyButton"
-        Me.FrequencyButton.Size = New System.Drawing.Size(114, 23)
-        Me.FrequencyButton.TabIndex = 45
-        Me.FrequencyButton.Text = "Frequency"
-        '
-        'StraightnessShortButton
-        '
-        Me.StraightnessShortButton.AccessibleDescription = ""
-        Me.StraightnessShortButton.AccessibleName = ""
-        Me.StraightnessShortButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.StraightnessShortButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.StraightnessShortButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.StraightnessShortButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.StraightnessShortButton.Location = New System.Drawing.Point(576, 183)
-        Me.StraightnessShortButton.Name = "StraightnessShortButton"
-        Me.StraightnessShortButton.Size = New System.Drawing.Size(114, 23)
-        Me.StraightnessShortButton.TabIndex = 43
-        Me.StraightnessShortButton.Text = "Straightness Short"
-        '
-        'StraightnessLongButton
-        '
-        Me.StraightnessLongButton.AccessibleDescription = ""
-        Me.StraightnessLongButton.AccessibleName = ""
-        Me.StraightnessLongButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.StraightnessLongButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.StraightnessLongButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.StraightnessLongButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.StraightnessLongButton.Location = New System.Drawing.Point(440, 183)
-        Me.StraightnessLongButton.Name = "StraightnessLongButton"
-        Me.StraightnessLongButton.Size = New System.Drawing.Size(114, 23)
-        Me.StraightnessLongButton.TabIndex = 42
-        Me.StraightnessLongButton.Text = "Straightness Long"
-        '
-        'AngleButton
-        '
-        Me.AngleButton.AccessibleDescription = ""
-        Me.AngleButton.AccessibleName = ""
-        Me.AngleButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.AngleButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.AngleButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.AngleButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.AngleButton.Location = New System.Drawing.Point(304, 183)
-        Me.AngleButton.Name = "AngleButton"
-        Me.AngleButton.Size = New System.Drawing.Size(114, 23)
-        Me.AngleButton.TabIndex = 41
-        Me.AngleButton.Text = "Angle"
-        '
-        'DisplacementButton
-        '
-        Me.DisplacementButton.AccessibleDescription = ""
-        Me.DisplacementButton.AccessibleName = ""
-        Me.DisplacementButton.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.DisplacementButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.DisplacementButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.DisplacementButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.DisplacementButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.DisplacementButton.Location = New System.Drawing.Point(35, 183)
-        Me.DisplacementButton.Name = "DisplacementButton"
-        Me.DisplacementButton.Size = New System.Drawing.Size(114, 23)
-        Me.DisplacementButton.TabIndex = 40
-        Me.DisplacementButton.Text = "Displacement"
-        Me.DisplacementButton.UseVisualStyleBackColor = True
-        '
-        'ZeroButton
-        '
-        Me.ZeroButton.AccessibleDescription = ""
-        Me.ZeroButton.AccessibleName = ""
-        Me.ZeroButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.ZeroButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ZeroButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.ZeroButton.Location = New System.Drawing.Point(634, 134)
-        Me.ZeroButton.Name = "ZeroButton"
-        Me.ZeroButton.Size = New System.Drawing.Size(105, 23)
-        Me.ZeroButton.TabIndex = 33
-        Me.ZeroButton.Text = "Reset Display"
-        '
-        'VelocityButton
-        '
-        Me.VelocityButton.AccessibleDescription = ""
-        Me.VelocityButton.AccessibleName = ""
-        Me.VelocityButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.VelocityButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.VelocityButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.VelocityButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.VelocityButton.Location = New System.Drawing.Point(168, 183)
-        Me.VelocityButton.Name = "VelocityButton"
-        Me.VelocityButton.Size = New System.Drawing.Size(114, 23)
-        Me.VelocityButton.TabIndex = 32
-        Me.VelocityButton.Text = "Velocity"
-        '
         'DIFF
         '
         Me.DIFF.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(200, Byte), Integer))
-        Me.DIFF.Location = New System.Drawing.Point(610, 25)
+        Me.DIFF.Location = New System.Drawing.Point(609, 25)
         Me.DIFF.Name = "DIFF"
-        Me.DIFF.Size = New System.Drawing.Size(64, 24)
+        Me.DIFF.Size = New System.Drawing.Size(90, 24)
         Me.DIFF.TabIndex = 76
-        Me.DIFF.Text = "0.0"
+        Me.DIFF.Text = "0.00"
         Me.DIFF.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'DIFFKHzLabel
         '
         Me.DIFFKHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFFKHzLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.DIFFKHzLabel.Location = New System.Drawing.Point(672, 25)
+        Me.DIFFKHzLabel.Location = New System.Drawing.Point(697, 25)
         Me.DIFFKHzLabel.Name = "DIFFKHzLabel"
         Me.DIFFKHzLabel.Size = New System.Drawing.Size(57, 24)
         Me.DIFFKHzLabel.TabIndex = 75
@@ -375,6 +250,135 @@ Partial Public Class MainForm
         Me.REFLabel.Size = New System.Drawing.Size(57, 24)
         Me.REFLabel.TabIndex = 68
         Me.REFLabel.Text = "REF: "
+        '
+        'GraphControl
+        '
+        Me.GraphControl.AccessibleDescription = ""
+        Me.GraphControl.AccessibleName = ""
+        Me.GraphControl.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.GraphControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.GraphControl.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.GraphControl.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.GraphControl.Location = New System.Drawing.Point(35, 134)
+        Me.GraphControl.Name = "GraphControl"
+        Me.GraphControl.Size = New System.Drawing.Size(114, 23)
+        Me.GraphControl.TabIndex = 1
+        Me.GraphControl.Text = "Disable Graph"
+        '
+        'Suspend
+        '
+        Me.Suspend.AccessibleDescription = ""
+        Me.Suspend.AccessibleName = ""
+        Me.Suspend.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Suspend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Suspend.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Suspend.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.Suspend.Location = New System.Drawing.Point(765, 134)
+        Me.Suspend.Name = "Suspend"
+        Me.Suspend.Size = New System.Drawing.Size(81, 23)
+        Me.Suspend.TabIndex = 51
+        Me.Suspend.Text = "Suspend"
+        '
+        'FrequencyButton
+        '
+        Me.FrequencyButton.AccessibleDescription = ""
+        Me.FrequencyButton.AccessibleName = ""
+        Me.FrequencyButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.FrequencyButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.FrequencyButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.FrequencyButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.FrequencyButton.Location = New System.Drawing.Point(732, 183)
+        Me.FrequencyButton.Name = "FrequencyButton"
+        Me.FrequencyButton.Size = New System.Drawing.Size(114, 23)
+        Me.FrequencyButton.TabIndex = 45
+        Me.FrequencyButton.Text = "Frequency"
+        '
+        'StraightnessShortButton
+        '
+        Me.StraightnessShortButton.AccessibleDescription = ""
+        Me.StraightnessShortButton.AccessibleName = ""
+        Me.StraightnessShortButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.StraightnessShortButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.StraightnessShortButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.StraightnessShortButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.StraightnessShortButton.Location = New System.Drawing.Point(576, 183)
+        Me.StraightnessShortButton.Name = "StraightnessShortButton"
+        Me.StraightnessShortButton.Size = New System.Drawing.Size(114, 23)
+        Me.StraightnessShortButton.TabIndex = 43
+        Me.StraightnessShortButton.Text = "Straightness Short"
+        '
+        'StraightnessLongButton
+        '
+        Me.StraightnessLongButton.AccessibleDescription = ""
+        Me.StraightnessLongButton.AccessibleName = ""
+        Me.StraightnessLongButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.StraightnessLongButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.StraightnessLongButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.StraightnessLongButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.StraightnessLongButton.Location = New System.Drawing.Point(440, 183)
+        Me.StraightnessLongButton.Name = "StraightnessLongButton"
+        Me.StraightnessLongButton.Size = New System.Drawing.Size(114, 23)
+        Me.StraightnessLongButton.TabIndex = 42
+        Me.StraightnessLongButton.Text = "Straightness Long"
+        '
+        'AngleButton
+        '
+        Me.AngleButton.AccessibleDescription = ""
+        Me.AngleButton.AccessibleName = ""
+        Me.AngleButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.AngleButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.AngleButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.AngleButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.AngleButton.Location = New System.Drawing.Point(304, 183)
+        Me.AngleButton.Name = "AngleButton"
+        Me.AngleButton.Size = New System.Drawing.Size(114, 23)
+        Me.AngleButton.TabIndex = 41
+        Me.AngleButton.Text = "Angle"
+        '
+        'DisplacementButton
+        '
+        Me.DisplacementButton.AccessibleDescription = ""
+        Me.DisplacementButton.AccessibleName = ""
+        Me.DisplacementButton.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.DisplacementButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.DisplacementButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.DisplacementButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.DisplacementButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.DisplacementButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.DisplacementButton.Location = New System.Drawing.Point(35, 183)
+        Me.DisplacementButton.Name = "DisplacementButton"
+        Me.DisplacementButton.Size = New System.Drawing.Size(114, 23)
+        Me.DisplacementButton.TabIndex = 40
+        Me.DisplacementButton.Text = "Displacement"
+        Me.DisplacementButton.UseVisualStyleBackColor = True
+        '
+        'ZeroButton
+        '
+        Me.ZeroButton.AccessibleDescription = ""
+        Me.ZeroButton.AccessibleName = ""
+        Me.ZeroButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.ZeroButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ZeroButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.ZeroButton.Location = New System.Drawing.Point(634, 134)
+        Me.ZeroButton.Name = "ZeroButton"
+        Me.ZeroButton.Size = New System.Drawing.Size(105, 23)
+        Me.ZeroButton.TabIndex = 33
+        Me.ZeroButton.Text = "Reset Display"
+        '
+        'VelocityButton
+        '
+        Me.VelocityButton.AccessibleDescription = ""
+        Me.VelocityButton.AccessibleName = ""
+        Me.VelocityButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.VelocityButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.VelocityButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.VelocityButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.VelocityButton.Location = New System.Drawing.Point(168, 183)
+        Me.VelocityButton.Name = "VelocityButton"
+        Me.VelocityButton.Size = New System.Drawing.Size(114, 23)
+        Me.VelocityButton.TabIndex = 32
+        Me.VelocityButton.Text = "Velocity"
         '
         'MainForm
         '

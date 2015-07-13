@@ -7,4 +7,7 @@ Public Class Compensation
         Me.Close()
     End Sub
 
+    Private Sub Compensation_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

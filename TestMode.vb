@@ -12,59 +12,88 @@ Public Class TestMode
     End Sub
 
     Private Sub Button_Constant_Click(sender As Object, e As EventArgs) Handles Button_Constant.Click
-        Button_Constant.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        Button_Square.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Triangle.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Ramp.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Sine.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
         My.Settings.Save()
     End Sub
 
     Private Sub Button_Square_Click(sender As Object, e As EventArgs) Handles Button_Square.Click
-        Button_Constant.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Square.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        Button_Triangle.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Ramp.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Sine.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
         My.Settings.Save()
     End Sub
 
     Private Sub Button_Triangle_Click(sender As Object, e As EventArgs) Handles Button_Triangle.Click
-        Button_Constant.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Square.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Triangle.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        Button_Ramp.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Sine.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
         My.Settings.Save()
     End Sub
 
     Private Sub Button_Ramp_Click(sender As Object, e As EventArgs) Handles Button_Ramp.Click
-        Button_Constant.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Square.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Triangle.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Ramp.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        Button_Sine.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
         My.Settings.Save()
     End Sub
 
     Private Sub Button_Sine_Click(sender As Object, e As EventArgs) Handles Button_Sine.Click
-        Button_Constant.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Square.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Triangle.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Ramp.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Button_Sine.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.inActiveButton4
+        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
         My.Settings.Save()
     End Sub
 
     Private Sub FGOff_Button_Click(sender As Object, e As EventArgs) Handles FGOff_Button.Click
-        FGOff_Button.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        FGOn_Button.BackColor = Color.FromKnownColor(KnownColor.Control)
+        FGOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        FGOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        FGOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FGOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
         My.Settings.Save()
     End Sub
 
     Private Sub FGOn_Button_Click(sender As Object, e As EventArgs) Handles FGOn_Button.Click
-        FGOff_Button.BackColor = Color.FromKnownColor(KnownColor.Control)
-        FGOn_Button.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        FGOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        FGOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        FGOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        FGOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
         My.Settings.Save()
     End Sub
 
@@ -86,4 +115,7 @@ Public Class TestMode
         My.Settings.Save()
     End Sub
 
+    Private Sub TestMode_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

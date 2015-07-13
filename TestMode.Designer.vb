@@ -22,6 +22,7 @@ Partial Class TestMode
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TestMode))
         Me.TMClose_Button = New System.Windows.Forms.Button()
         Me.ComboBox_Frequency = New System.Windows.Forms.ComboBox()
         Me.Trackbar_Frequency = New System.Windows.Forms.TrackBar()
@@ -30,22 +31,22 @@ Partial Class TestMode
         Me.TextBox_Offset_Label = New System.Windows.Forms.TextBox()
         Me.TextBox_Frequency_Label = New System.Windows.Forms.TextBox()
         Me.TextBox_Amplitude_Label = New System.Windows.Forms.TextBox()
-        Me.Button_Ramp = New System.Windows.Forms.Button()
-        Me.Button_Square = New System.Windows.Forms.Button()
-        Me.Button_Sine = New System.Windows.Forms.Button()
         Me.TextBox8 = New System.Windows.Forms.TextBox()
-        Me.Button_Triangle = New System.Windows.Forms.Button()
         Me.TrackBar_Amplitude = New System.Windows.Forms.TrackBar()
         Me.TrackBar_Offset = New System.Windows.Forms.TrackBar()
         Me.Textbox_Frequency = New System.Windows.Forms.TextBox()
         Me.ComboBox_Amplitude = New System.Windows.Forms.ComboBox()
         Me.ComboBox_Offset = New System.Windows.Forms.ComboBox()
         Me.TextBox4 = New System.Windows.Forms.TextBox()
-        Me.Button_Constant = New System.Windows.Forms.Button()
         Me.FGOn_Button = New System.Windows.Forms.Button()
         Me.ComboBox_Units = New System.Windows.Forms.ComboBox()
         Me.TextBox5 = New System.Windows.Forms.TextBox()
         Me.FGOff_Button = New System.Windows.Forms.Button()
+        Me.Button_Constant = New System.Windows.Forms.Button()
+        Me.Button_Triangle = New System.Windows.Forms.Button()
+        Me.Button_Sine = New System.Windows.Forms.Button()
+        Me.Button_Ramp = New System.Windows.Forms.Button()
+        Me.Button_Square = New System.Windows.Forms.Button()
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Amplitude, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Offset, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -54,6 +55,9 @@ Partial Class TestMode
         'TMClose_Button
         '
         Me.TMClose_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.TMClose_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.TMClose_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.TMClose_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.TMClose_Button.Location = New System.Drawing.Point(211, 340)
         Me.TMClose_Button.Name = "TMClose_Button"
         Me.TMClose_Button.Size = New System.Drawing.Size(67, 23)
@@ -153,33 +157,6 @@ Partial Class TestMode
         Me.TextBox_Amplitude_Label.Text = "Ampiltude"
         Me.TextBox_Amplitude_Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'Button_Ramp
-        '
-        Me.Button_Ramp.Location = New System.Drawing.Point(39, 199)
-        Me.Button_Ramp.Name = "Button_Ramp"
-        Me.Button_Ramp.Size = New System.Drawing.Size(81, 25)
-        Me.Button_Ramp.TabIndex = 12
-        Me.Button_Ramp.Text = "Ramp"
-        Me.Button_Ramp.UseVisualStyleBackColor = True
-        '
-        'Button_Square
-        '
-        Me.Button_Square.Location = New System.Drawing.Point(39, 137)
-        Me.Button_Square.Name = "Button_Square"
-        Me.Button_Square.Size = New System.Drawing.Size(81, 25)
-        Me.Button_Square.TabIndex = 6
-        Me.Button_Square.Text = "Square"
-        Me.Button_Square.UseVisualStyleBackColor = True
-        '
-        'Button_Sine
-        '
-        Me.Button_Sine.Location = New System.Drawing.Point(39, 230)
-        Me.Button_Sine.Name = "Button_Sine"
-        Me.Button_Sine.Size = New System.Drawing.Size(81, 24)
-        Me.Button_Sine.TabIndex = 6
-        Me.Button_Sine.Text = "Sine"
-        Me.Button_Sine.UseVisualStyleBackColor = True
-        '
         'TextBox8
         '
         Me.TextBox8.BackColor = System.Drawing.SystemColors.Control
@@ -192,16 +169,6 @@ Partial Class TestMode
         Me.TextBox8.TabIndex = 13
         Me.TextBox8.Text = "Waveform"
         Me.TextBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'Button_Triangle
-        '
-        Me.Button_Triangle.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.Button_Triangle.Location = New System.Drawing.Point(39, 168)
-        Me.Button_Triangle.Name = "Button_Triangle"
-        Me.Button_Triangle.Size = New System.Drawing.Size(81, 25)
-        Me.Button_Triangle.TabIndex = 18
-        Me.Button_Triangle.Text = "Triangle"
-        Me.Button_Triangle.UseVisualStyleBackColor = False
         '
         'TrackBar_Amplitude
         '
@@ -286,17 +253,11 @@ Partial Class TestMode
         Me.TextBox4.Text = "Function Generator"
         Me.TextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'Button_Constant
-        '
-        Me.Button_Constant.Location = New System.Drawing.Point(39, 103)
-        Me.Button_Constant.Name = "Button_Constant"
-        Me.Button_Constant.Size = New System.Drawing.Size(81, 25)
-        Me.Button_Constant.TabIndex = 32
-        Me.Button_Constant.Text = "Constant"
-        Me.Button_Constant.UseVisualStyleBackColor = True
-        '
         'FGOn_Button
         '
+        Me.FGOn_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.FGOn_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.FGOn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.FGOn_Button.Location = New System.Drawing.Point(115, 296)
         Me.FGOn_Button.Name = "FGOn_Button"
         Me.FGOn_Button.Size = New System.Drawing.Size(55, 24)
@@ -332,13 +293,77 @@ Partial Class TestMode
         '
         'FGOff_Button
         '
-        Me.FGOff_Button.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.FGOff_Button.BackColor = System.Drawing.SystemColors.Control
+        Me.FGOff_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.FGOff_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.FGOff_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.FGOff_Button.Location = New System.Drawing.Point(39, 296)
         Me.FGOff_Button.Name = "FGOff_Button"
         Me.FGOff_Button.Size = New System.Drawing.Size(47, 24)
         Me.FGOff_Button.TabIndex = 36
         Me.FGOff_Button.Text = "OFF"
         Me.FGOff_Button.UseVisualStyleBackColor = False
+        '
+        'Button_Constant
+        '
+        Me.Button_Constant.BackgroundImage = CType(resources.GetObject("Button_Constant.BackgroundImage"), System.Drawing.Image)
+        Me.Button_Constant.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button_Constant.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Button_Constant.Location = New System.Drawing.Point(39, 103)
+        Me.Button_Constant.Name = "Button_Constant"
+        Me.Button_Constant.Size = New System.Drawing.Size(81, 25)
+        Me.Button_Constant.TabIndex = 32
+        Me.Button_Constant.Text = "Constant"
+        Me.Button_Constant.UseVisualStyleBackColor = True
+        '
+        'Button_Triangle
+        '
+        Me.Button_Triangle.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.Button_Triangle.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.Button_Triangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button_Triangle.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Button_Triangle.Location = New System.Drawing.Point(39, 168)
+        Me.Button_Triangle.Name = "Button_Triangle"
+        Me.Button_Triangle.Size = New System.Drawing.Size(81, 25)
+        Me.Button_Triangle.TabIndex = 18
+        Me.Button_Triangle.Text = "Triangle"
+        Me.Button_Triangle.UseVisualStyleBackColor = False
+        '
+        'Button_Sine
+        '
+        Me.Button_Sine.BackgroundImage = CType(resources.GetObject("Button_Sine.BackgroundImage"), System.Drawing.Image)
+        Me.Button_Sine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button_Sine.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Button_Sine.Location = New System.Drawing.Point(39, 230)
+        Me.Button_Sine.Name = "Button_Sine"
+        Me.Button_Sine.Size = New System.Drawing.Size(81, 24)
+        Me.Button_Sine.TabIndex = 6
+        Me.Button_Sine.Text = "Sine"
+        Me.Button_Sine.UseVisualStyleBackColor = True
+        '
+        'Button_Ramp
+        '
+        Me.Button_Ramp.BackgroundImage = CType(resources.GetObject("Button_Ramp.BackgroundImage"), System.Drawing.Image)
+        Me.Button_Ramp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button_Ramp.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Button_Ramp.Location = New System.Drawing.Point(39, 199)
+        Me.Button_Ramp.Name = "Button_Ramp"
+        Me.Button_Ramp.Size = New System.Drawing.Size(81, 25)
+        Me.Button_Ramp.TabIndex = 12
+        Me.Button_Ramp.Text = "Ramp"
+        Me.Button_Ramp.UseVisualStyleBackColor = True
+        '
+        'Button_Square
+        '
+        Me.Button_Square.BackgroundImage = CType(resources.GetObject("Button_Square.BackgroundImage"), System.Drawing.Image)
+        Me.Button_Square.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button_Square.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Button_Square.Location = New System.Drawing.Point(39, 137)
+        Me.Button_Square.Name = "Button_Square"
+        Me.Button_Square.Size = New System.Drawing.Size(81, 25)
+        Me.Button_Square.TabIndex = 6
+        Me.Button_Square.Text = "Square"
+        Me.Button_Square.UseVisualStyleBackColor = True
         '
         'TestMode
         '

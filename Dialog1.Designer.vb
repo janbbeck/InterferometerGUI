@@ -22,6 +22,7 @@ Partial Class Dialog1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Dialog1))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -63,6 +64,9 @@ Partial Class Dialog1
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.OK_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.OK_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.OK_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -83,6 +87,9 @@ Partial Class Dialog1
         Me.Button2x.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Button2x.AccessibleName = "Send AT Command Button"
         Me.Button2x.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.Button2x.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.Button2x.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button2x.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button2x.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Button2x.Location = New System.Drawing.Point(133, 49)
         Me.Button2x.Name = "Button2x"
@@ -95,6 +102,9 @@ Partial Class Dialog1
         '
         Me.Button4x.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Button4x.AccessibleName = "Send AT Command Button"
+        Me.Button4x.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Button4x.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button4x.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button4x.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Button4x.Location = New System.Drawing.Point(245, 49)
         Me.Button4x.Name = "Button4x"
@@ -107,6 +117,9 @@ Partial Class Dialog1
         Me.Button1x.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Button1x.AccessibleName = "Send AT Command Button"
         Me.Button1x.BackColor = System.Drawing.SystemColors.Control
+        Me.Button1x.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Button1x.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button1x.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button1x.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Button1x.Location = New System.Drawing.Point(21, 49)
         Me.Button1x.Name = "Button1x"
@@ -128,6 +141,9 @@ Partial Class Dialog1
         '
         Me.Buttonnm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonnm.AccessibleName = "Send AT Command Button"
+        Me.Buttonnm.BackgroundImage = CType(resources.GetObject("Buttonnm.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonnm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttonnm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonnm.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttonnm.Location = New System.Drawing.Point(21, 114)
         Me.Buttonnm.Name = "Buttonnm"
@@ -139,6 +155,9 @@ Partial Class Dialog1
         '
         Me.Buttonum.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonum.AccessibleName = "Send AT Command Button"
+        Me.Buttonum.BackgroundImage = CType(resources.GetObject("Buttonum.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonum.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttonum.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonum.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttonum.Location = New System.Drawing.Point(77, 114)
         Me.Buttonum.Name = "Buttonum"
@@ -151,6 +170,9 @@ Partial Class Dialog1
         Me.Buttonmm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonmm.AccessibleName = "Send AT Command Button"
         Me.Buttonmm.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.Buttonmm.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.Buttonmm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttonmm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonmm.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttonmm.Location = New System.Drawing.Point(133, 114)
         Me.Buttonmm.Name = "Buttonmm"
@@ -163,6 +185,9 @@ Partial Class Dialog1
         '
         Me.Buttoncm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttoncm.AccessibleName = "Send AT Command Button"
+        Me.Buttoncm.BackgroundImage = CType(resources.GetObject("Buttoncm.BackgroundImage"), System.Drawing.Image)
+        Me.Buttoncm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttoncm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttoncm.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttoncm.Location = New System.Drawing.Point(189, 114)
         Me.Buttoncm.Name = "Buttoncm"
@@ -174,6 +199,9 @@ Partial Class Dialog1
         '
         Me.Buttonm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonm.AccessibleName = "Send AT Command Button"
+        Me.Buttonm.BackgroundImage = CType(resources.GetObject("Buttonm.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttonm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonm.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttonm.Location = New System.Drawing.Point(245, 114)
         Me.Buttonm.Name = "Buttonm"
@@ -185,6 +213,9 @@ Partial Class Dialog1
         '
         Me.Buttonin.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonin.AccessibleName = "Send AT Command Button"
+        Me.Buttonin.BackgroundImage = CType(resources.GetObject("Buttonin.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttonin.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonin.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttonin.Location = New System.Drawing.Point(301, 114)
         Me.Buttonin.Name = "Buttonin"
@@ -196,6 +227,9 @@ Partial Class Dialog1
         '
         Me.Buttonft.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonft.AccessibleName = "Send AT Command Button"
+        Me.Buttonft.BackgroundImage = CType(resources.GetObject("Buttonft.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttonft.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonft.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttonft.Location = New System.Drawing.Point(357, 114)
         Me.Buttonft.Name = "Buttonft"
@@ -208,6 +242,9 @@ Partial Class Dialog1
         Me.Buttonarcsec.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonarcsec.AccessibleName = "Send AT Command Button"
         Me.Buttonarcsec.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.Buttonarcsec.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttonarcsec.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttonarcsec.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonarcsec.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttonarcsec.Location = New System.Drawing.Point(21, 182)
         Me.Buttonarcsec.Name = "Buttonarcsec"
@@ -229,6 +266,9 @@ Partial Class Dialog1
         '
         Me.Buttonarcmin.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonarcmin.AccessibleName = "Send AT Command Button"
+        Me.Buttonarcmin.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.Buttonarcmin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttonarcmin.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonarcmin.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttonarcmin.Location = New System.Drawing.Point(77, 182)
         Me.Buttonarcmin.Name = "Buttonarcmin"
@@ -240,6 +280,9 @@ Partial Class Dialog1
         '
         Me.Buttondegree.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttondegree.AccessibleName = "Send AT Command Button"
+        Me.Buttondegree.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttondegree.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Buttondegree.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttondegree.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Buttondegree.Location = New System.Drawing.Point(133, 182)
         Me.Buttondegree.Name = "Buttondegree"
@@ -260,6 +303,9 @@ Partial Class Dialog1
         '
         Me.Test_Button_On.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Test_Button_On.AccessibleName = "Send AT Command Button"
+        Me.Test_Button_On.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Test_Button_On.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Test_Button_On.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Test_Button_On.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Test_Button_On.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Test_Button_On.Location = New System.Drawing.Point(357, 182)
@@ -273,6 +319,9 @@ Partial Class Dialog1
         Me.Test_Button_Off.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Test_Button_Off.AccessibleName = "Send AT Command Button"
         Me.Test_Button_Off.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.Test_Button_Off.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.Test_Button_Off.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Test_Button_Off.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Test_Button_Off.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Test_Button_Off.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Test_Button_Off.Location = New System.Drawing.Point(301, 182)
