@@ -71,6 +71,7 @@ Public Class MainForm
     Dim currentREFFrequency As Double = 0
     Dim currentMEASFrequency As Double = 0
     Dim previousDIFFFrequency As Double = 0
+    Dim PreviousSerialNumber As UInt64 = 0
 
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
@@ -245,22 +246,26 @@ Public Class MainForm
 
                         currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2 - CurrentValueCorrection
-
+                        PreviousSerialNumber = Convert.ToUInt64(values(9))
                         PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
                         CurrentREFCount = Convert.ToUInt64(values(1))
-                        previousREFFrequency = REFFrequency
-                        currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
-                        If currentREFFrequency > (1.1 * previousREFFrequency) Then currentREFFrequency = previousREFFrequency
-                        REFFrequency = (currentREFFrequency / 60) + (59 / 60 * previousREFFrequency) ' Moving average to get finer resolution
-                        REFFrequency = currentREFFrequency
-
                         PreviousMEASCount = CurrentMEASCount
                         CurrentMEASCount = Convert.ToUInt64(values(0))
-                        previousMEASFrequency = MEASFrequency
-                        currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
-                        If currentMEASFrequency > (1.1 * previousMEASFrequency) Then currentMEASFrequency = previousMEASFrequency
-                        MEASFrequency = (currentMEASFrequency / 60) + (59 / 60 * previousMEASFrequency)
-                        MEASFrequency = currentMEASFrequency
+                        If (Convert.ToUInt64(values(9)) - PreviousSerialNumber) > 1 Then
+                            Console.Write((Convert.ToUInt64(values(9)) - PreviousSerialNumber).ToString + " sample(s) number skipped" + vbCrLf)
+                        Else
+                            previousREFFrequency = REFFrequency
+                            currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
+                            'If currentREFFrequency > (1.1 * previousREFFrequency) Then currentREFFrequency = previousREFFrequency
+                            REFFrequency = (currentREFFrequency / 60) + (59 / 60 * previousREFFrequency) ' Moving average to get finer resolution
+                            REFFrequency = currentREFFrequency
+                            previousMEASFrequency = MEASFrequency
+                            currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
+                            'If currentMEASFrequency > (1.1 * previousMEASFrequency) Then currentMEASFrequency = previousMEASFrequency
+                            MEASFrequency = (currentMEASFrequency / 60) + (59 / 60 * previousMEASFrequency)
+                            MEASFrequency = currentMEASFrequency
+                        End If
+
 
                         If SuspendFlag = 0 Then
 
@@ -708,59 +713,5 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub UnitLabel_Click(sender As Object, e As EventArgs) Handles UnitLabel.Click
-
-    End Sub
-
-    Private Sub DIFF_Click(sender As Object, e As EventArgs) Handles DIFF.Click
-
-    End Sub
-
-    Private Sub AngleLabel_Click(sender As Object, e As EventArgs) Handles AngleLabel.Click
-
-    End Sub
-
-    Private Sub TimeLabel_Click(sender As Object, e As EventArgs) Handles TimeLabel.Click
-
-    End Sub
-
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-
-    End Sub
-
-    Private Sub REFLabel_Click(sender As Object, e As EventArgs) Handles REFLabel.Click
-
-    End Sub
-
-    Private Sub MEASLabel_Click(sender As Object, e As EventArgs) Handles MEASLabel.Click
-
-    End Sub
-
-    Private Sub REF_Click(sender As Object, e As EventArgs) Handles REF.Click
-
-    End Sub
-
-    Private Sub MEAS_Click(sender As Object, e As EventArgs) Handles MEAS.Click
-
-    End Sub
-
-    Private Sub REFMHzLabel_Click(sender As Object, e As EventArgs) Handles REFMHzLabel.Click
-
-    End Sub
-
-    Private Sub MEASMHzLabel_Click(sender As Object, e As EventArgs) Handles MEASMHzLabel.Click
-
-    End Sub
-
-    Private Sub DIFFLabel_Click(sender As Object, e As EventArgs) Handles DIFFLabel.Click
-
-    End Sub
-
-    Private Sub DIFFKHzLabel_Click(sender As Object, e As EventArgs) Handles DIFFKHzLabel.Click
-
-    End Sub
-
-    Private Sub Chart1_Click(sender As Object, e As EventArgs) Handles Chart1.Click
-
-    End Sub
+    
 End Class
