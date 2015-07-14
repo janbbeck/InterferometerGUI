@@ -63,16 +63,17 @@ Public Class MainForm
     Dim SuspenREFCount As UInt64 = 0
     Dim SuspendMEASCount As UInt64 = 0
     Dim SuspendCurrentValue As Double = 0
-    Dim REFFrequency As Double = 10
-    Dim MEASFrequency As Double = 10
+    Dim REFFrequency As Double = 0
+    Dim MEASFrequency As Double = 0
     Dim DIFFFrequency As Double = 0
-    Dim previousREFFrequency As Double = 10
-    Dim previousMEASFrequency As Double = 10
+    Dim previousREFFrequency As Double = 0
+    Dim previousMEASFrequency As Double = 0
     Dim currentREFFrequency As Double = 0
     Dim currentMEASFrequency As Double = 0
     Dim previousDIFFFrequency As Double = 0
-    Dim PreviousSerialNumber As UInt64 = 0
-
+    Dim currentDIFFFrequency As Double = 0
+    Dim previousserialnumber As UInt64 = 100000
+    Dim serialnumberdifference As UInt64 = 1
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -82,7 +83,7 @@ Public Class MainForm
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
         System.Windows.Forms.Application.EnableVisualStyles()
         DisplacementButton_Click(sender, e)
-        Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+        Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         Chart1.Series.Clear()
         Chart1.ChartAreas(0).AxisX.LabelStyle.Enabled = False
         Chart1.ChartAreas(0).AxisX.MajorTickMark.Enabled = False
@@ -226,7 +227,7 @@ Public Class MainForm
         If Me.Chart1.InvokeRequired Then    'what is good for chart1 is also good for chart2
             Dim d As New SetTextCallback(AddressOf SetText)
             If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
-                If FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then  ' are we doing dft?
+                If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
                     If (chartcounter Mod 2) = 0 Then    ' calculate every 2 values
                         DFT()
                     End If
@@ -246,38 +247,46 @@ Public Class MainForm
 
                         currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2 - CurrentValueCorrection
-                        PreviousSerialNumber = Convert.ToUInt64(values(9))
+
                         PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
                         CurrentREFCount = Convert.ToUInt64(values(1))
                         PreviousMEASCount = CurrentMEASCount
                         CurrentMEASCount = Convert.ToUInt64(values(0))
-                        If (Convert.ToUInt64(values(9)) - PreviousSerialNumber) > 1 Then
-                            Console.Write((Convert.ToUInt64(values(9)) - PreviousSerialNumber).ToString + " sample(s) number skipped" + vbCrLf)
+
+                        serialnumberdifference = Convert.ToUInt64(values(9)) - previousserialnumber
+
+                        If serialnumberdifference > 1 Or serialnumberdifference = 0 Then
+                            Console.Write((Convert.ToUInt64(values(9)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
+                            previousserialnumber = Convert.ToUInt64(values(9))
+
                         Else
                             previousREFFrequency = REFFrequency
-                            currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
-                            'If currentREFFrequency > (1.1 * previousREFFrequency) Then currentREFFrequency = previousREFFrequency
+                            currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638 ' / serialnumberdifference
                             REFFrequency = (currentREFFrequency / 60) + (59 / 60 * previousREFFrequency) ' Moving average to get finer resolution
-                            REFFrequency = currentREFFrequency
+
                             previousMEASFrequency = MEASFrequency
-                            currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
-                            'If currentMEASFrequency > (1.1 * previousMEASFrequency) Then currentMEASFrequency = previousMEASFrequency
+                            currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638 ' / serialnumberdifference
                             MEASFrequency = (currentMEASFrequency / 60) + (59 / 60 * previousMEASFrequency)
-                            MEASFrequency = currentMEASFrequency
-                        End If
 
+                            previousDIFFFrequency = DIFFFrequency
+                            currentDIFFFrequency = REFFrequency - MEASFrequency
+                            DIFFFrequency = (currentDIFFFrequency / 60) + (59 / 60 * previousDIFFFrequency)
 
-                        If SuspendFlag = 0 Then
+                            If SuspendFlag = 0 Then
 
-                            If ErrorFlag = 0 Then
-                                If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => Head Error
-                                    ErrorFlag = 1
-                                End If
+                                If ErrorFlag = 0 Then
+                                    If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => Head Error
+                                        ErrorFlag = 1
+                                    End If
 
-                                If CurrentMEASCount - PreviousMEASCount < 100 Then  ' MEAS is dead => Path Error
-                                    ErrorFlag = ErrorFlag Or 2 ' Both => Loss of Signals (LOS) Error
+                                    If CurrentMEASCount - PreviousMEASCount < 100 Then  ' MEAS is dead => Path Error
+                                        ErrorFlag = ErrorFlag Or 2 ' Both => Loss of Signals (LOS) Error
+                                    End If
+
                                 End If
                             End If
+
+                            previousserialnumber = Convert.ToUInt64(values(9))
 
                             If needsInitialZero = 1 Then
                                 zeroAdjustment = currentValue
@@ -286,14 +295,14 @@ Public Class MainForm
 
                             velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
 
-                            If VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' velocity mode, no averaging
+                            If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode, no averaging
                                 average = velocityValue / multiplier
                             Else
                                 averagingFromPrevious = (0 + TrackBar1.Value / 100) * average ' nm
                                 averagingFromCurrent = (1.0 - TrackBar1.Value / 100) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
                                 average = averagingFromPrevious + averagingFromCurrent
                             End If
-                            If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
+                            If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
                                 displayValue = Math.Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
                             Else
                                 displayValue = average * unitCorrectionFactor
@@ -313,7 +322,7 @@ Public Class MainForm
                 'Chart1.ResetAutoValues()
                 If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
                     Dim counter As Integer
-                    If Color.FromKnownColor(KnownColor.ActiveCaption) = FrequencyButton.BackColor Then    ' only have about 500 pixels to show 1000 points
+                    If Color.FromKnownColor(KnownColor.ActiveCaptionText) = FrequencyButton.ForeColor Then    ' only have about 500 pixels to show 1000 points
                         fftSeries.Points.Clear()
                         For counter = 0 To 255
                             fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
@@ -352,61 +361,61 @@ Public Class MainForm
     Private Sub myMenuItemOptions_Click(sender As Object, e As EventArgs)
         ' pop up configuration window
 
-        Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Button2x.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Button4x.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         If multiplier.Equals(1) Then
-            Dialog1.Button1x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf multiplier.Equals(2) Then
-            Dialog1.Button2x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Button2x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Else
-            Dialog1.Button4x.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
 
-        Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         If unitCorrectionFactor = 1.0 Then
-            Dialog1.Buttonnm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         ElseIf unitCorrectionFactor = 0.001 Then
-            Dialog1.Buttonum.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         ElseIf unitCorrectionFactor = 0.000001 Then
-            Dialog1.Buttonmm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         ElseIf unitCorrectionFactor = 0.0000001 Then
-            Dialog1.Buttoncm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         ElseIf unitCorrectionFactor = 0.000000001 Then
-            Dialog1.Buttonm.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         ElseIf unitCorrectionFactor = 0.00000003937 Then
-            Dialog1.Buttonin.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
-            Dialog1.Buttonft.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         End If
 
-        Dialog1.Buttonarcsec.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttonarcmin.BackColor = Color.FromKnownColor(KnownColor.Control)
-        Dialog1.Buttondegree.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Dialog1.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         If angleCorrectionFactor = 3600.0 Then
-            Dialog1.Buttonarcsec.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         ElseIf angleCorrectionFactor = 60.0 Then
-            Dialog1.Buttonarcmin.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         ElseIf angleCorrectionFactor = 1.0 Then
-            Dialog1.Buttondegree.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
         End If
 
-        Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        Dialog1.Test_Button_On.BackColor = Color.FromKnownColor(KnownColor.Control)
+        Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+        Dialog1.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         If TestmodeFlag = 0 Then
-            Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        Else : Dialog1.Test_Button_Off.BackColor = Color.FromKnownColor(KnownColor.Control)
-            Dialog1.Test_Button_On.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
+            Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+        Else : Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            Dialog1.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
 
         Dialog1.ShowDialog()
@@ -464,7 +473,7 @@ Public Class MainForm
 
     Private Sub DisplacementButton_Click(sender As Object, e As EventArgs) Handles DisplacementButton.Click
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -484,16 +493,10 @@ Public Class MainForm
     End Sub
 
     Private Sub VelocityButton_Click(sender As Object, e As EventArgs) Handles VelocityButton.Click
-        'DisplacementButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        'VelocityButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption)
-        'AngleButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        'StraightnessLongButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        'StraightnessShortButton.BackColor = Color.FromKnownColor(KnownColor.Control)
-        'FrequencyButton.BackColor = Color.FromKnownColor(KnownColor.Control)
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -515,7 +518,7 @@ Public Class MainForm
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -538,7 +541,7 @@ Public Class MainForm
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -553,13 +556,13 @@ Public Class MainForm
 
     Private Sub StraightnessShortButton_Click(sender As Object, e As EventArgs) Handles StraightnessShortButton.Click
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -584,7 +587,7 @@ Public Class MainForm
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Chart1.Series.Clear()
         Chart1.Series.Add(fftSeries)
         UnitLabel.Visible = True
@@ -617,22 +620,11 @@ Public Class MainForm
         End If
     End Sub
 
-
-    ' Private Sub GraphControl_Click(sender As Object, e As EventArgs) Handles GraphControl.Click
-    '     If GraphControl.Text.Equals("Disable Graph") Then
-    '         GraphControl.Text = "Enable Graph"
-    '         Chart1.Hide()
-    '     Else
-    '         GraphControl.Text = "Disable Graph"
-    '         Chart1.Show()
-    '     End If
-    ' End Sub
-
     Private Sub Suspend_Click(sender As Object, e As EventArgs) Handles Suspend.Click
         If Suspend.Text.Equals("Suspend") Then  ' Enter Suspend mode
             Suspend.Text = "Resume"
             Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.YelllowButton11
-            Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            Suspend.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
             SuspendCurrentValue = currentValue
             SuspendFlag = 1
 
@@ -655,21 +647,21 @@ Public Class MainForm
 
         MEAS.Text = MEASFrequency.ToString("0.000")
         REF.Text = REFFrequency.ToString("0.000")
-        DIFF.Text = ((REFFrequency - MEASFrequency) * 1000).ToString("#,##0.00")
+        DIFF.Text = (DIFFFrequency * 1000).ToString("#,##0.00")
 
         If SuspendFlag = 1 Then
-            ' ValueDisplay.Text = "Suspend   "
-            'ElseIf ErrorFlag = 3 Then
-            '    ValueDisplay.Text = "LOS Error   "
-            'ElseIf ErrorFlag = 1 Then
-            '    ValueDisplay.Text = "REF Error   "
-            'ElseIf ErrorFlag = 2 Then
-            '    ValueDisplay.Text = "MEAS Error   "
+            ValueDisplay.Text = "Suspend   "
+        ElseIf ErrorFlag = 3 Then
+            ValueDisplay.Text = "LOS Error   "
+        ElseIf ErrorFlag = 1 Then
+            ValueDisplay.Text = "REF Error   "
+        ElseIf ErrorFlag = 2 Then
+            ValueDisplay.Text = "MEAS Error   "
 
         Else
 
 
-            If AngleButton.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption) Then ' angle mode
+            If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext) Then ' angle mode
                 If angleCorrectionFactor = 3600.0 Then
                     ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
                 ElseIf angleCorrectionFactor = 60.0 Then
@@ -713,5 +705,4 @@ Public Class MainForm
         End If
     End Sub
 
-    
 End Class

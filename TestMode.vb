@@ -13,7 +13,7 @@ Public Class TestMode
 
     Private Sub Button_Constant_Click(sender As Object, e As EventArgs) Handles Button_Constant.Click
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -29,7 +29,7 @@ Public Class TestMode
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -45,7 +45,7 @@ Public Class TestMode
         Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -61,7 +61,7 @@ Public Class TestMode
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
         My.Settings.Save()
@@ -77,13 +77,13 @@ Public Class TestMode
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         My.Settings.Save()
     End Sub
 
     Private Sub FGOff_Button_Click(sender As Object, e As EventArgs) Handles FGOff_Button.Click
         FGOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        FGOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        FGOff_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         FGOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FGOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
         My.Settings.Save()
@@ -93,7 +93,7 @@ Public Class TestMode
         FGOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FGOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FGOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        FGOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        FGOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         My.Settings.Save()
     End Sub
 

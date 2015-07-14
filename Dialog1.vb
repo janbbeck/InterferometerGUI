@@ -10,7 +10,7 @@ Public Class Dialog1
     Private Sub Button1x_Click_1(sender As Object, e As EventArgs) Handles Button1x.Click
 
         Button1x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button4x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -30,7 +30,7 @@ Public Class Dialog1
         Button1x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button2x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button4x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.multiplier = 2
@@ -50,7 +50,7 @@ Public Class Dialog1
         Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button4x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.multiplier = 4
         My.Settings.Multiplier = 4
         My.Settings.Save()
@@ -64,7 +64,7 @@ Public Class Dialog1
 
     Private Sub Buttonnm_Click(sender As Object, e As EventArgs) Handles Buttonnm.Click
         Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -93,7 +93,7 @@ Public Class Dialog1
         Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Buttonum.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -122,7 +122,7 @@ Public Class Dialog1
         Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -153,7 +153,7 @@ Public Class Dialog1
         Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -180,7 +180,7 @@ Public Class Dialog1
         Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -209,7 +209,7 @@ Public Class Dialog1
         Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Buttonin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "in"
@@ -238,7 +238,7 @@ Public Class Dialog1
         Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.UnitLabel.Text = "ft"
         MainForm.unitCorrectionFactor = 0.0000000032808
         My.Settings.UnitCorrectionFactor = 0.0000000032808
@@ -253,7 +253,7 @@ Public Class Dialog1
 
     Private Sub Buttonarcsec_Click(sender As Object, e As EventArgs) Handles Buttonarcsec.Click
         Buttonarcsec.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Buttonarcmin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -274,8 +274,9 @@ Public Class Dialog1
         Buttonarcsec.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonarcmin.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.AngleLabel.Text = "arcmin"
         MainForm.angleCorrectionFactor = 60.0
         My.Settings.AngleCorrectionFactor = 60.0
@@ -294,6 +295,7 @@ Public Class Dialog1
         Buttonarcmin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.AngleLabel.Text = "degree"
         MainForm.angleCorrectionFactor = 1.0
         My.Settings.AngleCorrectionFactor = 1.0

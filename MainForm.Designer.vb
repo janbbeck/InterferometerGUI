@@ -286,6 +286,7 @@ Partial Public Class MainForm
         Me.FrequencyButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.FrequencyButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.FrequencyButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.FrequencyButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.FrequencyButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.FrequencyButton.Location = New System.Drawing.Point(732, 183)
         Me.FrequencyButton.Name = "FrequencyButton"
@@ -343,7 +344,7 @@ Partial Public Class MainForm
         Me.DisplacementButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
         Me.DisplacementButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.DisplacementButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.DisplacementButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.DisplacementButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.DisplacementButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.DisplacementButton.Location = New System.Drawing.Point(35, 183)
         Me.DisplacementButton.Name = "DisplacementButton"
