@@ -9,6 +9,8 @@ Imports System.IO.Ports
 Imports System.ComponentModel
 
 Public Class MainForm
+    Dim file As System.IO.StreamWriter
+
     Public positionSeries As New Series
     Public velocitySeries As New Series
     Public fftSeries As New Series
@@ -78,12 +80,13 @@ Public Class MainForm
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
         'End
+        file.Close()
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
         System.Windows.Forms.Application.EnableVisualStyles()
         DisplacementButton_Click(sender, e)
-        Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+        Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Chart1.Series.Clear()
         Chart1.ChartAreas(0).AxisX.LabelStyle.Enabled = False
         Chart1.ChartAreas(0).AxisX.MajorTickMark.Enabled = False
@@ -164,6 +167,8 @@ Public Class MainForm
         TrackBar1.Value = CInt(averagingValue)
         AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
         Timer1.Start()
+
+        file = My.Computer.FileSystem.OpenTextFileWriter("data.txt", True)
     End Sub
 
 
@@ -199,12 +204,13 @@ Public Class MainForm
     Private Sub DataReceivedHandler(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
         Try
             If SerialPort1.IsOpen Then
-                spDrLine = spDrLine & SerialPort1.ReadExisting() 'important
-                If InStr(1, spDrLine, vbCr) > 0 _
-                  Or InStr(1, spDrLine, vbLf) > 0 Then
-                    spBuffer = spDrLine
-                    spDrLine = ""
-                    'Me.Invoke(New EventHandler(AddressOf doProcess)) 'important
+                Dim incomingData As String = SerialPort1.ReadExisting()
+                'file.Write(incomingData)
+                spDrLine = spDrLine & incomingData 'important
+                If InStr(1, spDrLine, vbLf) > 0 Then
+                    spBuffer = spDrLine.Substring(0, spDrLine.LastIndexOf(vbLf)) ' pull in the buffer up to the last line feed
+                    spDrLine = spDrLine.Substring(spDrLine.LastIndexOf(vbLf) + 1) 'stuff the rest back into the incoming buffer
+                    'file.WriteLine(spDrLine)
                     'process spBuffer
                     Try
                         Me.SetText(spBuffer)
@@ -247,33 +253,25 @@ Public Class MainForm
 
                         currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2 - CurrentValueCorrection
-
                         PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
                         CurrentREFCount = Convert.ToUInt64(values(1))
                         PreviousMEASCount = CurrentMEASCount
                         CurrentMEASCount = Convert.ToUInt64(values(0))
-
                         serialnumberdifference = Convert.ToUInt64(values(9)) - previousserialnumber
-
                         If serialnumberdifference > 1 Or serialnumberdifference = 0 Then
                             Console.Write((Convert.ToUInt64(values(9)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
                             previousserialnumber = Convert.ToUInt64(values(9))
-
                         Else
                             previousREFFrequency = REFFrequency
                             currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638 ' / serialnumberdifference
                             REFFrequency = (currentREFFrequency / 60) + (59 / 60 * previousREFFrequency) ' Moving average to get finer resolution
-
                             previousMEASFrequency = MEASFrequency
                             currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638 ' / serialnumberdifference
                             MEASFrequency = (currentMEASFrequency / 60) + (59 / 60 * previousMEASFrequency)
-
                             previousDIFFFrequency = DIFFFrequency
                             currentDIFFFrequency = REFFrequency - MEASFrequency
                             DIFFFrequency = (currentDIFFFrequency / 60) + (59 / 60 * previousDIFFFrequency)
-
                             If SuspendFlag = 0 Then
-
                                 If ErrorFlag = 0 Then
                                     If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => Head Error
                                         ErrorFlag = 1
@@ -285,16 +283,12 @@ Public Class MainForm
 
                                 End If
                             End If
-
                             previousserialnumber = Convert.ToUInt64(values(9))
-
                             If needsInitialZero = 1 Then
                                 zeroAdjustment = currentValue
                                 needsInitialZero = 0 ' make sure to zero out the reference system only once
                             End If
-
                             velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
-
                             If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode, no averaging
                                 average = velocityValue / multiplier
                             Else
@@ -307,7 +301,6 @@ Public Class MainForm
                             Else
                                 displayValue = average * unitCorrectionFactor
                             End If
-
                             If GraphControl.Text.Equals("Disable Graph") Then
                                 displacementQueuex.Enqueue(chartcounter)
                                 displacementQueuey.Enqueue(straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
@@ -382,19 +375,19 @@ Public Class MainForm
         Dialog1.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         If unitCorrectionFactor = 1.0 Then
-            Dialog1.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.001 Then
-            Dialog1.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.000001 Then
-            Dialog1.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.0000001 Then
-            Dialog1.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.000000001 Then
-            Dialog1.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.00000003937 Then
-            Dialog1.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
-            Dialog1.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
 
         Dialog1.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -402,18 +395,18 @@ Public Class MainForm
         Dialog1.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         If angleCorrectionFactor = 3600.0 Then
-            Dialog1.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf angleCorrectionFactor = 60.0 Then
-            Dialog1.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf angleCorrectionFactor = 1.0 Then
-            Dialog1.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
 
-        Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+        Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Dialog1.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         If TestmodeFlag = 0 Then
-            Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext)
+            Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Else : Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
             Dialog1.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
@@ -661,7 +654,7 @@ Public Class MainForm
         Else
 
 
-            If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.activecaptiontext) Then ' angle mode
+            If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
                 If angleCorrectionFactor = 3600.0 Then
                     ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
                 ElseIf angleCorrectionFactor = 60.0 Then
