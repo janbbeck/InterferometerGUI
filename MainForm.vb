@@ -244,13 +244,12 @@ Public Class MainForm
             Try
                 ' first split data into sets
                 Dim k As Integer
-                Dim sets() As String = spBuffer.Split(vbCrLf.ToCharArray)
+                Dim sets() As String = spBuffer.Split(vbLf.ToCharArray)
                 For k = 0 To sets.Length - 1
                     Dim values() As String = sets(k).Split(" ".ToCharArray)
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
                         'Console.Write(values(3) + vbCrLf)
-
                         currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2 - CurrentValueCorrection
                         PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
@@ -258,9 +257,10 @@ Public Class MainForm
                         PreviousMEASCount = CurrentMEASCount
                         CurrentMEASCount = Convert.ToUInt64(values(0))
                         serialnumberdifference = Convert.ToUInt64(values(9)) - previousserialnumber
-                        If serialnumberdifference > 1 Or serialnumberdifference = 0 Then
+                        If serialnumberdifference > 1 Then
                             Console.Write((Convert.ToUInt64(values(9)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
-                            previousserialnumber = Convert.ToUInt64(values(9))
+                        ElseIf 0 = serialnumberdifference Then
+                            Console.Write(" sample duplicate" + vbCrLf)
                         Else
                             previousREFFrequency = REFFrequency
                             currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638 ' / serialnumberdifference
@@ -276,14 +276,12 @@ Public Class MainForm
                                     If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => Head Error
                                         ErrorFlag = 1
                                     End If
-
                                     If CurrentMEASCount - PreviousMEASCount < 100 Then  ' MEAS is dead => Path Error
                                         ErrorFlag = ErrorFlag Or 2 ' Both => Loss of Signals (LOS) Error
                                     End If
 
                                 End If
                             End If
-                            previousserialnumber = Convert.ToUInt64(values(9))
                             If needsInitialZero = 1 Then
                                 zeroAdjustment = currentValue
                                 needsInitialZero = 0 ' make sure to zero out the reference system only once
@@ -309,6 +307,9 @@ Public Class MainForm
                                 chartcounter = CULng(chartcounter + 1)
                             End If
                         End If
+                        previousserialnumber = Convert.ToUInt64(values(9))
+                    Else 'values.length incorrect
+                        Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
                     End If
 
                 Next
