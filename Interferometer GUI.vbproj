@@ -173,6 +173,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="interferometer.ico" />
+    <Content Include="Resources\ActiveBlue1.gif" />
+    <Content Include="Resources\ActiveBlue2.gif" />
+    <Content Include="Resources\ActiveBlue3.gif" />
+    <Content Include="Resources\ActiveBlue4.gif" />
+    <Content Include="Resources\ActiveButton.bmp" />
+    <Content Include="Resources\ActiveButton1.bmp" />
+    <Content Include="Resources\ActiveButton2.bmp" />
+    <Content Include="Resources\ActiveButton2.gif" />
+    <Content Include="Resources\ActiveButton3.bmp" />
+    <Content Include="Resources\ActiveButton4.bmp" />
+    <Content Include="Resources\ActiveButton6.gif" />
+    <Content Include="Resources\InActiveButton.bmp" />
+    <Content Include="Resources\InActiveButton1.bmp" />
+    <Content Include="Resources\InActiveButton1.gif" />
+    <Content Include="Resources\InActiveButton2.bmp" />
+    <Content Include="Resources\InActiveButton2.gif" />
+    <Content Include="Resources\InActiveButton3.gif" />
+    <Content Include="Resources\InActiveButton4.bmp" />
+    <Content Include="Resources\InActiveButton5.gif" />
+    <Content Include="Resources\interferometer.ico" />
+    <Content Include="Resources\YelllowButton1.bmp" />
+    <Content Include="Resources\YelllowButton1.gif" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.Targets" />
 </Project>
