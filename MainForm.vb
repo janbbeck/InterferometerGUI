@@ -74,8 +74,19 @@ Public Class MainForm
     Dim currentMEASFrequency As Double = 0
     Dim previousDIFFFrequency As Double = 0
     Dim currentDIFFFrequency As Double = 0
-    Dim previousserialnumber As UInt64 = 100000
-    Dim serialnumberdifference As UInt64 = 1
+    Dim previousserialnumber As UInt64 = 0
+    Dim serialnumberdifference As UInt64 = 0
+    Public Temperature As Double = 20
+    Public Pressure As Double = 1000
+    Public Humidity As Double = 50
+    Public TemperatureC As Double = 20
+    Public PressureATM As Double = 1000
+    Public HumidityRel As Double = 50
+    Public TCorrection As Double = 1
+    Public PCorrection As Double = 1
+    Public HCorrection As Double = 1
+    Public Wavelength As Double = 632.991372
+    Public ECFactor As Double = 1
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -250,8 +261,8 @@ Public Class MainForm
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
                         'Console.Write(values(3) + vbCrLf)
-                        currentValue = Convert.ToDouble(values(3)) * 632.816759 / 2 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
-                        previousValue = Convert.ToDouble(values(6)) * 632.816759 / 2 - CurrentValueCorrection
+                        currentValue = Convert.ToDouble(values(3)) * Wavelength / 2 * ECFactor - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
+                        previousValue = Convert.ToDouble(values(6)) * Wavelength / 2 * ECFactor - CurrentValueCorrection
                         PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
                         CurrentREFCount = Convert.ToUInt64(values(1))
                         PreviousMEASCount = CurrentMEASCount
@@ -279,7 +290,6 @@ Public Class MainForm
                                     If CurrentMEASCount - PreviousMEASCount < 100 Then  ' MEAS is dead => Path Error
                                         ErrorFlag = ErrorFlag Or 2 ' Both => Loss of Signals (LOS) Error
                                     End If
-
                                 End If
                             End If
                             If needsInitialZero = 1 Then
@@ -311,9 +321,7 @@ Public Class MainForm
                     Else 'values.length incorrect
                         Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
                     End If
-
                 Next
-                'Chart1.ResetAutoValues()
                 If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
                     Dim counter As Integer
                     If Color.FromKnownColor(KnownColor.ActiveCaptionText) = FrequencyButton.ForeColor Then    ' only have about 500 pixels to show 1000 points
@@ -408,7 +416,8 @@ Public Class MainForm
 
         If TestmodeFlag = 0 Then
             Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Else : Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Else
+            Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
             Dialog1.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
 
@@ -597,9 +606,6 @@ Public Class MainForm
         My.Settings.Save()
     End Sub
 
-    Private Sub AverageLabel_Click(sender As Object, e As EventArgs) Handles AverageLabel.Click
-0:
-    End Sub
 
 
     Private Sub GraphControl_Click(sender As Object, e As EventArgs) Handles GraphControl.Click
