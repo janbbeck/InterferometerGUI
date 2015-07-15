@@ -33,7 +33,7 @@ Public Class MainForm
     ' buffer for serial port object
     Dim spDrLine As String = ""
     Dim spBuffer As String = ""
-    Dim zeroAdjustment As Double = 0  ' this is what we need to set the data back to zero
+    Public zeroAdjustment As Double = 0  ' this is what we need to set the data back to zero
     Public unitCorrectionFactor As Double = 1.0 ' 1.0 = nm 0.001 = um etc
     Public angleCorrectionFactor As Double = 3600.0 ' 3600 = arcsec 60 = arcmin 1 = degree
     Public multiplier As Integer = 1    ' needed for interferometer type 1x 2x 4x
@@ -74,7 +74,7 @@ Public Class MainForm
     Dim currentMEASFrequency As Double = 0
     Dim previousDIFFFrequency As Double = 0
     Dim currentDIFFFrequency As Double = 0
-    Dim previousserialnumber As UInt64 = 0
+    Public previousserialnumber As UInt64 = 0
     Dim serialnumberdifference As UInt64 = 0
     Public Temperature As Double = 20
     Public Pressure As Double = 1000
@@ -87,6 +87,9 @@ Public Class MainForm
     Public HCorrection As Double = 1
     Public Wavelength As Double = 632.991372
     Public ECFactor As Double = 1
+    Public simulationDistance As UInt64 = 0
+    Public simulationVelocity As UInt64 = 0
+    Public simulationSerial As UInt64 = 0
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -224,7 +227,9 @@ Public Class MainForm
                     'file.WriteLine(spDrLine)
                     'process spBuffer
                     Try
-                        Me.SetText(spBuffer)
+                        If False = SimulationTimer.Enabled Then
+                            Me.SetText(spBuffer)
+                        End If
                     Catch ex As Exception
                         MsgBox(ex.ToString)
                     End Try
@@ -255,7 +260,7 @@ Public Class MainForm
             Try
                 ' first split data into sets
                 Dim k As Integer
-                Dim sets() As String = spBuffer.Split(vbLf.ToCharArray)
+                Dim sets() As String = [text].Split(vbLf.ToCharArray)
                 For k = 0 To sets.Length - 1
                     Dim values() As String = sets(k).Split(" ".ToCharArray)
                     'make sure the current set has exactly 10 fields
@@ -267,12 +272,11 @@ Public Class MainForm
                         CurrentREFCount = Convert.ToUInt64(values(1))
                         PreviousMEASCount = CurrentMEASCount
                         CurrentMEASCount = Convert.ToUInt64(values(0))
-                        serialnumberdifference = Convert.ToUInt64(values(9)) - previousserialnumber
-                        If serialnumberdifference > 1 Then
-                            Console.Write((Convert.ToUInt64(values(9)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
-                        ElseIf 0 = serialnumberdifference Then
-                            Console.Write(" sample duplicate" + vbCrLf)
-                        Else
+                        Try
+                            serialnumberdifference = Convert.ToUInt64(values(9)) - previousserialnumber
+                        Catch
+                        End Try
+                        If 1 = serialnumberdifference Then
                             previousREFFrequency = REFFrequency
                             currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638 ' / serialnumberdifference
                             REFFrequency = (currentREFFrequency / 60) + (59 / 60 * previousREFFrequency) ' Moving average to get finer resolution
@@ -316,11 +320,18 @@ Public Class MainForm
                                 velocityQueuey.Enqueue(unitCorrectionFactor * velocityValue / multiplier)
                                 chartcounter = CULng(chartcounter + 1)
                             End If
+                        ElseIf 0 = serialnumberdifference Then
+                            Console.Write(" sample duplicate" + vbCrLf)
+                        Else
+                            Console.Write((Convert.ToUInt64(values(9)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
                         End If
-                        previousserialnumber = Convert.ToUInt64(values(9))
                     Else 'values.length incorrect
                         Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
                     End If
+                    Try
+                        previousserialnumber = Convert.ToUInt64(values(9))
+                    Catch
+                    End Try
                 Next
                 If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
                     Dim counter As Integer
@@ -705,4 +716,20 @@ Public Class MainForm
         End If
     End Sub
 
+    Private Sub SimulationTimer_Tick(sender As Object, e As EventArgs) Handles SimulationTimer.Tick
+        ' here we are simulating data of the form of (not all fields are parsed by SetText:
+        ' 46838240776 47637908780 Difference: 799668004 Previous Difference: 799668005 overflow counter: 23442624
+        ' ignored     ignored     ignored     distance  ignored  ignored     velocity  ignored  ignored  serialcounter
+        Dim counter As Integer = 0
+        Dim simulatedData As String
+        For counter = 0 To 60
+            simulatedData = "46838240776 47637908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
+            simulationDistance = simulationDistance + CULng(1)
+            simulationSerial = simulationSerial + CULng(1)
+            Me.SetText(simulatedData)
+        Next
+
+
+
+    End Sub
 End Class

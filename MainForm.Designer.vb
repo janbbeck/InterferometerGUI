@@ -29,9 +29,9 @@ Partial Public Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Title1 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
+        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Title3 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
         Me.ValueDisplay = New System.Windows.Forms.Label()
         Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
@@ -63,6 +63,7 @@ Partial Public Class MainForm
         Me.WLUnits = New System.Windows.Forms.Label()
         Me.WLText = New System.Windows.Forms.Label()
         Me.WLlabel = New System.Windows.Forms.Label()
+        Me.SimulationTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -80,22 +81,22 @@ Partial Public Class MainForm
         'Chart1
         '
         Me.Chart1.BackColor = System.Drawing.Color.Transparent
-        ChartArea1.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea1)
+        ChartArea3.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea3)
         Me.Chart1.Location = New System.Drawing.Point(127, 234)
         Me.Chart1.Name = "Chart1"
         Me.Chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
         Me.Chart1.PaletteCustomColors = New System.Drawing.Color() {System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(150, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(150, Byte), Integer), CType(CType(120, Byte), Integer), CType(CType(0, Byte), Integer))}
-        Series1.ChartArea = "ChartArea1"
-        Series1.Name = "Series1"
-        Me.Chart1.Series.Add(Series1)
+        Series3.ChartArea = "ChartArea1"
+        Series3.Name = "Series1"
+        Me.Chart1.Series.Add(Series3)
         Me.Chart1.Size = New System.Drawing.Size(627, 283)
         Me.Chart1.TabIndex = 36
         Me.Chart1.Text = " "
-        Title1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Title1.Name = "Title1"
-        Title1.Text = "Position"
-        Me.Chart1.Titles.Add(Title1)
+        Title3.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Title3.Name = "Title1"
+        Title3.Text = "Position"
+        Me.Chart1.Titles.Add(Title3)
         '
         'SerialPort1
         '
@@ -414,6 +415,9 @@ Partial Public Class MainForm
         Me.WLlabel.TabIndex = 77
         Me.WLlabel.Text = "WL: "
         '
+        'SimulationTimer
+        '
+        '
         'MainForm
         '
         Me.ClientSize = New System.Drawing.Size(880, 572)
@@ -487,5 +491,6 @@ Partial Public Class MainForm
     Friend WithEvents WLUnits As System.Windows.Forms.Label
     Friend WithEvents WLText As System.Windows.Forms.Label
     Friend WithEvents WLlabel As System.Windows.Forms.Label
+    Friend WithEvents SimulationTimer As System.Windows.Forms.Timer
 
 End Class
