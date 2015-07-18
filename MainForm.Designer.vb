@@ -29,9 +29,10 @@ Partial Public Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Title3 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
+        Dim ChartArea9 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series9 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Title9 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.ValueDisplay = New System.Windows.Forms.Label()
         Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
@@ -51,6 +52,10 @@ Partial Public Class MainForm
         Me.REF = New System.Windows.Forms.Label()
         Me.MEASLabel = New System.Windows.Forms.Label()
         Me.REFLabel = New System.Windows.Forms.Label()
+        Me.WLUnits = New System.Windows.Forms.Label()
+        Me.WLText = New System.Windows.Forms.Label()
+        Me.WLlabel = New System.Windows.Forms.Label()
+        Me.SimulationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.GraphControl = New System.Windows.Forms.Button()
         Me.Suspend = New System.Windows.Forms.Button()
         Me.FrequencyButton = New System.Windows.Forms.Button()
@@ -60,10 +65,8 @@ Partial Public Class MainForm
         Me.DisplacementButton = New System.Windows.Forms.Button()
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.VelocityButton = New System.Windows.Forms.Button()
-        Me.WLUnits = New System.Windows.Forms.Label()
-        Me.WLText = New System.Windows.Forms.Label()
-        Me.WLlabel = New System.Windows.Forms.Label()
-        Me.SimulationTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.TestModeLabel = New System.Windows.Forms.Label()
+        Me.Graph_Label = New System.Windows.Forms.Label()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -71,9 +74,9 @@ Partial Public Class MainForm
         'ValueDisplay
         '
         Me.ValueDisplay.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ValueDisplay.Location = New System.Drawing.Point(157, 56)
+        Me.ValueDisplay.Location = New System.Drawing.Point(153, 56)
         Me.ValueDisplay.Name = "ValueDisplay"
-        Me.ValueDisplay.Size = New System.Drawing.Size(503, 70)
+        Me.ValueDisplay.Size = New System.Drawing.Size(507, 70)
         Me.ValueDisplay.TabIndex = 34
         Me.ValueDisplay.Text = "0.000"
         Me.ValueDisplay.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -81,22 +84,22 @@ Partial Public Class MainForm
         'Chart1
         '
         Me.Chart1.BackColor = System.Drawing.Color.Transparent
-        ChartArea3.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea3)
+        ChartArea9.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea9)
         Me.Chart1.Location = New System.Drawing.Point(127, 234)
         Me.Chart1.Name = "Chart1"
         Me.Chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
         Me.Chart1.PaletteCustomColors = New System.Drawing.Color() {System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(150, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(150, Byte), Integer), CType(CType(120, Byte), Integer), CType(CType(0, Byte), Integer))}
-        Series3.ChartArea = "ChartArea1"
-        Series3.Name = "Series1"
-        Me.Chart1.Series.Add(Series3)
+        Series9.ChartArea = "ChartArea1"
+        Series9.Name = "Series1"
+        Me.Chart1.Series.Add(Series9)
         Me.Chart1.Size = New System.Drawing.Size(627, 283)
         Me.Chart1.TabIndex = 36
         Me.Chart1.Text = " "
-        Title3.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Title3.Name = "Title1"
-        Title3.Text = "Position"
-        Me.Chart1.Titles.Add(Title3)
+        Title9.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Title9.Name = "Title1"
+        Title9.Text = "Position"
+        Me.Chart1.Titles.Add(Title9)
         '
         'SerialPort1
         '
@@ -168,9 +171,9 @@ Partial Public Class MainForm
         '
         Me.DIFF.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(200, Byte), Integer))
-        Me.DIFF.Location = New System.Drawing.Point(697, 22)
+        Me.DIFF.Location = New System.Drawing.Point(703, 22)
         Me.DIFF.Name = "DIFF"
-        Me.DIFF.Size = New System.Drawing.Size(90, 24)
+        Me.DIFF.Size = New System.Drawing.Size(89, 24)
         Me.DIFF.TabIndex = 76
         Me.DIFF.Text = "0.00"
         Me.DIFF.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -179,7 +182,7 @@ Partial Public Class MainForm
         '
         Me.DIFFKHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFFKHzLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.DIFFKHzLabel.Location = New System.Drawing.Point(785, 22)
+        Me.DIFFKHzLabel.Location = New System.Drawing.Point(790, 22)
         Me.DIFFKHzLabel.Name = "DIFFKHzLabel"
         Me.DIFFKHzLabel.Size = New System.Drawing.Size(57, 24)
         Me.DIFFKHzLabel.TabIndex = 75
@@ -189,7 +192,7 @@ Partial Public Class MainForm
         '
         Me.DIFFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFFLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.DIFFLabel.Location = New System.Drawing.Point(648, 22)
+        Me.DIFFLabel.Location = New System.Drawing.Point(656, 22)
         Me.DIFFLabel.Name = "DIFFLabel"
         Me.DIFFLabel.Size = New System.Drawing.Size(63, 24)
         Me.DIFFLabel.TabIndex = 74
@@ -199,7 +202,7 @@ Partial Public Class MainForm
         '
         Me.MEASMHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MEASMHzLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.MEASMHzLabel.Location = New System.Drawing.Point(563, 22)
+        Me.MEASMHzLabel.Location = New System.Drawing.Point(577, 22)
         Me.MEASMHzLabel.Name = "MEASMHzLabel"
         Me.MEASMHzLabel.Size = New System.Drawing.Size(64, 26)
         Me.MEASMHzLabel.TabIndex = 73
@@ -219,27 +222,29 @@ Partial Public Class MainForm
         '
         Me.MEAS.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MEAS.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.MEAS.Location = New System.Drawing.Point(510, 22)
+        Me.MEAS.Location = New System.Drawing.Point(514, 20)
         Me.MEAS.Name = "MEAS"
-        Me.MEAS.Size = New System.Drawing.Size(59, 26)
+        Me.MEAS.Size = New System.Drawing.Size(66, 26)
         Me.MEAS.TabIndex = 71
-        Me.MEAS.Text = "0.000"
+        Me.MEAS.Text = "00.000"
+        Me.MEAS.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'REF
         '
         Me.REF.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.REF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(210, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.REF.Location = New System.Drawing.Point(316, 22)
+        Me.REF.Location = New System.Drawing.Point(304, 21)
         Me.REF.Name = "REF"
-        Me.REF.Size = New System.Drawing.Size(64, 24)
+        Me.REF.Size = New System.Drawing.Size(67, 24)
         Me.REF.TabIndex = 70
-        Me.REF.Text = "0.000"
+        Me.REF.Text = "00.000"
+        Me.REF.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'MEASLabel
         '
         Me.MEASLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MEASLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.MEASLabel.Location = New System.Drawing.Point(447, 22)
+        Me.MEASLabel.Location = New System.Drawing.Point(457, 22)
         Me.MEASLabel.Name = "MEASLabel"
         Me.MEASLabel.Size = New System.Drawing.Size(70, 26)
         Me.MEASLabel.TabIndex = 69
@@ -249,17 +254,51 @@ Partial Public Class MainForm
         '
         Me.REFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.REFLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.REFLabel.Location = New System.Drawing.Point(266, 22)
+        Me.REFLabel.Location = New System.Drawing.Point(261, 22)
         Me.REFLabel.Name = "REFLabel"
         Me.REFLabel.Size = New System.Drawing.Size(57, 24)
         Me.REFLabel.TabIndex = 68
         Me.REFLabel.Text = "REF: "
         '
+        'WLUnits
+        '
+        Me.WLUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WLUnits.ForeColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.WLUnits.Location = New System.Drawing.Point(184, 22)
+        Me.WLUnits.Name = "WLUnits"
+        Me.WLUnits.Size = New System.Drawing.Size(58, 26)
+        Me.WLUnits.TabIndex = 79
+        Me.WLUnits.Text = "nm"
+        '
+        'WLText
+        '
+        Me.WLText.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WLText.ForeColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.WLText.Location = New System.Drawing.Point(81, 22)
+        Me.WLText.Name = "WLText"
+        Me.WLText.Size = New System.Drawing.Size(108, 24)
+        Me.WLText.TabIndex = 78
+        Me.WLText.Text = "632.991372"
+        '
+        'WLlabel
+        '
+        Me.WLlabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WLlabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.WLlabel.Location = New System.Drawing.Point(41, 22)
+        Me.WLlabel.Name = "WLlabel"
+        Me.WLlabel.Size = New System.Drawing.Size(57, 24)
+        Me.WLlabel.TabIndex = 77
+        Me.WLlabel.Text = "WL: "
+        '
+        'SimulationTimer
+        '
+        Me.SimulationTimer.Interval = 60
+        '
         'GraphControl
         '
         Me.GraphControl.AccessibleDescription = ""
         Me.GraphControl.AccessibleName = ""
-        Me.GraphControl.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.GraphControl.BackgroundImage = CType(resources.GetObject("GraphControl.BackgroundImage"), System.Drawing.Image)
         Me.GraphControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.GraphControl.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.GraphControl.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -273,7 +312,7 @@ Partial Public Class MainForm
         '
         Me.Suspend.AccessibleDescription = ""
         Me.Suspend.AccessibleName = ""
-        Me.Suspend.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Suspend.BackgroundImage = CType(resources.GetObject("Suspend.BackgroundImage"), System.Drawing.Image)
         Me.Suspend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Suspend.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Suspend.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -287,7 +326,7 @@ Partial Public Class MainForm
         '
         Me.FrequencyButton.AccessibleDescription = ""
         Me.FrequencyButton.AccessibleName = ""
-        Me.FrequencyButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.FrequencyButton.BackgroundImage = CType(resources.GetObject("FrequencyButton.BackgroundImage"), System.Drawing.Image)
         Me.FrequencyButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.FrequencyButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.FrequencyButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
@@ -302,7 +341,7 @@ Partial Public Class MainForm
         '
         Me.StraightnessShortButton.AccessibleDescription = ""
         Me.StraightnessShortButton.AccessibleName = ""
-        Me.StraightnessShortButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.StraightnessShortButton.BackgroundImage = CType(resources.GetObject("StraightnessShortButton.BackgroundImage"), System.Drawing.Image)
         Me.StraightnessShortButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.StraightnessShortButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.StraightnessShortButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -316,7 +355,7 @@ Partial Public Class MainForm
         '
         Me.StraightnessLongButton.AccessibleDescription = ""
         Me.StraightnessLongButton.AccessibleName = ""
-        Me.StraightnessLongButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.StraightnessLongButton.BackgroundImage = CType(resources.GetObject("StraightnessLongButton.BackgroundImage"), System.Drawing.Image)
         Me.StraightnessLongButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.StraightnessLongButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.StraightnessLongButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -330,7 +369,7 @@ Partial Public Class MainForm
         '
         Me.AngleButton.AccessibleDescription = ""
         Me.AngleButton.AccessibleName = ""
-        Me.AngleButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.AngleButton.BackgroundImage = CType(resources.GetObject("AngleButton.BackgroundImage"), System.Drawing.Image)
         Me.AngleButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.AngleButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.AngleButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -361,7 +400,7 @@ Partial Public Class MainForm
         '
         Me.ZeroButton.AccessibleDescription = ""
         Me.ZeroButton.AccessibleName = ""
-        Me.ZeroButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.ZeroButton.BackgroundImage = CType(resources.GetObject("ZeroButton.BackgroundImage"), System.Drawing.Image)
         Me.ZeroButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ZeroButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -375,7 +414,7 @@ Partial Public Class MainForm
         '
         Me.VelocityButton.AccessibleDescription = ""
         Me.VelocityButton.AccessibleName = ""
-        Me.VelocityButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.VelocityButton.BackgroundImage = CType(resources.GetObject("VelocityButton.BackgroundImage"), System.Drawing.Image)
         Me.VelocityButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.VelocityButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.VelocityButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -385,42 +424,32 @@ Partial Public Class MainForm
         Me.VelocityButton.TabIndex = 32
         Me.VelocityButton.Text = "Velocity"
         '
-        'WLUnits
+        'TestModeLabel
         '
-        Me.WLUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.WLUnits.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.WLUnits.Location = New System.Drawing.Point(191, 22)
-        Me.WLUnits.Name = "WLUnits"
-        Me.WLUnits.Size = New System.Drawing.Size(58, 26)
-        Me.WLUnits.TabIndex = 79
-        Me.WLUnits.Text = "nm"
+        Me.TestModeLabel.AutoSize = True
+        Me.TestModeLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TestModeLabel.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.TestModeLabel.Location = New System.Drawing.Point(48, 79)
+        Me.TestModeLabel.Name = "TestModeLabel"
+        Me.TestModeLabel.Size = New System.Drawing.Size(0, 26)
+        Me.TestModeLabel.TabIndex = 80
         '
-        'WLText
+        'Graph_Label
         '
-        Me.WLText.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.WLText.ForeColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.WLText.Location = New System.Drawing.Point(88, 22)
-        Me.WLText.Name = "WLText"
-        Me.WLText.Size = New System.Drawing.Size(108, 24)
-        Me.WLText.TabIndex = 78
-        Me.WLText.Text = "632.991372"
-        '
-        'WLlabel
-        '
-        Me.WLlabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.WLlabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.WLlabel.Location = New System.Drawing.Point(48, 22)
-        Me.WLlabel.Name = "WLlabel"
-        Me.WLlabel.Size = New System.Drawing.Size(57, 24)
-        Me.WLlabel.TabIndex = 77
-        Me.WLlabel.Text = "WL: "
-        '
-        'SimulationTimer
-        '
+        Me.Graph_Label.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Graph_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Graph_Label.Location = New System.Drawing.Point(345, 236)
+        Me.Graph_Label.Name = "Graph_Label"
+        Me.Graph_Label.Size = New System.Drawing.Size(217, 49)
+        Me.Graph_Label.TabIndex = 81
+        Me.Graph_Label.Text = "Displacement"
+        Me.Graph_Label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'MainForm
         '
         Me.ClientSize = New System.Drawing.Size(880, 572)
+        Me.Controls.Add(Me.Graph_Label)
+        Me.Controls.Add(Me.TestModeLabel)
         Me.Controls.Add(Me.WLUnits)
         Me.Controls.Add(Me.WLText)
         Me.Controls.Add(Me.WLlabel)
@@ -492,5 +521,7 @@ Partial Public Class MainForm
     Friend WithEvents WLText As System.Windows.Forms.Label
     Friend WithEvents WLlabel As System.Windows.Forms.Label
     Friend WithEvents SimulationTimer As System.Windows.Forms.Timer
+    Friend WithEvents TestModeLabel As System.Windows.Forms.Label
+    Friend WithEvents Graph_Label As System.Windows.Forms.Label
 
 End Class

@@ -8,7 +8,6 @@ Public Class Dialog1
     End Sub
 
     Private Sub Button1x_Click_1(sender As Object, e As EventArgs) Handles Button1x.Click
-
         Button1x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -314,7 +313,6 @@ Public Class Dialog1
         Test_Button_On.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.TestmodeFlag = 1
-
     End Sub
 
     Private Sub Test_Button_Off_Click(sender As Object, e As EventArgs) Handles Test_Button_Off.Click
@@ -329,7 +327,7 @@ Public Class Dialog1
 
     End Sub
 
-    Private Sub TableLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel1.Paint
+    ' Private Sub TableLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel1.Paint
 
-    End Sub
+    ' End Sub
 End Class
