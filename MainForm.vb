@@ -766,6 +766,14 @@ Public Class MainForm
         ' simulatedData = "46838240776 4767908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
 
         If SuspendFlag = 0 Then
+            'calculate the DFT once per timer if frequency display is selected.
+            If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
+                If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
+                    If (chartcounter Mod 2) = 0 Then    ' calculate every 2 values
+                        DFT()
+                    End If
+                End If
+            End If
 
             For counter = 0 To 10
 
@@ -795,7 +803,7 @@ Public Class MainForm
                 End If
 
                 simulationVelocity = simulationDistance - previousSimulationDistance
-               
+
                 simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
                     simulationDistance.ToString + " Previous Difference " + previousSimulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
                 simulationSerial = simulationSerial + CULng(1)
