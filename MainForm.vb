@@ -7,6 +7,7 @@ Imports System.Windows.Forms.DataVisualization.Charting
 Imports System.Text.RegularExpressions
 Imports System.IO.Ports
 Imports System.ComponentModel
+Imports System.Threading
 
 Public Class MainForm
     ' Dim file As System.IO.StreamWriter
@@ -14,7 +15,9 @@ Public Class MainForm
     Public positionSeries As New Series
     Public velocitySeries As New Series
     Public fftSeries As New Series
+    Public fftSeries2 As New Series
     Public chartcounter As UInt64
+    Dim FFTdone As Boolean = True
     ' Creates and initializes a new Queue.
     Dim displacementQueuex As New Queue()
     Dim displacementQueuey As New Queue()
@@ -44,6 +47,7 @@ Public Class MainForm
     Dim angleValue As Double = 0
     Dim averagingValue As Double = 0
     Dim displayValue As Double = 0
+    Dim velocityValueList As New List(Of Double)
     Dim RealPartOfDFT(512) As Double
     Dim averagingFromCurrent As Double = 0
     Dim ImaginaryPartOfDFT(512) As Double
@@ -108,6 +112,9 @@ Public Class MainForm
     Public TMFreqValue As Double = 1
     Public TMAmpValue As Double = 1
     Public TMOfsValue As Double = 1
+    'Dim DFTThread As New Thread(AddressOf DFT)
+    Private DFTThread As New System.ComponentModel.BackgroundWorker 'set new backgroundworker
+    Dim resetEvent As ManualResetEvent = New ManualResetEvent(False)
 
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
@@ -117,11 +124,8 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
-        System.Windows.Forms.Application.EnableVisualStyles()
-
+        AddHandler DFTThread.DoWork, AddressOf DFT
         DisplacementButton_Click(sender, e)
-        'Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-
         Chart1.Series.Clear()
         Chart1.ChartAreas(0).AxisX.LabelStyle.Enabled = False
         Chart1.ChartAreas(0).AxisX.MajorTickMark.Enabled = False
@@ -131,9 +135,7 @@ Public Class MainForm
         Chart1.ChartAreas(0).AxisY.LabelStyle.Format = "e2" 'https://msdn.microsoft.com/en-us/library/dwhawy9k.aspx
         Chart1.ChartAreas(0).AxisY.LabelAutoFitStyle = LabelAutoFitStyles.None
         Chart1.ChartAreas(0).AxisX.LabelStyle.Font = New System.Drawing.Font("Trebuchet MS", 2.25F, System.Drawing.FontStyle.Bold)
-
         positionSeries.ChartType = SeriesChartType.FastLine
-
         For chartcounter = 0 To 1023
             positionSeries.Points.AddXY(chartcounter, 0.5 * Math.Sin(chartcounter / 40))
         Next
@@ -141,37 +143,28 @@ Public Class MainForm
         Chart1.Series.Add(positionSeries)
         For chartcounter = 0 To 1023
             velocitySeries.Points.AddXY(chartcounter, 0.5 * Math.Cos(chartcounter / 40))
+            velocityValueList.Add(0.0)
         Next
+        DFTThread.RunWorkerAsync()
         fftSeries.ChartType = SeriesChartType.FastLine
-
         menuItems.Add(myMenuItemNew)    ' need a list to be able to delete/change them at runtime
-
         ' Add functionality to the menu items using the Click event.
-
         'adding the menu items to the main menu bar
-
         myMenuItemOptions.MenuItems.Add(myMenuItemNew)
         mnuBar.MenuItems.Add(myMenuItemOptions)
         AddHandler myMenuItemOptions.Popup, AddressOf Me.myMenuItemFile1_Click
-
         AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemOptions_Click
         myMenuItemOptions.MenuItems.Add(myMenuItemConfiguration)
-
         AddHandler myMenuItemCompensation.Click, AddressOf Me.myMenuItemCompensation_Click
         myMenuItemOptions.MenuItems.Add(myMenuItemCompensation)
-
         AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
         myMenuItemOptions.MenuItems.Add(myMenuItemTestMode)
-
         myMenuItemComPort.MenuItems.Add(myMenuItemNew)
         mnuBar.MenuItems.Add(myMenuItemComPort)
         AddHandler myMenuItemComPort.Popup, AddressOf Me.myMenuItemFile1_Click
-
         Me.Menu = mnuBar
         ' load user settings
-
         'multiplier = My.Settings.Multiplier
-
         unitCorrectionFactor = My.Settings.UnitCorrectionFactor
         If unitCorrectionFactor = 1.0 Then
             UnitLabel.Text = "nm"
@@ -188,7 +181,6 @@ Public Class MainForm
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
             UnitLabel.Text = "ft"
         End If
-
         angleCorrectionFactor = My.Settings.AngleCorrectionFactor
         If angleCorrectionFactor = 1.0 Then
             AngleLabel.Text = "degree"
@@ -197,12 +189,10 @@ Public Class MainForm
         ElseIf angleCorrectionFactor = 3600.0 Then
             AngleLabel.Text = "arcsec"
         End If
-
         averagingValue = My.Settings.AveragingValue
         TrackBar1.Value = CInt(averagingValue)
         AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
         Timer1.Start()
-
         ' file = My.Computer.FileSystem.OpenTextFileWriter("data.txt", True)
     End Sub
 
@@ -267,20 +257,13 @@ Public Class MainForm
         ' InvokeRequired required compares the thread ID of the 
         ' calling thread to the thread ID of the creating thread. 
         ' If these threads are different, it returns true. 
+        Dim k As Integer
         If Me.Chart1.InvokeRequired Then    'what is good for chart1 is also good for chart2
             Dim d As New SetTextCallback(AddressOf SetText)
-            If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
-                If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
-                    If (chartcounter Mod 2) = 0 Then    ' calculate every 2 values
-                        DFT()
-                    End If
-                End If
-            End If
             Me.Invoke(d, New Object() {[text]})
         Else
             Try
                 ' first split data into sets
-                Dim k As Integer
                 Dim sets() As String = [text].Split(vbLf.ToCharArray)
                 For k = 0 To sets.Length - 1
                     Dim values() As String = sets(k).Split(" ".ToCharArray)
@@ -327,13 +310,10 @@ Public Class MainForm
                                     needsInitialZero = 0 ' make sure to zero out the reference system only once
                                 End If
                             End If
-
                             velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
-
                             If TestmodeFlag = 1 Then
                                 velocityValue = velocityValue / 3.0425
                             End If
-
                             If SuspendFlag = 0 Then
 
                                 If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode, no averaging
@@ -356,7 +336,6 @@ Public Class MainForm
                                     chartcounter = CULng(chartcounter + 1)
                                 End If
                             End If
-
                         ElseIf 0 = serialnumberdifference Then
                             Console.Write(" sample duplicate" + vbCrLf)
                         Else
@@ -370,15 +349,6 @@ Public Class MainForm
                     Catch
                     End Try
                 Next
-                If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
-                    Dim counter As Integer
-                    If Color.FromKnownColor(KnownColor.ActiveCaptionText) = FrequencyButton.ForeColor Then    ' only have about 500 pixels to show 1000 points
-                        fftSeries.Points.Clear()
-                        For counter = 0 To 255
-                            fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
-                        Next
-                    End If
-                End If
             Catch ex As Exception
                 'MsgBox(ex.ToString)
             End Try
@@ -410,11 +380,9 @@ Public Class MainForm
 
     Private Sub myMenuItemOptions_Click(sender As Object, e As EventArgs)
         ' pop up configuration window
-
         Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Dialog1.Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Dialog1.Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-
         If multiplier.Equals(1) Then
             Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf multiplier.Equals(2) Then
@@ -422,7 +390,6 @@ Public Class MainForm
         Else
             Dialog1.Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-
         Dialog1.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Dialog1.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Dialog1.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -430,7 +397,6 @@ Public Class MainForm
         Dialog1.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Dialog1.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Dialog1.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
-
         If unitCorrectionFactor = 1.0 Then
             Dialog1.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.001 Then
@@ -446,11 +412,9 @@ Public Class MainForm
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
             Dialog1.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-
         Dialog1.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Dialog1.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Dialog1.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
-
         If angleCorrectionFactor = 3600.0 Then
             Dialog1.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf angleCorrectionFactor = 60.0 Then
@@ -458,7 +422,6 @@ Public Class MainForm
         ElseIf angleCorrectionFactor = 1.0 Then
             Dialog1.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-
         Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Dialog1.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
@@ -468,9 +431,7 @@ Public Class MainForm
             Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
             Dialog1.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-
         Dialog1.ShowDialog()
-
     End Sub
 
     Private Sub myMenuItemCompensation_Click(sender As Object, e As EventArgs)
@@ -500,26 +461,34 @@ Public Class MainForm
         average = 0
     End Sub
 
-    Private Sub DFT()
+    Private Sub DFT(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs)
         ' not the fastest, but easy to implement
         ' https://en.wikipedia.org/wiki/Discrete_Fourier_transform
 
-        If velocitySeries.Points.Count = 1024 Then
+        Dim progresscount As Integer = 0
+        'Dim tempRealPartOfDFT(512) As Double
+        'Dim tempImaginaryPartOfDFT(512) As Double
+        Do
             Try
+                resetEvent.WaitOne()
+                resetEvent.Reset()
                 For outerLoopCounter = 0 To 512
                     RealPartOfDFT(outerLoopCounter) = 0
                     ImaginaryPartOfDFT(outerLoopCounter) = 0
                 Next outerLoopCounter
                 For outerLoopCounter = 0 To 512
                     For innerLoopCounter = 0 To 1023
-                        RealPartOfDFT(outerLoopCounter) = RealPartOfDFT(outerLoopCounter) + velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Cos(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
-                        ImaginaryPartOfDFT(outerLoopCounter) = ImaginaryPartOfDFT(outerLoopCounter) - velocitySeries.Points(innerLoopCounter).YValues(0) * Math.Sin(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
+                        RealPartOfDFT(outerLoopCounter) = RealPartOfDFT(outerLoopCounter) + velocityValueList(innerLoopCounter) * Math.Cos(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
+                        ImaginaryPartOfDFT(outerLoopCounter) = ImaginaryPartOfDFT(outerLoopCounter) - velocityValueList(innerLoopCounter) * Math.Sin(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
                     Next innerLoopCounter
                 Next outerLoopCounter
+                'RealPartOfDFT = RealPartOfDFT
+                'ImaginaryPartOfDFT = ImaginaryPartOfDFT
+                FFTdone = True
             Catch ex As Exception
                 MsgBox(ex.ToString)
             End Try
-        End If
+        Loop
     End Sub
 
     Private Sub DisplacementButton_Click(sender As Object, e As EventArgs) Handles DisplacementButton.Click
@@ -754,7 +723,24 @@ Public Class MainForm
                 y = CDbl(velocityQueuey.Dequeue())
                 velocitySeries.Points.AddXY(x, y)
                 velocitySeries.Points.RemoveAt(0)
+                velocityValueList.Add(y)
+                velocityValueList.RemoveAt(0)
             End While
+            ' DFT related
+            Dim counter As Integer
+            If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
+                If (chartcounter Mod 1) = 0 Then    ' calculate every 1 values 
+                    If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
+                        FFTdone = False
+                        fftSeries.Points.Clear()
+                        For counter = 0 To 512
+                            fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
+                        Next
+                        resetEvent.Set()
+                    End If
+                End If
+            End If
+            'now update graph
             Chart1.ResetAutoValues()
         End If
     End Sub
@@ -764,59 +750,46 @@ Public Class MainForm
         ' 46838240776 47637908780 Difference: 799668004 Previous Difference: 799668005 overflow counter: 23442624
         ' ignored     ignored     ignored     distance  ignored  ignored     velocity  ignored  ignored  serialcounter
         ' simulatedData = "46838240776 4767908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
-
+        Dim counter As Integer
         If SuspendFlag = 0 Then
-            'calculate the DFT once per timer if frequency display is selected.
-            If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
-                If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
-                    If (chartcounter Mod 2) = 0 Then    ' calculate every 2 values
-                        DFT()
-                    End If
-                End If
+            If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
+                FFTdone = False
+                fftSeries.Points.Clear()
+                For counter = 0 To 512
+                    fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
+                Next
+                resetEvent.Set()
             End If
-
-            For counter = 0 To 10
-
+            For counter = 0 To 60   ' 61 values 10 times a second
                 simrefcount = simrefcount + 10 * 1638
                 simmeascount = simrefcount + CLng((simulationDistance / 10) * 2 * 0.81)
                 simcount = simcount + 1
-
                 If TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     simulationDistance = CLng(12638 * (TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue) * multiplier / 2))
                     waveform = 0
-
                 ElseIf TestMode.Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     waveform = waveform + (0.00001 * TMFreqValue * TestMode.TrackBar_Offset.Value)
                     simulationDistance = CLng(12638 * TMUnitsFactor * (waveform * TMAmpMult) * multiplier / 2)
-
                 ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     waveform = waveform + (0.002 * TMFreqValue * bangbang)
                     simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
                     If Math.Abs(waveform) > 1 Or Math.Abs(waveform) = 1 Then bangbang = -bangbang
-
                 ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     waveform = Math.Sin(simcount * TMFreqValue * Math.PI / 1000)
                     simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue) * multiplier / 2)
-
                 Else
-
                 End If
-
                 simulationVelocity = simulationDistance - previousSimulationDistance
-
                 simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
                     simulationDistance.ToString + " Previous Difference " + previousSimulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
                 simulationSerial = simulationSerial + CULng(1)
                 previousSimulationDistance = simulationDistance
                 previoussimulationVelocity = simulationVelocity
                 Me.SetText(simulatedData)
-
             Next
-
             If outerloop > 8 Then
                 outerloop = 0
             End If
-
             outerloop = outerloop + 1
         End If
 
