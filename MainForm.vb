@@ -665,7 +665,7 @@ Public Class MainForm
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        ' limit the update rate of the value to about 60 Hz
+        ' limit the update rate of the value to about 10 Hz
 
         MEAS.Text = MEASFrequency.ToString("0.000")
         REF.Text = REFFrequency.ToString("0.000")
@@ -726,7 +726,6 @@ Public Class MainForm
             ' DFT related
             Dim counter As Integer
             If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
-                If (chartcounter Mod 1) = 0 Then    ' calculate every 1 values 
                     If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
                         FFTdone = False
                         fftSeries.Points.Clear()
@@ -735,7 +734,6 @@ Public Class MainForm
                         Next
                         resetEvent.Set()
                     End If
-                End If
             End If
             'now update graph
             Chart1.ResetAutoValues()
@@ -757,7 +755,7 @@ Public Class MainForm
                 Next
                 resetEvent.Set()
             End If
-            For counter = 0 To 60   ' 61 values 10 times a second
+            For counter = 0 To 14   ' 15 values 40 times a second - pretty close to the 610hz
                 simrefcount = simrefcount + 10 * 1638
                 simmeascount = simrefcount + CLng((simulationDistance / 10) * 2 * 0.81)
                 simcount = simcount + 1
