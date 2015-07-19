@@ -143,7 +143,7 @@ Public Class MainForm
         Chart1.Series.Add(positionSeries)
         For chartcounter = 0 To 1023
             velocitySeries.Points.AddXY(chartcounter, 0.5 * Math.Cos(chartcounter / 40))
-            velocityValueList.Add(0.0)
+            velocityValueList.Add(0.0)  ' make sure the list is not empty
         Next
         DFTThread.RunWorkerAsync()
         fftSeries.ChartType = SeriesChartType.FastLine
@@ -466,8 +466,7 @@ Public Class MainForm
         ' https://en.wikipedia.org/wiki/Discrete_Fourier_transform
 
         Dim progresscount As Integer = 0
-        'Dim tempRealPartOfDFT(512) As Double
-        'Dim tempImaginaryPartOfDFT(512) As Double
+        Thread.CurrentThread.Priority = ThreadPriority.BelowNormal
         Do
             Try
                 resetEvent.WaitOne()
@@ -482,8 +481,6 @@ Public Class MainForm
                         ImaginaryPartOfDFT(outerLoopCounter) = ImaginaryPartOfDFT(outerLoopCounter) - velocityValueList(innerLoopCounter) * Math.Sin(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
                     Next innerLoopCounter
                 Next outerLoopCounter
-                'RealPartOfDFT = RealPartOfDFT
-                'ImaginaryPartOfDFT = ImaginaryPartOfDFT
                 FFTdone = True
             Catch ex As Exception
                 MsgBox(ex.ToString)
