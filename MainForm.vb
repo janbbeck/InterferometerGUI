@@ -48,13 +48,13 @@ Public Class MainForm
     Dim averagingValue As Double = 0
     Dim displayValue As Double = 0
     Dim velocityValueList As New List(Of Double)
-    Dim RealPartOfDFT(512) As Double
-    Dim averagingFromCurrent As Double = 0
-    Dim ImaginaryPartOfDFT(512) As Double
     Dim averagingFromPrevious As Double = 0
     Dim average As Double = 0
     Public TestmodeFlag As Integer = 0
-    Dim Dimension As Integer = 1024
+    Dim Dimension As Integer = 1024     ' this value determines both the size of the plot graphs and the number of data points in the DFT
+    Dim RealPartOfDFT(CInt(Dimension / 2)) As Double
+    Dim averagingFromCurrent As Double = 0
+    Dim ImaginaryPartOfDFT(CInt(Dimension / 2)) As Double
     Dim needsInitialZero As Integer = 0
     Dim outerLoopCounter, innerLoopCounter As Integer
     Dim DifferenceValue As Double = 0
@@ -136,12 +136,12 @@ Public Class MainForm
         Chart1.ChartAreas(0).AxisY.LabelAutoFitStyle = LabelAutoFitStyles.None
         Chart1.ChartAreas(0).AxisX.LabelStyle.Font = New System.Drawing.Font("Trebuchet MS", 2.25F, System.Drawing.FontStyle.Bold)
         positionSeries.ChartType = SeriesChartType.FastLine
-        For chartcounter = 0 To 1023
+        For chartcounter = 0 To CULng(Dimension - 1)
             positionSeries.Points.AddXY(chartcounter, 0.5 * Math.Sin(chartcounter / 40))
         Next
         velocitySeries.ChartType = SeriesChartType.FastLine
         Chart1.Series.Add(positionSeries)
-        For chartcounter = 0 To 1023
+        For chartcounter = 0 To CULng(Dimension - 1)
             velocitySeries.Points.AddXY(chartcounter, 0.5 * Math.Cos(chartcounter / 40))
             velocityValueList.Add(0.0)  ' make sure the list is not empty
         Next
@@ -448,7 +448,7 @@ Public Class MainForm
         zeroAdjustment = currentValue
         ErrorFlag = 0
         DifferenceValue = 0
-        For chartcounter = 0 To 1023
+        For chartcounter = 0 To CULng(Dimension - 1)
             positionSeries.Points.AddXY(chartcounter, 0.0)
             positionSeries.Points.RemoveAt(0)
             velocitySeries.Points.AddXY(chartcounter, 0.0)
@@ -470,13 +470,13 @@ Public Class MainForm
         Do
             Try
                 resetEvent.WaitOne()
-                resetEvent.Reset()
-                For outerLoopCounter = 0 To 512
+                'resetEvent.Reset()
+                For outerLoopCounter = 0 To CInt(((Dimension / 2) - 1))
                     RealPartOfDFT(outerLoopCounter) = 0
                     ImaginaryPartOfDFT(outerLoopCounter) = 0
                 Next outerLoopCounter
-                For outerLoopCounter = 0 To 512
-                    For innerLoopCounter = 0 To 1023
+                For outerLoopCounter = 0 To CInt(((Dimension / 2) - 1))
+                    For innerLoopCounter = 0 To (Dimension - 1)
                         RealPartOfDFT(outerLoopCounter) = RealPartOfDFT(outerLoopCounter) + velocityValueList(innerLoopCounter) * Math.Cos(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
                         ImaginaryPartOfDFT(outerLoopCounter) = ImaginaryPartOfDFT(outerLoopCounter) - velocityValueList(innerLoopCounter) * Math.Sin(2 * Math.PI * outerLoopCounter * innerLoopCounter / Dimension)
                     Next innerLoopCounter
@@ -660,9 +660,6 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub ValueDisplay_Click(sender As Object, e As EventArgs) Handles ValueDisplay.Click
-
-    End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' limit the update rate of the value to about 10 Hz
@@ -729,9 +726,9 @@ Public Class MainForm
                     If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
                         FFTdone = False
                         fftSeries.Points.Clear()
-                        For counter = 0 To 512
-                            fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
-                        Next
+                    For counter = 0 To (CInt(((Dimension / 2) - 1)))
+                        fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
+                    Next
                         resetEvent.Set()
                     End If
             End If
@@ -747,14 +744,6 @@ Public Class MainForm
         ' simulatedData = "46838240776 4767908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
         Dim counter As Integer
         If SuspendFlag = 0 Then
-            If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
-                FFTdone = False
-                fftSeries.Points.Clear()
-                For counter = 0 To 512
-                    fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
-                Next
-                resetEvent.Set()
-            End If
             For counter = 0 To 14   ' 15 values 40 times a second - pretty close to the 610hz
                 simrefcount = simrefcount + 10 * 1638
                 simmeascount = simrefcount + CLng((simulationDistance / 10) * 2 * 0.81)
