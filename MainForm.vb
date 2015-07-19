@@ -762,6 +762,7 @@ Public Class MainForm
                     waveform = Math.Sin(simcount * TMFreqValue * Math.PI / 1000)
                     simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue) * multiplier / 2)
                 Else
+
                 End If
                 simulationVelocity = simulationDistance - previousSimulationDistance
                 simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
