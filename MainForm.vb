@@ -68,6 +68,8 @@ Public Class MainForm
     Dim CurrentValueCorrection As Double = 0
     Dim SuspenREFCount As UInt64 = 0
     Dim SuspendMEASCount As UInt64 = 0
+    Dim graphCount As UInt64 = CULng(Dimension)
+    Dim plotCount As UInt64 = CULng(Dimension)
     Dim SuspendCurrentValue As Double = 0
     Dim REFFrequency As Double = 0
     Dim MEASFrequency As Double = 0
@@ -678,7 +680,7 @@ Public Class MainForm
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' limit the update rate of the value to about 10 Hz
-
+        Dim ScrollRate As Integer = CInt(NumericUpDown_Scale.Value)
         MEAS.Text = MEASFrequency.ToString("0.000")
         REF.Text = REFFrequency.ToString("0.000")
         DIFF.Text = (DIFFFrequency * 1000).ToString("#,##0.00")
@@ -693,9 +695,6 @@ Public Class MainForm
             ValueDisplay.Text = "MEAS (Path) Error   "
         ElseIf (ErrorFlag And 4) = 4 And EDEnabled = 1 Then
             ValueDisplay.Text = "SLEW (Rate) Error   "
-
-
-
         Else
             If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
                 If angleCorrectionFactor = 3600.0 Then
@@ -725,19 +724,25 @@ Public Class MainForm
         End If
 
         If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
-            Dim x As Double
-            Dim y As Double
+            Dim x1 As Double
+            Dim y1 As Double
+            Dim x2 As Double
+            Dim y2 As Double
             While displacementQueuex.Count > 0
-                x = CDbl(displacementQueuex.Dequeue())
-                y = CDbl(displacementQueuey.Dequeue())
-                positionSeries.Points.AddXY(x, y)
-                positionSeries.Points.RemoveAt(0)
-                x = CDbl(velocityQueuex.Dequeue())
-                y = CDbl(velocityQueuey.Dequeue())
-                velocitySeries.Points.AddXY(x, y)
-                velocitySeries.Points.RemoveAt(0)
-                velocityValueList.Add(y)
-                velocityValueList.RemoveAt(0)
+                x1 = CDbl(displacementQueuex.Dequeue())
+                y1 = CDbl(displacementQueuey.Dequeue())
+                x2 = CDbl(velocityQueuex.Dequeue())
+                y2 = CDbl(velocityQueuey.Dequeue())
+                graphCount = graphCount + CULng(1)
+                If 0 = (graphCount Mod ScrollRate) Then
+                    plotCount = plotCount + CULng(1)
+                    positionSeries.Points.AddXY(plotCount, y1)
+                    positionSeries.Points.RemoveAt(0)
+                    velocitySeries.Points.AddXY(plotCount, y2)
+                    velocitySeries.Points.RemoveAt(0)
+                    velocityValueList.Add(y2)
+                    velocityValueList.RemoveAt(0)
+                End If
             End While
             ' DFT related
             Dim counter As Integer
@@ -765,14 +770,6 @@ Public Class MainForm
         ' simulatedData = "46838240776 4767908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
         Dim counter As Integer
         If SuspendFlag = 0 Then
-            '  If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
-            ' FFTdone = False
-            ' fftSeries.Points.Clear()
-            ' For counter = 0 To 512
-            ' fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
-            ' Next
-            ' resetEvent.Set()
-            'End If
             For counter = 0 To TimeScale - 1 ' 15 values 40 times a second - pretty close to the 610hz
                 simrefcount = simrefcount + 10 * 1638
                 simmeascount = simrefcount + CLng((simulationDistance / 10) * 2 * 0.81)
@@ -809,16 +806,6 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub REF_Click(sender As Object, e As EventArgs) Handles REF.Click
-        ErrorFlag = ErrorFlag Or 1
-    End Sub
 
-    Private Sub MEAS_Click(sender As Object, e As EventArgs) Handles MEAS.Click
-        ErrorFlag = ErrorFlag Or 2
-    End Sub
-
-    Private Sub DIFF_Click(sender As Object, e As EventArgs) Handles DIFF.Click
-        ErrorFlag = ErrorFlag Or 4
-    End Sub
 
 End Class
