@@ -480,7 +480,7 @@ Public Class MainForm
         Do
             Try
                 resetEvent.WaitOne()
-                'resetEvent.Reset()
+                resetEvent.Reset()
                 For outerLoopCounter = 0 To CInt(((Dimension / 2) - 1))
                     RealPartOfDFT(outerLoopCounter) = 0
                     ImaginaryPartOfDFT(outerLoopCounter) = 0
