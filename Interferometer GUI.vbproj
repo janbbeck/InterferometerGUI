@@ -173,7 +173,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ActiveButton6.gif" />
-    <Content Include="Resources\InActiveButton4.gif" />
+    <Content Include="Resources\InActiveButton41.gif" />
+    <Content Include="Resources\InActiveButton42.gif" />
     <Content Include="Resources\interferometer.ico" />
     <Content Include="Resources\YelllowButton1.gif" />
   </ItemGroup>

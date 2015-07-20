@@ -34,8 +34,6 @@ Public Class TestMode
     Private Sub Button_Constant_Click(sender As Object, e As EventArgs) Handles Button_Constant.Click
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -45,11 +43,9 @@ Public Class TestMode
 
     End Sub
 
-    Private Sub Button_Square_Click(sender As Object, e As EventArgs) Handles Button_Square.Click
+    Private Sub Button_Square_Click(sender As Object, e As EventArgs)
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -61,8 +57,6 @@ Public Class TestMode
     Private Sub Button_Ramp_Click(sender As Object, e As EventArgs) Handles Button_Ramp.Click
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
@@ -74,8 +68,6 @@ Public Class TestMode
     Private Sub Button_Triangle_Click(sender As Object, e As EventArgs) Handles Button_Triangle.Click
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -87,8 +79,6 @@ Public Class TestMode
     Private Sub Button_Sine_Click(sender As Object, e As EventArgs) Handles Button_Sine.Click
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button_Square.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Square.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -171,7 +161,7 @@ Public Class TestMode
         MainForm.zeroAdjustment = 0
         MainForm.SimulationTimer.Enabled = True
         MainForm.TestmodeFlag = 1
-        MainForm.TestModeLabel.Text = "Test Mode"
+        MainForm.TestModeLabel.Text = "Simulated Data"
         MainForm.simcount = 0
         MainForm.count = 0
         MainForm.counter = 0
@@ -191,4 +181,25 @@ Public Class TestMode
     Private Sub ComboBox_Frequency_SelectedIndexChanged_1(sender As Object, e As EventArgs) Handles ComboBox_Frequency.SelectedIndexChanged
 
     End Sub
+
+    Private Sub ED_On_Button_Click(sender As Object, e As EventArgs) Handles EDOn_Button.Click
+        EDOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        EDOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+        EDOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        EDOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        MainForm.EDOff_Label.Text = "     "
+        MainForm.ErrorFlag = 0
+        MainForm.EDEnabled = 1
+    End Sub
+
+    Private Sub ED_Off_Button_Click(sender As Object, e As EventArgs) Handles EDOff_Button.Click
+        EDOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        EDOff_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+        EDOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        EDOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        MainForm.EDOff_Label.Text = "Error Detection Off"
+        MainForm.ErrorFlag = 0
+        MainForm.EDEnabled = 0
+    End Sub
+
 End Class

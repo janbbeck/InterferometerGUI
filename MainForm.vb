@@ -51,7 +51,7 @@ Public Class MainForm
     Dim averagingFromPrevious As Double = 0
     Dim average As Double = 0
     Public TestmodeFlag As Integer = 0
-    Dim Dimension As Integer = 1024     ' this value determines both the size of the plot graphs and the number of data points in the DFT
+    Dim Dimension As Integer = 4096     ' this value determines both the size of the plot graphs and the number of data points in the DFT
     Dim RealPartOfDFT(CInt(Dimension / 2)) As Double
     Dim averagingFromCurrent As Double = 0
     Dim ImaginaryPartOfDFT(CInt(Dimension / 2)) As Double
@@ -62,7 +62,7 @@ Public Class MainForm
     Dim PreviousREFCount As UInt64 = 0
     Dim CurrentMEASCount As UInt64 = 0
     Dim PreviousMEASCount As UInt64 = 0
-    Dim ErrorFlag As Integer = 0
+    Public ErrorFlag As Integer = 0
     Dim SuspendFlag As Integer = 0
     Dim MeasCountCorrection As UInt64 = 0
     Dim CurrentValueCorrection As Double = 0
@@ -112,6 +112,8 @@ Public Class MainForm
     Public TMFreqValue As Double = 1
     Public TMAmpValue As Double = 1
     Public TMOfsValue As Double = 1
+    Public EDEnabled As Integer = 1
+    Dim TimeScale As Integer = 5
     'Dim DFTThread As New Thread(AddressOf DFT)
     Private DFTThread As New System.ComponentModel.BackgroundWorker 'set new backgroundworker
     Dim resetEvent As ManualResetEvent = New ManualResetEvent(False)
@@ -281,25 +283,26 @@ Public Class MainForm
                         Catch
                         End Try
                         If 1 = serialnumberdifference Then
-                            previousREFFrequency = REFFrequency
                             currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638 ' / serialnumberdifference
                             REFFrequency = (currentREFFrequency) ' / 60) + (59 / 60 * previousREFFrequency) ' Moving average to get finer resolution
-                            previousMEASFrequency = MEASFrequency
                             currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638 ' / serialnumberdifference
                             MEASFrequency = (currentMEASFrequency) ' / 60) + (59 / 60 * previousMEASFrequency)
-                            previousDIFFFrequency = DIFFFrequency
                             currentDIFFFrequency = MEASFrequency - REFFrequency
                             DIFFFrequency = (currentDIFFFrequency) ' / 60) + (59 / 60 * previousDIFFFrequency)
+
                             If SuspendFlag = 0 Then
-                                If ErrorFlag = 0 Then
-                                    If TestmodeFlag = 0 Then
-                                        If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => Head Error
-                                            ErrorFlag = 1
-                                        End If
-                                        If CurrentMEASCount - PreviousMEASCount < 100 Then  ' MEAS is dead => Path Error
-                                            ErrorFlag = ErrorFlag Or 2 ' Both => Loss of Signals (LOS) Error
-                                        End If
+                                ' If ErrorFlag = 0 Then
+                                If TestmodeFlag = 0 And EDEnabled = 1 Then
+                                    If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => REF (Head) Error
+                                        ErrorFlag = 1
                                     End If
+                                    If CurrentMEASCount - PreviousMEASCount < 100 Then  ' MEAS is dead => MEAS (Path) Error
+                                        ErrorFlag = ErrorFlag Or 2 ' Both => Loss of Signals (LOS) Error
+                                    End If
+                                    If MEASFrequency > ((2 * REFFrequency) - (100000 / 610.35)) Or (MEASFrequency < 100000 / 610.35) Then
+                                        ErrorFlag = ErrorFlag Or 4 ' Excessive stage speed => Slew (Rate) error
+                                    End If
+                                    'End If
                                 End If
 
                                 If needsInitialZero = 1 Then
@@ -334,8 +337,13 @@ Public Class MainForm
                                     velocityQueuex.Enqueue(chartcounter)
                                     velocityQueuey.Enqueue(unitCorrectionFactor * velocityValue / multiplier)
                                     chartcounter = CULng(chartcounter + 1)
+                                    Scroll_Rate_Label.Visible = True
+                                    NumericUpDown_Scale.Visible = True
                                 End If
                             End If
+                            previousREFFrequency = REFFrequency
+                            previousMEASFrequency = MEASFrequency
+                            previousDIFFFrequency = DIFFFrequency
                         ElseIf 0 = serialnumberdifference Then
                             Console.Write(" sample duplicate" + vbCrLf)
                         Else
@@ -634,12 +642,20 @@ Public Class MainForm
             Chart1.Hide()
             Me.Height = 300
             Graph_Label.Visible = False
+            Scroll_Rate_Label.Visible = False
+            NumericUpDown_Scale.Visible = False
         Else
             GraphControl.Text = "Disable Graph"
             Chart1.Show()
             Me.Height = 600
             Graph_Label.Visible = True
+            Scroll_Rate_Label.Visible = True
+            NumericUpDown_Scale.Visible = True
         End If
+    End Sub
+
+    Private Sub NumericUpDown_Scale_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_Scale.ValueChanged
+        TimeScale = CInt(NumericUpDown_Scale.Value)
     End Sub
 
     Private Sub Suspend_Click(sender As Object, e As EventArgs) Handles Suspend.Click
@@ -660,7 +676,6 @@ Public Class MainForm
         End If
     End Sub
 
-
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' limit the update rate of the value to about 10 Hz
 
@@ -670,12 +685,16 @@ Public Class MainForm
 
         If SuspendFlag = 1 Then
             ValueDisplay.Text = "Suspend   "
-        ElseIf ErrorFlag = 3 Then
-            ValueDisplay.Text = "LOS Error   "
-        ElseIf ErrorFlag = 1 Then
-            ValueDisplay.Text = "REF Error   "
-        ElseIf ErrorFlag = 2 Then
-            ValueDisplay.Text = "MEAS Error   "
+        ElseIf (ErrorFlag And 3) = 3 And EDEnabled = 1 Then
+            ValueDisplay.Text = "No Signals Error   "
+        ElseIf (ErrorFlag And 3) = 1 And EDEnabled = 1 Then
+            ValueDisplay.Text = "REF (Head) Error   "
+        ElseIf (ErrorFlag And 3) = 2 And EDEnabled = 1 Then
+            ValueDisplay.Text = "MEAS (Path) Error   "
+        ElseIf (ErrorFlag And 4) = 4 And EDEnabled = 1 Then
+            ValueDisplay.Text = "SLEW (Rate) Error   "
+
+
 
         Else
             If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
@@ -723,17 +742,19 @@ Public Class MainForm
             ' DFT related
             Dim counter As Integer
             If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
-                    If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
-                        FFTdone = False
-                        fftSeries.Points.Clear()
+                If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
+                    FFTdone = False
+                    fftSeries.Points.Clear()
                     For counter = 0 To (CInt(((Dimension / 2) - 1)))
                         fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
                     Next
-                        resetEvent.Set()
-                    End If
+                    resetEvent.Set()
+                End If
             End If
             'now update graph
             Chart1.ResetAutoValues()
+            Scroll_Rate_Label.Visible = True
+            NumericUpDown_Scale.Visible = True
         End If
     End Sub
 
@@ -744,7 +765,15 @@ Public Class MainForm
         ' simulatedData = "46838240776 4767908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
         Dim counter As Integer
         If SuspendFlag = 0 Then
-            For counter = 0 To 14   ' 15 values 40 times a second - pretty close to the 610hz
+            '  If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
+            ' FFTdone = False
+            ' fftSeries.Points.Clear()
+            ' For counter = 0 To 512
+            ' fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)))
+            ' Next
+            ' resetEvent.Set()
+            'End If
+            For counter = 0 To TimeScale - 1 ' 15 values 40 times a second - pretty close to the 610hz
                 simrefcount = simrefcount + 10 * 1638
                 simmeascount = simrefcount + CLng((simulationDistance / 10) * 2 * 0.81)
                 simcount = simcount + 1
@@ -756,13 +785,13 @@ Public Class MainForm
                     simulationDistance = CLng(12638 * TMUnitsFactor * (waveform * TMAmpMult) * multiplier / 2)
                 ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     waveform = waveform + (0.002 * TMFreqValue * bangbang)
+                    'simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
                     simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
                     If Math.Abs(waveform) > 1 Or Math.Abs(waveform) = 1 Then bangbang = -bangbang
                 ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     waveform = Math.Sin(simcount * TMFreqValue * Math.PI / 1000)
                     simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue) * multiplier / 2)
                 Else
-
                 End If
                 simulationVelocity = simulationDistance - previousSimulationDistance
                 simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
@@ -779,4 +808,17 @@ Public Class MainForm
         End If
 
     End Sub
+
+    Private Sub REF_Click(sender As Object, e As EventArgs) Handles REF.Click
+        ErrorFlag = ErrorFlag Or 1
+    End Sub
+
+    Private Sub MEAS_Click(sender As Object, e As EventArgs) Handles MEAS.Click
+        ErrorFlag = ErrorFlag Or 2
+    End Sub
+
+    Private Sub DIFF_Click(sender As Object, e As EventArgs) Handles DIFF.Click
+        ErrorFlag = ErrorFlag Or 4
+    End Sub
+
 End Class

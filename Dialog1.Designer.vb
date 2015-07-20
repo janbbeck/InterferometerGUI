@@ -64,7 +64,7 @@ Partial Class Dialog1
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.OK_Button.BackgroundImage = CType(resources.GetObject("OK_Button.BackgroundImage"), System.Drawing.Image)
         Me.OK_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.OK_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.OK_Button.ForeColor = System.Drawing.Color.Black
@@ -144,7 +144,7 @@ Partial Class Dialog1
         '
         Me.Buttonnm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonnm.AccessibleName = "Send AT Command Button"
-        Me.Buttonnm.BackgroundImage = CType(resources.GetObject("Buttonnm.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonnm.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonnm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonnm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonnm.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -158,7 +158,7 @@ Partial Class Dialog1
         '
         Me.Buttonum.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonum.AccessibleName = "Send AT Command Button"
-        Me.Buttonum.BackgroundImage = CType(resources.GetObject("Buttonum.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonum.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonum.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonum.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonum.ForeColor = System.Drawing.Color.Black
@@ -190,7 +190,7 @@ Partial Class Dialog1
         '
         Me.Buttoncm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttoncm.AccessibleName = "Send AT Command Button"
-        Me.Buttoncm.BackgroundImage = CType(resources.GetObject("Buttoncm.BackgroundImage"), System.Drawing.Image)
+        Me.Buttoncm.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Buttoncm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttoncm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttoncm.ForeColor = System.Drawing.Color.Black
@@ -205,7 +205,7 @@ Partial Class Dialog1
         '
         Me.Buttonm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonm.AccessibleName = "Send AT Command Button"
-        Me.Buttonm.BackgroundImage = CType(resources.GetObject("Buttonm.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonm.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonm.ForeColor = System.Drawing.Color.Black
@@ -220,7 +220,7 @@ Partial Class Dialog1
         '
         Me.Buttonin.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonin.AccessibleName = "Send AT Command Button"
-        Me.Buttonin.BackgroundImage = CType(resources.GetObject("Buttonin.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonin.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonin.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonin.ForeColor = System.Drawing.Color.Black
@@ -235,7 +235,7 @@ Partial Class Dialog1
         '
         Me.Buttonft.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonft.AccessibleName = "Send AT Command Button"
-        Me.Buttonft.BackgroundImage = CType(resources.GetObject("Buttonft.BackgroundImage"), System.Drawing.Image)
+        Me.Buttonft.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonft.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonft.ForeColor = System.Drawing.Color.Black

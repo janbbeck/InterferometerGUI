@@ -22,7 +22,6 @@ Partial Class TestMode
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TestMode))
         Me.ComboBox_Frequency = New System.Windows.Forms.ComboBox()
         Me.Trackbar_Frequency = New System.Windows.Forms.TrackBar()
         Me.TextBox_Offset = New System.Windows.Forms.TextBox()
@@ -46,7 +45,9 @@ Partial Class TestMode
         Me.Button_Triangle = New System.Windows.Forms.Button()
         Me.Button_Sine = New System.Windows.Forms.Button()
         Me.Button_Ramp = New System.Windows.Forms.Button()
-        Me.Button_Square = New System.Windows.Forms.Button()
+        Me.EDOff_Button = New System.Windows.Forms.Button()
+        Me.EDOn_Button = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Amplitude, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Offset, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -57,7 +58,7 @@ Partial Class TestMode
         Me.ComboBox_Frequency.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Frequency.FormattingEnabled = True
         Me.ComboBox_Frequency.Items.AddRange(New Object() {"0 to 0.1 Hz", "0 to 1 Hz", "0 to 10 Hz"})
-        Me.ComboBox_Frequency.Location = New System.Drawing.Point(149, 106)
+        Me.ComboBox_Frequency.Location = New System.Drawing.Point(149, 97)
         Me.ComboBox_Frequency.Name = "ComboBox_Frequency"
         Me.ComboBox_Frequency.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Frequency.Size = New System.Drawing.Size(83, 21)
@@ -68,7 +69,7 @@ Partial Class TestMode
         '
         Me.Trackbar_Frequency.AccessibleDescription = "Extent of movement"
         Me.Trackbar_Frequency.LargeChange = 1
-        Me.Trackbar_Frequency.Location = New System.Drawing.Point(166, 137)
+        Me.Trackbar_Frequency.Location = New System.Drawing.Point(166, 129)
         Me.Trackbar_Frequency.Maximum = 100
         Me.Trackbar_Frequency.Name = "Trackbar_Frequency"
         Me.Trackbar_Frequency.Orientation = System.Windows.Forms.Orientation.Vertical
@@ -85,7 +86,7 @@ Partial Class TestMode
         Me.TextBox_Offset.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBox_Offset.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox_Offset.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox_Offset.Location = New System.Drawing.Point(342, 260)
+        Me.TextBox_Offset.Location = New System.Drawing.Point(342, 251)
         Me.TextBox_Offset.Name = "TextBox_Offset"
         Me.TextBox_Offset.ReadOnly = True
         Me.TextBox_Offset.Size = New System.Drawing.Size(91, 13)
@@ -98,7 +99,7 @@ Partial Class TestMode
         Me.TextBox_Amplitude.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBox_Amplitude.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox_Amplitude.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox_Amplitude.Location = New System.Drawing.Point(266, 260)
+        Me.TextBox_Amplitude.Location = New System.Drawing.Point(266, 251)
         Me.TextBox_Amplitude.MaximumSize = New System.Drawing.Size(100, 0)
         Me.TextBox_Amplitude.Name = "TextBox_Amplitude"
         Me.TextBox_Amplitude.ReadOnly = True
@@ -111,7 +112,7 @@ Partial Class TestMode
         Me.TextBox_Offset_Label.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox_Offset_Label.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_Offset_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_Offset_Label.Location = New System.Drawing.Point(366, 74)
+        Me.TextBox_Offset_Label.Location = New System.Drawing.Point(366, 64)
         Me.TextBox_Offset_Label.Name = "TextBox_Offset_Label"
         Me.TextBox_Offset_Label.ReadOnly = True
         Me.TextBox_Offset_Label.Size = New System.Drawing.Size(50, 14)
@@ -124,7 +125,7 @@ Partial Class TestMode
         Me.TextBox_Frequency_Label.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox_Frequency_Label.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_Frequency_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.4!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_Frequency_Label.Location = New System.Drawing.Point(149, 72)
+        Me.TextBox_Frequency_Label.Location = New System.Drawing.Point(149, 64)
         Me.TextBox_Frequency_Label.Name = "TextBox_Frequency_Label"
         Me.TextBox_Frequency_Label.ReadOnly = True
         Me.TextBox_Frequency_Label.Size = New System.Drawing.Size(83, 15)
@@ -137,7 +138,7 @@ Partial Class TestMode
         Me.TextBox_Amplitude_Label.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox_Amplitude_Label.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_Amplitude_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.4!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_Amplitude_Label.Location = New System.Drawing.Point(251, 73)
+        Me.TextBox_Amplitude_Label.Location = New System.Drawing.Point(251, 64)
         Me.TextBox_Amplitude_Label.Name = "TextBox_Amplitude_Label"
         Me.TextBox_Amplitude_Label.ReadOnly = True
         Me.TextBox_Amplitude_Label.Size = New System.Drawing.Size(78, 15)
@@ -150,7 +151,7 @@ Partial Class TestMode
         Me.TextBox8.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox8.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.4!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox8.Location = New System.Drawing.Point(41, 108)
+        Me.TextBox8.Location = New System.Drawing.Point(41, 89)
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.ReadOnly = True
         Me.TextBox8.Size = New System.Drawing.Size(78, 15)
@@ -162,7 +163,7 @@ Partial Class TestMode
         '
         Me.TrackBar_Amplitude.AccessibleDescription = "Extent of movement"
         Me.TrackBar_Amplitude.LargeChange = 1
-        Me.TrackBar_Amplitude.Location = New System.Drawing.Point(266, 137)
+        Me.TrackBar_Amplitude.Location = New System.Drawing.Point(266, 129)
         Me.TrackBar_Amplitude.Maximum = 100
         Me.TrackBar_Amplitude.Name = "TrackBar_Amplitude"
         Me.TrackBar_Amplitude.Orientation = System.Windows.Forms.Orientation.Vertical
@@ -178,7 +179,7 @@ Partial Class TestMode
         '
         Me.TrackBar_Offset.AccessibleDescription = "Extent of movement"
         Me.TrackBar_Offset.LargeChange = 1
-        Me.TrackBar_Offset.Location = New System.Drawing.Point(371, 137)
+        Me.TrackBar_Offset.Location = New System.Drawing.Point(371, 129)
         Me.TrackBar_Offset.Maximum = 100
         Me.TrackBar_Offset.Minimum = -100
         Me.TrackBar_Offset.Name = "TrackBar_Offset"
@@ -195,7 +196,7 @@ Partial Class TestMode
         Me.Textbox_Frequency.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Textbox_Frequency.BackColor = System.Drawing.SystemColors.Menu
         Me.Textbox_Frequency.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.Textbox_Frequency.Location = New System.Drawing.Point(145, 260)
+        Me.Textbox_Frequency.Location = New System.Drawing.Point(145, 251)
         Me.Textbox_Frequency.Name = "Textbox_Frequency"
         Me.Textbox_Frequency.ReadOnly = True
         Me.Textbox_Frequency.Size = New System.Drawing.Size(77, 13)
@@ -208,7 +209,7 @@ Partial Class TestMode
         Me.ComboBox_Amplitude.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Amplitude.FormattingEnabled = True
         Me.ComboBox_Amplitude.Items.AddRange(New Object() {"0 to 0.01", "0 to 0.1", "0 to 1"})
-        Me.ComboBox_Amplitude.Location = New System.Drawing.Point(255, 107)
+        Me.ComboBox_Amplitude.Location = New System.Drawing.Point(255, 98)
         Me.ComboBox_Amplitude.Name = "ComboBox_Amplitude"
         Me.ComboBox_Amplitude.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Amplitude.Size = New System.Drawing.Size(69, 21)
@@ -221,7 +222,7 @@ Partial Class TestMode
         Me.ComboBox_Offset.AutoCompleteCustomSource.AddRange(New String() {"-100 to +100", "-10 to +10", "-1 to +1"})
         Me.ComboBox_Offset.FormattingEnabled = True
         Me.ComboBox_Offset.Items.AddRange(New Object() {"-1 to +1", "-10 to +10", "-100 to +100"})
-        Me.ComboBox_Offset.Location = New System.Drawing.Point(352, 106)
+        Me.ComboBox_Offset.Location = New System.Drawing.Point(352, 97)
         Me.ComboBox_Offset.Name = "ComboBox_Offset"
         Me.ComboBox_Offset.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Offset.Size = New System.Drawing.Size(85, 21)
@@ -233,11 +234,11 @@ Partial Class TestMode
         '
         Me.TextBox4.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox4.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox4.Location = New System.Drawing.Point(115, 32)
+        Me.TextBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox4.Location = New System.Drawing.Point(115, 27)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.ReadOnly = True
-        Me.TextBox4.Size = New System.Drawing.Size(244, 20)
+        Me.TextBox4.Size = New System.Drawing.Size(244, 22)
         Me.TextBox4.TabIndex = 31
         Me.TextBox4.Text = "Function Generator"
         Me.TextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -247,7 +248,7 @@ Partial Class TestMode
         Me.ComboBox_Units.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Units.FormattingEnabled = True
         Me.ComboBox_Units.Items.AddRange(New Object() {"um", "mm", "cm", "in"})
-        Me.ComboBox_Units.Location = New System.Drawing.Point(328, 293)
+        Me.ComboBox_Units.Location = New System.Drawing.Point(328, 296)
         Me.ComboBox_Units.Name = "ComboBox_Units"
         Me.ComboBox_Units.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Units.Size = New System.Drawing.Size(71, 21)
@@ -260,7 +261,7 @@ Partial Class TestMode
         Me.TextBox5.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox5.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox5.Location = New System.Drawing.Point(266, 294)
+        Me.TextBox5.Location = New System.Drawing.Point(266, 297)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.ReadOnly = True
         Me.TextBox5.Size = New System.Drawing.Size(56, 15)
@@ -271,10 +272,10 @@ Partial Class TestMode
         'TMClose_Button
         '
         Me.TMClose_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TMClose_Button.BackgroundImage = CType(resources.GetObject("TMClose_Button.BackgroundImage"), System.Drawing.Image)
+        Me.TMClose_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.TMClose_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.TMClose_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.TMClose_Button.Location = New System.Drawing.Point(211, 340)
+        Me.TMClose_Button.Location = New System.Drawing.Point(211, 444)
         Me.TMClose_Button.Name = "TMClose_Button"
         Me.TMClose_Button.Size = New System.Drawing.Size(67, 23)
         Me.TMClose_Button.TabIndex = 1
@@ -286,7 +287,7 @@ Partial Class TestMode
         Me.FGOff_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
         Me.FGOff_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.FGOff_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.FGOff_Button.Location = New System.Drawing.Point(39, 296)
+        Me.FGOff_Button.Location = New System.Drawing.Point(39, 290)
         Me.FGOff_Button.Name = "FGOff_Button"
         Me.FGOff_Button.Size = New System.Drawing.Size(47, 24)
         Me.FGOff_Button.TabIndex = 36
@@ -295,10 +296,10 @@ Partial Class TestMode
         '
         'FGOn_Button
         '
-        Me.FGOn_Button.BackgroundImage = CType(resources.GetObject("FGOn_Button.BackgroundImage"), System.Drawing.Image)
+        Me.FGOn_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.FGOn_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.FGOn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.FGOn_Button.Location = New System.Drawing.Point(115, 296)
+        Me.FGOn_Button.Location = New System.Drawing.Point(115, 290)
         Me.FGOn_Button.Name = "FGOn_Button"
         Me.FGOn_Button.Size = New System.Drawing.Size(55, 24)
         Me.FGOn_Button.TabIndex = 33
@@ -307,10 +308,10 @@ Partial Class TestMode
         '
         'Button_Constant
         '
-        Me.Button_Constant.BackgroundImage = CType(resources.GetObject("Button_Constant.BackgroundImage"), System.Drawing.Image)
+        Me.Button_Constant.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Button_Constant.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Constant.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.Button_Constant.Location = New System.Drawing.Point(39, 138)
+        Me.Button_Constant.Location = New System.Drawing.Point(39, 119)
         Me.Button_Constant.Name = "Button_Constant"
         Me.Button_Constant.Size = New System.Drawing.Size(81, 25)
         Me.Button_Constant.TabIndex = 32
@@ -324,7 +325,7 @@ Partial Class TestMode
         Me.Button_Triangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Triangle.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button_Triangle.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Button_Triangle.Location = New System.Drawing.Point(39, 209)
+        Me.Button_Triangle.Location = New System.Drawing.Point(39, 190)
         Me.Button_Triangle.Name = "Button_Triangle"
         Me.Button_Triangle.Size = New System.Drawing.Size(81, 25)
         Me.Button_Triangle.TabIndex = 18
@@ -333,10 +334,10 @@ Partial Class TestMode
         '
         'Button_Sine
         '
-        Me.Button_Sine.BackgroundImage = CType(resources.GetObject("Button_Sine.BackgroundImage"), System.Drawing.Image)
+        Me.Button_Sine.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Button_Sine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Sine.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.Button_Sine.Location = New System.Drawing.Point(39, 245)
+        Me.Button_Sine.Location = New System.Drawing.Point(39, 226)
         Me.Button_Sine.Name = "Button_Sine"
         Me.Button_Sine.Size = New System.Drawing.Size(81, 24)
         Me.Button_Sine.TabIndex = 6
@@ -345,35 +346,65 @@ Partial Class TestMode
         '
         'Button_Ramp
         '
-        Me.Button_Ramp.BackgroundImage = CType(resources.GetObject("Button_Ramp.BackgroundImage"), System.Drawing.Image)
+        Me.Button_Ramp.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Button_Ramp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Ramp.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.Button_Ramp.Location = New System.Drawing.Point(38, 174)
+        Me.Button_Ramp.Location = New System.Drawing.Point(38, 155)
         Me.Button_Ramp.Name = "Button_Ramp"
         Me.Button_Ramp.Size = New System.Drawing.Size(81, 25)
         Me.Button_Ramp.TabIndex = 12
         Me.Button_Ramp.Text = "Ramp"
         Me.Button_Ramp.UseVisualStyleBackColor = True
         '
-        'Button_Square
+        'EDOff_Button
         '
-        Me.Button_Square.BackgroundImage = CType(resources.GetObject("Button_Square.BackgroundImage"), System.Drawing.Image)
-        Me.Button_Square.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button_Square.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.Button_Square.Location = New System.Drawing.Point(28, 31)
-        Me.Button_Square.Name = "Button_Square"
-        Me.Button_Square.Size = New System.Drawing.Size(81, 25)
-        Me.Button_Square.TabIndex = 6
-        Me.Button_Square.Text = "Square"
-        Me.Button_Square.UseVisualStyleBackColor = True
-        Me.Button_Square.Visible = False
+        Me.EDOff_Button.BackColor = System.Drawing.SystemColors.Control
+        Me.EDOff_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.EDOff_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.EDOff_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.EDOff_Button.Location = New System.Drawing.Point(179, 387)
+        Me.EDOff_Button.Name = "EDOff_Button"
+        Me.EDOff_Button.Size = New System.Drawing.Size(47, 24)
+        Me.EDOff_Button.TabIndex = 38
+        Me.EDOff_Button.Text = "OFF"
+        Me.EDOff_Button.UseVisualStyleBackColor = False
+        '
+        'EDOn_Button
+        '
+        Me.EDOn_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.EDOn_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.EDOn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.EDOn_Button.Location = New System.Drawing.Point(255, 387)
+        Me.EDOn_Button.Name = "EDOn_Button"
+        Me.EDOn_Button.Size = New System.Drawing.Size(55, 24)
+        Me.EDOn_Button.TabIndex = 37
+        Me.EDOn_Button.Text = "ON"
+        Me.EDOn_Button.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.BackColor = System.Drawing.SystemColors.Control
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(169, 347)
+        Me.TextBox1.MaximumSize = New System.Drawing.Size(60, 30)
+        Me.TextBox1.MinimumSize = New System.Drawing.Size(150, 30)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.ReadOnly = True
+        Me.TextBox1.Size = New System.Drawing.Size(150, 30)
+        Me.TextBox1.TabIndex = 39
+        Me.TextBox1.Text = "Error Detection"
+        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'TestMode
         '
         Me.AcceptButton = Me.TMClose_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(463, 385)
+        Me.ClientSize = New System.Drawing.Size(463, 498)
+        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.EDOff_Button)
+        Me.Controls.Add(Me.EDOn_Button)
         Me.Controls.Add(Me.FGOff_Button)
         Me.Controls.Add(Me.TextBox5)
         Me.Controls.Add(Me.ComboBox_Units)
@@ -395,7 +426,6 @@ Partial Class TestMode
         Me.Controls.Add(Me.Button_Ramp)
         Me.Controls.Add(Me.TextBox_Frequency_Label)
         Me.Controls.Add(Me.Trackbar_Frequency)
-        Me.Controls.Add(Me.Button_Square)
         Me.Controls.Add(Me.ComboBox_Frequency)
         Me.Controls.Add(Me.TMClose_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -421,7 +451,6 @@ Partial Class TestMode
     Friend WithEvents TextBox_Frequency_Label As System.Windows.Forms.TextBox
     Friend WithEvents TextBox_Amplitude_Label As System.Windows.Forms.TextBox
     Friend WithEvents Button_Ramp As System.Windows.Forms.Button
-    Friend WithEvents Button_Square As System.Windows.Forms.Button
     Friend WithEvents Button_Sine As System.Windows.Forms.Button
     Friend WithEvents TextBox8 As System.Windows.Forms.TextBox
     Friend WithEvents Button_Triangle As System.Windows.Forms.Button
@@ -436,4 +465,7 @@ Partial Class TestMode
     Friend WithEvents ComboBox_Units As System.Windows.Forms.ComboBox
     Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
     Friend WithEvents FGOff_Button As System.Windows.Forms.Button
+    Friend WithEvents EDOff_Button As System.Windows.Forms.Button
+    Friend WithEvents EDOn_Button As System.Windows.Forms.Button
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
 End Class
