@@ -29,9 +29,9 @@ Partial Public Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Title3 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Title1 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
         Me.ValueDisplay = New System.Windows.Forms.Label()
         Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
@@ -77,9 +77,9 @@ Partial Public Class MainForm
         'ValueDisplay
         '
         Me.ValueDisplay.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ValueDisplay.Location = New System.Drawing.Point(188, 56)
+        Me.ValueDisplay.Location = New System.Drawing.Point(140, 48)
         Me.ValueDisplay.Name = "ValueDisplay"
-        Me.ValueDisplay.Size = New System.Drawing.Size(472, 70)
+        Me.ValueDisplay.Size = New System.Drawing.Size(520, 86)
         Me.ValueDisplay.TabIndex = 34
         Me.ValueDisplay.Text = "0.000"
         Me.ValueDisplay.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -87,29 +87,29 @@ Partial Public Class MainForm
         'Chart1
         '
         Me.Chart1.BackColor = System.Drawing.Color.Transparent
-        ChartArea3.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea3)
+        ChartArea1.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea1)
         Me.Chart1.Location = New System.Drawing.Point(6, 234)
         Me.Chart1.Name = "Chart1"
         Me.Chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
         Me.Chart1.PaletteCustomColors = New System.Drawing.Color() {System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(150, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(150, Byte), Integer), CType(CType(120, Byte), Integer), CType(CType(0, Byte), Integer))}
-        Series3.ChartArea = "ChartArea1"
-        Series3.Name = "Series1"
-        Me.Chart1.Series.Add(Series3)
+        Series1.ChartArea = "ChartArea1"
+        Series1.Name = "Series1"
+        Me.Chart1.Series.Add(Series1)
         Me.Chart1.Size = New System.Drawing.Size(851, 283)
         Me.Chart1.TabIndex = 36
         Me.Chart1.Text = " "
-        Title3.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Title3.Name = "Title1"
-        Title3.Text = "Position"
-        Me.Chart1.Titles.Add(Title3)
+        Title1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Title1.Name = "Title1"
+        Title1.Text = "Position"
+        Me.Chart1.Titles.Add(Title1)
         '
         'SerialPort1
         '
         '
         'Timer1
         '
-        Me.Timer1.Interval = 25
+        Me.Timer1.Interval = 16
         '
         'TimeLabel
         '
@@ -455,14 +455,14 @@ Partial Public Class MainForm
         Me.Scroll_Rate_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Scroll_Rate_Label.Location = New System.Drawing.Point(159, 134)
         Me.Scroll_Rate_Label.Name = "Scroll_Rate_Label"
-        Me.Scroll_Rate_Label.Size = New System.Drawing.Size(87, 20)
+        Me.Scroll_Rate_Label.Size = New System.Drawing.Size(102, 20)
         Me.Scroll_Rate_Label.TabIndex = 82
-        Me.Scroll_Rate_Label.Text = "Scroll Rate"
+        Me.Scroll_Rate_Label.Text = "Compression"
         '
         'NumericUpDown_Scale
         '
         Me.NumericUpDown_Scale.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown_Scale.Location = New System.Drawing.Point(250, 145)
+        Me.NumericUpDown_Scale.Location = New System.Drawing.Point(268, 145)
         Me.NumericUpDown_Scale.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
         Me.NumericUpDown_Scale.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown_Scale.Name = "NumericUpDown_Scale"

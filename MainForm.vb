@@ -19,8 +19,8 @@ Public Class MainForm
     Public chartcounter As UInt64
     Dim FFTdone As Boolean = True
     ' Creates and initializes a new Queue.
-    Dim displacementQueuex As New Queue()
-    Dim displacementQueuey As New Queue()
+    Public displacementQueuex As New Queue()
+    Public displacementQueuey As New Queue()
     Dim velocityQueuex As New Queue()
     Dim velocityQueuey As New Queue()
     'defining the menu items for the main menu bar
@@ -28,7 +28,7 @@ Public Class MainForm
     Dim myMenuItemComPort As New MenuItem("&Com Port")
     Dim myMenuItemOptions As New MenuItem("&Options")
     Dim myMenuItemCompensation As New MenuItem("&Environmental Compensation")
-    Dim myMenuItemTestMode As New MenuItem("&TestMode")
+    Dim myMenuItemTestMode As New MenuItem("&Test Mode")
     Dim myMenuItemNew As New MenuItem("&New")
     Dim myMenuItemConfiguration As New MenuItem("&Configuration")
     'defining the main menu bar
@@ -41,23 +41,23 @@ Public Class MainForm
     Public angleCorrectionFactor As Double = 3600.0 ' 3600 = arcsec 60 = arcmin 1 = degree
     Public multiplier As Integer = 2    ' needed for interferometer type 1x 2x 4x
     Public straightnessMultiplier As Integer = 1 ' needed for straightness measurements
-    Dim currentValue As Double = 0
+    Public currentValue As Double = 0
     Dim previousValue As Double = 0
     Dim velocityValue As Double = 0
     Dim angleValue As Double = 0
     Dim averagingValue As Double = 0
-    Dim displayValue As Double = 0
+    Public displayValue As Double = 0
     Dim velocityValueList As New List(Of Double)
     Dim averagingFromPrevious As Double = 0
-    Dim average As Double = 0
+    Public average As Double = 0
     Public TestmodeFlag As Integer = 0
-    Dim Dimension As Integer = 4096     ' this value determines both the size of the plot graphs and the number of data points in the DFT
+    Public Dimension As Integer = 1024     ' this value determines both the size of the plot graphs and the number of data points in the DFT
     Dim RealPartOfDFT(CInt(Dimension / 2)) As Double
     Dim averagingFromCurrent As Double = 0
     Dim ImaginaryPartOfDFT(CInt(Dimension / 2)) As Double
-    Dim needsInitialZero As Integer = 0
+    Public needsInitialZero As Integer = 0
     Dim outerLoopCounter, innerLoopCounter As Integer
-    Dim DifferenceValue As Double = 0
+    Public DifferenceValue As Double = 0
     Dim CurrentREFCount As UInt64 = 0
     Dim PreviousREFCount As UInt64 = 0
     Dim CurrentMEASCount As UInt64 = 0
@@ -71,9 +71,9 @@ Public Class MainForm
     Dim graphCount As UInt64 = CULng(Dimension)
     Dim plotCount As UInt64 = CULng(Dimension)
     Dim SuspendCurrentValue As Double = 0
-    Dim REFFrequency As Double = 0
-    Dim MEASFrequency As Double = 0
-    Dim DIFFFrequency As Double = 0
+    Public REFFrequency As Double = 0
+    Public MEASFrequency As Double = 0
+    Public DIFFFrequency As Double = 0
     Dim previousREFFrequency As Double = 0
     Dim previousMEASFrequency As Double = 0
     Dim currentREFFrequency As Double = 0
@@ -98,6 +98,8 @@ Public Class MainForm
     Public waveform As Double = 0
     Public simulationVelocity As Int64 = 0
     Public previoussimulationVelocity As Int64 = 0
+    Public previoussimREFCount As Int64 = 0
+    Public previoussimMEASCount As Int64 = 0
     Public simulationSerial As UInt64 = 0
     Dim bangbang As Double = 1
     Public outerloop As Integer = 0
@@ -119,7 +121,7 @@ Public Class MainForm
     'Dim DFTThread As New Thread(AddressOf DFT)
     Private DFTThread As New System.ComponentModel.BackgroundWorker 'set new backgroundworker
     Dim resetEvent As ManualResetEvent = New ManualResetEvent(False)
-
+    Public IgnoreCount As Integer = 0
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -128,6 +130,7 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
+
         AddHandler DFTThread.DoWork, AddressOf DFT
         DisplacementButton_Click(sender, e)
         Chart1.Series.Clear()
@@ -276,46 +279,67 @@ Public Class MainForm
                         'Console.Write(values(3) + vbCrLf)
                         currentValue = Convert.ToDouble(values(3)) * Wavelength / 2 * ECFactor - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * Wavelength / 2 * ECFactor - CurrentValueCorrection
+
                         PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
                         CurrentREFCount = Convert.ToUInt64(values(1))
+
+                        ' If PreviousMEASCount > CurrentMEASCount Then
+                        ' CurrentMEASCount = PreviousMEASCount
+                        ' IgnoreCount = 2
+                        'End If
+
                         PreviousMEASCount = CurrentMEASCount
                         CurrentMEASCount = Convert.ToUInt64(values(0))
+
+                        'If PreviousMEASCount > CurrentMEASCount Then
+                        ' CurrentMEASCount = CULng(PreviousMEASCount + 1.0)
+                        ' IgnoreCount = 2
+                        'End If
+
                         Try
                             serialnumberdifference = Convert.ToUInt64(values(9)) - previousserialnumber
                         Catch
                         End Try
                         If 1 = serialnumberdifference Then
-                            currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638 ' / serialnumberdifference
-                            REFFrequency = (currentREFFrequency) ' / 60) + (59 / 60 * previousREFFrequency) ' Moving average to get finer resolution
-                            currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638 ' / serialnumberdifference
-                            MEASFrequency = (currentMEASFrequency) ' / 60) + (59 / 60 * previousMEASFrequency)
+                            currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
+                            REFFrequency = (currentREFFrequency)
+                            currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
+                            MEASFrequency = (currentMEASFrequency)
                             currentDIFFFrequency = MEASFrequency - REFFrequency
-                            DIFFFrequency = (currentDIFFFrequency) ' / 60) + (59 / 60 * previousDIFFFrequency)
+                            DIFFFrequency = (currentDIFFFrequency)
 
                             If SuspendFlag = 0 Then
-                                ' If ErrorFlag = 0 Then
-                                If TestmodeFlag = 0 And EDEnabled = 1 Then
-                                    If CurrentREFCount - PreviousREFCount < 100 Then  ' REF is dead => REF (Head) Error
-                                        ErrorFlag = 1
+                                If IgnoreCount = 0 Then
+                                    ' If ErrorFlag = 0 Then
+                                    If EDEnabled = 1 Then
+                                        If CurrentREFCount - PreviousREFCount = 0 Then
+                                            ErrorFlag = ErrorFlag Or 1 ' REF is dead => REF (Head) Error
+                                        End If
+                                        If CurrentMEASCount - PreviousMEASCount = 0 Then  ' MEAS is dead => MEAS (Path) Error
+                                            ErrorFlag = ErrorFlag Or 2 ' MEAS is dead = > MEAS (Path) Error
+                                        End If
+                                        If MEASFrequency > ((2 * REFFrequency) - 0.1) Then
+                                            ErrorFlag = ErrorFlag Or 4 ' Excessive stage speed positive => Slew (Rate) error
+                                        End If
+                                        If MEASFrequency < 0.1 Then
+                                            ErrorFlag = ErrorFlag Or 8 ' Excessive stage speed negative => Slew (Rate) error
+                                        End If
+                                        'End If
                                     End If
-                                    If CurrentMEASCount - PreviousMEASCount < 100 Then  ' MEAS is dead => MEAS (Path) Error
-                                        ErrorFlag = ErrorFlag Or 2 ' Both => Loss of Signals (LOS) Error
+
+                                    If needsInitialZero = 1 Then
+                                        zeroAdjustment = currentValue
+                                        simcount = 0
+                                        count = 0
+                                        counter = 0
+                                        needsInitialZero = 0 ' make sure to zero out the reference system only once
                                     End If
-                                    If MEASFrequency > ((2 * REFFrequency) - (100000 / 610.35)) Or (MEASFrequency < 100000 / 610.35) Then
-                                        ErrorFlag = ErrorFlag Or 4 ' Excessive stage speed => Slew (Rate) error
-                                    End If
-                                    'End If
+                                Else : IgnoreCount = IgnoreCount - 1
                                 End If
 
-                                If needsInitialZero = 1 Then
-                                    zeroAdjustment = currentValue
-                                    simcount = 0
-                                    count = 0
-                                    counter = 0
-                                    needsInitialZero = 0 ' make sure to zero out the reference system only once
-                                End If
                             End If
                             velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
+
                             If TestmodeFlag = 1 Then
                                 velocityValue = velocityValue / 3.0425
                             End If
@@ -354,10 +378,10 @@ Public Class MainForm
                     Else 'values.length incorrect
                         Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
                     End If
-                    Try
-                        previousserialnumber = Convert.ToUInt64(values(9))
-                    Catch
-                    End Try
+        Try
+            previousserialnumber = Convert.ToUInt64(values(9))
+        Catch
+        End Try
                 Next
             Catch ex As Exception
                 'MsgBox(ex.ToString)
@@ -469,6 +493,7 @@ Public Class MainForm
         displacementQueuey.Clear()
         displayValue = 0
         average = 0
+        IgnoreCount = 2
     End Sub
 
     Private Sub DFT(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs)
@@ -503,12 +528,14 @@ Public Class MainForm
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        If TestmodeFlag = 0 Then
+            AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        End If
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Chart1.Series.Clear()
@@ -525,12 +552,14 @@ Public Class MainForm
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        If TestmodeFlag = 0 Then
+            AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        End If
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Chart1.Series.Clear()
@@ -542,69 +571,75 @@ Public Class MainForm
     End Sub
 
     Private Sub AngleButton_Click(sender As Object, e As EventArgs) Handles AngleButton.Click
-        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Chart1.Series.Clear()
-        Chart1.Series.Add(positionSeries)
-        UnitLabel.Visible = False
-        TimeLabel.Visible = False
-        AngleLabel.Visible = True
-        straightnessMultiplier = 1
-        Graph_Label.Text = "    Angle    "
+        If TestmodeFlag = 0 Then
+            DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+            AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            Chart1.Series.Clear()
+            Chart1.Series.Add(positionSeries)
+            UnitLabel.Visible = False
+            TimeLabel.Visible = False
+            AngleLabel.Visible = True
+            straightnessMultiplier = 1
+            Graph_Label.Text = "    Angle    "
+        End If
     End Sub
 
     Private Sub StraightnessLongButton_Click(sender As Object, e As EventArgs) Handles StraightnessLongButton.Click
-        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Chart1.Series.Clear()
-        Chart1.Series.Add(positionSeries)
-        UnitLabel.Visible = True
-        TimeLabel.Visible = False
-        AngleLabel.Visible = False
-        straightnessMultiplier = 360
-        Graph_Label.Text = "Straightness Long"
+        If TestmodeFlag = 0 Then
+            DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+            StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            Chart1.Series.Clear()
+            Chart1.Series.Add(positionSeries)
+            UnitLabel.Visible = True
+            TimeLabel.Visible = False
+            AngleLabel.Visible = False
+            straightnessMultiplier = 360
+            Graph_Label.Text = "Straightness Long"
+        End If
     End Sub
 
     Private Sub StraightnessShortButton_Click(sender As Object, e As EventArgs) Handles StraightnessShortButton.Click
-        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Chart1.Series.Clear()
-        Chart1.Series.Add(positionSeries)
-        UnitLabel.Visible = True
-        TimeLabel.Visible = False
-        AngleLabel.Visible = False
-        straightnessMultiplier = 36
-        Graph_Label.Text = "Straightness Short"
+        If TestmodeFlag = 0 Then
+            DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+            StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            Chart1.Series.Clear()
+            Chart1.Series.Add(positionSeries)
+            UnitLabel.Visible = True
+            TimeLabel.Visible = False
+            AngleLabel.Visible = False
+            straightnessMultiplier = 36
+            Graph_Label.Text = "Straightness Short"
+        End If
     End Sub
 
     Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
@@ -612,12 +647,14 @@ Public Class MainForm
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        If TestmodeFlag = 0 Then
+            AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        End If
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Chart1.Series.Clear()
@@ -635,8 +672,6 @@ Public Class MainForm
         My.Settings.AveragingValue = averagingValue
         My.Settings.Save()
     End Sub
-
-
 
     Private Sub GraphControl_Click(sender As Object, e As EventArgs) Handles GraphControl.Click
         If GraphControl.Text.Equals("Disable Graph") Then
@@ -681,47 +716,70 @@ Public Class MainForm
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' limit the update rate of the value to about 10 Hz
         Dim ScrollRate As Integer = CInt(NumericUpDown_Scale.Value)
-        MEAS.Text = MEASFrequency.ToString("0.000")
-        REF.Text = REFFrequency.ToString("0.000")
-        DIFF.Text = (DIFFFrequency * 1000).ToString("#,##0.00")
+
+        If REFFrequency > 0 Then
+            REF.Text = REFFrequency.ToString("0.000")
+            REF.Visible = True
+        Else
+            REF.Visible = False
+        End If
+
+        If MEASFrequency > 0 Then
+            MEAS.Text = MEASFrequency.ToString("0.000")
+            MEAS.Visible = True
+        Else
+            MEAS.Visible = False
+        End If
+
+        If REFFrequency > 0 And MEASFrequency > 0 Then
+            DIFF.Text = (DIFFFrequency * 1000).ToString("#,##0.00")
+            DIFF.Visible = True
+        Else
+            DIFF.Visible = False
+        End If
 
         If SuspendFlag = 1 Then
             ValueDisplay.Text = "Suspend   "
-        ElseIf (ErrorFlag And 3) = 3 And EDEnabled = 1 Then
-            ValueDisplay.Text = "No Signals Error   "
-        ElseIf (ErrorFlag And 3) = 1 And EDEnabled = 1 Then
-            ValueDisplay.Text = "REF (Head) Error   "
-        ElseIf (ErrorFlag And 3) = 2 And EDEnabled = 1 Then
-            ValueDisplay.Text = "MEAS (Path) Error   "
-        ElseIf (ErrorFlag And 4) = 4 And EDEnabled = 1 Then
-            ValueDisplay.Text = "SLEW (Rate) Error   "
+
+        ElseIf EDEnabled = 1 And ErrorFlag > 0 Then
+            If (ErrorFlag And 3) = 3 Then
+                ValueDisplay.Text = "No Signals Error  "
+            ElseIf (ErrorFlag And 3) = 1 Then
+                ValueDisplay.Text = "REF (Head) Error  "
+            ElseIf (ErrorFlag And 3) = 2 Then
+                ValueDisplay.Text = "MEAS (Path) Error  "
+            ElseIf (ErrorFlag And 4) = 4 Then
+                ValueDisplay.Text = "SLEW (Rate+) Error "
+            ElseIf (ErrorFlag And 8) = 8 Then
+                ValueDisplay.Text = "SLEW (Rate-) Error "
+            End If
+
+        ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
+            If angleCorrectionFactor = 3600.0 Then
+                ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
+            ElseIf angleCorrectionFactor = 60.0 Then
+                ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
+            ElseIf angleCorrectionFactor = 1.0 Then
+                ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
+            End If
         Else
-            If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
-                If angleCorrectionFactor = 3600.0 Then
-                    ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
-                ElseIf angleCorrectionFactor = 60.0 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
-                ElseIf angleCorrectionFactor = 1.0 Then
-                    ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
-                End If
-            Else
-                If unitCorrectionFactor = 1 Then
-                    ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
-                ElseIf unitCorrectionFactor = 0.001 Then
-                    ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
-                ElseIf unitCorrectionFactor = 0.000001 Then
-                    ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
-                ElseIf unitCorrectionFactor = 0.0000001 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
-                ElseIf unitCorrectionFactor = 0.000000001 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
-                ElseIf unitCorrectionFactor = 0.00000003937 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
-                ElseIf unitCorrectionFactor = 0.0000000032808 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
-                End If
+            If unitCorrectionFactor = 1 Then
+                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
+            ElseIf unitCorrectionFactor = 0.001 Then
+                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
+            ElseIf unitCorrectionFactor = 0.000001 Then
+                ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
+            ElseIf unitCorrectionFactor = 0.0000001 Then
+                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
+            ElseIf unitCorrectionFactor = 0.000000001 Then
+                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
+            ElseIf unitCorrectionFactor = 0.00000003937 Then
+                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
+            ElseIf unitCorrectionFactor = 0.0000000032808 Then
+                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
             End If
         End If
+        'End If
 
         If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
             Dim x1 As Double
@@ -756,7 +814,7 @@ Public Class MainForm
                     resetEvent.Set()
                 End If
             End If
-            'now update graph
+            'now update graphDIFF
             Chart1.ResetAutoValues()
             Scroll_Rate_Label.Visible = True
             NumericUpDown_Scale.Visible = True
@@ -770,9 +828,22 @@ Public Class MainForm
         ' simulatedData = "46838240776 4767908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
         Dim counter As Integer
         If SuspendFlag = 0 Then
-            For counter = 0 To TimeScale - 1 ' 15 values 40 times a second - pretty close to the 610hz
-                simrefcount = simrefcount + 10 * 1638
-                simmeascount = simrefcount + CLng((simulationDistance / 10) * 2 * 0.81)
+            For counter = 0 To 5
+                simrefcount = simrefcount + CLng(TestMode.NumericUpDown_FGREF_Value.Value * 1638)
+                simmeascount = simrefcount + CLng(simulationDistance * 0.162)
+
+                If (simmeascount - previoussimMEASCount) > (2 * (simrefcount - previoussimREFCount)) Then
+                    simmeascount = previoussimMEASCount + CLng(2 * (simrefcount - previoussimREFCount))
+                End If
+
+                If (simmeascount - previoussimMEASCount) < 1 Then
+                    simmeascount = previoussimMEASCount + CLng(1)
+                End If
+
+                If simmeascount < 163.8 Then
+                    simmeascount = CLng(163.8)
+                End If
+
                 simcount = simcount + 1
                 If TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     simulationDistance = CLng(12638 * (TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue) * multiplier / 2))
@@ -782,7 +853,6 @@ Public Class MainForm
                     simulationDistance = CLng(12638 * TMUnitsFactor * (waveform * TMAmpMult) * multiplier / 2)
                 ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     waveform = waveform + (0.002 * TMFreqValue * bangbang)
-                    'simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
                     simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
                     If Math.Abs(waveform) > 1 Or Math.Abs(waveform) = 1 Then bangbang = -bangbang
                 ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
@@ -792,13 +862,16 @@ Public Class MainForm
                 End If
                 simulationVelocity = simulationDistance - previousSimulationDistance
                 simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
-                    simulationDistance.ToString + " Previous Difference " + previousSimulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
+                    simulationDistance.ToString + " Previous Difference " + previousSimulationDistance.ToString +
+                    " overflow counter: " + simulationSerial.ToString
                 simulationSerial = simulationSerial + CULng(1)
                 previousSimulationDistance = simulationDistance
                 previoussimulationVelocity = simulationVelocity
+                previoussimREFCount = simrefcount
+                previoussimMEASCount = simmeascount
                 Me.SetText(simulatedData)
             Next
-            If outerloop > 8 Then
+            If outerloop > 0 Then
                 outerloop = 0
             End If
             outerloop = outerloop + 1
@@ -806,6 +879,16 @@ Public Class MainForm
 
     End Sub
 
+    Private Sub REF_Click(sender As Object, e As EventArgs) Handles REF.Click
+        ErrorFlag = ErrorFlag Or 1
+    End Sub
 
+    Private Sub MEAS_Click(sender As Object, e As EventArgs) Handles MEAS.Click
+        ErrorFlag = ErrorFlag Or 2
+    End Sub
+
+    Private Sub DIFF_Click(sender As Object, e As EventArgs) Handles DIFF.Click
+        If currentValue > previousValue Then ErrorFlag = 4 Else ErrorFlag = 8
+    End Sub
 
 End Class
