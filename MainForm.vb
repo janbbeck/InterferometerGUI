@@ -25,12 +25,13 @@ Public Class MainForm
     Dim velocityQueuey As New Queue()
     'defining the menu items for the main menu bar
     Dim menuItems As New List(Of MenuItem)
-    Dim myMenuItemComPort As New MenuItem("&Com Port")
-    Dim myMenuItemOptions As New MenuItem("&Options")
+    Dim myMenuItemConfiguration As New MenuItem("&Configuration")
     Dim myMenuItemCompensation As New MenuItem("&Environmental Compensation")
     Dim myMenuItemTestMode As New MenuItem("&Test Mode")
+    Dim myMenuItemUSBPort As New MenuItem("&USB Port")
+    Dim myMenuItemHelp As New MenuItem("&Help")
     Dim myMenuItemNew As New MenuItem("&New")
-    Dim myMenuItemConfiguration As New MenuItem("&Configuration")
+
     'defining the main menu bar
     Dim mnuBar As New MainMenu()
     ' buffer for serial port object
@@ -101,7 +102,7 @@ Public Class MainForm
     Public previoussimREFCount As Int64 = 0
     Public previoussimMEASCount As Int64 = 0
     Public simulationSerial As UInt64 = 0
-    Dim bangbang As Double = 1
+    Public bangbang As Double = 1
     Public outerloop As Integer = 0
     Public count As Long = 0
     Public counter As Double = 0
@@ -122,6 +123,7 @@ Public Class MainForm
     Private DFTThread As New System.ComponentModel.BackgroundWorker 'set new backgroundworker
     Dim resetEvent As ManualResetEvent = New ManualResetEvent(False)
     Public IgnoreCount As Integer = 0
+    Public phase As Double = 0
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -130,7 +132,6 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
-
         AddHandler DFTThread.DoWork, AddressOf DFT
         DisplacementButton_Click(sender, e)
         Chart1.Series.Clear()
@@ -154,22 +155,35 @@ Public Class MainForm
         Next
         DFTThread.RunWorkerAsync()
         fftSeries.ChartType = SeriesChartType.FastLine
+
         menuItems.Add(myMenuItemNew)    ' need a list to be able to delete/change them at runtime
+
         ' Add functionality to the menu items using the Click event.
         'adding the menu items to the main menu bar
-        myMenuItemOptions.MenuItems.Add(myMenuItemNew)
-        mnuBar.MenuItems.Add(myMenuItemOptions)
-        AddHandler myMenuItemOptions.Popup, AddressOf Me.myMenuItemFile1_Click
-        AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemOptions_Click
-        myMenuItemOptions.MenuItems.Add(myMenuItemConfiguration)
+        'myMenuItemOptions.MenuItems.Add(myMenuItemNew)
+        'mnuBar.MenuItems.Add(myMenuItemOptions)
+        'AddHandler myMenuItemOptions.Popup, AddressOf Me.myMenuItemFile1_Click
+
+        myMenuItemConfiguration.MenuItems.Add(myMenuItemConfiguration)
+        myMenuItemCompensation.MenuItems.Add(myMenuItemCompensation)
+        myMenuItemTestMode.MenuItems.Add(myMenuItemTestMode)
+        myMenuItemHelp.MenuItems.Add(myMenuItemHelp)
+        myMenuItemUSBPort.MenuItems.Add(myMenuItemnew)
+
+        mnuBar.MenuItems.Add(myMenuItemConfiguration)
+        mnuBar.MenuItems.Add(myMenuItemCompensation)
+        mnuBar.MenuItems.Add(myMenuItemTestMode)
+        mnuBar.MenuItems.Add(myMenuItemHelp)
+        mnuBar.MenuItems.Add(myMenuItemUSBPort)
+
+        AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemConfiguration_Click
         AddHandler myMenuItemCompensation.Click, AddressOf Me.myMenuItemCompensation_Click
-        myMenuItemOptions.MenuItems.Add(myMenuItemCompensation)
         AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
-        myMenuItemOptions.MenuItems.Add(myMenuItemTestMode)
-        myMenuItemComPort.MenuItems.Add(myMenuItemNew)
-        mnuBar.MenuItems.Add(myMenuItemComPort)
-        AddHandler myMenuItemComPort.Popup, AddressOf Me.myMenuItemFile1_Click
+        AddHandler myMenuItemUSBPort.Popup, AddressOf Me.myMenuItemUSBPort_Click
+        AddHandler myMenuItemHelp.Click, AddressOf Me.myMenuItemhelp_Click
+
         Me.Menu = mnuBar
+
         ' load user settings
         'multiplier = My.Settings.Multiplier
         unitCorrectionFactor = My.Settings.UnitCorrectionFactor
@@ -203,34 +217,36 @@ Public Class MainForm
         ' file = My.Computer.FileSystem.OpenTextFileWriter("data.txt", True)
     End Sub
 
-
-
-    Private Sub menuItem2_Click(sender As Object, e As EventArgs)
+    Private Sub menuItem4_Click(sender As Object, e As EventArgs)
         ' extract COM port name
         Dim comportstrting As String = sender.ToString
         Dim a() As String = Regex.Split(comportstrting, "Text: ")
-        'MsgBox(a(1))
         ' open COM port
-        Try
-            SerialPort1.Close()
-        Catch ex As Exception
-            ' nothing
-        End Try
-        SerialPort1.PortName = a(1)
-        SerialPort1.BaudRate = 115200
-        SerialPort1.Parity = Parity.None
-        SerialPort1.StopBits = StopBits.One
-        SerialPort1.DataBits = 8
-        SerialPort1.Handshake = Handshake.None
-        SerialPort1.NewLine = vbCr
-        SerialPort1.DtrEnable = True 'important
-        SerialPort1.RtsEnable = True 'important
-        Try
-            SerialPort1.Open()
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        End Try
-        needsInitialZero = 1 ' make sure to zero out the reference system
+        If SerialPort1.IsOpen = True Then
+            Try
+                SerialPort1.Close()
+            Catch ex As Exception
+                ' nothing
+            End Try
+            Thread.Sleep(1500)
+        End If
+        If SerialPort1.IsOpen = False Then
+            SerialPort1.PortName = a(1)
+            SerialPort1.BaudRate = 115200
+            SerialPort1.Parity = Parity.None
+            SerialPort1.StopBits = StopBits.One
+            SerialPort1.DataBits = 8
+            SerialPort1.Handshake = Handshake.None
+            SerialPort1.NewLine = vbCr
+            SerialPort1.DtrEnable = True 'important
+            SerialPort1.RtsEnable = True 'important
+            Try
+                SerialPort1.Open()
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            End Try
+            needsInitialZero = 1 ' make sure to zero out the reference system
+        End If
     End Sub
 
     Private Sub DataReceivedHandler(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
@@ -283,30 +299,18 @@ Public Class MainForm
                         PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
                         CurrentREFCount = Convert.ToUInt64(values(1))
 
-                        ' If PreviousMEASCount > CurrentMEASCount Then
-                        ' CurrentMEASCount = PreviousMEASCount
-                        ' IgnoreCount = 2
-                        'End If
-
                         PreviousMEASCount = CurrentMEASCount
                         CurrentMEASCount = Convert.ToUInt64(values(0))
-
-                        'If PreviousMEASCount > CurrentMEASCount Then
-                        ' CurrentMEASCount = CULng(PreviousMEASCount + 1.0)
-                        ' IgnoreCount = 2
-                        'End If
 
                         Try
                             serialnumberdifference = Convert.ToUInt64(values(9)) - previousserialnumber
                         Catch
                         End Try
+
                         If 1 = serialnumberdifference Then
-                            currentREFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
-                            REFFrequency = (currentREFFrequency)
-                            currentMEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
-                            MEASFrequency = (currentMEASFrequency)
-                            currentDIFFFrequency = MEASFrequency - REFFrequency
-                            DIFFFrequency = (currentDIFFFrequency)
+                            REFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
+                            MEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
+                            DIFFFrequency = MEASFrequency - REFFrequency
 
                             If SuspendFlag = 0 Then
                                 If IgnoreCount = 0 Then
@@ -363,13 +367,14 @@ Public Class MainForm
                                     velocityQueuex.Enqueue(chartcounter)
                                     velocityQueuey.Enqueue(unitCorrectionFactor * velocityValue / multiplier)
                                     chartcounter = CULng(chartcounter + 1)
-                                    Scroll_Rate_Label.Visible = True
+                                    Compression_Label.Visible = True
                                     NumericUpDown_Scale.Visible = True
+                                    ComboBox_Range.Visible = True
+                                    ComboBox_Range_UnitsD.Visible = True
+                                    Label_Range.Visible = True
                                 End If
                             End If
-                            previousREFFrequency = REFFrequency
-                            previousMEASFrequency = MEASFrequency
-                            previousDIFFFrequency = DIFFFrequency
+
                         ElseIf 0 = serialnumberdifference Then
                             Console.Write(" sample duplicate" + vbCrLf)
                         Else
@@ -378,10 +383,10 @@ Public Class MainForm
                     Else 'values.length incorrect
                         Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
                     End If
-        Try
-            previousserialnumber = Convert.ToUInt64(values(9))
-        Catch
-        End Try
+                    Try
+                        previousserialnumber = Convert.ToUInt64(values(9))
+                    Catch
+                    End Try
                 Next
             Catch ex As Exception
                 'MsgBox(ex.ToString)
@@ -391,7 +396,7 @@ Public Class MainForm
 
     Delegate Sub SetTextCallback([text] As String)
 
-    Private Sub myMenuItemFile1_Click(sender As Object, e As EventArgs)
+    Private Sub myMenuItemUSBPort_Click(sender As Object, e As EventArgs)
         ' Add functionality to the menu items using the Click event.  
 
         ' clear menu first
@@ -399,73 +404,77 @@ Public Class MainForm
         Dim i As Integer
         For i = menuItems.Count - 1 To 0 Step -1
             currentMenu = menuItems(i)
-            myMenuItemComPort.MenuItems.Remove(currentMenu)
+            myMenuItemUSBPort.MenuItems.Remove(currentMenu)
         Next
         menuItems.Clear()
         ' populate new items
         For Each sp As String In My.Computer.Ports.SerialPortNames
             Dim myMenuItemOpen As New MenuItem(sp)
-            myMenuItemComPort.MenuItems.Add(myMenuItemOpen)
+            myMenuItemUSBPort.MenuItems.Add(myMenuItemOpen)
             menuItems.Add(myMenuItemOpen)
-            AddHandler myMenuItemOpen.Click, AddressOf Me.menuItem2_Click
-            mnuBar.MenuItems.Add(myMenuItemComPort)
+            AddHandler myMenuItemOpen.Click, AddressOf Me.menuItem4_Click
+            mnuBar.MenuItems.Add(myMenuItemUSBPort)
         Next
     End Sub
 
-    Private Sub myMenuItemOptions_Click(sender As Object, e As EventArgs)
+    Private Sub myMenuItemhelp_Click(sender As Object, e As EventArgs)
+        Help.ShowDialog()
+    End Sub
+
+    Private Sub myMenuItemConfiguration_Click(sender As Object, e As EventArgs)
         ' pop up configuration window
-        Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         If multiplier.Equals(1) Then
-            Dialog1.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf multiplier.Equals(2) Then
-            Dialog1.Button2x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Button2x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Else
-            Dialog1.Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-        Dialog1.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         If unitCorrectionFactor = 1.0 Then
-            Dialog1.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.001 Then
-            Dialog1.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.000001 Then
-            Dialog1.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.0000001 Then
-            Dialog1.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.000000001 Then
-            Dialog1.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.00000003937 Then
-            Dialog1.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
-            Dialog1.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-        Dialog1.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Dialog1.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
         If angleCorrectionFactor = 3600.0 Then
-            Dialog1.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf angleCorrectionFactor = 60.0 Then
-            Dialog1.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf angleCorrectionFactor = 1.0 Then
-            Dialog1.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-        Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Dialog1.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+        Configuration.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         If TestmodeFlag = 0 Then
-            Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Else
-            Dialog1.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Dialog1.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            Configuration.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-        Dialog1.ShowDialog()
+        Configuration.ShowDialog()
     End Sub
 
     Private Sub myMenuItemCompensation_Click(sender As Object, e As EventArgs)
@@ -535,6 +544,12 @@ Public Class MainForm
             StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
             StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            Graph_Label.Text = "Displacement"
+            Label_Range.Text = "Displacement Range"
+            Compression_Label.Text = "Time Comopression"
+            ComboBox_Range_UnitsD.Visible = True
+            ComboBox_Range_UnitsA.Visible = False
+            Label_Range_s.Visible = False
         End If
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -544,7 +559,6 @@ Public Class MainForm
         TimeLabel.Visible = False
         AngleLabel.Visible = False
         straightnessMultiplier = 1
-        Graph_Label.Text = "Displacement"
     End Sub
 
     Private Sub VelocityButton_Click(sender As Object, e As EventArgs) Handles VelocityButton.Click
@@ -559,6 +573,12 @@ Public Class MainForm
             StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
             StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            Graph_Label.Text = "Velocity"
+            Label_Range.Text = "Velocity Range"
+            ComboBox_Range_UnitsD.Visible = True
+            ComboBox_Range_UnitsA.Visible = False
+            Compression_Label.Text = "Time Comopression"
+            Label_Range_s.Visible = True
         End If
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -567,7 +587,6 @@ Public Class MainForm
         UnitLabel.Visible = True
         TimeLabel.Visible = True
         AngleLabel.Visible = False
-        Graph_Label.Text = "   Velocity   "
     End Sub
 
     Private Sub AngleButton_Click(sender As Object, e As EventArgs) Handles AngleButton.Click
@@ -591,6 +610,11 @@ Public Class MainForm
             AngleLabel.Visible = True
             straightnessMultiplier = 1
             Graph_Label.Text = "    Angle    "
+            Label_Range.Text = "Angle Range"
+            Compression_Label.Text = "Time Comopression"
+            Label_Range_s.Visible = False
+            ComboBox_Range_UnitsD.Visible = False
+            ComboBox_Range_UnitsA.Visible = True
         End If
     End Sub
 
@@ -615,6 +639,11 @@ Public Class MainForm
             AngleLabel.Visible = False
             straightnessMultiplier = 360
             Graph_Label.Text = "Straightness Long"
+            Label_Range.Text = "Straightness Long Range"
+            Compression_Label.Text = "Time Comopression"
+            Label_Range_s.Visible = False
+            ComboBox_Range_UnitsD.Visible = True
+            ComboBox_Range_UnitsA.Visible = False
         End If
     End Sub
 
@@ -639,6 +668,11 @@ Public Class MainForm
             AngleLabel.Visible = False
             straightnessMultiplier = 36
             Graph_Label.Text = "Straightness Short"
+            Label_Range.Text = "Straightness Short Range"
+            Compression_Label.Text = "Time Comopression"
+            Label_Range_s.Visible = False
+            ComboBox_Range_UnitsD.Visible = True
+            ComboBox_Range_UnitsA.Visible = False
         End If
     End Sub
 
@@ -654,6 +688,9 @@ Public Class MainForm
             StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
             StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            Label_Range.Text = "DFT Amplitude Range"
+            Compression_Label.Text = "Time Comopression"
+            Compression_Label.Text = "Frequency Range"
         End If
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
@@ -664,6 +701,9 @@ Public Class MainForm
         AngleLabel.Visible = False
         straightnessMultiplier = 1
         Graph_Label.Text = "Frequency"
+        Label_Range_s.Visible = False
+        ComboBox_Range_UnitsD.Visible = False
+        ComboBox_Range_UnitsA.Visible = False
     End Sub
 
     Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
@@ -677,17 +717,23 @@ Public Class MainForm
         If GraphControl.Text.Equals("Disable Graph") Then
             GraphControl.Text = "Enable Graph"
             Chart1.Hide()
-            Me.Height = 300
+            Me.Height = 298
             Graph_Label.Visible = False
-            Scroll_Rate_Label.Visible = False
+            Compression_Label.Visible = False
             NumericUpDown_Scale.Visible = False
+            ComboBox_Range.Visible = False
+            ComboBox_Range_UnitsD.Visible = False
+            Label_Range.Visible = False
         Else
             GraphControl.Text = "Disable Graph"
             Chart1.Show()
             Me.Height = 600
             Graph_Label.Visible = True
-            Scroll_Rate_Label.Visible = True
+            Compression_Label.Visible = True
             NumericUpDown_Scale.Visible = True
+            ComboBox_Range.Visible = True
+            ComboBox_Range_UnitsD.Visible = True
+            Label_Range.Visible = True
         End If
     End Sub
 
@@ -716,70 +762,70 @@ Public Class MainForm
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' limit the update rate of the value to about 10 Hz
         Dim ScrollRate As Integer = CInt(NumericUpDown_Scale.Value)
-
-        If REFFrequency > 0 Then
-            REF.Text = REFFrequency.ToString("0.000")
-            REF.Visible = True
-        Else
-            REF.Visible = False
-        End If
-
-        If MEASFrequency > 0 Then
-            MEAS.Text = MEASFrequency.ToString("0.000")
-            MEAS.Visible = True
-        Else
-            MEAS.Visible = False
-        End If
-
-        If REFFrequency > 0 And MEASFrequency > 0 Then
-            DIFF.Text = (DIFFFrequency * 1000).ToString("#,##0.00")
-            DIFF.Visible = True
-        Else
-            DIFF.Visible = False
-        End If
-
-        If SuspendFlag = 1 Then
-            ValueDisplay.Text = "Suspend   "
-
-        ElseIf EDEnabled = 1 And ErrorFlag > 0 Then
-            If (ErrorFlag And 3) = 3 Then
-                ValueDisplay.Text = "No Signals Error  "
-            ElseIf (ErrorFlag And 3) = 1 Then
-                ValueDisplay.Text = "REF (Head) Error  "
-            ElseIf (ErrorFlag And 3) = 2 Then
-                ValueDisplay.Text = "MEAS (Path) Error  "
-            ElseIf (ErrorFlag And 4) = 4 Then
-                ValueDisplay.Text = "SLEW (Rate+) Error "
-            ElseIf (ErrorFlag And 8) = 8 Then
-                ValueDisplay.Text = "SLEW (Rate-) Error "
+        If IgnoreCount = 0 Then
+            If REFFrequency > 0 Then
+                REF.Text = REFFrequency.ToString("0.000")
+                REF.Visible = True
+            Else
+                REF.Visible = False
             End If
 
-        ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
-            If angleCorrectionFactor = 3600.0 Then
-                ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
-            ElseIf angleCorrectionFactor = 60.0 Then
-                ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
-            ElseIf angleCorrectionFactor = 1.0 Then
-                ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
+            If MEASFrequency > 0 Then
+                MEAS.Text = MEASFrequency.ToString("0.000")
+                MEAS.Visible = True
+            Else
+                MEAS.Visible = False
             End If
-        Else
-            If unitCorrectionFactor = 1 Then
-                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
-            ElseIf unitCorrectionFactor = 0.001 Then
-                ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
-            ElseIf unitCorrectionFactor = 0.000001 Then
-                ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
-            ElseIf unitCorrectionFactor = 0.0000001 Then
-                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
-            ElseIf unitCorrectionFactor = 0.000000001 Then
-                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
-            ElseIf unitCorrectionFactor = 0.00000003937 Then
-                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
-            ElseIf unitCorrectionFactor = 0.0000000032808 Then
-                ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
+
+            If REFFrequency > 0 And MEASFrequency > 0 Then
+                DIFF.Text = (DIFFFrequency * 1000).ToString("#,##0.00")
+                DIFF.Visible = True
+            Else
+                DIFF.Visible = False
+            End If
+
+            If SuspendFlag = 1 Then
+                ValueDisplay.Text = "Suspend   "
+
+            ElseIf EDEnabled = 1 And ErrorFlag > 0 Then
+                If (ErrorFlag And 3) = 3 Then
+                    ValueDisplay.Text = "No Signals Error  "
+                ElseIf (ErrorFlag And 3) = 1 Then
+                    ValueDisplay.Text = "REF (Head) Error  "
+                ElseIf (ErrorFlag And 3) = 2 Then
+                    ValueDisplay.Text = "MEAS (Path) Error  "
+                ElseIf (ErrorFlag And 4) = 4 Then
+                    ValueDisplay.Text = "SLEW (Rate+) Error "
+                ElseIf (ErrorFlag And 8) = 8 Then
+                    ValueDisplay.Text = "SLEW (Rate-) Error "
+                End If
+
+            ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
+                If angleCorrectionFactor = 3600.0 Then
+                    ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
+                ElseIf angleCorrectionFactor = 60.0 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
+                ElseIf angleCorrectionFactor = 1.0 Then
+                    ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
+                End If
+            Else
+                If unitCorrectionFactor = 1 Then
+                    ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
+                ElseIf unitCorrectionFactor = 0.001 Then
+                    ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
+                ElseIf unitCorrectionFactor = 0.000001 Then
+                    ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
+                ElseIf unitCorrectionFactor = 0.0000001 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
+                ElseIf unitCorrectionFactor = 0.000000001 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
+                ElseIf unitCorrectionFactor = 0.00000003937 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
+                ElseIf unitCorrectionFactor = 0.0000000032808 Then
+                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
+                End If
             End If
         End If
-        'End If
 
         If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
             Dim x1 As Double
@@ -816,32 +862,32 @@ Public Class MainForm
             End If
             'now update graphDIFF
             Chart1.ResetAutoValues()
-            Scroll_Rate_Label.Visible = True
+            Compression_Label.Visible = True
             NumericUpDown_Scale.Visible = True
         End If
     End Sub
 
     Private Sub SimulationTimer_Tick(sender As Object, e As EventArgs) Handles SimulationTimer.Tick
+
         ' here we are simulating data of the form of (not all fields are parsed by SetText:
         ' 46838240776 47637908780 Difference: 799668004 Previous Difference: 799668005 overflow counter: 23442624
         ' ignored     ignored     ignored     distance  ignored  ignored     velocity  ignored  ignored  serialcounter
         ' simulatedData = "46838240776 4767908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
+
         Dim counter As Integer
         If SuspendFlag = 0 Then
             For counter = 0 To 5
                 simrefcount = simrefcount + CLng(TestMode.NumericUpDown_FGREF_Value.Value * 1638)
                 simmeascount = simrefcount + CLng(simulationDistance * 0.162)
 
-                If (simmeascount - previoussimMEASCount) > (2 * (simrefcount - previoussimREFCount)) Then
-                    simmeascount = previoussimMEASCount + CLng(2 * (simrefcount - previoussimREFCount))
+                If (simmeascount - previoussimMEASCount) > (2 * (simrefcount - previoussimREFCount) - 0.1) Then
+                    simmeascount = previoussimMEASCount + CLng(2 * (simrefcount - previoussimREFCount) - 0.1)
+                    IgnoreCount = 2
                 End If
 
-                If (simmeascount - previoussimMEASCount) < 1 Then
-                    simmeascount = previoussimMEASCount + CLng(1)
-                End If
-
-                If simmeascount < 163.8 Then
-                    simmeascount = CLng(163.8)
+                If (simmeascount - previoussimMEASCount) < 0.1 Then
+                    simmeascount = previoussimMEASCount + CLng(0.1)
+                    IgnoreCount = 2
                 End If
 
                 simcount = simcount + 1
@@ -852,13 +898,19 @@ Public Class MainForm
                     waveform = waveform + (0.00001 * TMFreqValue * TestMode.TrackBar_Offset.Value)
                     simulationDistance = CLng(12638 * TMUnitsFactor * (waveform * TMAmpMult) * multiplier / 2)
                 ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    waveform = waveform + (0.002 * TMFreqValue * bangbang)
+                    waveform = waveform + ((0.002 * TMFreqValue) * bangbang)
                     simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
-                    If Math.Abs(waveform) > 1 Or Math.Abs(waveform) = 1 Then bangbang = -bangbang
+                    If waveform > 1 Then
+                        bangbang = -1
+                    End If
+                    If waveform < -1 Then
+                        bangbang = 1
+                    End If
+
                 ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    waveform = Math.Sin(simcount * TMFreqValue * Math.PI / 1000)
-                    simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue) * multiplier / 2)
-                Else
+                    'waveform = Math.Sin(simcount * TMFreqValue * Math.PI / 1000)
+                    waveform = waveform + Math.Cos(simcount * TMFreqValue * Math.PI / 1000 + phase) * TMFreqValue * Math.PI / 1000
+                    simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
                 End If
                 simulationVelocity = simulationDistance - previousSimulationDistance
                 simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
@@ -879,16 +931,5 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub REF_Click(sender As Object, e As EventArgs) Handles REF.Click
-        ErrorFlag = ErrorFlag Or 1
-    End Sub
-
-    Private Sub MEAS_Click(sender As Object, e As EventArgs) Handles MEAS.Click
-        ErrorFlag = ErrorFlag Or 2
-    End Sub
-
-    Private Sub DIFF_Click(sender As Object, e As EventArgs) Handles DIFF.Click
-        If currentValue > previousValue Then ErrorFlag = 4 Else ErrorFlag = 8
-    End Sub
-
+    
 End Class

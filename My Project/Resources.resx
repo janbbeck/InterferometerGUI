@@ -127,7 +127,13 @@
   <data name="InActiveButton4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\InActiveButton41.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Smiley1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\smiley1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="DisabledButton1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DisabledButton1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Smiley3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Smiley3.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

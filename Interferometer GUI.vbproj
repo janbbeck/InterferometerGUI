@@ -83,10 +83,16 @@
     <Compile Include="Compensation.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialog1.Designer.vb">
-      <DependentUpon>Dialog1.vb</DependentUpon>
+    <Compile Include="Configuration.Designer.vb">
+      <DependentUpon>Configuration.vb</DependentUpon>
     </Compile>
-    <Compile Include="Dialog1.vb">
+    <Compile Include="Configuration.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Help.Designer.vb">
+      <DependentUpon>Help.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Help.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.vb">
@@ -121,8 +127,11 @@
     <EmbeddedResource Include="Compensation.resx">
       <DependentUpon>Compensation.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialog1.resx">
-      <DependentUpon>Dialog1.vb</DependentUpon>
+    <EmbeddedResource Include="Configuration.resx">
+      <DependentUpon>Configuration.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Help.resx">
+      <DependentUpon>Help.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.vb</DependentUpon>
@@ -173,9 +182,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ActiveButton6.gif" />
-    <Content Include="Resources\InActiveButton41.gif" />
-    <Content Include="Resources\InActiveButton42.gif" />
+    <None Include="Resources\InActiveButton41.gif" />
+    <None Include="Resources\DisabledButton1.gif" />
     <Content Include="Resources\interferometer.ico" />
+    <None Include="Resources\Smiley1.gif" />
+    <None Include="Resources\Smiley3.gif" />
     <Content Include="Resources\YelllowButton1.gif" />
   </ItemGroup>
   <ItemGroup />

@@ -6,6 +6,7 @@ Public Class TestMode
     Dim AmplitudeMultiplier As Double = 1
     Dim OffsetMultiplier As Double = 0
     Dim oldZeroAdjustment As Double = 0
+    Dim PreviousTMFreqValue As Double = 1
 
     Private Sub TestMode_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If ComboBox_Units.Text.Equals("um") Then
@@ -38,22 +39,10 @@ Public Class TestMode
     Private Sub Button_Constant_Click(sender As Object, e As EventArgs) Handles Button_Constant.Click
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.IgnoreCount = 2
-    End Sub
-
-    Private Sub Button_Square_Click(sender As Object, e As EventArgs)
-        Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.IgnoreCount = 2
@@ -62,36 +51,45 @@ Public Class TestMode
     Private Sub Button_Ramp_Click(sender As Object, e As EventArgs) Handles Button_Ramp.Click
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        MainForm.simcount = 0
+        MainForm.waveform = 0
         MainForm.IgnoreCount = 2
     End Sub
 
     Private Sub Button_Triangle_Click(sender As Object, e As EventArgs) Handles Button_Triangle.Click
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        MainForm.simcount = 0
+        MainForm.waveform = 0
+        MainForm.bangbang = 1
         MainForm.IgnoreCount = 2
     End Sub
 
     Private Sub Button_Sine_Click(sender As Object, e As EventArgs) Handles Button_Sine.Click
         Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+        MainForm.simcount = 0
+        MainForm.waveform = 0
+        MainForm.phase = 0
+        'If MainForm.bangbang = -1 Then MainForm.phase = MainForm.phase + Math.PI
         MainForm.IgnoreCount = 2
     End Sub
 
@@ -103,16 +101,22 @@ Public Class TestMode
         ElseIf ComboBox_Frequency.Text.Equals("0 to 10 Hz") Then
             MainForm.TMFreqMult = 0.1
         End If
+        PreviousTMFreqValue = MainForm.simcount * MainForm.TMFreqValue * Math.PI / 1000 + MainForm.phase
         MainForm.TMFreqValue = Trackbar_Frequency.Value * 10 * MainForm.TMFreqMult
+        MainForm.phase = PreviousTMFreqValue - MainForm.simcount * MainForm.TMFreqValue * Math.PI / 1000
         Textbox_Frequency.Text = (MainForm.TMFreqValue / 10).ToString("0.000")
         MainForm.IgnoreCount = 2
     End Sub
 
     Private Sub Track_Frequency_Scroll(sender As Object, e As EventArgs) Handles Trackbar_Frequency.Scroll
+        PreviousTMFreqValue = MainForm.simcount * MainForm.TMFreqValue * Math.PI / 1000 + MainForm.phase
         MainForm.TMFreqValue = Trackbar_Frequency.Value * 10 * MainForm.TMFreqMult
+        MainForm.phase = PreviousTMFreqValue - MainForm.simcount * MainForm.TMFreqValue * Math.PI / 1000
         Textbox_Frequency.Text = (MainForm.TMFreqValue / 10).ToString("0.000")
         MainForm.IgnoreCount = 2
     End Sub
+
+
 
     Private Sub ComboBox_amplitude_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Amplitude.SelectedIndexChanged
         If ComboBox_Amplitude.Text.Equals("0 to 0.01") Then
@@ -191,12 +195,10 @@ Public Class TestMode
         MainForm.SimulationTimer.Enabled = True
         MainForm.TestmodeFlag = 1
         MainForm.TestModeLabel.Text = "Simulated Data"
-        MainForm.simcount = 0
-        MainForm.count = 0
-        MainForm.counter = 0
         MainForm.REF.Visible = True
         MainForm.MEAS.Visible = True
         MainForm.DIFF.Visible = True
+        MainForm.IgnoreCount = 2
     End Sub
 
     Private Sub FGOff_Button_Click(sender As Object, e As EventArgs) Handles FGOff_Button.Click
@@ -217,7 +219,6 @@ Public Class TestMode
         MainForm.MEAS.Visible = True
         MainForm.DIFFFrequency = 0
         MainForm.DIFF.Visible = True
-        MainForm.IgnoreCount = 2
     End Sub
 
     Private Sub ED_On_Button_Click(sender As Object, e As EventArgs) Handles EDOn_Button.Click
@@ -265,5 +266,9 @@ Public Class TestMode
             TextBox_Units_Caution.Visible = True
             MainForm.IgnoreCount = 2
         End If
+    End Sub
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+
     End Sub
 End Class

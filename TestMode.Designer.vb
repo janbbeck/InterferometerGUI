@@ -22,6 +22,7 @@ Partial Class TestMode
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TestMode))
         Me.ComboBox_Frequency = New System.Windows.Forms.ComboBox()
         Me.Trackbar_Frequency = New System.Windows.Forms.TrackBar()
         Me.TextBox_Offset = New System.Windows.Forms.TextBox()
@@ -38,21 +39,21 @@ Partial Class TestMode
         Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.ComboBox_Units = New System.Windows.Forms.ComboBox()
         Me.TextBox5 = New System.Windows.Forms.TextBox()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.TextBox_Units_Caution = New System.Windows.Forms.TextBox()
+        Me.FGREFLabel = New System.Windows.Forms.TextBox()
+        Me.FGREFMHz = New System.Windows.Forms.TextBox()
+        Me.NumericUpDown_FGREF_Value = New System.Windows.Forms.NumericUpDown()
         Me.TMClose_Button = New System.Windows.Forms.Button()
+        Me.ZeroButton = New System.Windows.Forms.Button()
+        Me.EDOff_Button = New System.Windows.Forms.Button()
+        Me.EDOn_Button = New System.Windows.Forms.Button()
         Me.FGOff_Button = New System.Windows.Forms.Button()
         Me.FGOn_Button = New System.Windows.Forms.Button()
         Me.Button_Constant = New System.Windows.Forms.Button()
         Me.Button_Triangle = New System.Windows.Forms.Button()
         Me.Button_Sine = New System.Windows.Forms.Button()
         Me.Button_Ramp = New System.Windows.Forms.Button()
-        Me.EDOff_Button = New System.Windows.Forms.Button()
-        Me.EDOn_Button = New System.Windows.Forms.Button()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.TextBox_Units_Caution = New System.Windows.Forms.TextBox()
-        Me.ZeroButton = New System.Windows.Forms.Button()
-        Me.FGREFLabel = New System.Windows.Forms.TextBox()
-        Me.FGREFMHz = New System.Windows.Forms.TextBox()
-        Me.NumericUpDown_FGREF_Value = New System.Windows.Forms.NumericUpDown()
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Amplitude, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Offset, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -64,7 +65,7 @@ Partial Class TestMode
         Me.ComboBox_Frequency.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Frequency.FormattingEnabled = True
         Me.ComboBox_Frequency.Items.AddRange(New Object() {"0 to 0.1 Hz", "0 to 1 Hz", "0 to 10 Hz"})
-        Me.ComboBox_Frequency.Location = New System.Drawing.Point(145, 115)
+        Me.ComboBox_Frequency.Location = New System.Drawing.Point(145, 112)
         Me.ComboBox_Frequency.Name = "ComboBox_Frequency"
         Me.ComboBox_Frequency.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Frequency.Size = New System.Drawing.Size(83, 21)
@@ -92,7 +93,7 @@ Partial Class TestMode
         Me.TextBox_Offset.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBox_Offset.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox_Offset.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox_Offset.Location = New System.Drawing.Point(334, 266)
+        Me.TextBox_Offset.Location = New System.Drawing.Point(334, 264)
         Me.TextBox_Offset.Name = "TextBox_Offset"
         Me.TextBox_Offset.ReadOnly = True
         Me.TextBox_Offset.Size = New System.Drawing.Size(91, 13)
@@ -105,7 +106,7 @@ Partial Class TestMode
         Me.TextBox_Amplitude.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBox_Amplitude.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox_Amplitude.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox_Amplitude.Location = New System.Drawing.Point(265, 266)
+        Me.TextBox_Amplitude.Location = New System.Drawing.Point(265, 264)
         Me.TextBox_Amplitude.MaximumSize = New System.Drawing.Size(100, 0)
         Me.TextBox_Amplitude.Name = "TextBox_Amplitude"
         Me.TextBox_Amplitude.ReadOnly = True
@@ -157,7 +158,7 @@ Partial Class TestMode
         Me.TextBox8.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox8.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.4!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox8.Location = New System.Drawing.Point(41, 115)
+        Me.TextBox8.Location = New System.Drawing.Point(41, 113)
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.ReadOnly = True
         Me.TextBox8.Size = New System.Drawing.Size(78, 15)
@@ -202,7 +203,7 @@ Partial Class TestMode
         Me.Textbox_Frequency.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Textbox_Frequency.BackColor = System.Drawing.SystemColors.Menu
         Me.Textbox_Frequency.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.Textbox_Frequency.Location = New System.Drawing.Point(141, 266)
+        Me.Textbox_Frequency.Location = New System.Drawing.Point(142, 264)
         Me.Textbox_Frequency.Name = "Textbox_Frequency"
         Me.Textbox_Frequency.ReadOnly = True
         Me.Textbox_Frequency.Size = New System.Drawing.Size(77, 13)
@@ -215,7 +216,7 @@ Partial Class TestMode
         Me.ComboBox_Amplitude.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Amplitude.FormattingEnabled = True
         Me.ComboBox_Amplitude.Items.AddRange(New Object() {"0 to 0.01", "0 to 0.1", "0 to 1"})
-        Me.ComboBox_Amplitude.Location = New System.Drawing.Point(250, 114)
+        Me.ComboBox_Amplitude.Location = New System.Drawing.Point(250, 111)
         Me.ComboBox_Amplitude.Name = "ComboBox_Amplitude"
         Me.ComboBox_Amplitude.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Amplitude.Size = New System.Drawing.Size(69, 21)
@@ -228,7 +229,7 @@ Partial Class TestMode
         Me.ComboBox_Offset.AutoCompleteCustomSource.AddRange(New String() {"-100 to +100", "-10 to +10", "-1 to +1"})
         Me.ComboBox_Offset.FormattingEnabled = True
         Me.ComboBox_Offset.Items.AddRange(New Object() {"-1 to +1", "-10 to +10", "-100 to +100"})
-        Me.ComboBox_Offset.Location = New System.Drawing.Point(340, 114)
+        Me.ComboBox_Offset.Location = New System.Drawing.Point(340, 111)
         Me.ComboBox_Offset.Name = "ComboBox_Offset"
         Me.ComboBox_Offset.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Offset.Size = New System.Drawing.Size(85, 21)
@@ -254,7 +255,7 @@ Partial Class TestMode
         Me.ComboBox_Units.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Units.FormattingEnabled = True
         Me.ComboBox_Units.Items.AddRange(New Object() {"um", "mm", "cm", "m", "in", "ft"})
-        Me.ComboBox_Units.Location = New System.Drawing.Point(339, 307)
+        Me.ComboBox_Units.Location = New System.Drawing.Point(339, 305)
         Me.ComboBox_Units.Name = "ComboBox_Units"
         Me.ComboBox_Units.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Units.Size = New System.Drawing.Size(39, 21)
@@ -267,7 +268,7 @@ Partial Class TestMode
         Me.TextBox5.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox5.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox5.Location = New System.Drawing.Point(282, 308)
+        Me.TextBox5.Location = New System.Drawing.Point(282, 306)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.ReadOnly = True
         Me.TextBox5.Size = New System.Drawing.Size(56, 15)
@@ -275,17 +276,130 @@ Partial Class TestMode
         Me.TextBox5.Text = " Units"
         Me.TextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
+        'TextBox1
+        '
+        Me.TextBox1.BackColor = System.Drawing.SystemColors.Control
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(265, 342)
+        Me.TextBox1.MaximumSize = New System.Drawing.Size(60, 30)
+        Me.TextBox1.MinimumSize = New System.Drawing.Size(150, 30)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.ReadOnly = True
+        Me.TextBox1.Size = New System.Drawing.Size(150, 30)
+        Me.TextBox1.TabIndex = 39
+        Me.TextBox1.Text = "Error Detection"
+        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'TextBox_Units_Caution
+        '
+        Me.TextBox_Units_Caution.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.TextBox_Units_Caution.BackColor = System.Drawing.SystemColors.Menu
+        Me.TextBox_Units_Caution.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBox_Units_Caution.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.TextBox_Units_Caution.Location = New System.Drawing.Point(275, 287)
+        Me.TextBox_Units_Caution.MaximumSize = New System.Drawing.Size(200, 0)
+        Me.TextBox_Units_Caution.MinimumSize = New System.Drawing.Size(100, 0)
+        Me.TextBox_Units_Caution.Name = "TextBox_Units_Caution"
+        Me.TextBox_Units_Caution.ReadOnly = True
+        Me.TextBox_Units_Caution.Size = New System.Drawing.Size(125, 13)
+        Me.TextBox_Units_Caution.TabIndex = 40
+        Me.TextBox_Units_Caution.Text = "Slew (Rate) Error Possible"
+        Me.TextBox_Units_Caution.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBox_Units_Caution.Visible = False
+        '
+        'FGREFLabel
+        '
+        Me.FGREFLabel.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.FGREFLabel.BackColor = System.Drawing.SystemColors.Menu
+        Me.FGREFLabel.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.FGREFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FGREFLabel.Location = New System.Drawing.Point(99, 306)
+        Me.FGREFLabel.Name = "FGREFLabel"
+        Me.FGREFLabel.ReadOnly = True
+        Me.FGREFLabel.Size = New System.Drawing.Size(46, 15)
+        Me.FGREFLabel.TabIndex = 42
+        Me.FGREFLabel.Text = " REF:"
+        Me.FGREFLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'FGREFMHz
+        '
+        Me.FGREFMHz.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.FGREFMHz.BackColor = System.Drawing.SystemColors.Menu
+        Me.FGREFMHz.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.FGREFMHz.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FGREFMHz.Location = New System.Drawing.Point(182, 306)
+        Me.FGREFMHz.Name = "FGREFMHz"
+        Me.FGREFMHz.ReadOnly = True
+        Me.FGREFMHz.Size = New System.Drawing.Size(46, 15)
+        Me.FGREFMHz.TabIndex = 72
+        Me.FGREFMHz.Text = " MHz"
+        Me.FGREFMHz.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'NumericUpDown_FGREF_Value
+        '
+        Me.NumericUpDown_FGREF_Value.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.NumericUpDown_FGREF_Value.DecimalPlaces = 1
+        Me.NumericUpDown_FGREF_Value.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
+        Me.NumericUpDown_FGREF_Value.Location = New System.Drawing.Point(146, 306)
+        Me.NumericUpDown_FGREF_Value.Maximum = New Decimal(New Integer() {20, 0, 0, 0})
+        Me.NumericUpDown_FGREF_Value.Minimum = New Decimal(New Integer() {2, 0, 0, 65536})
+        Me.NumericUpDown_FGREF_Value.Name = "NumericUpDown_FGREF_Value"
+        Me.NumericUpDown_FGREF_Value.Size = New System.Drawing.Size(41, 20)
+        Me.NumericUpDown_FGREF_Value.TabIndex = 73
+        Me.NumericUpDown_FGREF_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.NumericUpDown_FGREF_Value.Value = New Decimal(New Integer() {10000, 0, 0, 196608})
+        '
         'TMClose_Button
         '
         Me.TMClose_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TMClose_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.TMClose_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.TMClose_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.TMClose_Button.Location = New System.Drawing.Point(210, 474)
+        Me.TMClose_Button.Location = New System.Drawing.Point(198, 432)
         Me.TMClose_Button.Name = "TMClose_Button"
         Me.TMClose_Button.Size = New System.Drawing.Size(67, 23)
         Me.TMClose_Button.TabIndex = 1
         Me.TMClose_Button.Text = "CLOSE"
+        '
+        'ZeroButton
+        '
+        Me.ZeroButton.AccessibleDescription = ""
+        Me.ZeroButton.AccessibleName = ""
+        Me.ZeroButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.ZeroButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ZeroButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.ZeroButton.Location = New System.Drawing.Point(59, 370)
+        Me.ZeroButton.Name = "ZeroButton"
+        Me.ZeroButton.Size = New System.Drawing.Size(105, 23)
+        Me.ZeroButton.TabIndex = 41
+        Me.ZeroButton.Text = "Reset Display"
+        '
+        'EDOff_Button
+        '
+        Me.EDOff_Button.BackColor = System.Drawing.SystemColors.Control
+        Me.EDOff_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.EDOff_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.EDOff_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.EDOff_Button.Location = New System.Drawing.Point(275, 381)
+        Me.EDOff_Button.Name = "EDOff_Button"
+        Me.EDOff_Button.Size = New System.Drawing.Size(47, 24)
+        Me.EDOff_Button.TabIndex = 38
+        Me.EDOff_Button.Text = "OFF"
+        Me.EDOff_Button.UseVisualStyleBackColor = False
+        '
+        'EDOn_Button
+        '
+        Me.EDOn_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.EDOn_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.EDOn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.EDOn_Button.Location = New System.Drawing.Point(351, 381)
+        Me.EDOn_Button.Name = "EDOn_Button"
+        Me.EDOn_Button.Size = New System.Drawing.Size(55, 24)
+        Me.EDOn_Button.TabIndex = 37
+        Me.EDOn_Button.Text = "ON"
+        Me.EDOn_Button.UseVisualStyleBackColor = True
         '
         'FGOff_Button
         '
@@ -362,125 +476,12 @@ Partial Class TestMode
         Me.Button_Ramp.Text = "Ramp"
         Me.Button_Ramp.UseVisualStyleBackColor = True
         '
-        'EDOff_Button
-        '
-        Me.EDOff_Button.BackColor = System.Drawing.SystemColors.Control
-        Me.EDOff_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.EDOff_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.EDOff_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.EDOff_Button.Location = New System.Drawing.Point(275, 421)
-        Me.EDOff_Button.Name = "EDOff_Button"
-        Me.EDOff_Button.Size = New System.Drawing.Size(47, 24)
-        Me.EDOff_Button.TabIndex = 38
-        Me.EDOff_Button.Text = "OFF"
-        Me.EDOff_Button.UseVisualStyleBackColor = False
-        '
-        'EDOn_Button
-        '
-        Me.EDOn_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Me.EDOn_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.EDOn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.EDOn_Button.Location = New System.Drawing.Point(351, 421)
-        Me.EDOn_Button.Name = "EDOn_Button"
-        Me.EDOn_Button.Size = New System.Drawing.Size(55, 24)
-        Me.EDOn_Button.TabIndex = 37
-        Me.EDOn_Button.Text = "ON"
-        Me.EDOn_Button.UseVisualStyleBackColor = True
-        '
-        'TextBox1
-        '
-        Me.TextBox1.BackColor = System.Drawing.SystemColors.Control
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(265, 382)
-        Me.TextBox1.MaximumSize = New System.Drawing.Size(60, 30)
-        Me.TextBox1.MinimumSize = New System.Drawing.Size(150, 30)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ReadOnly = True
-        Me.TextBox1.Size = New System.Drawing.Size(150, 30)
-        Me.TextBox1.TabIndex = 39
-        Me.TextBox1.Text = "Error Detection"
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'TextBox_Units_Caution
-        '
-        Me.TextBox_Units_Caution.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TextBox_Units_Caution.BackColor = System.Drawing.SystemColors.Menu
-        Me.TextBox_Units_Caution.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox_Units_Caution.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.TextBox_Units_Caution.Location = New System.Drawing.Point(278, 343)
-        Me.TextBox_Units_Caution.MaximumSize = New System.Drawing.Size(200, 0)
-        Me.TextBox_Units_Caution.MinimumSize = New System.Drawing.Size(100, 0)
-        Me.TextBox_Units_Caution.Name = "TextBox_Units_Caution"
-        Me.TextBox_Units_Caution.ReadOnly = True
-        Me.TextBox_Units_Caution.Size = New System.Drawing.Size(125, 13)
-        Me.TextBox_Units_Caution.TabIndex = 40
-        Me.TextBox_Units_Caution.Text = "Slew (Rate) Error Possible"
-        Me.TextBox_Units_Caution.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.TextBox_Units_Caution.Visible = False
-        '
-        'ZeroButton
-        '
-        Me.ZeroButton.AccessibleDescription = ""
-        Me.ZeroButton.AccessibleName = ""
-        Me.ZeroButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.ZeroButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ZeroButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.ZeroButton.Location = New System.Drawing.Point(58, 389)
-        Me.ZeroButton.Name = "ZeroButton"
-        Me.ZeroButton.Size = New System.Drawing.Size(105, 23)
-        Me.ZeroButton.TabIndex = 41
-        Me.ZeroButton.Text = "Reset Display"
-        '
-        'FGREFLabel
-        '
-        Me.FGREFLabel.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.FGREFLabel.BackColor = System.Drawing.SystemColors.Menu
-        Me.FGREFLabel.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.FGREFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FGREFLabel.Location = New System.Drawing.Point(99, 308)
-        Me.FGREFLabel.Name = "FGREFLabel"
-        Me.FGREFLabel.ReadOnly = True
-        Me.FGREFLabel.Size = New System.Drawing.Size(46, 15)
-        Me.FGREFLabel.TabIndex = 42
-        Me.FGREFLabel.Text = " REF:"
-        Me.FGREFLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'FGREFMHz
-        '
-        Me.FGREFMHz.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.FGREFMHz.BackColor = System.Drawing.SystemColors.Menu
-        Me.FGREFMHz.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.FGREFMHz.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FGREFMHz.Location = New System.Drawing.Point(185, 308)
-        Me.FGREFMHz.Name = "FGREFMHz"
-        Me.FGREFMHz.ReadOnly = True
-        Me.FGREFMHz.Size = New System.Drawing.Size(46, 15)
-        Me.FGREFMHz.TabIndex = 72
-        Me.FGREFMHz.Text = " MHz"
-        Me.FGREFMHz.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'NumericUpDown_FGREF_Value
-        '
-        Me.NumericUpDown_FGREF_Value.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown_FGREF_Value.DecimalPlaces = 1
-        Me.NumericUpDown_FGREF_Value.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
-        Me.NumericUpDown_FGREF_Value.Location = New System.Drawing.Point(147, 308)
-        Me.NumericUpDown_FGREF_Value.Maximum = New Decimal(New Integer() {20, 0, 0, 0})
-        Me.NumericUpDown_FGREF_Value.Minimum = New Decimal(New Integer() {2, 0, 0, 65536})
-        Me.NumericUpDown_FGREF_Value.Name = "NumericUpDown_FGREF_Value"
-        Me.NumericUpDown_FGREF_Value.Size = New System.Drawing.Size(41, 20)
-        Me.NumericUpDown_FGREF_Value.TabIndex = 73
-        Me.NumericUpDown_FGREF_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.NumericUpDown_FGREF_Value.Value = New Decimal(New Integer() {10000, 0, 0, 196608})
-        '
         'TestMode
         '
         Me.AcceptButton = Me.TMClose_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(463, 532)
+        Me.ClientSize = New System.Drawing.Size(463, 488)
         Me.Controls.Add(Me.NumericUpDown_FGREF_Value)
         Me.Controls.Add(Me.FGREFMHz)
         Me.Controls.Add(Me.FGREFLabel)
@@ -513,10 +514,11 @@ Partial Class TestMode
         Me.Controls.Add(Me.ComboBox_Frequency)
         Me.Controls.Add(Me.TMClose_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.Location = New System.Drawing.Point(300, 400)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Location = New System.Drawing.Point(50, 400)
         Me.MaximizeBox = False
         Me.Name = "TestMode"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "Test Mode Parameters"
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar_Amplitude, System.ComponentModel.ISupportInitialize).EndInit()
