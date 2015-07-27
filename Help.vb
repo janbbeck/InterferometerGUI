@@ -7,9 +7,6 @@
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-
-
-
     End Sub
 
     Private Sub LinkLabel1_LinkClicked(ByVal sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked

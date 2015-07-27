@@ -184,6 +184,18 @@ Public Class TestMode
         FGOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FGOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         FGOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+        If MainForm.AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
+            MainForm.StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
+            MainForm.StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+            MainForm.DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+            MainForm.DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            MainForm.Compression_Label.Text = "Time Compression"
+            MainForm.Label_Range_s.Visible = False
+            MainForm.ComboBox_Range_UnitsD.Visible = True
+            MainForm.ComboBox_Range_UnitsA.Visible = False
+            MainForm.AngleLabel.Visible = False
+            MainForm.straightnessMultiplier = 1
+        End If
         MainForm.AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
         MainForm.StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
         MainForm.StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
@@ -199,6 +211,10 @@ Public Class TestMode
         MainForm.MEAS.Visible = True
         MainForm.DIFF.Visible = True
         MainForm.IgnoreCount = 2
+        MainForm.ErrorFlag = 0
+        'MainForm.needsInitialZero = 1
+        'MainForm.simcount = 0
+        'MainForm.waveform = 0
     End Sub
 
     Private Sub FGOff_Button_Click(sender As Object, e As EventArgs) Handles FGOff_Button.Click
@@ -219,6 +235,7 @@ Public Class TestMode
         MainForm.MEAS.Visible = True
         MainForm.DIFFFrequency = 0
         MainForm.DIFF.Visible = True
+        MainForm.ErrorFlag = 0
     End Sub
 
     Private Sub ED_On_Button_Click(sender As Object, e As EventArgs) Handles EDOn_Button.Click

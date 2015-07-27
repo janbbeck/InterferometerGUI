@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Forms
 
-Public Class Configuration
+Public Class Configuration11
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -305,22 +305,6 @@ Public Class Configuration
             MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
             MainForm.velocitySeries.Points.RemoveAt(0)
         Next
-    End Sub
-
-    Private Sub Test_Button_On_Click(sender As Object, e As EventArgs) Handles Test_Button_On.Click
-        Test_Button_Off.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Test_Button_On.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.TestmodeFlag = 1
-    End Sub
-
-    Private Sub Test_Button_Off_Click(sender As Object, e As EventArgs) Handles Test_Button_Off.Click
-        Test_Button_Off.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Test_Button_On.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.TestmodeFlag = 0
     End Sub
 
     Private Sub Dialog1_Load(sender As Object, e As EventArgs) Handles MyBase.Load

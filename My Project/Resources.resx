@@ -121,19 +121,19 @@
   <data name="ActiveButton6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ActiveButton6.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="YelllowButton11" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\YelllowButton1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="GreenButton1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GreenButton1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Smiley3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Smiley3.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="InActiveButton4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\InActiveButton41.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Smiley1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\smiley1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DisabledButton1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DisabledButton1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Smiley3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Smiley3.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="YellowButton1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\YellowButton11.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

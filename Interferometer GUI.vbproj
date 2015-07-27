@@ -139,9 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="TestMode.resx">
       <DependentUpon>TestMode.vb</DependentUpon>
@@ -182,12 +182,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ActiveButton6.gif" />
+    <None Include="Resources\YellowButton11.gif" />
     <None Include="Resources\InActiveButton41.gif" />
     <None Include="Resources\DisabledButton1.gif" />
+    <None Include="Resources\GreenButton1.gif" />
     <Content Include="Resources\interferometer.ico" />
-    <None Include="Resources\Smiley1.gif" />
     <None Include="Resources\Smiley3.gif" />
-    <Content Include="Resources\YelllowButton1.gif" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.Targets" />

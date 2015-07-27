@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class Configuration
+Partial Class Configuration11
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class Configuration
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Configuration))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Configuration11))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -41,9 +41,6 @@ Partial Class Configuration
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Buttonarcmin = New System.Windows.Forms.Button()
         Me.Buttondegree = New System.Windows.Forms.Button()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Test_Button_On = New System.Windows.Forms.Button()
-        Me.Test_Button_Off = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -302,59 +299,12 @@ Partial Class Configuration
         Me.Buttondegree.TabIndex = 66
         Me.Buttondegree.Text = "degrees"
         '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(298, 156)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(61, 13)
-        Me.Label3.TabIndex = 67
-        Me.Label3.Text = "Test Mode:"
-        Me.Label3.Visible = False
-        '
-        'Test_Button_On
-        '
-        Me.Test_Button_On.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.Test_Button_On.AccessibleName = "Send AT Command Button"
-        Me.Test_Button_On.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.Test_Button_On.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Test_Button_On.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.Test_Button_On.ForeColor = System.Drawing.Color.Black
-        Me.Test_Button_On.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Test_Button_On.Location = New System.Drawing.Point(357, 182)
-        Me.Test_Button_On.Name = "Test_Button_On"
-        Me.Test_Button_On.Size = New System.Drawing.Size(50, 23)
-        Me.Test_Button_On.TabIndex = 68
-        Me.Test_Button_On.Text = "On"
-        Me.Test_Button_On.Visible = False
-        '
-        'Test_Button_Off
-        '
-        Me.Test_Button_Off.AccessibleDescription = "Button to send an AT command to the modem."
-        Me.Test_Button_Off.AccessibleName = "Send AT Command Button"
-        Me.Test_Button_Off.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.Test_Button_Off.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Me.Test_Button_Off.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Test_Button_Off.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.Test_Button_Off.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Test_Button_Off.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.Test_Button_Off.Location = New System.Drawing.Point(301, 182)
-        Me.Test_Button_Off.Name = "Test_Button_Off"
-        Me.Test_Button_Off.Size = New System.Drawing.Size(50, 23)
-        Me.Test_Button_Off.TabIndex = 69
-        Me.Test_Button_Off.Text = "Off"
-        Me.Test_Button_Off.UseVisualStyleBackColor = False
-        Me.Test_Button_Off.Visible = False
-        '
-        'Dialog1
+        'Configuration11
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(428, 292)
-        Me.Controls.Add(Me.Test_Button_Off)
-        Me.Controls.Add(Me.Test_Button_On)
-        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Buttondegree)
         Me.Controls.Add(Me.Buttonarcmin)
         Me.Controls.Add(Me.Label2)
@@ -375,7 +325,7 @@ Partial Class Configuration
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
-        Me.Name = "Dialog1"
+        Me.Name = "Configuration11"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Configuration"
         Me.TableLayoutPanel1.ResumeLayout(False)
@@ -401,8 +351,5 @@ Partial Class Configuration
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Buttonarcmin As System.Windows.Forms.Button
     Friend WithEvents Buttondegree As System.Windows.Forms.Button
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Test_Button_On As System.Windows.Forms.Button
-    Friend WithEvents Test_Button_Off As System.Windows.Forms.Button
 
 End Class

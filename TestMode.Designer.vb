@@ -348,7 +348,7 @@ Partial Class TestMode
         Me.NumericUpDown_FGREF_Value.Size = New System.Drawing.Size(41, 20)
         Me.NumericUpDown_FGREF_Value.TabIndex = 73
         Me.NumericUpDown_FGREF_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.NumericUpDown_FGREF_Value.Value = New Decimal(New Integer() {10000, 0, 0, 196608})
+        Me.NumericUpDown_FGREF_Value.Value = New Decimal(New Integer() {3750, 0, 0, 196608})
         '
         'TMClose_Button
         '
@@ -476,7 +476,7 @@ Partial Class TestMode
         Me.Button_Ramp.Text = "Ramp"
         Me.Button_Ramp.UseVisualStyleBackColor = True
         '
-        'TestMode
+        'TestMode1
         '
         Me.AcceptButton = Me.TMClose_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -517,7 +517,7 @@ Partial Class TestMode
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(50, 400)
         Me.MaximizeBox = False
-        Me.Name = "TestMode"
+        Me.Name = "TestMode1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "Test Mode Parameters"
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).EndInit()

@@ -159,10 +159,7 @@ Public Class MainForm
         menuItems.Add(myMenuItemNew)    ' need a list to be able to delete/change them at runtime
 
         ' Add functionality to the menu items using the Click event.
-        'adding the menu items to the main menu bar
-        'myMenuItemOptions.MenuItems.Add(myMenuItemNew)
-        'mnuBar.MenuItems.Add(myMenuItemOptions)
-        'AddHandler myMenuItemOptions.Popup, AddressOf Me.myMenuItemFile1_Click
+        ' adding the menu items to the main menu bar
 
         myMenuItemConfiguration.MenuItems.Add(myMenuItemConfiguration)
         myMenuItemCompensation.MenuItems.Add(myMenuItemCompensation)
@@ -213,24 +210,23 @@ Public Class MainForm
         averagingValue = My.Settings.AveragingValue
         TrackBar1.Value = CInt(averagingValue)
         AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
+        Label_Range_s.Visible = False
         Timer1.Start()
         ' file = My.Computer.FileSystem.OpenTextFileWriter("data.txt", True)
     End Sub
 
-    Private Sub menuItem4_Click(sender As Object, e As EventArgs)
+    Private Sub Comport_Click(sender As Object, e As EventArgs)
         ' extract COM port name
         Dim comportstrting As String = sender.ToString
         Dim a() As String = Regex.Split(comportstrting, "Text: ")
+        'MsgBox(a(1))
         ' open COM port
-        If SerialPort1.IsOpen = True Then
+        If SerialPort1.IsOpen = False Then
             Try
                 SerialPort1.Close()
             Catch ex As Exception
                 ' nothing
             End Try
-            Thread.Sleep(1500)
-        End If
-        If SerialPort1.IsOpen = False Then
             SerialPort1.PortName = a(1)
             SerialPort1.BaudRate = 115200
             SerialPort1.Parity = Parity.None
@@ -369,8 +365,8 @@ Public Class MainForm
                                     chartcounter = CULng(chartcounter + 1)
                                     Compression_Label.Visible = True
                                     NumericUpDown_Scale.Visible = True
-                                    ComboBox_Range.Visible = True
-                                    ComboBox_Range_UnitsD.Visible = True
+                                    'ComboBox_Range.Visible = True
+                                    'ComboBox_Range_UnitsD.Visible = True
                                     Label_Range.Visible = True
                                 End If
                             End If
@@ -412,7 +408,7 @@ Public Class MainForm
             Dim myMenuItemOpen As New MenuItem(sp)
             myMenuItemUSBPort.MenuItems.Add(myMenuItemOpen)
             menuItems.Add(myMenuItemOpen)
-            AddHandler myMenuItemOpen.Click, AddressOf Me.menuItem4_Click
+            AddHandler myMenuItemOpen.Click, AddressOf Me.Comport_Click
             mnuBar.MenuItems.Add(myMenuItemUSBPort)
         Next
     End Sub
@@ -423,58 +419,50 @@ Public Class MainForm
 
     Private Sub myMenuItemConfiguration_Click(sender As Object, e As EventArgs)
         ' pop up configuration window
-        Configuration.Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         If multiplier.Equals(1) Then
-            Configuration.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf multiplier.Equals(2) Then
-            Configuration.Button2x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Button2x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Else
-            Configuration.Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-        Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         If unitCorrectionFactor = 1.0 Then
-            Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.001 Then
-            Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.000001 Then
-            Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.0000001 Then
-            Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.000000001 Then
-            Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.00000003937 Then
-            Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf unitCorrectionFactor = 0.0000000032808 Then
-            Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-        Configuration.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Configuration.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Configuration11.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
         If angleCorrectionFactor = 3600.0 Then
-            Configuration.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf angleCorrectionFactor = 60.0 Then
-            Configuration.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf angleCorrectionFactor = 1.0 Then
-            Configuration.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Configuration11.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-        Configuration.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Configuration.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.Black)
-
-        If TestmodeFlag = 0 Then
-            Configuration.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Else
-            Configuration.Test_Button_Off.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Test_Button_On.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        End If
-        Configuration.ShowDialog()
+        
+        Configuration11.ShowDialog()
     End Sub
 
     Private Sub myMenuItemCompensation_Click(sender As Object, e As EventArgs)
@@ -544,12 +532,6 @@ Public Class MainForm
             StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
             StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Graph_Label.Text = "Displacement"
-            Label_Range.Text = "Displacement Range"
-            Compression_Label.Text = "Time Comopression"
-            ComboBox_Range_UnitsD.Visible = True
-            ComboBox_Range_UnitsA.Visible = False
-            Label_Range_s.Visible = False
         End If
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -557,6 +539,19 @@ Public Class MainForm
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
         TimeLabel.Visible = False
+        Graph_Label.Text = "Displacement"
+        If GraphControl.Text.Equals("Enable Graph") Then
+            Label_Range.Visible = False
+            ComboBox_Range_UnitsD.Visible = False
+        Else
+            Label_Range.Visible = True
+            ComboBox_Range_UnitsD.Visible = True
+        End If
+        Label_Range_s.Visible = False
+        Compression_Label.Text = "Time Compression"
+        Label_Range.Text = "Displacement Range"
+        ComboBox_Range_UnitsA.Visible = False
+        Graph_Label.Text = "Displacement"
         AngleLabel.Visible = False
         straightnessMultiplier = 1
     End Sub
@@ -573,12 +568,6 @@ Public Class MainForm
             StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
             StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Graph_Label.Text = "Velocity"
-            Label_Range.Text = "Velocity Range"
-            ComboBox_Range_UnitsD.Visible = True
-            ComboBox_Range_UnitsA.Visible = False
-            Compression_Label.Text = "Time Comopression"
-            Label_Range_s.Visible = True
         End If
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -587,6 +576,19 @@ Public Class MainForm
         UnitLabel.Visible = True
         TimeLabel.Visible = True
         AngleLabel.Visible = False
+        If GraphControl.Text.Equals("Enable Graph") Then
+            Label_Range.Visible = False
+            ComboBox_Range_UnitsD.Visible = False
+            Label_Range_s.Visible = False
+        Else
+            Label_Range.Visible = True
+            ComboBox_Range_UnitsD.Visible = True
+            Label_Range_s.Visible = True
+        End If
+        Compression_Label.Text = "Time Compression"
+        Label_Range.Text = "Velociy Range"
+        ComboBox_Range_UnitsA.Visible = False
+        Graph_Label.Text = "Velocity"
     End Sub
 
     Private Sub AngleButton_Click(sender As Object, e As EventArgs) Handles AngleButton.Click
@@ -609,12 +611,19 @@ Public Class MainForm
             TimeLabel.Visible = False
             AngleLabel.Visible = True
             straightnessMultiplier = 1
-            Graph_Label.Text = "    Angle    "
-            Label_Range.Text = "Angle Range"
-            Compression_Label.Text = "Time Comopression"
+            If GraphControl.Text.Equals("Enable Graph") Then
+                Label_Range.Visible = False
+                ComboBox_Range_UnitsA.Visible = False
+            Else
+                Label_Range.Visible = True
+                ComboBox_Range_UnitsA.Visible = True
+            End If
             Label_Range_s.Visible = False
+            Compression_Label.Text = "Time Compression"
+            Label_Range.Text = "Angle Range"
             ComboBox_Range_UnitsD.Visible = False
-            ComboBox_Range_UnitsA.Visible = True
+            Graph_Label.Text = "    Angle    "
+            AngleLabel.Visible = True
         End If
     End Sub
 
@@ -638,11 +647,19 @@ Public Class MainForm
             TimeLabel.Visible = False
             AngleLabel.Visible = False
             straightnessMultiplier = 360
-            Graph_Label.Text = "Straightness Long"
-            Label_Range.Text = "Straightness Long Range"
-            Compression_Label.Text = "Time Comopression"
+            If GraphControl.Text.Equals("Enable Graph") Then
+                Label_Range.Visible = False
+                ComboBox_Range_UnitsD.Visible = False
+            Else
+                Label_Range.Visible = True
+                ComboBox_Range_UnitsD.Visible = True
+            End If
             Label_Range_s.Visible = False
-            ComboBox_Range_UnitsD.Visible = True
+            Compression_Label.Text = "Time Compression"
+            Label_Range.Text = "Straightness Long Range"
+            ComboBox_Range_UnitsA.Visible = False
+            Graph_Label.Text = "Straightness Long"
+            AngleLabel.Visible = False
             ComboBox_Range_UnitsA.Visible = False
         End If
     End Sub
@@ -667,16 +684,26 @@ Public Class MainForm
             TimeLabel.Visible = False
             AngleLabel.Visible = False
             straightnessMultiplier = 36
-            Graph_Label.Text = "Straightness Short"
-            Label_Range.Text = "Straightness Short Range"
-            Compression_Label.Text = "Time Comopression"
+            If GraphControl.Text.Equals("Enable Graph") Then
+                Label_Range.Visible = False
+                ComboBox_Range_UnitsD.Visible = False
+            Else
+                Label_Range.Visible = True
+                ComboBox_Range_UnitsD.Visible = True
+            End If
             Label_Range_s.Visible = False
-            ComboBox_Range_UnitsD.Visible = True
+            Compression_Label.Text = "Time Compression"
+            Label_Range.Text = "Straightness Short Range"
+            ComboBox_Range_UnitsA.Visible = False
+            Graph_Label.Text = "Straightness Short"
+            AngleLabel.Visible = False
             ComboBox_Range_UnitsA.Visible = False
         End If
     End Sub
 
     Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
+        ComboBox_Range_UnitsD.Visible = False
+        ComboBox_Range_UnitsA.Visible = False
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -688,9 +715,6 @@ Public Class MainForm
             StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
             StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Label_Range.Text = "DFT Amplitude Range"
-            Compression_Label.Text = "Time Comopression"
-            Compression_Label.Text = "Frequency Range"
         End If
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
@@ -700,8 +724,22 @@ Public Class MainForm
         TimeLabel.Visible = False
         AngleLabel.Visible = False
         straightnessMultiplier = 1
+        If GraphControl.Text.Equals("Enable Graph") Then
+            Label_Range.Visible = False
+            ComboBox_Range_UnitsD.Visible = False
+        Else
+            Label_Range.Visible = True
+            ComboBox_Range_UnitsD.Visible = True
+        End If
+        Label_Range_s.Visible = False
+        Compression_Label.Text = "Time Compression"
+        Label_Range.Text = "DFT Amplitude Range"
+        ComboBox_Range_UnitsA.Visible = False
+        AngleLabel.Visible = False
+        ComboBox_Range_UnitsA.Visible = False
         Graph_Label.Text = "Frequency"
         Label_Range_s.Visible = False
+        Compression_Label.Text = "Frequency Range"
         ComboBox_Range_UnitsD.Visible = False
         ComboBox_Range_UnitsA.Visible = False
     End Sub
@@ -714,7 +752,7 @@ Public Class MainForm
     End Sub
 
     Private Sub GraphControl_Click(sender As Object, e As EventArgs) Handles GraphControl.Click
-        If GraphControl.Text.Equals("Disable Graph") Then
+        If GraphControl.Text.Equals("Disable Graph") Then ' Turn graph off
             GraphControl.Text = "Enable Graph"
             Chart1.Hide()
             Me.Height = 298
@@ -724,8 +762,9 @@ Public Class MainForm
             ComboBox_Range.Visible = False
             ComboBox_Range_UnitsD.Visible = False
             Label_Range.Visible = False
+            Label_Range_s.Visible = False
         Else
-            GraphControl.Text = "Disable Graph"
+            GraphControl.Text = "Disable Graph" ' Turn graph on
             Chart1.Show()
             Me.Height = 600
             Graph_Label.Visible = True
@@ -734,6 +773,12 @@ Public Class MainForm
             ComboBox_Range.Visible = True
             ComboBox_Range_UnitsD.Visible = True
             Label_Range.Visible = True
+            If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                Label_Range_s.Visible = True
+            End If
+            If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                ComboBox_Range_UnitsD.Visible = False
+            End If
         End If
     End Sub
 
@@ -744,7 +789,7 @@ Public Class MainForm
     Private Sub Suspend_Click(sender As Object, e As EventArgs) Handles Suspend.Click
         If Suspend.Text.Equals("Suspend") Then  ' Enter Suspend mode
             Suspend.Text = "Resume"
-            Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.YelllowButton11
+            Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.YellowButton1
             Suspend.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
             SuspendCurrentValue = currentValue
             SuspendFlag = 1
@@ -931,5 +976,43 @@ Public Class MainForm
 
     End Sub
 
-    
+    Private Sub REF_Click(sender As Object, e As EventArgs) Handles REF.Click
+        ErrorFlag = ErrorFlag Or 1
+    End Sub
+
+    Private Sub MEAS_Click(sender As Object, e As EventArgs) Handles MEAS.Click
+        ErrorFlag = ErrorFlag Or 2
+    End Sub
+
+    Private Sub DIFF_Click(sender As Object, e As EventArgs) Handles DIFF.Click
+        If currentValue > previousValue Then ErrorFlag = 4 Else ErrorFlag = 8
+    End Sub
+
+    Private Sub Chart1_Click(sender As Object, e As EventArgs) Handles Chart1.Click
+
+    End Sub
+
+    Private Sub Averaging_Label_Click(sender As Object, e As EventArgs) Handles Averaging_Label.Click
+
+    End Sub
+
+    Private Sub ComboBox_Range_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Range.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub ComboBox_Range_Units_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Range_UnitsD.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub Capture_Button_Click(sender As Object, e As EventArgs) Handles Capture_Button.Click
+        If Capture_Button.Text.Equals("Enable Capture") Then ' Turn capture on
+            Capture_Button.Text = "Disable Capture"
+            Capture_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.GreenButton1
+            Capture_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+        Else : Capture_Button.Text = "Enable Capture"
+            Capture_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            Capture_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        End If
+    End Sub
+
 End Class

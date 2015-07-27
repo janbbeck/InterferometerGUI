@@ -83,9 +83,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property InActiveButton4() As System.Drawing.Bitmap
+        Friend ReadOnly Property GreenButton1() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("InActiveButton4", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("GreenButton1", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -93,9 +93,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property Smiley1() As System.Drawing.Bitmap
+        Friend ReadOnly Property InActiveButton4() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("Smiley1", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("InActiveButton4", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -113,9 +113,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property YelllowButton11() As System.Drawing.Bitmap
+        Friend ReadOnly Property YellowButton1() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("YelllowButton11", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("YellowButton1", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
