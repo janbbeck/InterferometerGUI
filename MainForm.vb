@@ -920,7 +920,18 @@ Public Class MainForm
                 End If
             End If
             'now update graphDIFF
-            Chart1.ResetAutoValues()
+
+            Dim thevalue As Int32
+            Dim theresult As Boolean = Int32.TryParse(ComboBox_Range.Text, thevalue)
+            If theresult Then   ' the field is numeric
+                Chart1.ChartAreas(0).AxisY.Maximum = 3000
+                Chart1.ChartAreas(0).AxisY.Minimum = -3300
+                Chart1.ChartAreas(0).RecalculateAxesScale()
+            Else    ' the field says auto
+                Chart1.ChartAreas(0).AxisY.Maximum = 6000
+                Chart1.ChartAreas(0).AxisY.Minimum = -6000
+                Chart1.ChartAreas(0).RecalculateAxesScale()
+            End If
             Compression_Label.Visible = True
             NumericUpDown_Scale.Visible = True
         End If
@@ -1015,21 +1026,7 @@ Public Class MainForm
         If currentValue > previousValue Then ErrorFlag = 4 Else ErrorFlag = 8
     End Sub
 
-    Private Sub Chart1_Click(sender As Object, e As EventArgs) Handles Chart1.Click
-
-    End Sub
-
-    Private Sub Averaging_Label_Click(sender As Object, e As EventArgs) Handles Averaging_Label.Click
-
-    End Sub
-
-    Private Sub ComboBox_Range_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Range.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ComboBox_Range_Units_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Range_UnitsD.SelectedIndexChanged
-
-    End Sub
+    
 
     Private Sub Capture_Button_Click(sender As Object, e As EventArgs) Handles Capture_Button.Click
         If Capture_Button.Text.Equals("Enable Capture") Then ' Turn capture on
