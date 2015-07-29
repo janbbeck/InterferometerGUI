@@ -43,7 +43,7 @@ Public Class MainForm
     Public multiplier As Integer = 2    ' needed for interferometer type 1x 2x 4x
     Public straightnessMultiplier As Integer = 1 ' needed for straightness measurements
     Public currentValue As Double = 0
-    Dim previousValue As Double = 0
+    Public previousValue As Double = 0
     Dim velocityValue As Double = 0
     Dim angleValue As Double = 0
     Dim averagingValue As Double = 0
@@ -64,14 +64,14 @@ Public Class MainForm
     Dim CurrentMEASCount As UInt64 = 0
     Dim PreviousMEASCount As UInt64 = 0
     Public ErrorFlag As Integer = 0
-    Dim SuspendFlag As Integer = 0
+    Public SuspendFlag As Integer = 0
     Dim MeasCountCorrection As UInt64 = 0
-    Dim CurrentValueCorrection As Double = 0
+    Public CurrentValueCorrection As Double = 0
     Dim SuspenREFCount As UInt64 = 0
     Dim SuspendMEASCount As UInt64 = 0
     Dim graphCount As UInt64 = CULng(Dimension)
     Dim plotCount As UInt64 = CULng(Dimension)
-    Dim SuspendCurrentValue As Double = 0
+    Public SuspendCurrentValue As Double = 0
     Public REFFrequency As Double = 0
     Public MEASFrequency As Double = 0
     Public DIFFFrequency As Double = 0
@@ -103,8 +103,8 @@ Public Class MainForm
     Public previoussimMEASCount As Int64 = 0
     Public simulationSerial As UInt64 = 0
     Public bangbang As Double = 1
-    Public outerloop As Integer = 0
-    Public count As Long = 0
+    'Public outerloop As Integer = 0
+    'Public count As Long = 0
     Public counter As Double = 0
     Dim simulatedData As String
     Public simrefcount As Int64 = 0
@@ -241,6 +241,12 @@ Public Class MainForm
             Catch ex As Exception
                 MsgBox(ex.ToString)
             End Try
+            zeroAdjustment = currentValue
+            previousValue = currentValue
+            SuspendCurrentValue = 0
+            simcount = 0
+            'count = 0
+            counter = 0
             needsInitialZero = 1 ' make sure to zero out the reference system
         End If
     End Sub
@@ -289,8 +295,29 @@ Public Class MainForm
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
                         'Console.Write(values(3) + vbCrLf)
+
                         currentValue = Convert.ToDouble(values(3)) * Wavelength / 2 * ECFactor - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * Wavelength / 2 * ECFactor - CurrentValueCorrection
+
+                        If IgnoreCount = 0 Then
+                            If needsInitialZero = 1 Then
+                                zeroAdjustment = currentValue
+                                SuspendCurrentValue = 0
+                                'previousValue = currentValue
+                                If Suspend.Text.Equals("Resume") Then  ' Force exit from Suspend mode
+                                    Suspend.Text = "Suspend"
+                                    Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+                                    Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
+                                    'CurrentValueCorrection = 0
+                                    SuspendFlag = 0
+                                    ErrorFlag = 0
+                                End If
+                                'simcount = 0
+                                'count = 0
+                                'counter = 0
+                                needsInitialZero = 0 ' make sure to zero out the reference system only once
+                            End If
+                        End If
 
                         PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
                         CurrentREFCount = Convert.ToUInt64(values(1))
@@ -326,23 +353,18 @@ Public Class MainForm
                                         End If
                                         'End If
                                     End If
+                                    ' Else : IgnoreCount = IgnoreCount - 1
 
-                                    If needsInitialZero = 1 Then
-                                        zeroAdjustment = currentValue
-                                        simcount = 0
-                                        count = 0
-                                        counter = 0
-                                        needsInitialZero = 0 ' make sure to zero out the reference system only once
-                                    End If
-                                Else : IgnoreCount = IgnoreCount - 1
+
                                 End If
-
                             End If
-                            velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
 
+                            velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
+                            'Console.Write(" sample duplicate" + vbCrLf)
                             If TestmodeFlag = 1 Then
                                 velocityValue = velocityValue / 3.0425
                             End If
+
                             If SuspendFlag = 0 Then
 
                                 If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode, no averaging
@@ -357,18 +379,14 @@ Public Class MainForm
                                 Else
                                     displayValue = average * unitCorrectionFactor
                                 End If
-                                If GraphControl.Text.Equals("Disable Graph") Then
+                                If GraphControl.Text.Equals("Disable Graph") And IgnoreCount = 0 Then
                                     displacementQueuex.Enqueue(chartcounter)
                                     displacementQueuey.Enqueue(straightnessMultiplier * unitCorrectionFactor * (currentValue - zeroAdjustment) / multiplier)
                                     velocityQueuex.Enqueue(chartcounter)
                                     velocityQueuey.Enqueue(unitCorrectionFactor * velocityValue / multiplier)
                                     chartcounter = CULng(chartcounter + 1)
-                                    Compression_Label.Visible = True
-                                    NumericUpDown_Scale.Visible = True
-                                    'ComboBox_Range.Visible = True
-                                    'ComboBox_Range_UnitsD.Visible = True
-                                    Label_Range.Visible = True
                                 End If
+
                             End If
 
                         ElseIf 0 = serialnumberdifference Then
@@ -388,6 +406,11 @@ Public Class MainForm
                 'MsgBox(ex.ToString)
             End Try
         End If
+        If IgnoreCount > 0 Then
+            IgnoreCount = IgnoreCount - 1
+        Else : IgnoreCount = 0
+        End If
+
     End Sub
 
     Delegate Sub SetTextCallback([text] As String)
@@ -461,7 +484,7 @@ Public Class MainForm
         ElseIf angleCorrectionFactor = 1.0 Then
             Configuration11.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
-        
+
         Configuration11.ShowDialog()
     End Sub
 
@@ -476,21 +499,9 @@ Public Class MainForm
     End Sub
 
     Private Sub ZeroButton_Click(sender As Object, e As EventArgs) Handles ZeroButton.Click
-        zeroAdjustment = currentValue
         ErrorFlag = 0
-        DifferenceValue = 0
-        For chartcounter = 0 To CULng(Dimension - 1)
-            positionSeries.Points.AddXY(chartcounter, 0.0)
-            positionSeries.Points.RemoveAt(0)
-            velocitySeries.Points.AddXY(chartcounter, 0.0)
-            velocitySeries.Points.RemoveAt(0)
-        Next
-        'clear queues
-        displacementQueuex.Clear()
-        displacementQueuey.Clear()
-        displayValue = 0
-        average = 0
-        IgnoreCount = 2
+        needsInitialZero = 1
+        IgnoreCount = 0
     End Sub
 
     Private Sub DFT(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs)
@@ -829,45 +840,48 @@ Public Class MainForm
                 DIFF.Visible = False
             End If
 
-            If SuspendFlag = 1 Then
-                ValueDisplay.Text = "Suspend   "
+            If IgnoreCount = 0 Then
 
-            ElseIf EDEnabled = 1 And ErrorFlag > 0 Then
-                If (ErrorFlag And 3) = 3 Then
-                    ValueDisplay.Text = "No Signals Error  "
-                ElseIf (ErrorFlag And 3) = 1 Then
-                    ValueDisplay.Text = "REF (Head) Error  "
-                ElseIf (ErrorFlag And 3) = 2 Then
-                    ValueDisplay.Text = "MEAS (Path) Error  "
-                ElseIf (ErrorFlag And 4) = 4 Then
-                    ValueDisplay.Text = "SLEW (Rate+) Error "
-                ElseIf (ErrorFlag And 8) = 8 Then
-                    ValueDisplay.Text = "SLEW (Rate-) Error "
-                End If
+                If SuspendFlag = 1 Then
+                    ValueDisplay.Text = "Suspend   "
 
-            ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
-                If angleCorrectionFactor = 3600.0 Then
-                    ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
-                ElseIf angleCorrectionFactor = 60.0 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
-                ElseIf angleCorrectionFactor = 1.0 Then
-                    ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
-                End If
-            Else
-                If unitCorrectionFactor = 1 Then
-                    ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
-                ElseIf unitCorrectionFactor = 0.001 Then
-                    ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
-                ElseIf unitCorrectionFactor = 0.000001 Then
-                    ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
-                ElseIf unitCorrectionFactor = 0.0000001 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
-                ElseIf unitCorrectionFactor = 0.000000001 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
-                ElseIf unitCorrectionFactor = 0.00000003937 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
-                ElseIf unitCorrectionFactor = 0.0000000032808 Then
-                    ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
+                ElseIf EDEnabled = 1 And ErrorFlag > 0 Then
+                    If (ErrorFlag And 3) = 3 Then
+                        ValueDisplay.Text = "No Signals Error  "
+                    ElseIf (ErrorFlag And 3) = 1 Then
+                        ValueDisplay.Text = "REF (Head) Error  "
+                    ElseIf (ErrorFlag And 3) = 2 Then
+                        ValueDisplay.Text = "MEAS (Path) Error  "
+                    ElseIf (ErrorFlag And 4) = 4 Then
+                        ValueDisplay.Text = "SLEW (Rate+) Error "
+                    ElseIf (ErrorFlag And 8) = 8 Then
+                        ValueDisplay.Text = "SLEW (Rate-) Error "
+                    End If
+
+                ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
+                    If angleCorrectionFactor = 3600.0 Then
+                        ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
+                    ElseIf angleCorrectionFactor = 60.0 Then
+                        ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
+                    ElseIf angleCorrectionFactor = 1.0 Then
+                        ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
+                    End If
+                Else
+                    If unitCorrectionFactor = 1 Then
+                        ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
+                    ElseIf unitCorrectionFactor = 0.001 Then
+                        ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
+                    ElseIf unitCorrectionFactor = 0.000001 Then
+                        ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
+                    ElseIf unitCorrectionFactor = 0.0000001 Then
+                        ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
+                    ElseIf unitCorrectionFactor = 0.000000001 Then
+                        ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
+                    ElseIf unitCorrectionFactor = 0.00000003937 Then
+                        ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
+                    ElseIf unitCorrectionFactor = 0.0000000032808 Then
+                        ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
+                    End If
                 End If
             End If
         End If
@@ -915,16 +929,28 @@ Public Class MainForm
     Private Sub SimulationTimer_Tick(sender As Object, e As EventArgs) Handles SimulationTimer.Tick
 
         ' here we are simulating data of the form of (not all fields are parsed by SetText:
-        ' 46838240776 47637908780 Difference: 799668004 Previous Difference: 799668005 overflow counter: 23442624
+
+        ' 0 MEAS Count
+        ' 1 REF Count
+        ' 2 Difference
+        ' 3 SIMDistance
+        ' 4 "Previous
+        ' 5 Difference
+        ' 6 799668005
+        ' 7 "overflow
+        ' 8 counter: "
+        ' 9 23442624:
+
         ' ignored     ignored     ignored     distance  ignored  ignored     velocity  ignored  ignored  serialcounter
         ' simulatedData = "46838240776 4767908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
 
         Dim counter As Integer
-        If SuspendFlag = 0 Then
-            For counter = 0 To 5
-                simrefcount = simrefcount + CLng(TestMode.NumericUpDown_FGREF_Value.Value * 1638)
-                simmeascount = simrefcount + CLng(simulationDistance * 0.162)
 
+        For counter = 0 To 5
+            simrefcount = simrefcount + CLng(TestMode.NumericUpDown_FGREF_Value.Value * 1638)
+            simmeascount = simrefcount + CLng(simulationDistance * 0.162)
+
+            If SuspendFlag = 0 Then
                 If (simmeascount - previoussimMEASCount) > (2 * (simrefcount - previoussimREFCount) - 0.1) Then
                     simmeascount = previoussimMEASCount + CLng(2 * (simrefcount - previoussimREFCount) - 0.1)
                     IgnoreCount = 2
@@ -935,44 +961,45 @@ Public Class MainForm
                     IgnoreCount = 2
                 End If
 
-                simcount = simcount + 1
-                If TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    simulationDistance = CLng(12638 * (TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue) * multiplier / 2))
-                    waveform = 0
-                ElseIf TestMode.Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    waveform = waveform + (0.00001 * TMFreqValue * TestMode.TrackBar_Offset.Value)
-                    simulationDistance = CLng(12638 * TMUnitsFactor * (waveform * TMAmpMult) * multiplier / 2)
-                ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    waveform = waveform + ((0.002 * TMFreqValue) * bangbang)
-                    simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
-                    If waveform > 1 Then
-                        bangbang = -1
-                    End If
-                    If waveform < -1 Then
-                        bangbang = 1
-                    End If
+                If IgnoreCount = 0 Then
+                    If TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                        simulationDistance = CLng(12638 * (TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue) * multiplier / 2))
+                        waveform = 0
 
-                ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    'waveform = Math.Sin(simcount * TMFreqValue * Math.PI / 1000)
-                    waveform = waveform + Math.Cos(simcount * TMFreqValue * Math.PI / 1000 + phase) * TMFreqValue * Math.PI / 1000
-                    simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
+                    ElseIf TestMode.Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                        waveform = waveform + (0.00001 * TMFreqValue * TestMode.TrackBar_Offset.Value)
+                        simulationDistance = CLng(12638 * TMUnitsFactor * (waveform * TMAmpMult) * multiplier / 2)
+
+                    ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                        waveform = waveform + ((0.002 * TMFreqValue) * bangbang)
+                        simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
+                        If waveform > 1 Then
+                            bangbang = -1
+                        End If
+
+                        If waveform < -1 Then
+                            bangbang = 1
+                        End If
+
+                    ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                        waveform = waveform + Math.Cos(simcount * TMFreqValue * Math.PI / 1000 + phase) * TMFreqValue * Math.PI / 1000
+                        simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
+                    End If
                 End If
-                simulationVelocity = simulationDistance - previousSimulationDistance
-                simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
-                    simulationDistance.ToString + " Previous Difference " + previousSimulationDistance.ToString +
-                    " overflow counter: " + simulationSerial.ToString
-                simulationSerial = simulationSerial + CULng(1)
-                previousSimulationDistance = simulationDistance
-                previoussimulationVelocity = simulationVelocity
-                previoussimREFCount = simrefcount
-                previoussimMEASCount = simmeascount
-                Me.SetText(simulatedData)
-            Next
-            If outerloop > 0 Then
-                outerloop = 0
+
+                simcount = simcount + 1
             End If
-            outerloop = outerloop + 1
-        End If
+            simulationVelocity = simulationDistance - previousSimulationDistance
+            simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
+                simulationDistance.ToString + " Previous Difference " + previousSimulationDistance.ToString +
+                " overflow counter: " + simulationSerial.ToString
+            simulationSerial = simulationSerial + CULng(1)
+            previousSimulationDistance = simulationDistance
+            previoussimulationVelocity = simulationVelocity
+            previoussimREFCount = simrefcount
+            previoussimMEASCount = simmeascount
+            Me.SetText(simulatedData)
+        Next
 
     End Sub
 
