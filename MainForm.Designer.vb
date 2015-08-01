@@ -75,6 +75,7 @@ Partial Public Class MainForm
         Me.DisplacementButton = New System.Windows.Forms.Button()
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.VelocityButton = New System.Windows.Forms.Button()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -556,6 +557,14 @@ Partial Public Class MainForm
         Me.VelocityButton.TabIndex = 32
         Me.VelocityButton.Text = "Velocity"
         '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.CheckFileExists = False
+        Me.OpenFileDialog1.DefaultExt = "txt"
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        Me.OpenFileDialog1.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+        Me.OpenFileDialog1.Title = "Please enter the name for the log file"
+        '
         'MainForm
         '
         Me.ClientSize = New System.Drawing.Size(880, 572)
@@ -600,18 +609,18 @@ Partial Public Class MainForm
         Me.Controls.Add(Me.ZeroButton)
         Me.Controls.Add(Me.VelocityButton)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.HelpButton = True
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.HelpButton = true
+        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
         Me.Name = "MainForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Interferometer GUI"
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        CType(Me.Chart1,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.TrackBar1,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.NumericUpDown_Scale,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents VelocityButton As System.Windows.Forms.Button
     Friend WithEvents ZeroButton As System.Windows.Forms.Button
     Friend WithEvents ValueDisplay As System.Windows.Forms.Label
@@ -655,5 +664,6 @@ Partial Public Class MainForm
     Friend WithEvents Label_Range_s As System.Windows.Forms.Label
     Friend WithEvents ComboBox_Range_UnitsA As System.Windows.Forms.ComboBox
     Friend WithEvents Capture_Button As System.Windows.Forms.Button
+    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
 
 End Class

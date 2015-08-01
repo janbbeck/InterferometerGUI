@@ -10,8 +10,8 @@ Imports System.ComponentModel
 Imports System.Threading
 
 Public Class MainForm
-    ' Dim file As System.IO.StreamWriter
-
+    Dim captureFile As System.IO.StreamWriter ' this is the log file to capture data
+    Dim captureFileName As String = "" ' this is the name of the log file to capture data
     Public positionSeries As New Series
     Public velocitySeries As New Series
     Public fftSeries As New Series
@@ -26,11 +26,12 @@ Public Class MainForm
     'defining the menu items for the main menu bar
     Dim menuItems As New List(Of MenuItem)
     Dim myMenuItemConfiguration As New MenuItem("&Configuration")
+    Dim myMenuItemLogFile As New MenuItem("&Select Log File")
     Dim myMenuItemCompensation As New MenuItem("&Environmental Compensation")
     Dim myMenuItemTestMode As New MenuItem("&Test Mode")
     Dim myMenuItemUSBPort As New MenuItem("&USB Port")
     Dim myMenuItemHelp As New MenuItem("&Help")
-    Dim myMenuItemNew As New MenuItem("&New")
+    Dim myMenuItemUSBSubMenuCOMPorts As New MenuItem("&DummyText")
 
     'defining the main menu bar
     Dim mnuBar As New MainMenu()
@@ -128,11 +129,12 @@ Public Class MainForm
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
         'End
-        'file.Close()
+        captureFile.Close()
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
         AddHandler DFTThread.DoWork, AddressOf DFT
+
         DisplacementButton_Click(sender, e)
         Chart1.Series.Clear()
         Chart1.ChartAreas(0).AxisX.LabelStyle.Enabled = False
@@ -155,31 +157,26 @@ Public Class MainForm
         Next
         DFTThread.RunWorkerAsync()
         fftSeries.ChartType = SeriesChartType.FastLine
-
-        menuItems.Add(myMenuItemNew)    ' need a list to be able to delete/change them at runtime
-
-        ' Add functionality to the menu items using the Click event.
-        ' adding the menu items to the main menu bar
-
-        myMenuItemConfiguration.MenuItems.Add(myMenuItemConfiguration)
-        myMenuItemCompensation.MenuItems.Add(myMenuItemCompensation)
-        myMenuItemTestMode.MenuItems.Add(myMenuItemTestMode)
-        myMenuItemHelp.MenuItems.Add(myMenuItemHelp)
-        myMenuItemUSBPort.MenuItems.Add(myMenuItemnew)
-
+        'first lets create an empty submenu for the com port list under the USB top menu
+        menuItems.Add(myMenuItemUSBSubMenuCOMPorts)    ' need an empty list to be able to delete/change them at runtime
+        'Next, attach that list to the USB top menu
+        myMenuItemUSBPort.MenuItems.Add(myMenuItemUSBSubMenuCOMPorts)
+        ' Next attach all the top menus to the menu bar.
+        mnuBar.MenuItems.Add(myMenuItemLogFile)
         mnuBar.MenuItems.Add(myMenuItemConfiguration)
         mnuBar.MenuItems.Add(myMenuItemCompensation)
         mnuBar.MenuItems.Add(myMenuItemTestMode)
         mnuBar.MenuItems.Add(myMenuItemHelp)
         mnuBar.MenuItems.Add(myMenuItemUSBPort)
-
+        ' Next replace the application with the menu bar we just crafted
+        Me.Menu = mnuBar
+        ' Finally, add the handlers to the menu items so that they can respond to clicks
+        AddHandler myMenuItemLogFile.Click, AddressOf Me.myMenuItemLogFile_Click
         AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemConfiguration_Click
         AddHandler myMenuItemCompensation.Click, AddressOf Me.myMenuItemCompensation_Click
         AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
         AddHandler myMenuItemUSBPort.Popup, AddressOf Me.myMenuItemUSBPort_Click
         AddHandler myMenuItemHelp.Click, AddressOf Me.myMenuItemhelp_Click
-
-        Me.Menu = mnuBar
 
         ' load user settings
         'multiplier = My.Settings.Multiplier
@@ -212,7 +209,7 @@ Public Class MainForm
         AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
         Label_Range_s.Visible = False
         Timer1.Start()
-        ' file = My.Computer.FileSystem.OpenTextFileWriter("data.txt", True)
+
     End Sub
 
     Private Sub Comport_Click(sender As Object, e As EventArgs)
@@ -255,12 +252,16 @@ Public Class MainForm
         Try
             If SerialPort1.IsOpen Then
                 Dim incomingData As String = SerialPort1.ReadExisting()
-                'file.Write(incomingData)
+                If Not (captureFile Is Nothing) Then
+                    captureFile.Write(incomingData)
+                End If
                 spDrLine = spDrLine & incomingData 'important
                 If InStr(1, spDrLine, vbLf) > 0 Then
                     spBuffer = spDrLine.Substring(0, spDrLine.LastIndexOf(vbLf)) ' pull in the buffer up to the last line feed
                     spDrLine = spDrLine.Substring(spDrLine.LastIndexOf(vbLf) + 1) 'stuff the rest back into the incoming buffer
-                    'file.WriteLine(spDrLine)
+                    'If Not (captureFile Is Nothing) Then
+                    'captureFile.WriteLine(spDrLine)
+                    'End If
                     'process spBuffer
                     Try
                         If False = SimulationTimer.Enabled Then
@@ -438,6 +439,11 @@ Public Class MainForm
 
     Private Sub myMenuItemhelp_Click(sender As Object, e As EventArgs)
         Help.ShowDialog()
+    End Sub
+    Private Sub myMenuItemLogFile_Click(sender As Object, e As EventArgs)
+        OpenFileDialog1.ShowDialog()
+        captureFileName = OpenFileDialog1.FileName.ToString()
+        captureFile = My.Computer.FileSystem.OpenTextFileWriter(captureFileName, False)
     End Sub
 
     Private Sub myMenuItemConfiguration_Click(sender As Object, e As EventArgs)
