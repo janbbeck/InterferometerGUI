@@ -314,7 +314,7 @@ Partial Class TestMode
         Me.FGREFLabel.BackColor = System.Drawing.SystemColors.Menu
         Me.FGREFLabel.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.FGREFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FGREFLabel.Location = New System.Drawing.Point(99, 306)
+        Me.FGREFLabel.Location = New System.Drawing.Point(89, 306)
         Me.FGREFLabel.Name = "FGREFLabel"
         Me.FGREFLabel.ReadOnly = True
         Me.FGREFLabel.Size = New System.Drawing.Size(46, 15)
@@ -339,13 +339,13 @@ Partial Class TestMode
         'NumericUpDown_FGREF_Value
         '
         Me.NumericUpDown_FGREF_Value.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown_FGREF_Value.DecimalPlaces = 1
-        Me.NumericUpDown_FGREF_Value.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
-        Me.NumericUpDown_FGREF_Value.Location = New System.Drawing.Point(146, 306)
+        Me.NumericUpDown_FGREF_Value.DecimalPlaces = 2
+        Me.NumericUpDown_FGREF_Value.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
+        Me.NumericUpDown_FGREF_Value.Location = New System.Drawing.Point(136, 306)
         Me.NumericUpDown_FGREF_Value.Maximum = New Decimal(New Integer() {20, 0, 0, 0})
         Me.NumericUpDown_FGREF_Value.Minimum = New Decimal(New Integer() {2, 0, 0, 65536})
         Me.NumericUpDown_FGREF_Value.Name = "NumericUpDown_FGREF_Value"
-        Me.NumericUpDown_FGREF_Value.Size = New System.Drawing.Size(41, 20)
+        Me.NumericUpDown_FGREF_Value.Size = New System.Drawing.Size(51, 20)
         Me.NumericUpDown_FGREF_Value.TabIndex = 73
         Me.NumericUpDown_FGREF_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown_FGREF_Value.Value = New Decimal(New Integer() {3750, 0, 0, 196608})
@@ -476,7 +476,7 @@ Partial Class TestMode
         Me.Button_Ramp.Text = "Ramp"
         Me.Button_Ramp.UseVisualStyleBackColor = True
         '
-        'TestMode1
+        'TestMode
         '
         Me.AcceptButton = Me.TMClose_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -517,7 +517,7 @@ Partial Class TestMode
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(50, 400)
         Me.MaximizeBox = False
-        Me.Name = "TestMode1"
+        Me.Name = "TestMode"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "Test Mode Parameters"
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).EndInit()

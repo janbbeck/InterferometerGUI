@@ -45,7 +45,10 @@ Public Class TestMode
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
+
         MainForm.IgnoreCount = 2
+        MainForm.counter = 0
+        MainForm.waveform = 0
     End Sub
 
     Private Sub Button_Ramp_Click(sender As Object, e As EventArgs) Handles Button_Ramp.Click
@@ -57,9 +60,10 @@ Public Class TestMode
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.simcount = 0
-        MainForm.waveform = 0
+
         MainForm.IgnoreCount = 2
+        MainForm.simcount = 0
+        MainForm.waveform = MainForm.IgnoreCount * -(0.00001 * MainForm.TMFreqValue * TrackBar_Offset.Value)
     End Sub
 
     Private Sub Button_Triangle_Click(sender As Object, e As EventArgs) Handles Button_Triangle.Click
@@ -71,10 +75,11 @@ Public Class TestMode
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.simcount = 0
-        MainForm.waveform = 0
-        MainForm.bangbang = 1
+
         MainForm.IgnoreCount = 2
+        MainForm.counter = 0
+        MainForm.waveform = MainForm.IgnoreCount * -(0.002 * MainForm.TMFreqValue)
+        MainForm.bangbang = 1
     End Sub
 
     Private Sub Button_Sine_Click(sender As Object, e As EventArgs) Handles Button_Sine.Click
@@ -86,10 +91,12 @@ Public Class TestMode
         Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        MainForm.simcount = 0
-        MainForm.waveform = 0
-        MainForm.phase = 0
+
         MainForm.IgnoreCount = 2
+        MainForm.simcount = -MainForm.IgnoreCount
+        MainForm.counter = 0
+        MainForm.waveform = MainForm.IgnoreCount * -(0.002 * MainForm.TMFreqValue)
+        MainForm.phase = 0
     End Sub
 
     Private Sub ComboBox_Frequency_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Frequency.SelectedIndexChanged
@@ -100,11 +107,13 @@ Public Class TestMode
         ElseIf ComboBox_Frequency.Text.Equals("0 to 10 Hz") Then
             MainForm.TMFreqMult = 0.1
         End If
+
         PreviousTMFreqValue = MainForm.simcount * MainForm.TMFreqValue * Math.PI / 1000 + MainForm.phase
         MainForm.TMFreqValue = Trackbar_Frequency.Value * 10 * MainForm.TMFreqMult
         MainForm.phase = PreviousTMFreqValue - MainForm.simcount * MainForm.TMFreqValue * Math.PI / 1000
+
         Textbox_Frequency.Text = (MainForm.TMFreqValue / 10).ToString("0.000")
-        MainForm.IgnoreCount = 2
+        MainForm.IgnoreCount = 1
     End Sub
 
     Private Sub Track_Frequency_Scroll(sender As Object, e As EventArgs) Handles Trackbar_Frequency.Scroll
@@ -112,7 +121,7 @@ Public Class TestMode
         MainForm.TMFreqValue = Trackbar_Frequency.Value * 10 * MainForm.TMFreqMult
         MainForm.phase = PreviousTMFreqValue - MainForm.simcount * MainForm.TMFreqValue * Math.PI / 1000
         Textbox_Frequency.Text = (MainForm.TMFreqValue / 10).ToString("0.000")
-        MainForm.IgnoreCount = 2
+        MainForm.IgnoreCount = 1
     End Sub
 
     Private Sub ComboBox_amplitude_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Amplitude.SelectedIndexChanged
@@ -184,25 +193,25 @@ Public Class TestMode
             FGOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             FGOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
 
-            If MainForm.AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
-                MainForm.StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
-                MainForm.StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                MainForm.DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-                MainForm.DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-                MainForm.Compression_Label.Text = "Time Compression"
-                MainForm.Label_Range_s.Visible = False
-                MainForm.ComboBox_Range_UnitsD.Visible = True
-                MainForm.ComboBox_Range_UnitsA.Visible = False
-                MainForm.AngleLabel.Visible = False
-                MainForm.straightnessMultiplier = 1
-            End If
+            ' If MainForm.AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
+            '     MainForm.StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
+            '     MainForm.StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+            ' MainForm.DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+            ' MainForm.DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            ' MainForm.Compression_Label.Text = "Time Compression"
+            '  MainForm.Label_Range_s.Visible = False
+            ' MainForm.ComboBox_Range_UnitsD.Visible = True
+            ' MainForm.ComboBox_Range_UnitsA.Visible = False
+            ' MainForm.AngleLabel.Visible = False
+            ' MainForm.straightnessMultiplier = 1
+            ' End If
 
-            MainForm.AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
-            MainForm.StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
-            MainForm.StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
-            MainForm.AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Gray)
-            MainForm.StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Gray)
-            MainForm.StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Gray)
+            'MainForm.AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
+            'MainForm.StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
+            'MainForm.StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
+            'MainForm.AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Gray)
+            'MainForm.StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Gray)
+            'MainForm.StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Gray)
 
             MainForm.TestmodeFlag = 1
             MainForm.TestModeLabel.Text = "Simulated Data"
@@ -210,18 +219,22 @@ Public Class TestMode
             MainForm.MEAS.Visible = True
             MainForm.DIFF.Visible = True
 
-            MainForm.IgnoreCount = 0
+            MainForm.IgnoreCount = 2
             MainForm.ErrorFlag = 0
 
             If MainForm.SerialPort1.IsOpen = True Then
-                MainForm.needsInitialZero = 1
+                'MainForm.needsInitialZero = 1
                 MainForm.IgnoreCount = 40
                 MainForm.simulationDistance = 0
                 MainForm.previousSimulationDistance = 0
-                MainForm.simcount = 0
+                MainForm.simcount = -MainForm.IgnoreCount
                 MainForm.counter = 0
-                MainForm.waveform = 0
+                MainForm.waveform = MainForm.IgnoreCount * -(0.002 * MainForm.TMFreqValue)
+                If Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                    MainForm.waveform = MainForm.IgnoreCount * -(0.00001 * MainForm.TMFreqValue * TrackBar_Offset.Value)
+                End If
                 MainForm.bangbang = 1
+                MainForm.phase = 0
             End If
 
             MainForm.SimulationTimer.Enabled = True
@@ -234,9 +247,9 @@ Public Class TestMode
             FGOff_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
             FGOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             FGOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            MainForm.AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-            MainForm.StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-            MainForm.StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            ' MainForm.AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            ' MainForm.StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+            ' MainForm.StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
 
             MainForm.TestmodeFlag = 0
             MainForm.TestModeLabel.Text = ""
@@ -247,11 +260,11 @@ Public Class TestMode
             MainForm.DIFFFrequency = 0
             MainForm.DIFF.Visible = True
 
-            MainForm.IgnoreCount = 0
+            MainForm.IgnoreCount = 1
             MainForm.ErrorFlag = 0
 
             If MainForm.SerialPort1.IsOpen = True Then
-                MainForm.needsInitialZero = 1
+                ' MainForm.needsInitialZero = 1
                 MainForm.IgnoreCount = 40
                 MainForm.SuspendFlag = 0
             End If
@@ -300,7 +313,7 @@ Public Class TestMode
         TextBox_Units_Caution.Visible = False
         If (Math.PI * 12.65 * MainForm.TMUnitsFactor) > ((NumericUpDown_FGREF_Value.Value - 0.1) * 100) Then
             TextBox_Units_Caution.Visible = True
-            MainForm.IgnoreCount = 2
+            MainForm.IgnoreCount = 1
         End If
     End Sub
 
