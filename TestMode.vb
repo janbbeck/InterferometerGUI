@@ -193,33 +193,13 @@ Public Class TestMode
             FGOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             FGOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
 
-            ' If MainForm.AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
-            '     MainForm.StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
-            '     MainForm.StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-            ' MainForm.DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-            ' MainForm.DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            ' MainForm.Compression_Label.Text = "Time Compression"
-            '  MainForm.Label_Range_s.Visible = False
-            ' MainForm.ComboBox_Range_UnitsD.Visible = True
-            ' MainForm.ComboBox_Range_UnitsA.Visible = False
-            ' MainForm.AngleLabel.Visible = False
-            ' MainForm.straightnessMultiplier = 1
-            ' End If
-
-            'MainForm.AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
-            'MainForm.StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
-            'MainForm.StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.DisabledButton1
-            'MainForm.AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Gray)
-            'MainForm.StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Gray)
-            'MainForm.StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Gray)
-
             MainForm.TestmodeFlag = 1
-            MainForm.TestModeLabel.Text = "Simulated Data"
+            MainForm.TestModeLabel.Visible = True
             MainForm.REF.Visible = True
             MainForm.MEAS.Visible = True
             MainForm.DIFF.Visible = True
 
-            MainForm.IgnoreCount = 2
+            MainForm.IgnoreCount = 0
             MainForm.ErrorFlag = 0
 
             If MainForm.SerialPort1.IsOpen = True Then
@@ -227,9 +207,9 @@ Public Class TestMode
                 MainForm.IgnoreCount = 40
                 MainForm.simulationDistance = 0
                 MainForm.previousSimulationDistance = 0
-                MainForm.simcount = -MainForm.IgnoreCount
+                MainForm.simcount = -MainForm.IgnoreCount + 2
                 MainForm.counter = 0
-                MainForm.waveform = MainForm.IgnoreCount * -(0.002 * MainForm.TMFreqValue)
+                MainForm.waveform = (MainForm.IgnoreCount - 2) * -(0.002 * MainForm.TMFreqValue)
                 If Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     MainForm.waveform = MainForm.IgnoreCount * -(0.00001 * MainForm.TMFreqValue * TrackBar_Offset.Value)
                 End If
@@ -252,7 +232,7 @@ Public Class TestMode
             ' MainForm.StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
 
             MainForm.TestmodeFlag = 0
-            MainForm.TestModeLabel.Text = ""
+            MainForm.TestModeLabel.Visible = False
             MainForm.REFFrequency = 0
             MainForm.REF.Visible = True
             MainForm.MEASFrequency = 0
@@ -260,7 +240,7 @@ Public Class TestMode
             MainForm.DIFFFrequency = 0
             MainForm.DIFF.Visible = True
 
-            MainForm.IgnoreCount = 1
+            MainForm.IgnoreCount = 0
             MainForm.ErrorFlag = 0
 
             If MainForm.SerialPort1.IsOpen = True Then
@@ -278,7 +258,7 @@ Public Class TestMode
         EDOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         EDOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         EDOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.EDOff_Label.Text = "     "
+        MainForm.EDOff_Label.Visible = False
         MainForm.ErrorFlag = 0
         MainForm.EDEnabled = 1
     End Sub
@@ -288,7 +268,7 @@ Public Class TestMode
         EDOff_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         EDOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         EDOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.EDOff_Label.Text = "Error Detection Off"
+        MainForm.EDOff_Label.Visible = True
         MainForm.ErrorFlag = 0
         MainForm.EDEnabled = 0
     End Sub

@@ -145,12 +145,16 @@ Public Class MainForm
     Dim Graph_Range As Double
     Dim Graph_Range_Test As Boolean
     Dim Graph_Auto_Flag As Integer = 0
+    Dim incomingData As String
+    Dim Capture_Flag As Integer = 0
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
         'End
         'file.Close()
-        captureFile.Close()
+        If Not (captureFile Is Nothing) Then
+            captureFile.Close()
+        End If
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -234,9 +238,6 @@ Public Class MainForm
         AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
         AddHandler myMenuItemUSBPort.Popup, AddressOf Me.myMenuItemUSBPort_Click
         AddHandler myMenuItemHelp.Click, AddressOf Me.myMenuItemhelp_Click
-
-
-
 
         multiplier = My.Settings.Multiplier
 
@@ -452,7 +453,8 @@ Public Class MainForm
             'Chart1.ResetAutoValues()
             Chart1.ChartAreas(0).RecalculateAxesScale()
         End If
-
+        TestModeLabel.Visible = False
+        EDOff_Label.Visible = False
     End Sub
 
     Private Sub Comport_Click(sender As Object, e As EventArgs)
@@ -481,23 +483,26 @@ Public Class MainForm
             Catch ex As Exception
                 MsgBox(ex.ToString)
             End Try
-            zeroAdjustment = currentValue
-            previousValue = currentValue
-            SuspendCurrentValue = 0
-            simcount = 0
+            'zeroAdjustment = currentValue
+            'previousValue = currentValue
+            'SuspendCurrentValue = 0
+            ' simcount = 0
             'count = 0
-            counter = 0
-            needsInitialZero = 1 ' make sure to zero out the reference system
+            ' counter = 0
+            If TestmodeFlag = 0 Then
+                needsInitialZero = 1 ' make sure to zero out the reference system
+            End If
         End If
     End Sub
 
     Private Sub DataReceivedHandler(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
         Try
             If SerialPort1.IsOpen Then
-                Dim incomingData As String = SerialPort1.ReadExisting()
-                If Not (captureFile Is Nothing) Then
-                    captureFile.Write(incomingData)
-                End If
+                'Dim incomingData As String
+                incomingData = SerialPort1.ReadExisting()
+                'If Not (captureFile Is Nothing) Then
+                ' captureFile.Write(incomingData)
+                'End If
                 spDrLine = spDrLine & incomingData 'important
                 If InStr(1, spDrLine, vbLf) > 0 Then
                     spBuffer = spDrLine.Substring(0, spDrLine.LastIndexOf(vbLf)) ' pull in the buffer up to the last line feed
@@ -539,7 +544,9 @@ Public Class MainForm
                     'make sure the current set has exactly 10 fields
                     If values.Length.Equals(10) Then
                         'Console.Write(values(3) + vbCrLf)
-
+                        If Not (captureFile Is Nothing) And Capture_Flag = 1 And IgnoreCount = 0 Then
+                            captureFile.Write("D:" + values(3) + " N:" + values(9) + vbCrLf)
+                        End If
                         currentValue = Convert.ToDouble(values(3)) * Wavelength / 2 * ECFactor - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * Wavelength / 2 * ECFactor - CurrentValueCorrection
 
@@ -552,7 +559,7 @@ Public Class MainForm
                                     Suspend.Text = "Suspend"
                                     Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
                                     Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
-                                    Suspend_Value.Visible = False
+                                    Suspend_Label.Visible = False
                                     SuspendFlag = 0
                                     ErrorFlag = 0
                                 End If
@@ -570,8 +577,8 @@ Public Class MainForm
                                 Angle_RangeP = 0.0001
                                 Angle_RangeM = 0.0001
 
-                                Chart1.ChartAreas(0).AxisY.Maximum = 0.0001 * Graph_Range_UnitsFactorD
-                                Chart1.ChartAreas(0).AxisY.Minimum = -0.0001 * Graph_Range_UnitsFactorD
+                                Chart1.ChartAreas(0).AxisY.Maximum = 1 * Graph_Range_UnitsFactorD
+                                Chart1.ChartAreas(0).AxisY.Minimum = -1 * Graph_Range_UnitsFactorD
                                 Chart1.ResetAutoValues()
                                 Chart1.ChartAreas(0).RecalculateAxesScale()
                                 needsInitialZero = 0 ' make sure to zero out the reference system only once
@@ -643,76 +650,78 @@ Public Class MainForm
                                     displayValue = average * unitCorrectmm
                                 End If
 
-                                If GraphControl.Text.Equals("Disable Graph") And IgnoreCount = 0 Then
+                                If GraphControl.Text.Equals("Disable Graph") Then
+                                    If IgnoreCount = 0 Then
 
-                                    If DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
-                                        StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
-                                                StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                                        If (straightnessMultiplier * unitCorrectmm * (currentValue - zeroAdjustment) / multiplier) > CDbl(Displacement_RangeP * Graph_Range_UnitsFactorD) Then
-                                            Displacement_RangeP = Displacement_RangeP * 1.41421356237
-                                            ComboBox_Range_UnitsD.Visible = False
-                                            ComboBox_Range.Text = "Auto"
-                                            Graph_Auto_Flag = 1
-                                            Chart1.ChartAreas(0).AxisY.Maximum = Displacement_RangeP * Graph_Range_UnitsFactorD
-                                            '  Chart1.ChartAreas(0).AxisY.Minimum = -Displacement_RangeM * Graph_Range_UnitsFactorD
-                                        End If
-                                        If (straightnessMultiplier * unitCorrectmm * (currentValue - zeroAdjustment) / multiplier) < -CDbl(Displacement_RangeM * Graph_Range_UnitsFactorD) Then
-                                            Displacement_RangeM = Displacement_RangeM * 1.41421356237
-                                            ComboBox_Range_UnitsD.Visible = False
-                                            ComboBox_Range.Text = "Auto"
-                                            Graph_Auto_Flag = 1
-                                            ' Chart1.ChartAreas(0).AxisY.Maximum = Displacement_RangeP * Graph_Range_UnitsFactorD
-                                            Chart1.ChartAreas(0).AxisY.Minimum = -Displacement_RangeM * Graph_Range_UnitsFactorD
+                                        If DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
+                                            StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Or
+                                                    StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                                            If (straightnessMultiplier * unitCorrectmm * (currentValue - zeroAdjustment) / multiplier) > CDbl(Displacement_RangeP * Graph_Range_UnitsFactorD) Then
+                                                Displacement_RangeP = Displacement_RangeP * 1.41421356237
+                                                ComboBox_Range_UnitsD.Visible = False
+                                                ComboBox_Range.Text = "Auto"
+                                                Graph_Auto_Flag = 1
+                                                Chart1.ChartAreas(0).AxisY.Maximum = Displacement_RangeP * Graph_Range_UnitsFactorD
+                                                '  Chart1.ChartAreas(0).AxisY.Minimum = -Displacement_RangeM * Graph_Range_UnitsFactorD
+                                            End If
+                                            If (straightnessMultiplier * unitCorrectmm * (currentValue - zeroAdjustment) / multiplier) < -CDbl(Displacement_RangeM * Graph_Range_UnitsFactorD) Then
+                                                Displacement_RangeM = Displacement_RangeM * 1.41421356237
+                                                ComboBox_Range_UnitsD.Visible = False
+                                                ComboBox_Range.Text = "Auto"
+                                                Graph_Auto_Flag = 1
+                                                ' Chart1.ChartAreas(0).AxisY.Maximum = Displacement_RangeP * Graph_Range_UnitsFactorD
+                                                Chart1.ChartAreas(0).AxisY.Minimum = -Displacement_RangeM * Graph_Range_UnitsFactorD
+                                            End If
+
+                                        ElseIf VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                                            If (unitCorrectmm * velocityValue / multiplier) > CDbl(Velocity_RangeP * Graph_Range_UnitsFactorD) Then
+                                                Velocity_RangeP = Velocity_RangeP * 1.41421356237
+                                                ComboBox_Range_UnitsD.Visible = False
+                                                ComboBox_Range.Text = "Auto"
+                                                Graph_Auto_Flag = 1
+                                                Chart1.ChartAreas(0).AxisY.Maximum = Velocity_RangeP * Graph_Range_UnitsFactorD
+                                                '   Chart1.ChartAreas(0).AxisY.Minimum = -Velocity_RangeM * Graph_Range_UnitsFactorD
+                                            End If
+                                            If (unitCorrectmm * velocityValue / multiplier) < -CDbl(Velocity_RangeM * Graph_Range_UnitsFactorD) Then
+                                                Velocity_RangeM = Velocity_RangeM * 1.41421356237
+                                                ComboBox_Range_UnitsD.Visible = False
+                                                ComboBox_Range.Text = "Auto"
+                                                Graph_Auto_Flag = 1
+                                                '  Chart1.ChartAreas(0).AxisY.Maximum = Velocity_RangeP * Graph_Range_UnitsFactorD
+                                                Chart1.ChartAreas(0).AxisY.Minimum = -Velocity_RangeM * Graph_Range_UnitsFactorD
+                                            End If
+
+                                        ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                                            If (Math.Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296) > CDbl(Angle_RangeP * Graph_Range_UnitsFactorA) Then
+                                                Angle_RangeP = Angle_RangeP * 1.41421356237
+                                                ComboBox_Range_UnitsD.Visible = False
+                                                ComboBox_Range.Text = "Auto"
+                                                Graph_Auto_Flag = 1
+                                                Chart1.ChartAreas(0).AxisY.Maximum = Angle_RangeP * Graph_Range_UnitsFactorA
+                                                ' Chart1.ChartAreas(0).AxisY.Minimum = -Angle_RangeM * Graph_Range_UnitsFactora
+                                            End If
+                                            If (Math.Asin(average / 32.61 / 1000000) * angleCorrectdegree * 57.296) < -CDbl(Angle_RangeM * Graph_Range_UnitsFactorA) Then
+                                                Angle_RangeM = Angle_RangeM * 1.41421356237
+                                                ComboBox_Range_UnitsD.Visible = False
+                                                ComboBox_Range.Text = "Auto"
+                                                Graph_Auto_Flag = 1
+                                                'Chart1.ChartAreas(0).AxisY.Maximum = Angle_RangeP * Graph_Range_UnitsFactora
+                                                Chart1.ChartAreas(0).AxisY.Minimum = -Angle_RangeM * Graph_Range_UnitsFactorA
+                                            End If
+
+
+                                            ' Chart1.ChartAreas(0).AxisY.Maximum = Velocity_RangeP * Graph_Range_UnitsFactorD
+                                            ' Chart1.ChartAreas(0).AxisY.Minimum = -Velocity_RangeM * Graph_Range_UnitsFactorD
                                         End If
 
-                                    ElseIf VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                                        If (unitCorrectmm * velocityValue / multiplier) > CDbl(Velocity_RangeP * Graph_Range_UnitsFactorD) Then
-                                            Velocity_RangeP = Velocity_RangeP * 1.41421356237
-                                            ComboBox_Range_UnitsD.Visible = False
-                                            ComboBox_Range.Text = "Auto"
-                                            Graph_Auto_Flag = 1
-                                            Chart1.ChartAreas(0).AxisY.Maximum = Velocity_RangeP * Graph_Range_UnitsFactorD
-                                            '   Chart1.ChartAreas(0).AxisY.Minimum = -Velocity_RangeM * Graph_Range_UnitsFactorD
-                                        End If
-                                        If (unitCorrectmm * velocityValue / multiplier) < -CDbl(Velocity_RangeM * Graph_Range_UnitsFactorD) Then
-                                            Velocity_RangeM = Velocity_RangeM * 1.41421356237
-                                            ComboBox_Range_UnitsD.Visible = False
-                                            ComboBox_Range.Text = "Auto"
-                                            Graph_Auto_Flag = 1
-                                            '  Chart1.ChartAreas(0).AxisY.Maximum = Velocity_RangeP * Graph_Range_UnitsFactorD
-                                            Chart1.ChartAreas(0).AxisY.Minimum = -Velocity_RangeM * Graph_Range_UnitsFactorD
-                                        End If
-
-                                    ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                                        If (Math.Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296) > CDbl(Angle_RangeP * Graph_Range_UnitsFactorA) Then
-                                            Angle_RangeP = Angle_RangeP * 1.41421356237
-                                            ComboBox_Range_UnitsD.Visible = False
-                                            ComboBox_Range.Text = "Auto"
-                                            Graph_Auto_Flag = 1
-                                            Chart1.ChartAreas(0).AxisY.Maximum = Angle_RangeP * Graph_Range_UnitsFactorA
-                                            ' Chart1.ChartAreas(0).AxisY.Minimum = -Angle_RangeM * Graph_Range_UnitsFactora
-                                        End If
-                                        If (Math.Asin(average / 32.61 / 1000000) * angleCorrectdegree * 57.296) < -CDbl(Angle_RangeM * Graph_Range_UnitsFactorA) Then
-                                            Angle_RangeM = Angle_RangeM * 1.41421356237
-                                            ComboBox_Range_UnitsD.Visible = False
-                                            ComboBox_Range.Text = "Auto"
-                                            Graph_Auto_Flag = 1
-                                            'Chart1.ChartAreas(0).AxisY.Maximum = Angle_RangeP * Graph_Range_UnitsFactora
-                                            Chart1.ChartAreas(0).AxisY.Minimum = -Angle_RangeM * Graph_Range_UnitsFactorA
-                                        End If
-
-
-                                        ' Chart1.ChartAreas(0).AxisY.Maximum = Velocity_RangeP * Graph_Range_UnitsFactorD
-                                        ' Chart1.ChartAreas(0).AxisY.Minimum = -Velocity_RangeM * Graph_Range_UnitsFactorD
+                                        displacementQueuex.Enqueue(chartcounter)
+                                        displacementQueuey.Enqueue(straightnessMultiplier * unitCorrectmm * (currentValue - zeroAdjustment) / multiplier)
+                                        velocityQueuex.Enqueue(chartcounter)
+                                        velocityQueuey.Enqueue(unitCorrectmm * velocityValue / multiplier)
+                                        angleQueuex.Enqueue(chartcounter)
+                                        angleQueuey.Enqueue(Math.Asin(average / 32.61 / 1000000) * angleCorrectdegree * 57.296)
+                                        chartcounter = CULng(chartcounter + 1)
                                     End If
-
-                                    displacementQueuex.Enqueue(chartcounter)
-                                    displacementQueuey.Enqueue(straightnessMultiplier * unitCorrectmm * (currentValue - zeroAdjustment) / multiplier)
-                                    velocityQueuex.Enqueue(chartcounter)
-                                    velocityQueuey.Enqueue(unitCorrectmm * velocityValue / multiplier)
-                                    angleQueuex.Enqueue(chartcounter)
-                                    angleQueuey.Enqueue(Math.Asin(average / 32.61 / 1000000) * angleCorrectdegree * 57.296)
-                                    chartcounter = CULng(chartcounter + 1)
                                 End If
 
                             End If
@@ -769,56 +778,15 @@ Public Class MainForm
     End Sub
 
     Private Sub myMenuItemLogFile_Click(sender As Object, e As EventArgs)
+        If Not (captureFile Is Nothing) Then
+            captureFile.Close()
+        End If
         OpenFileDialog1.ShowDialog()
         captureFileName = OpenFileDialog1.FileName.ToString()
         captureFile = My.Computer.FileSystem.OpenTextFileWriter(captureFileName, False)
     End Sub
 
     Private Sub myMenuItemConfiguration_Click(sender As Object, e As EventArgs)
-        ' pop up configuration window
-        '   Configuration11.Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        '   Configuration11.Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        '   Configuration11.Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        '   If multiplier.Equals(1) Then
-        ' Configuration11.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' ElseIf multiplier.Equals(2) Then
-        ' Configuration11.Button2x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' Else
-        ' Configuration11.Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' End If
-        ' Configuration11.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        ' Configuration11.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        ' Configuration11.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        ' Configuration11.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        ' Configuration11.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        ' Configuration11.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        ' Configuration11.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        ' If unitCorrectionFactor = 1.0 Then
-        ' Configuration11.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' ElseIf unitCorrectionFactor = 0.001 Then
-        ' Configuration11.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' ElseIf unitCorrectionFactor = 0.000001 Then
-        ' Configuration11.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' ElseIf unitCorrectionFactor = 0.0000001 Then
-        ' Configuration11.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' ElseIf unitCorrectionFactor = 0.000000001 Then
-        ' Configuration11.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' ElseIf unitCorrectionFactor = 0.00000003937 Then
-        ' Configuration11.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' ElseIf unitCorrectionFactor = 0.0000000032808 Then
-        ' Configuration11.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ' End If
-        'Configuration11.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        'Configuration11.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        'Configuration11.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        'If angleCorrectionFactor = 3600.0 Then
-        'Configuration11.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        'ElseIf angleCorrectionFactor = 60.0 Then
-        'Configuration11.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        'ElseIf angleCorrectionFactor = 1.0 Then
-        'Configuration11.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        'End If
-
         Configuration.ShowDialog()
     End Sub
 
@@ -1167,16 +1135,9 @@ Public Class MainForm
         Axis_degree.Visible = False
         'End If
         Label_Range_s.Visible = False
-        Compression_Label.Text = "Time Compression"
-        'Label_Range.Text = "DFT Amplitude Range"
-        'ComboBox_Range_UnitsA.Visible = False
-        'AngleLabel.Visible = False
-        'ComboBox_Range.Visible = False
         Graph_Label.Text = "Frequency"
         Label_Range_s.Visible = False
         Compression_Label.Text = "Frequency Range"
-        'ComboBox_Range_UnitsD.Visible = False
-        'ComboBox_Range_UnitsA.Visible = False
         DFTMax = 0
     End Sub
 
@@ -1261,8 +1222,7 @@ Public Class MainForm
             Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.YellowButton1
             Suspend.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
             SuspendCurrentValue = currentValue
-            Suspend_Value.Visible = True
-            Suspend_Value.Text = ValueDisplay.Text
+            Suspend_Label.Visible = True
             SuspendFlag = 1
 
         Else                                     ' Exit Suspend mode
@@ -1270,7 +1230,7 @@ Public Class MainForm
             Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
             CurrentValueCorrection = CurrentValueCorrection + currentValue - SuspendCurrentValue
-            Suspend_Value.Visible = False
+            Suspend_Label.Visible = False
             SuspendFlag = 0
             ErrorFlag = 0
         End If
@@ -1305,23 +1265,27 @@ Public Class MainForm
             If IgnoreCount = 0 And Math.Abs(currentValue - previousValue) < 100000000 Then
 
                 If SuspendFlag = 1 Then
-                    ValueDisplay.Text = "Suspend   "
-                    Suspend_Value.Visible = True
+                    ' ValueDisplay.Text = "Suspend   "
+                    Suspend_Label.Visible = True
 
                 ElseIf EDEnabled = 1 And ErrorFlag > 0 Then
+                    UnitLabel.Visible = False
+                    TimeLabel.Visible = False
+                    AngleLabel.Visible = False
                     If (ErrorFlag And 3) = 3 Then
-                        ValueDisplay.Text = "No Signals Error  "
+                        ValueDisplay.Text = "  No Signals Error"
                     ElseIf (ErrorFlag And 3) = 1 Then
-                        ValueDisplay.Text = "REF (Head) Error  "
+                        ValueDisplay.Text = "  REF (Head) Error"
                     ElseIf (ErrorFlag And 3) = 2 Then
-                        ValueDisplay.Text = "MEAS (Path) Error  "
+                        ValueDisplay.Text = " MEAS (Path) Error"
                     ElseIf (ErrorFlag And 4) = 4 Then
-                        ValueDisplay.Text = "SLEW (Rate+) Error "
+                        ValueDisplay.Text = "SLEW (Rate+) Error"
                     ElseIf (ErrorFlag And 8) = 8 Then
-                        ValueDisplay.Text = "SLEW (Rate-) Error "
+                        ValueDisplay.Text = "SLEW (Rate-) Error"
                     End If
 
                 ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
+                    AngleLabel.Visible = True
                     If angleCorrectionFactor = 1 / 3600 Then
                         ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
                     ElseIf angleCorrectionFactor = 1 / 60 Then
@@ -1330,6 +1294,7 @@ Public Class MainForm
                         ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
                     End If
                 Else
+                    UnitLabel.Visible = True
                     If unitCorrectionFactor = 0.000001 Then
                         ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
                     ElseIf unitCorrectionFactor = 0.001 Then
@@ -1345,6 +1310,10 @@ Public Class MainForm
                     ElseIf unitCorrectionFactor = 304.8 Then
                         ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
                     End If
+                End If
+
+                If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                    TimeLabel.Visible = True
                 End If
             End If
         End If
@@ -1396,7 +1365,7 @@ Public Class MainForm
                     Next
                     resetEvent.Set()
 
-                If (SerialPort1.IsOpen And (TestmodeFlag = 0)) Or TestmodeFlag = 1 Then
+                    If (SerialPort1.IsOpen And (TestmodeFlag = 0)) Or TestmodeFlag = 1 Then
                         Chart1.ChartAreas(0).AxisY.Maximum = 1.1 * DFTMax + 0.000001
                     End If
 
@@ -1411,8 +1380,8 @@ Public Class MainForm
         Chart1.ChartAreas(0).RecalculateAxesScale()
 
 
-        Compression_Label.Visible = True
-        NumericUpDown_Scale.Visible = True
+        ' Compression_Label.Visible = True
+        ' NumericUpDown_Scale.Visible = True
     End Sub
 
     Private Sub SimulationTimer_Tick(sender As Object, e As EventArgs) Handles SimulationTimer.Tick
@@ -1504,6 +1473,16 @@ Public Class MainForm
         If currentValue > previousValue Then ErrorFlag = 4 Else ErrorFlag = 8
     End Sub
 
+    Private Sub combobox_range_Click(sender As Object, e As EventArgs) Handles ComboBox_Range.Click
+        If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+            ComboBox_Range_UnitsA.Visible = True
+            ComboBox_Range_UnitsD.Visible = False
+        Else
+            ComboBox_Range_UnitsA.Visible = False
+            ComboBox_Range_UnitsD.Visible = True
+        End If
+    End Sub
+
     Private Sub ComboBox_Range_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Range.SelectedIndexChanged
         'now update graphDIFF
         'Chart1.ResetAutoValues()
@@ -1519,37 +1498,6 @@ Public Class MainForm
         Angle_RangeP = Graph_Range
         Angle_RangeM = Graph_Range
         ComboBox_Range_UnitsD.Visible = True
-
-        If Graph_Auto_Flag = 1 Then
-            ComboBox_Range_UnitsD.Text = UnitLabel.Text
-            ComboBox_Range_UnitsA.Text = AngleLabel.Text
-            Graph_Range_UnitsFactorD = unitCorrectionFactor
-            Graph_Range_UnitsFactorA = angleCorrectionFactor
-            '     If ComboBox_Range_UnitsD.Text = "nm" Then
-            ' Graph_Range_UnitsFactorD = 0.000001
-            'ElseIf ComboBox_Range_UnitsD.Text = "um" Then
-            '    Graph_Range_UnitsFactorD = 0.001
-            'ElseIf ComboBox_Range_UnitsD.Text = "mm" Then
-            '    Graph_Range_UnitsFactorD = 1
-            'ElseIf ComboBox_Range_UnitsD.Text = "cm" Then
-            '    Graph_Range_UnitsFactorD = 10
-            'ElseIf ComboBox_Range_UnitsD.Text = "m" Then
-            '    Graph_Range_UnitsFactorD = 1000
-            'ElseIf ComboBox_Range_UnitsD.Text = "in" Then
-            '    Graph_Range_UnitsFactorD = 25.4
-            'ElseIf ComboBox_Range_UnitsD.Text = "ft" Then
-            '    Graph_Range_UnitsFactorD = 304.8
-            'End If
-
-            '    ComboBox_Range_UnitsA.Text = AngleLabel.Text
-            '    If ComboBox_Range_UnitsA.Text = "arcsec" Then
-            'Graph_Range_UnitsFactorA = 1 / 3600
-            'ElseIf ComboBox_Range_UnitsA.Text = "arcmin" Then
-            '    Graph_Range_UnitsFactorA = 1 / 60
-            'ElseIf ComboBox_Range_UnitsA.Text = "degree" Then
-            '   Graph_Range_UnitsFactorA = 1
-        End If
-        'End If
 
         Graph_Auto_Flag = 0
 
@@ -1600,7 +1548,7 @@ Public Class MainForm
             Displacement_RangeP = Graph_Range
             Displacement_RangeM = Graph_Range
             Chart1.ChartAreas(0).AxisY.Maximum = Displacement_RangeP * Graph_Range_UnitsFactorD
-            Chart1.ChartAreas(0).AxisY.Minimum = -Displacement_RangeM * Graph_Range_UnitsFactorD   
+            Chart1.ChartAreas(0).AxisY.Minimum = -Displacement_RangeM * Graph_Range_UnitsFactorD
         End If
 
         Chart1.ResetAutoValues()
@@ -1652,18 +1600,19 @@ Public Class MainForm
     End Sub
 
     Private Sub Capture_Button_Click(sender As Object, e As EventArgs) Handles Capture_Button.Click
-        If Capture_Button.Text.Equals("Enable Capture") Then ' Turn capture on
+        If Capture_Button.Text.Equals("Enable Capture") And
+              Not (captureFile Is Nothing) Then
+            ' Turn capture on
             Capture_Button.Text = "Disable Capture"
             Capture_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.GreenButton1
             Capture_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            Capture_Flag = 1
         Else
             Capture_Button.Text = "Enable Capture"
             Capture_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Capture_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
+            captureFile.Write("Gap" + vbCrLf)
+            Capture_Flag = 0
         End If
-    End Sub
-
-    Private Sub Chart1_Click(sender As Object, e As EventArgs) Handles Chart1.Click
-
     End Sub
 End Class
