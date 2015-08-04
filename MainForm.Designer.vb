@@ -318,14 +318,12 @@ Partial Public Class MainForm
         'Compression_Label
         '
         Me.Compression_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Compression_Label.Location = New System.Drawing.Point(182, 242)
-        Me.Compression_Label.MaximumSize = New System.Drawing.Size(160, 20)
-        Me.Compression_Label.MinimumSize = New System.Drawing.Size(160, 20)
+        Me.Compression_Label.Location = New System.Drawing.Point(34, 242)
         Me.Compression_Label.Name = "Compression_Label"
-        Me.Compression_Label.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Compression_Label.Size = New System.Drawing.Size(160, 20)
+        Me.Compression_Label.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.Compression_Label.Size = New System.Drawing.Size(796, 20)
         Me.Compression_Label.TabIndex = 82
-        Me.Compression_Label.Text = "Time Compression"
+        Me.Compression_Label.Text = "                                      Time Compression"
         '
         'NumericUpDown_Scale
         '

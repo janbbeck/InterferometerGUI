@@ -679,7 +679,7 @@ Public Class MainForm
     Private Sub DFT(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs)
         ' not the fastest, but easy to implement
         ' https://en.wikipedia.org/wiki/Discrete_Fourier_transform
-
+        ' a sample buffer of N samples produces N/2 frequency bins
         Dim progresscount As Integer = 0
         Thread.CurrentThread.Priority = ThreadPriority.BelowNormal
         Do
@@ -734,7 +734,7 @@ Public Class MainForm
             Axis_S.Visible = False
             Axis_degree.Visible = False
         End If
-        Compression_Label.Text = "Time Compression"
+        Compression_Label.Text = "                                      Time Compression"
         Label_Range.Text = "Displacement Range"
         Graph_Label.Text = "Displacement"
         AngleLabel.Visible = False
@@ -774,7 +774,7 @@ Public Class MainForm
             Axis_S.Visible = True
             Axis_degree.Visible = False
         End If
-        Compression_Label.Text = "Time Compression"
+        Compression_Label.Text = "                                      Time Compression"
         Label_Range.Text = "Velociy Range"
         Graph_Label.Text = "Velocity"
         NumericUpDown_Scale.Visible = True
@@ -809,7 +809,7 @@ Public Class MainForm
             Label_Range.Visible = True
             Axis_degree.Visible = True
         End If
-        Compression_Label.Text = "Time Compression"
+        Compression_Label.Text = "                                      Time Compression"
         Label_Range.Text = "Angle Range"
         Graph_Label.Text = "    Angle    "
         Axis_mm.Visible = False
@@ -847,7 +847,7 @@ Public Class MainForm
             Axis_S.Visible = False
             Axis_degree.Visible = False
         End If
-        Compression_Label.Text = "Time Compression"
+        Compression_Label.Text = "                                      Time Compression"
         Label_Range.Text = "Straightness Long Range"
         Graph_Label.Text = "Straightness Long"
         NumericUpDown_Scale.Visible = True
@@ -883,7 +883,7 @@ Public Class MainForm
             Axis_S.Visible = False
             Axis_degree.Visible = False
         End If
-        Compression_Label.Text = "Time Compression"
+        Compression_Label.Text = "                                      Time Compression"
         Label_Range.Text = "Straightness Short Range"
         Graph_Label.Text = "Straightness Short"
         NumericUpDown_Scale.Visible = True
@@ -916,7 +916,7 @@ Public Class MainForm
         Axis_S.Visible = False
         Axis_degree.Visible = False
         Graph_Label.Text = "Frequency"
-        Compression_Label.Text = "Frequency Range"
+        Compression_Label.Text = "1 Hz <---------------------------------------------------------------------------------------------------------------------------------------> 610 Hz"
         DFTMax = 0
         NumericUpDown_Scale.Visible = False
     End Sub
