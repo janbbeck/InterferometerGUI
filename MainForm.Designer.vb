@@ -337,7 +337,6 @@ Partial Public Class MainForm
         Me.NumericUpDown_Scale.TabIndex = 84
         Me.NumericUpDown_Scale.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown_Scale.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.NumericUpDown_Scale.Visible = False
         '
         'EDOff_Label
         '

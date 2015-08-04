@@ -721,6 +721,7 @@ Public Class MainForm
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
+        RangeUnits.Visible = True
         RangeUnits.Text = UnitLabel.Text
         TimeLabel.Visible = False
         Graph_Label.Text = "Displacement"
@@ -738,6 +739,8 @@ Public Class MainForm
         Graph_Label.Text = "Displacement"
         AngleLabel.Visible = False
         straightnessMultiplier = 1
+        NumericUpDown_Scale.Visible = True
+
     End Sub
 
     Private Sub VelocityButton_Click(sender As Object, e As EventArgs) Handles VelocityButton.Click
@@ -758,6 +761,7 @@ Public Class MainForm
         Chart1.Series.Clear()
         Chart1.Series.Add(velocitySeries)
         UnitLabel.Visible = True
+        RangeUnits.Visible = True
         RangeUnits.Text = UnitLabel.Text
         TimeLabel.Visible = True
         AngleLabel.Visible = False
@@ -773,6 +777,7 @@ Public Class MainForm
         Compression_Label.Text = "Time Compression"
         Label_Range.Text = "Velociy Range"
         Graph_Label.Text = "Velocity"
+        NumericUpDown_Scale.Visible = True
     End Sub
 
     Private Sub AngleButton_Click(sender As Object, e As EventArgs) Handles AngleButton.Click
@@ -793,6 +798,7 @@ Public Class MainForm
         UnitLabel.Visible = False
         TimeLabel.Visible = False
         AngleLabel.Visible = True
+        RangeUnits.Visible = True
         RangeUnits.Text = AngleLabel.Text
         straightnessMultiplier = 1
         ComboBox_Range.Visible = True
@@ -808,6 +814,7 @@ Public Class MainForm
         Graph_Label.Text = "    Angle    "
         Axis_mm.Visible = False
         Axis_S.Visible = False
+        NumericUpDown_Scale.Visible = True
     End Sub
 
     Private Sub StraightnessLongButton_Click(sender As Object, e As EventArgs) Handles StraightnessLongButton.Click
@@ -826,6 +833,7 @@ Public Class MainForm
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
+        RangeUnits.Visible = True
         RangeUnits.Text = UnitLabel.Text
         TimeLabel.Visible = False
         AngleLabel.Visible = False
@@ -842,6 +850,7 @@ Public Class MainForm
         Compression_Label.Text = "Time Compression"
         Label_Range.Text = "Straightness Long Range"
         Graph_Label.Text = "Straightness Long"
+        NumericUpDown_Scale.Visible = True
     End Sub
 
     Private Sub StraightnessShortButton_Click(sender As Object, e As EventArgs) Handles StraightnessShortButton.Click
@@ -860,6 +869,7 @@ Public Class MainForm
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
         UnitLabel.Visible = True
+        RangeUnits.Visible = True
         RangeUnits.Text = UnitLabel.Text
         TimeLabel.Visible = False
         AngleLabel.Visible = False
@@ -876,6 +886,7 @@ Public Class MainForm
         Compression_Label.Text = "Time Compression"
         Label_Range.Text = "Straightness Short Range"
         Graph_Label.Text = "Straightness Short"
+        NumericUpDown_Scale.Visible = True
     End Sub
 
     Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
@@ -895,7 +906,7 @@ Public Class MainForm
         Chart1.Series.Clear()
         Chart1.Series.Add(fftSeries)
         UnitLabel.Visible = True
-        RangeUnits.Text = UnitLabel.Text
+        RangeUnits.Visible = False
         TimeLabel.Visible = False
         AngleLabel.Visible = False
         straightnessMultiplier = 1
@@ -907,6 +918,7 @@ Public Class MainForm
         Graph_Label.Text = "Frequency"
         Compression_Label.Text = "Frequency Range"
         DFTMax = 0
+        NumericUpDown_Scale.Visible = False
     End Sub
 
     Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
