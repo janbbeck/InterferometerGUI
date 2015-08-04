@@ -3,6 +3,11 @@
 Public Class Configuration
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        If MainForm.UnitLabel.Visible Then
+            MainForm.RangeUnits.Text = MainForm.UnitLabel.Text
+        Else
+            MainForm.RangeUnits.Text = MainForm.AngleLabel.Text
+        End If
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub

@@ -37,7 +37,6 @@ Partial Public Class MainForm
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.TimeLabel = New System.Windows.Forms.Label()
-        Me.AngleLabel = New System.Windows.Forms.Label()
         Me.TrackBar1 = New System.Windows.Forms.TrackBar()
         Me.Averaging_Label = New System.Windows.Forms.Label()
         Me.AverageLabel = New System.Windows.Forms.Label()
@@ -61,10 +60,7 @@ Partial Public Class MainForm
         Me.NumericUpDown_Scale = New System.Windows.Forms.NumericUpDown()
         Me.EDOff_Label = New System.Windows.Forms.Label()
         Me.ComboBox_Range = New System.Windows.Forms.ComboBox()
-        Me.ComboBox_Range_UnitsD = New System.Windows.Forms.ComboBox()
         Me.Label_Range = New System.Windows.Forms.Label()
-        Me.Label_Range_s = New System.Windows.Forms.Label()
-        Me.ComboBox_Range_UnitsA = New System.Windows.Forms.ComboBox()
         Me.Capture_Button = New System.Windows.Forms.Button()
         Me.GraphControl = New System.Windows.Forms.Button()
         Me.Suspend = New System.Windows.Forms.Button()
@@ -80,14 +76,16 @@ Partial Public Class MainForm
         Me.Axis_S = New System.Windows.Forms.Label()
         Me.Axis_degree = New System.Windows.Forms.Label()
         Me.Suspend_Label = New System.Windows.Forms.Label()
-        CType(Me.Chart1,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.TrackBar1,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.NumericUpDown_Scale,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
+        Me.RangeUnits = New System.Windows.Forms.Label()
+        Me.AngleLabel = New System.Windows.Forms.Label()
+        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
         '
         'ValueDisplay
         '
-        Me.ValueDisplay.Font = New System.Drawing.Font("Microsoft Sans Serif", 36!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ValueDisplay.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ValueDisplay.Location = New System.Drawing.Point(188, 62)
         Me.ValueDisplay.Name = "ValueDisplay"
         Me.ValueDisplay.Size = New System.Drawing.Size(472, 67)
@@ -103,7 +101,7 @@ Partial Public Class MainForm
         Me.Chart1.Location = New System.Drawing.Point(12, 269)
         Me.Chart1.Name = "Chart1"
         Me.Chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
-        Me.Chart1.PaletteCustomColors = New System.Drawing.Color() {System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(20,Byte),Integer), CType(CType(150,Byte),Integer)), System.Drawing.Color.FromArgb(CType(CType(150,Byte),Integer), CType(CType(120,Byte),Integer), CType(CType(0,Byte),Integer))}
+        Me.Chart1.PaletteCustomColors = New System.Drawing.Color() {System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(150, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(150, Byte), Integer), CType(CType(120, Byte), Integer), CType(CType(0, Byte), Integer))}
         Series1.ChartArea = "ChartArea1"
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
@@ -121,23 +119,13 @@ Partial Public Class MainForm
         '
         'TimeLabel
         '
-        Me.TimeLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.TimeLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TimeLabel.Location = New System.Drawing.Point(755, 62)
         Me.TimeLabel.Name = "TimeLabel"
         Me.TimeLabel.Size = New System.Drawing.Size(96, 48)
         Me.TimeLabel.TabIndex = 44
         Me.TimeLabel.Text = "/s"
-        Me.TimeLabel.Visible = false
-        '
-        'AngleLabel
-        '
-        Me.AngleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.AngleLabel.Location = New System.Drawing.Point(666, 62)
-        Me.AngleLabel.Name = "AngleLabel"
-        Me.AngleLabel.Size = New System.Drawing.Size(177, 67)
-        Me.AngleLabel.TabIndex = 44
-        Me.AngleLabel.Text = "arcsec"
-        Me.AngleLabel.Visible = false
+        Me.TimeLabel.Visible = False
         '
         'TrackBar1
         '
@@ -151,8 +139,8 @@ Partial Public Class MainForm
         '
         'Averaging_Label
         '
-        Me.Averaging_Label.AutoSize = true
-        Me.Averaging_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Averaging_Label.AutoSize = True
+        Me.Averaging_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Averaging_Label.Location = New System.Drawing.Point(312, 136)
         Me.Averaging_Label.Name = "Averaging_Label"
         Me.Averaging_Label.Size = New System.Drawing.Size(84, 20)
@@ -161,8 +149,8 @@ Partial Public Class MainForm
         '
         'AverageLabel
         '
-        Me.AverageLabel.AutoSize = true
-        Me.AverageLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.AverageLabel.AutoSize = True
+        Me.AverageLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.AverageLabel.Location = New System.Drawing.Point(517, 137)
         Me.AverageLabel.Name = "AverageLabel"
         Me.AverageLabel.Size = New System.Drawing.Size(18, 20)
@@ -171,7 +159,7 @@ Partial Public Class MainForm
         '
         'UnitLabel
         '
-        Me.UnitLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.UnitLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.UnitLabel.Location = New System.Drawing.Point(666, 62)
         Me.UnitLabel.Name = "UnitLabel"
         Me.UnitLabel.Size = New System.Drawing.Size(104, 48)
@@ -180,8 +168,8 @@ Partial Public Class MainForm
         '
         'DIFF
         '
-        Me.DIFF.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.DIFF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(0,Byte),Integer), CType(CType(200,Byte),Integer))
+        Me.DIFF.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DIFF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(200, Byte), Integer))
         Me.DIFF.Location = New System.Drawing.Point(703, 22)
         Me.DIFF.Name = "DIFF"
         Me.DIFF.Size = New System.Drawing.Size(89, 24)
@@ -191,7 +179,7 @@ Partial Public Class MainForm
         '
         'DIFFKHzLabel
         '
-        Me.DIFFKHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.DIFFKHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFFKHzLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.DIFFKHzLabel.Location = New System.Drawing.Point(790, 22)
         Me.DIFFKHzLabel.Name = "DIFFKHzLabel"
@@ -201,7 +189,7 @@ Partial Public Class MainForm
         '
         'DIFFLabel
         '
-        Me.DIFFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.DIFFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFFLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.DIFFLabel.Location = New System.Drawing.Point(656, 22)
         Me.DIFFLabel.Name = "DIFFLabel"
@@ -211,7 +199,7 @@ Partial Public Class MainForm
         '
         'MEASMHzLabel
         '
-        Me.MEASMHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.MEASMHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MEASMHzLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.MEASMHzLabel.Location = New System.Drawing.Point(577, 22)
         Me.MEASMHzLabel.Name = "MEASMHzLabel"
@@ -221,7 +209,7 @@ Partial Public Class MainForm
         '
         'REFMHzLabel
         '
-        Me.REFMHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.REFMHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.REFMHzLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.REFMHzLabel.Location = New System.Drawing.Point(369, 22)
         Me.REFMHzLabel.Name = "REFMHzLabel"
@@ -231,8 +219,8 @@ Partial Public Class MainForm
         '
         'MEAS
         '
-        Me.MEAS.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.MEAS.ForeColor = System.Drawing.Color.FromArgb(CType(CType(175,Byte),Integer), CType(CType(0,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.MEAS.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MEAS.ForeColor = System.Drawing.Color.FromArgb(CType(CType(175, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.MEAS.Location = New System.Drawing.Point(514, 20)
         Me.MEAS.Name = "MEAS"
         Me.MEAS.Size = New System.Drawing.Size(66, 26)
@@ -242,8 +230,8 @@ Partial Public Class MainForm
         '
         'REF
         '
-        Me.REF.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.REF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(170,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.REF.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.REF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(170, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.REF.Location = New System.Drawing.Point(304, 21)
         Me.REF.Name = "REF"
         Me.REF.Size = New System.Drawing.Size(67, 24)
@@ -253,7 +241,7 @@ Partial Public Class MainForm
         '
         'MEASLabel
         '
-        Me.MEASLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.MEASLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MEASLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.MEASLabel.Location = New System.Drawing.Point(457, 22)
         Me.MEASLabel.Name = "MEASLabel"
@@ -263,7 +251,7 @@ Partial Public Class MainForm
         '
         'REFLabel
         '
-        Me.REFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.REFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.REFLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.REFLabel.Location = New System.Drawing.Point(261, 22)
         Me.REFLabel.Name = "REFLabel"
@@ -273,7 +261,7 @@ Partial Public Class MainForm
         '
         'WLUnits
         '
-        Me.WLUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.WLUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.WLUnits.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.WLUnits.Location = New System.Drawing.Point(184, 22)
         Me.WLUnits.Name = "WLUnits"
@@ -283,8 +271,8 @@ Partial Public Class MainForm
         '
         'WLText
         '
-        Me.WLText.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.WLText.ForeColor = System.Drawing.Color.FromArgb(CType(CType(128,Byte),Integer), CType(CType(64,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.WLText.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WLText.ForeColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.WLText.Location = New System.Drawing.Point(81, 22)
         Me.WLText.Name = "WLText"
         Me.WLText.Size = New System.Drawing.Size(108, 24)
@@ -293,7 +281,7 @@ Partial Public Class MainForm
         '
         'WLlabel
         '
-        Me.WLlabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.WLlabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.WLlabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.WLlabel.Location = New System.Drawing.Point(41, 22)
         Me.WLlabel.Name = "WLlabel"
@@ -307,9 +295,9 @@ Partial Public Class MainForm
         '
         'TestModeLabel
         '
-        Me.TestModeLabel.AutoSize = true
-        Me.TestModeLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.TestModeLabel.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.TestModeLabel.AutoSize = True
+        Me.TestModeLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TestModeLabel.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.TestModeLabel.Location = New System.Drawing.Point(30, 59)
         Me.TestModeLabel.Name = "TestModeLabel"
         Me.TestModeLabel.Size = New System.Drawing.Size(132, 22)
@@ -318,8 +306,8 @@ Partial Public Class MainForm
         '
         'Graph_Label
         '
-        Me.Graph_Label.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Graph_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 17!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Graph_Label.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Graph_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 17.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Graph_Label.Location = New System.Drawing.Point(357, 505)
         Me.Graph_Label.Name = "Graph_Label"
         Me.Graph_Label.Size = New System.Drawing.Size(217, 33)
@@ -329,7 +317,7 @@ Partial Public Class MainForm
         '
         'Compression_Label
         '
-        Me.Compression_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Compression_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Compression_Label.Location = New System.Drawing.Point(182, 242)
         Me.Compression_Label.MaximumSize = New System.Drawing.Size(160, 20)
         Me.Compression_Label.MinimumSize = New System.Drawing.Size(160, 20)
@@ -349,13 +337,13 @@ Partial Public Class MainForm
         Me.NumericUpDown_Scale.TabIndex = 84
         Me.NumericUpDown_Scale.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown_Scale.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.NumericUpDown_Scale.Visible = false
+        Me.NumericUpDown_Scale.Visible = False
         '
         'EDOff_Label
         '
-        Me.EDOff_Label.AutoSize = true
-        Me.EDOff_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.EDOff_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(100,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.EDOff_Label.AutoSize = True
+        Me.EDOff_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EDOff_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.EDOff_Label.Location = New System.Drawing.Point(30, 86)
         Me.EDOff_Label.Name = "EDOff_Label"
         Me.EDOff_Label.Size = New System.Drawing.Size(160, 22)
@@ -364,7 +352,7 @@ Partial Public Class MainForm
         '
         'ComboBox_Range
         '
-        Me.ComboBox_Range.FormattingEnabled = true
+        Me.ComboBox_Range.FormattingEnabled = True
         Me.ComboBox_Range.Items.AddRange(New Object() {"Auto", "0.01", "0.02", "0.05", "0.1", "0.2", "0.5", "1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "Auto"})
         Me.ComboBox_Range.Location = New System.Drawing.Point(653, 244)
         Me.ComboBox_Range.Name = "ComboBox_Range"
@@ -373,21 +361,10 @@ Partial Public Class MainForm
         Me.ComboBox_Range.TabIndex = 86
         Me.ComboBox_Range.Text = "Auto"
         '
-        'ComboBox_Range_UnitsD
-        '
-        Me.ComboBox_Range_UnitsD.FormattingEnabled = true
-        Me.ComboBox_Range_UnitsD.Items.AddRange(New Object() {"nm", "um", "mm", "cm", "m", "in", "ft"})
-        Me.ComboBox_Range_UnitsD.Location = New System.Drawing.Point(703, 244)
-        Me.ComboBox_Range_UnitsD.Name = "ComboBox_Range_UnitsD"
-        Me.ComboBox_Range_UnitsD.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ComboBox_Range_UnitsD.Size = New System.Drawing.Size(39, 21)
-        Me.ComboBox_Range_UnitsD.TabIndex = 87
-        Me.ComboBox_Range_UnitsD.Text = "mm"
-        '
         'Label_Range
         '
-        Me.Label_Range.AutoSize = true
-        Me.Label_Range.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label_Range.AutoSize = True
+        Me.Label_Range.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label_Range.Location = New System.Drawing.Point(426, 242)
         Me.Label_Range.MaximumSize = New System.Drawing.Size(100, 20)
         Me.Label_Range.MinimumSize = New System.Drawing.Size(225, 20)
@@ -396,28 +373,6 @@ Partial Public Class MainForm
         Me.Label_Range.Size = New System.Drawing.Size(225, 20)
         Me.Label_Range.TabIndex = 88
         Me.Label_Range.Text = "Displacement Range"
-        '
-        'Label_Range_s
-        '
-        Me.Label_Range_s.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label_Range_s.Location = New System.Drawing.Point(745, 244)
-        Me.Label_Range_s.Name = "Label_Range_s"
-        Me.Label_Range_s.Size = New System.Drawing.Size(25, 20)
-        Me.Label_Range_s.TabIndex = 89
-        Me.Label_Range_s.Text = "/s"
-        Me.Label_Range_s.Visible = false
-        '
-        'ComboBox_Range_UnitsA
-        '
-        Me.ComboBox_Range_UnitsA.FormattingEnabled = true
-        Me.ComboBox_Range_UnitsA.Items.AddRange(New Object() {"arcsec", "arcmin", "degree"})
-        Me.ComboBox_Range_UnitsA.Location = New System.Drawing.Point(703, 244)
-        Me.ComboBox_Range_UnitsA.Name = "ComboBox_Range_UnitsA"
-        Me.ComboBox_Range_UnitsA.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ComboBox_Range_UnitsA.Size = New System.Drawing.Size(67, 21)
-        Me.ComboBox_Range_UnitsA.TabIndex = 90
-        Me.ComboBox_Range_UnitsA.Text = "degree"
-        Me.ComboBox_Range_UnitsA.Visible = false
         '
         'Capture_Button
         '
@@ -533,7 +488,7 @@ Partial Public Class MainForm
         Me.DisplacementButton.Size = New System.Drawing.Size(114, 23)
         Me.DisplacementButton.TabIndex = 40
         Me.DisplacementButton.Text = "Displacement"
-        Me.DisplacementButton.UseVisualStyleBackColor = false
+        Me.DisplacementButton.UseVisualStyleBackColor = False
         '
         'ZeroButton
         '
@@ -565,7 +520,7 @@ Partial Public Class MainForm
         '
         'OpenFileDialog1
         '
-        Me.OpenFileDialog1.CheckFileExists = false
+        Me.OpenFileDialog1.CheckFileExists = False
         Me.OpenFileDialog1.DefaultExt = "txt"
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         Me.OpenFileDialog1.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
@@ -573,7 +528,7 @@ Partial Public Class MainForm
         '
         'Axis_mm
         '
-        Me.Axis_mm.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Axis_mm.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Axis_mm.Location = New System.Drawing.Point(50, 493)
         Me.Axis_mm.MaximumSize = New System.Drawing.Size(160, 20)
         Me.Axis_mm.MinimumSize = New System.Drawing.Size(10, 20)
@@ -585,17 +540,17 @@ Partial Public Class MainForm
         '
         'Axis_S
         '
-        Me.Axis_S.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Axis_S.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Axis_S.Location = New System.Drawing.Point(88, 493)
         Me.Axis_S.Name = "Axis_S"
         Me.Axis_S.Size = New System.Drawing.Size(28, 24)
         Me.Axis_S.TabIndex = 93
         Me.Axis_S.Text = "/s"
-        Me.Axis_S.Visible = false
+        Me.Axis_S.Visible = False
         '
         'Axis_degree
         '
-        Me.Axis_degree.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Axis_degree.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Axis_degree.Location = New System.Drawing.Point(51, 493)
         Me.Axis_degree.MaximumSize = New System.Drawing.Size(160, 20)
         Me.Axis_degree.MinimumSize = New System.Drawing.Size(10, 20)
@@ -607,29 +562,46 @@ Partial Public Class MainForm
         '
         'Suspend_Label
         '
-        Me.Suspend_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 13!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Suspend_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220,Byte),Integer), CType(CType(220,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.Suspend_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Suspend_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.Suspend_Label.Location = New System.Drawing.Point(700, 49)
         Me.Suspend_Label.Name = "Suspend_Label"
         Me.Suspend_Label.Size = New System.Drawing.Size(106, 26)
         Me.Suspend_Label.TabIndex = 95
         Me.Suspend_Label.Text = "Suspended"
         Me.Suspend_Label.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Suspend_Label.Visible = false
+        Me.Suspend_Label.Visible = False
+        '
+        'RangeUnits
+        '
+        Me.RangeUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RangeUnits.Location = New System.Drawing.Point(729, 244)
+        Me.RangeUnits.Name = "RangeUnits"
+        Me.RangeUnits.Size = New System.Drawing.Size(117, 18)
+        Me.RangeUnits.TabIndex = 96
+        Me.RangeUnits.Text = "nm"
+        '
+        'AngleLabel
+        '
+        Me.AngleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AngleLabel.Location = New System.Drawing.Point(666, 62)
+        Me.AngleLabel.Name = "AngleLabel"
+        Me.AngleLabel.Size = New System.Drawing.Size(177, 67)
+        Me.AngleLabel.TabIndex = 44
+        Me.AngleLabel.Text = "arcsec"
+        Me.AngleLabel.Visible = False
         '
         'MainForm
         '
         Me.ClientSize = New System.Drawing.Size(880, 572)
+        Me.Controls.Add(Me.RangeUnits)
         Me.Controls.Add(Me.Suspend_Label)
         Me.Controls.Add(Me.Axis_degree)
         Me.Controls.Add(Me.Axis_S)
         Me.Controls.Add(Me.Axis_mm)
         Me.Controls.Add(Me.Capture_Button)
         Me.Controls.Add(Me.StraightnessLongButton)
-        Me.Controls.Add(Me.ComboBox_Range_UnitsA)
-        Me.Controls.Add(Me.Label_Range_s)
         Me.Controls.Add(Me.Label_Range)
-        Me.Controls.Add(Me.ComboBox_Range_UnitsD)
         Me.Controls.Add(Me.ComboBox_Range)
         Me.Controls.Add(Me.EDOff_Label)
         Me.Controls.Add(Me.NumericUpDown_Scale)
@@ -689,7 +661,6 @@ End Sub
     Friend WithEvents StraightnessShortButton As System.Windows.Forms.Button
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents TimeLabel As System.Windows.Forms.Label
-    Friend WithEvents AngleLabel As System.Windows.Forms.Label
     Friend WithEvents FrequencyButton As System.Windows.Forms.Button
     Friend WithEvents TrackBar1 As System.Windows.Forms.TrackBar
     Friend WithEvents Averaging_Label As System.Windows.Forms.Label
@@ -716,14 +687,13 @@ End Sub
     Friend WithEvents NumericUpDown_Scale As System.Windows.Forms.NumericUpDown
     Friend WithEvents EDOff_Label As System.Windows.Forms.Label
     Friend WithEvents ComboBox_Range As System.Windows.Forms.ComboBox
-    Friend WithEvents ComboBox_Range_UnitsD As System.Windows.Forms.ComboBox
     Friend WithEvents Label_Range As System.Windows.Forms.Label
-    Friend WithEvents Label_Range_s As System.Windows.Forms.Label
-    Friend WithEvents ComboBox_Range_UnitsA As System.Windows.Forms.ComboBox
     Friend WithEvents Capture_Button As System.Windows.Forms.Button
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents Axis_mm As System.Windows.Forms.Label
     Friend WithEvents Axis_S As System.Windows.Forms.Label
     Friend WithEvents Axis_degree As System.Windows.Forms.Label
     Friend WithEvents Suspend_Label As System.Windows.Forms.Label
+    Friend WithEvents RangeUnits As System.Windows.Forms.Label
+    Friend WithEvents AngleLabel As System.Windows.Forms.Label
 End Class
