@@ -8,13 +8,7 @@ Public Class Compensation
     End Sub
 
     Private Sub Compensation_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        MainForm.TCorrection = 1 / (1 + (0.000271375 * 293 / (273 + MainForm.TemperatureC)))
-        TextBox_TempFactor.Text = MainForm.TCorrection.ToString("#0.000000000")
-        MainForm.PCorrection = 1 / (1 + (0.000271375 * MainForm.PressureATM / 1013))
-        TextBox_PresFactor.Text = MainForm.PCorrection.ToString("#0.000000000")
-        MainForm.HCorrection = 1
-        TextBox_HumiFactor.Text = MainForm.HCorrection.ToString("#0.000000000")
-        MainForm.WLText.Text = (MainForm.Wavelength * MainForm.ECFactor).ToString("000.000000")
+
     End Sub
 
     Private Sub NumericUpDown_Temperature_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_Temperature.ValueChanged
@@ -35,6 +29,8 @@ Public Class Compensation
             MainForm.Wavelength = NumericUpDown_Wavelength.Value
         End If
         MainForm.WLText.Text = (MainForm.Wavelength * MainForm.ECFactor).ToString("000.000000")
+        My.Settings.Temperature = MainForm.Temperature
+        My.Settings.Save()
     End Sub
 
     Private Sub ComboBox_TempUnits_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_TempUnits.SelectedIndexChanged
@@ -100,17 +96,18 @@ Public Class Compensation
 
     Private Sub NumericUpDown_Humidity_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_Humidity.ValueChanged
         Dim humidityreference As Double = 1.000271375
-        If NumericUpDown_Humidity.Value = 0 Then MainForm.HCorrection = 1.000271375 / 1.000271799
-        If NumericUpDown_Humidity.Value = 10 Then MainForm.HCorrection = 1.000271375 / 1.000271714
-        If NumericUpDown_Humidity.Value = 20 Then MainForm.HCorrection = 1.000271375 / 1.000271629
-        If NumericUpDown_Humidity.Value = 30 Then MainForm.HCorrection = 1.000271375 / 1.000271544
-        If NumericUpDown_Humidity.Value = 40 Then MainForm.HCorrection = 1.000271375 / 1.000271459
-        If NumericUpDown_Humidity.Value = 50 Then MainForm.HCorrection = 1
-        If NumericUpDown_Humidity.Value = 60 Then MainForm.HCorrection = 1.000271375 / 1.00027129
-        If NumericUpDown_Humidity.Value = 70 Then MainForm.HCorrection = 1.000271375 / 1.000271205
-        If NumericUpDown_Humidity.Value = 80 Then MainForm.HCorrection = 1.000271375 / 1.00027112
-        If NumericUpDown_Humidity.Value = 90 Then MainForm.HCorrection = 1.000271375 / 1.000271035
-        If NumericUpDown_Humidity.Value = 100 Then MainForm.HCorrection = 1.000271375 / 1.00027095
+        MainForm.HumidityRel = NumericUpDown_Humidity.Value
+        If MainForm.HumidityRel = 0 Then MainForm.HCorrection = 1.000271375 / 1.000271799
+        If MainForm.HumidityRel = 10 Then MainForm.HCorrection = 1.000271375 / 1.000271714
+        If MainForm.HumidityRel = 20 Then MainForm.HCorrection = 1.000271375 / 1.000271629
+        If MainForm.HumidityRel = 30 Then MainForm.HCorrection = 1.000271375 / 1.000271544
+        If MainForm.HumidityRel = 40 Then MainForm.HCorrection = 1.000271375 / 1.000271459
+        If MainForm.HumidityRel = 50 Then MainForm.HCorrection = 1
+        If MainForm.HumidityRel = 60 Then MainForm.HCorrection = 1.000271375 / 1.00027129
+        If MainForm.HumidityRel = 70 Then MainForm.HCorrection = 1.000271375 / 1.000271205
+        If MainForm.HumidityRel = 80 Then MainForm.HCorrection = 1.000271375 / 1.00027112
+        If MainForm.HumidityRel = 90 Then MainForm.HCorrection = 1.000271375 / 1.000271035
+        If MainForm.HumidityRel = 100 Then MainForm.HCorrection = 1.000271375 / 1.00027095
 
         TextBox_HumiFactor.Text = MainForm.HCorrection.ToString("#0.000000000")
         If ECOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then

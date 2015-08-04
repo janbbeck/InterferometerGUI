@@ -50,8 +50,11 @@ Public Class MainForm
     Public unitCorrectmm As Double = 1.0 ' 1.0 = mm 0.001 = um etc
     Public angleCorrectionFactor As Double = 3600.0 ' 3600 = arcsec 60 = arcmin 1 = degree
     Public angleCorrectdegree As Double = 1
+    Public Angle_Reflector_Spacing As Double = 32.61
     Public multiplier As Integer = 2    ' needed for interferometer type 1x 2x 4x
-    Public straightnessMultiplier As Integer = 1 ' needed for straightness measurements
+    Public straightnessMultiplier As Double = 1 ' needed for straightness measurements
+    Public SLCoefficient As Double = 360
+    Public SSCoefficient As Double = 36
     Public currentValue As Double = 0
     Public previousValue As Double = 0
     Dim velocityValue As Double = 0
@@ -95,9 +98,9 @@ Public Class MainForm
     Dim currentDIFFFrequency As Double = 0
     Public previousserialnumber As UInt64 = 0
     Dim serialnumberdifference As UInt64 = 0
-    Public Temperature As Double = 20
-    Public Pressure As Double = 1000
-    Public Humidity As Double = 50
+    Public Temperature As Double
+    Public Pressure As Double
+    Public Humidity As Double
     Public TemperatureC As Double = 20
     Public PressureATM As Double = 1000
     Public HumidityRel As Double = 50
@@ -425,7 +428,43 @@ Public Class MainForm
             ComboBox_Range_UnitsA.Text = "degree"
             Graph_Range_UnitsFactorA = 1
         End If
-        averagingValue = My.Settings.AveragingValue
+
+
+        Compensation.NumericUpDown_Temperature.Value = CDec(My.Settings.Temperature)
+        Temperature = CDec(My.Settings.Temperature)
+        'Compensation.NumericUpDown_Pressure.Value = CDec(My.Settings.Pressure)
+        'Compensation.NumericUpDown_Humidity.Value = My.Settings.Humidity
+        'Compensation.ComboBox_TempUnits.Text = My.Settings.TempUnits
+        'Compensation.ComboBox_Pressure_Units.Text = My.Settings.PressureUnits
+
+        TCorrection = 1 / (1 + (0.000271375 * 293 / (273 + My.Settings.Temperature)))
+        Compensation.TextBox_TempFactor.Text = TCorrection.ToString("#0.000000000")
+        PCorrection = 1 / (1 + (0.000271375 * My.Settings.Pressure / 1013))
+        Compensation.TextBox_PresFactor.Text = PCorrection.ToString("#0.000000000")
+        HumidityRel = My.Settings.Humidity
+        If HumidityRel = 0 Then HCorrection = 1.000271375 / 1.000271799
+        If HumidityRel = 10 Then HCorrection = 1.000271375 / 1.000271714
+        If HumidityRel = 20 Then HCorrection = 1.000271375 / 1.000271629
+        If HumidityRel = 30 Then HCorrection = 1.000271375 / 1.000271544
+        If HumidityRel = 40 Then HCorrection = 1.000271375 / 1.000271459
+        If HumidityRel = 50 Then HCorrection = 1
+        If HumidityRel = 60 Then HCorrection = 1.000271375 / 1.00027129
+        If HumidityRel = 70 Then HCorrection = 1.000271375 / 1.000271205
+        If HumidityRel = 80 Then HCorrection = 1.000271375 / 1.00027112
+        If HumidityRel = 90 Then HCorrection = 1.000271375 / 1.000271035
+        If HumidityRel = 100 Then HCorrection = 1.000271375 / 1.00027095
+
+        '    Compensation.TextBox_HumiFactor.Text = HCorrection.ToString("#0.000000000")
+        '    If Compensation.ECOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+        '        Wavelength = Compensation.NumericUpDown_Wavelength.Value * TCorrection * PCorrection * HCorrection
+        '    Else
+        '        Wavelength = Compensation.NumericUpDown_Wavelength.Value
+        '    End If
+        '    WLText.Text = (Wavelength * ECFactor).ToString("000.000000")
+        '    HCorrection = 1
+        '    Compensation.TextBox_HumiFactor.Text = HCorrection.ToString("#0.000000000")
+        '    WLText.Text = (Wavelength * ECFactor).ToString("000.000000")
+        '    averagingValue = My.Settings.AveragingValue
 
         TrackBar1.Value = CInt(averagingValue)
         AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
@@ -455,6 +494,7 @@ Public Class MainForm
         End If
         TestModeLabel.Visible = False
         EDOff_Label.Visible = False
+        straightnessMultiplier = 1
     End Sub
 
     Private Sub Comport_Click(sender As Object, e As EventArgs)
@@ -645,7 +685,7 @@ Public Class MainForm
                                 End If
 
                                 If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
-                                    displayValue = Math.Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
+                                    displayValue = Math.Asin(average / Angle_Reflector_Spacing / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
                                 Else
                                     displayValue = average * unitCorrectmm
                                 End If
@@ -692,7 +732,7 @@ Public Class MainForm
                                             End If
 
                                         ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                                            If (Math.Asin(average / 32.61 / 1000000) * angleCorrectionFactor * 57.296) > CDbl(Angle_RangeP * Graph_Range_UnitsFactorA) Then
+                                            If (Math.Asin(average / Angle_Reflector_Spacing / 1000000) * angleCorrectionFactor * 57.296) > CDbl(Angle_RangeP * Graph_Range_UnitsFactorA) Then
                                                 Angle_RangeP = Angle_RangeP * 1.41421356237
                                                 ComboBox_Range_UnitsD.Visible = False
                                                 ComboBox_Range.Text = "Auto"
@@ -1013,7 +1053,7 @@ Public Class MainForm
         TimeLabel.Visible = False
         AngleLabel.Visible = False
         ComboBox_Range.Visible = True
-        straightnessMultiplier = 360
+        straightnessMultiplier = SLCoefficient
 
         If GraphControl.Text.Equals("Enable Graph") Then
             Label_Range.Visible = False
@@ -1067,7 +1107,7 @@ Public Class MainForm
         TimeLabel.Visible = False
         AngleLabel.Visible = False
         ComboBox_Range.Visible = True
-        straightnessMultiplier = 36
+        straightnessMultiplier = SSCoefficient
 
         If GraphControl.Text.Equals("Enable Graph") Then
             Label_Range.Visible = False

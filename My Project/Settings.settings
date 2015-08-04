@@ -12,7 +12,31 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="AngleCorrectionFactor" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">32.61</Value>
+    </Setting>
+    <Setting Name="Angle_Reflector_Spacing" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">32.61</Value>
+    </Setting>
+    <Setting Name="SLCoefficient" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">360</Value>
+    </Setting>
+    <Setting Name="SSCoefficient" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">36</Value>
+    </Setting>
+    <Setting Name="Temperature" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">25</Value>
+    </Setting>
+    <Setting Name="Pressure" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="Humidity" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="TempUnits" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Degrees C</Value>
+    </Setting>
+    <Setting Name="PressureUnits" Type="System.String" Scope="User">
+      <Value Profile="(Default)">mm/Hg</Value>
     </Setting>
   </Settings>
 </SettingsFile>

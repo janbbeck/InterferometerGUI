@@ -41,17 +41,17 @@ Partial Class Configuration
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Buttonarcmin = New System.Windows.Forms.Button()
         Me.Buttondegree = New System.Windows.Forms.Button()
-        Me.NumericUpDown_FGREF_Value = New System.Windows.Forms.NumericUpDown()
+        Me.NumericUpDown_ARS = New System.Windows.Forms.NumericUpDown()
         Me.AngleSpacingl = New System.Windows.Forms.TextBox()
-        Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
+        Me.NumericUpDown_SL_Coefficient = New System.Windows.Forms.NumericUpDown()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown()
+        Me.NumericUpDown_SS_Coefficient = New System.Windows.Forms.NumericUpDown()
         Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1.SuspendLayout()
-        CType(Me.NumericUpDown_FGREF_Value, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NumericUpDown_ARS, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NumericUpDown_SL_Coefficient, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NumericUpDown_SS_Coefficient, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -309,18 +309,18 @@ Partial Class Configuration
         Me.Buttondegree.TabIndex = 66
         Me.Buttondegree.Text = "degrees"
         '
-        'NumericUpDown_FGREF_Value
+        'NumericUpDown_ARS
         '
-        Me.NumericUpDown_FGREF_Value.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown_FGREF_Value.DecimalPlaces = 3
-        Me.NumericUpDown_FGREF_Value.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
-        Me.NumericUpDown_FGREF_Value.Location = New System.Drawing.Point(269, 233)
-        Me.NumericUpDown_FGREF_Value.Minimum = New Decimal(New Integer() {2, 0, 0, 65536})
-        Me.NumericUpDown_FGREF_Value.Name = "NumericUpDown_FGREF_Value"
-        Me.NumericUpDown_FGREF_Value.Size = New System.Drawing.Size(62, 20)
-        Me.NumericUpDown_FGREF_Value.TabIndex = 76
-        Me.NumericUpDown_FGREF_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.NumericUpDown_FGREF_Value.Value = New Decimal(New Integer() {32610, 0, 0, 196608})
+        Me.NumericUpDown_ARS.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.NumericUpDown_ARS.DecimalPlaces = 3
+        Me.NumericUpDown_ARS.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
+        Me.NumericUpDown_ARS.Location = New System.Drawing.Point(250, 233)
+        Me.NumericUpDown_ARS.Minimum = New Decimal(New Integer() {2, 0, 0, 65536})
+        Me.NumericUpDown_ARS.Name = "NumericUpDown_ARS"
+        Me.NumericUpDown_ARS.Size = New System.Drawing.Size(62, 20)
+        Me.NumericUpDown_ARS.TabIndex = 76
+        Me.NumericUpDown_ARS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.NumericUpDown_ARS.Value = New Decimal(New Integer() {32610, 0, 0, 196608})
         '
         'AngleSpacingl
         '
@@ -328,26 +328,26 @@ Partial Class Configuration
         Me.AngleSpacingl.BackColor = System.Drawing.SystemColors.Menu
         Me.AngleSpacingl.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.AngleSpacingl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AngleSpacingl.Location = New System.Drawing.Point(86, 235)
+        Me.AngleSpacingl.Location = New System.Drawing.Point(102, 235)
         Me.AngleSpacingl.Name = "AngleSpacingl"
         Me.AngleSpacingl.ReadOnly = True
-        Me.AngleSpacingl.Size = New System.Drawing.Size(200, 13)
+        Me.AngleSpacingl.Size = New System.Drawing.Size(144, 13)
         Me.AngleSpacingl.TabIndex = 74
         Me.AngleSpacingl.Text = " Angle Reflector Spacing:"
         '
-        'NumericUpDown1
+        'NumericUpDown_SL_Coefficient
         '
-        Me.NumericUpDown1.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown1.DecimalPlaces = 2
-        Me.NumericUpDown1.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
-        Me.NumericUpDown1.Location = New System.Drawing.Point(271, 263)
-        Me.NumericUpDown1.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-        Me.NumericUpDown1.Minimum = New Decimal(New Integer() {100, 0, 0, 0})
-        Me.NumericUpDown1.Name = "NumericUpDown1"
-        Me.NumericUpDown1.Size = New System.Drawing.Size(62, 20)
-        Me.NumericUpDown1.TabIndex = 78
-        Me.NumericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.NumericUpDown1.Value = New Decimal(New Integer() {360, 0, 0, 0})
+        Me.NumericUpDown_SL_Coefficient.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.NumericUpDown_SL_Coefficient.DecimalPlaces = 2
+        Me.NumericUpDown_SL_Coefficient.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
+        Me.NumericUpDown_SL_Coefficient.Location = New System.Drawing.Point(252, 263)
+        Me.NumericUpDown_SL_Coefficient.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+        Me.NumericUpDown_SL_Coefficient.Minimum = New Decimal(New Integer() {100, 0, 0, 0})
+        Me.NumericUpDown_SL_Coefficient.Name = "NumericUpDown_SL_Coefficient"
+        Me.NumericUpDown_SL_Coefficient.Size = New System.Drawing.Size(62, 20)
+        Me.NumericUpDown_SL_Coefficient.TabIndex = 78
+        Me.NumericUpDown_SL_Coefficient.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.NumericUpDown_SL_Coefficient.Value = New Decimal(New Integer() {360, 0, 0, 0})
         '
         'TextBox1
         '
@@ -355,12 +355,12 @@ Partial Class Configuration
         Me.TextBox1.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(87, 265)
+        Me.TextBox1.Location = New System.Drawing.Point(103, 265)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ReadOnly = True
-        Me.TextBox1.Size = New System.Drawing.Size(250, 13)
+        Me.TextBox1.Size = New System.Drawing.Size(148, 13)
         Me.TextBox1.TabIndex = 77
-        Me.TextBox1.Text = "Long Range Straightness Coefficient:"
+        Me.TextBox1.Text = "Straightness Long Coefficient:"
         '
         'TextBox2
         '
@@ -368,25 +368,25 @@ Partial Class Configuration
         Me.TextBox2.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox2.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox2.Location = New System.Drawing.Point(87, 295)
+        Me.TextBox2.Location = New System.Drawing.Point(103, 295)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.ReadOnly = True
-        Me.TextBox2.Size = New System.Drawing.Size(250, 13)
+        Me.TextBox2.Size = New System.Drawing.Size(148, 13)
         Me.TextBox2.TabIndex = 79
-        Me.TextBox2.Text = "Short Range Straightness Coefficient:"
+        Me.TextBox2.Text = "Straightness Short Coefficient:"
         '
-        'NumericUpDown2
+        'NumericUpDown_SS_Coefficient
         '
-        Me.NumericUpDown2.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown2.DecimalPlaces = 3
-        Me.NumericUpDown2.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
-        Me.NumericUpDown2.Location = New System.Drawing.Point(271, 294)
-        Me.NumericUpDown2.Minimum = New Decimal(New Integer() {5, 0, 0, 0})
-        Me.NumericUpDown2.Name = "NumericUpDown2"
-        Me.NumericUpDown2.Size = New System.Drawing.Size(62, 20)
-        Me.NumericUpDown2.TabIndex = 80
-        Me.NumericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.NumericUpDown2.Value = New Decimal(New Integer() {3600, 0, 0, 131072})
+        Me.NumericUpDown_SS_Coefficient.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.NumericUpDown_SS_Coefficient.DecimalPlaces = 3
+        Me.NumericUpDown_SS_Coefficient.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
+        Me.NumericUpDown_SS_Coefficient.Location = New System.Drawing.Point(252, 294)
+        Me.NumericUpDown_SS_Coefficient.Minimum = New Decimal(New Integer() {5, 0, 0, 0})
+        Me.NumericUpDown_SS_Coefficient.Name = "NumericUpDown_SS_Coefficient"
+        Me.NumericUpDown_SS_Coefficient.Size = New System.Drawing.Size(62, 20)
+        Me.NumericUpDown_SS_Coefficient.TabIndex = 80
+        Me.NumericUpDown_SS_Coefficient.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.NumericUpDown_SS_Coefficient.Value = New Decimal(New Integer() {3600, 0, 0, 131072})
         '
         'TextBox3
         '
@@ -394,7 +394,7 @@ Partial Class Configuration
         Me.TextBox3.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox3.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox3.Location = New System.Drawing.Point(337, 235)
+        Me.TextBox3.Location = New System.Drawing.Point(318, 235)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.ReadOnly = True
         Me.TextBox3.Size = New System.Drawing.Size(20, 13)
@@ -408,11 +408,11 @@ Partial Class Configuration
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(428, 393)
         Me.Controls.Add(Me.TextBox3)
-        Me.Controls.Add(Me.NumericUpDown2)
+        Me.Controls.Add(Me.NumericUpDown_SS_Coefficient)
         Me.Controls.Add(Me.TextBox2)
-        Me.Controls.Add(Me.NumericUpDown1)
+        Me.Controls.Add(Me.NumericUpDown_SL_Coefficient)
         Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.NumericUpDown_FGREF_Value)
+        Me.Controls.Add(Me.NumericUpDown_ARS)
         Me.Controls.Add(Me.AngleSpacingl)
         Me.Controls.Add(Me.Buttondegree)
         Me.Controls.Add(Me.Buttonarcmin)
@@ -438,9 +438,9 @@ Partial Class Configuration
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Configuration"
         Me.TableLayoutPanel1.ResumeLayout(False)
-        CType(Me.NumericUpDown_FGREF_Value, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NumericUpDown_ARS, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NumericUpDown_SL_Coefficient, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NumericUpDown_SS_Coefficient, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -463,12 +463,12 @@ Partial Class Configuration
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Buttonarcmin As System.Windows.Forms.Button
     Friend WithEvents Buttondegree As System.Windows.Forms.Button
-    Friend WithEvents NumericUpDown_FGREF_Value As System.Windows.Forms.NumericUpDown
+    Friend WithEvents NumericUpDown_ARS As System.Windows.Forms.NumericUpDown
     Friend WithEvents AngleSpacingl As System.Windows.Forms.TextBox
-    Friend WithEvents NumericUpDown1 As System.Windows.Forms.NumericUpDown
+    Friend WithEvents NumericUpDown_SL_Coefficient As System.Windows.Forms.NumericUpDown
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
-    Friend WithEvents NumericUpDown2 As System.Windows.Forms.NumericUpDown
+    Friend WithEvents NumericUpDown_SS_Coefficient As System.Windows.Forms.NumericUpDown
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
 
 End Class

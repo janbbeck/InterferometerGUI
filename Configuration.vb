@@ -317,7 +317,23 @@ Public Class Configuration
         ' Next
     End Sub
 
-    Private Sub Configuration11_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub NumericUpDown_ARS_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_ARS.ValueChanged
+        MainForm.Angle_Reflector_Spacing = NumericUpDown_ARS.Value
+        My.Settings.Angle_Reflector_Spacing = NumericUpDown_ARS.Value
+        My.Settings.Save()
+    End Sub
 
+    Private Sub NumericUpDown_SL_Coefficient_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_SL_Coefficient.ValueChanged
+        MainForm.SLCoefficient = NumericUpDown_SL_Coefficient.Value
+        MainForm.straightnessMultiplier = NumericUpDown_SL_Coefficient.Value
+        My.Settings.SLCoefficient = NumericUpDown_SL_Coefficient.Value
+        My.Settings.Save()
+    End Sub
+
+    Private Sub NumericUpDown_SS_Coefficient_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_SS_Coefficient.ValueChanged
+        MainForm.SSCoefficient = NumericUpDown_SS_Coefficient.Value
+        MainForm.straightnessMultiplier = NumericUpDown_SS_Coefficient.Value
+        My.Settings.SSCoefficient = NumericUpDown_SL_Coefficient.Value
+        My.Settings.Save()
     End Sub
 End Class
