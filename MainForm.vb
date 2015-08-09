@@ -11,7 +11,6 @@ Imports System.Threading
 
 Public Class MainForm
     ' Dim file As System.IO.StreamWriter
-
     Dim captureFile As System.IO.StreamWriter ' this is the log file to capture data
     Dim captureFileName As String = "" ' this is the name of the log file to capture data
 
