@@ -79,7 +79,7 @@ Partial Class Configuration
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "DONE"
+        Me.OK_Button.Text = "CLOSE"
         '
         'Label6
         '
@@ -401,7 +401,7 @@ Partial Class Configuration
         Me.TextBox3.TabIndex = 81
         Me.TextBox3.Text = "mm"
         '
-        'Configuration11
+        'Configuration
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -434,7 +434,7 @@ Partial Class Configuration
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
-        Me.Name = "Configuration11"
+        Me.Name = "Configuration"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Configuration"
         Me.TableLayoutPanel1.ResumeLayout(False)

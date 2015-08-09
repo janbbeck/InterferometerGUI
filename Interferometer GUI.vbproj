@@ -116,6 +116,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Settings.vb" />
     <Compile Include="TestMode.Designer.vb">
       <DependentUpon>TestMode.vb</DependentUpon>
     </Compile>

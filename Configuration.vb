@@ -8,6 +8,10 @@ Public Class Configuration
         Else
             MainForm.RangeUnits.Text = MainForm.AngleLabel.Text
         End If
+        My.Settings.Angle_Reflector_Spacing = NumericUpDown_ARS.Value
+        My.Settings.SLCoefficient = NumericUpDown_SL_Coefficient.Value
+        My.Settings.SSCoefficient = NumericUpDown_SS_Coefficient.Value
+        My.Settings.Save()
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
@@ -21,13 +25,6 @@ Public Class Configuration
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.multiplier = 1
         My.Settings.Multiplier = 1
-        My.Settings.Save()
-        'For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        'Next
     End Sub
 
     Private Sub Button2x_Click_1(sender As Object, e As EventArgs) Handles Button2x.Click
@@ -39,13 +36,6 @@ Public Class Configuration
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.multiplier = 2
         My.Settings.Multiplier = 2
-        My.Settings.Save()
-        '   For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        'Next
     End Sub
 
     Private Sub Button4x_Click_1(sender As Object, e As EventArgs) Handles Button4x.Click
@@ -57,13 +47,6 @@ Public Class Configuration
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.multiplier = 4
         My.Settings.Multiplier = 4
-        My.Settings.Save()
-        'For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
     End Sub
 
     Private Sub Buttonnm_Click(sender As Object, e As EventArgs) Handles Buttonnm.Click
@@ -82,16 +65,10 @@ Public Class Configuration
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "nm"
-        'MainForm.ComboBox_Range_UnitsD.Text = "nm"
+        MainForm.RangeUnits.Text = "nm"
+        MainForm.Axis_UnitsD.Text = "nm"
         MainForm.unitCorrectionFactor = 0.000001
         My.Settings.UnitCorrectionFactor = 0.000001
-        My.Settings.Save()
-        '   For MainForm.chartcounter = 0 To 1023
-        'MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
     End Sub
 
     Private Sub Buttonum_Click(sender As Object, e As EventArgs) Handles Buttonum.Click
@@ -110,16 +87,10 @@ Public Class Configuration
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "um"
-        'MainForm.ComboBox_Range_UnitsD.Text = "um"
+        MainForm.RangeUnits.Text = "um"
+        MainForm.Axis_UnitsD.Text = "um"
         MainForm.unitCorrectionFactor = 0.001
         My.Settings.UnitCorrectionFactor = 0.001
-        My.Settings.Save()
-        'For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
     End Sub
 
     Private Sub Buttonmm_Click(sender As Object, e As EventArgs) Handles Buttonmm.Click
@@ -138,16 +109,10 @@ Public Class Configuration
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "mm"
-        'MainForm.ComboBox_Range_UnitsD.Text = "mm"
+        MainForm.RangeUnits.Text = "mm"
+        MainForm.Axis_UnitsD.Text = "mm"
         MainForm.unitCorrectionFactor = 1
         My.Settings.UnitCorrectionFactor = 1
-        My.Settings.Save()
-        ' For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
     End Sub
 
     Private Sub Buttoncm_Click(sender As Object, e As EventArgs) Handles Buttoncm.Click
@@ -166,16 +131,10 @@ Public Class Configuration
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "cm"
-        'MainForm.ComboBox_Range_UnitsD.Text = "cm"
+        MainForm.RangeUnits.Text = "cm"
+        MainForm.Axis_UnitsD.Text = "cm"
         MainForm.unitCorrectionFactor = 10
         My.Settings.UnitCorrectionFactor = 10
-        My.Settings.Save()
-        'For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
     End Sub
 
     Private Sub Buttonm_Click(sender As Object, e As EventArgs) Handles Buttonm.Click
@@ -194,16 +153,9 @@ Public Class Configuration
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "m"
-        'MainForm.ComboBox_Range_UnitsD.Text = "m"
+        MainForm.RangeUnits.Text = "m"
+        MainForm.Axis_UnitsD.Text = "m"
         MainForm.unitCorrectionFactor = 1000
-        My.Settings.UnitCorrectionFactor = 1000
-        My.Settings.Save()
-        ' For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
     End Sub
 
     Private Sub Buttonin_Click(sender As Object, e As EventArgs) Handles Buttonin.Click
@@ -222,16 +174,10 @@ Public Class Configuration
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "in"
-        'MainForm.ComboBox_Range_UnitsD.Text = "in"
+        MainForm.RangeUnits.Text = "in"
+        MainForm.Axis_UnitsD.Text = "in"
         MainForm.unitCorrectionFactor = 25.4
         My.Settings.UnitCorrectionFactor = 25.4
-        My.Settings.Save()
-        'For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
     End Sub
 
     Private Sub Buttonft_Click(sender As Object, e As EventArgs) Handles Buttonft.Click
@@ -250,16 +196,11 @@ Public Class Configuration
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.UnitLabel.Text = "ft"
+        MainForm.RangeUnits.Text = "ft"
+        MainForm.Axis_UnitsD.Text = "ft"
         'MainForm.ComboBox_Range_UnitsD.Text = "ft"
         MainForm.unitCorrectionFactor = 304.8
         My.Settings.UnitCorrectionFactor = 304.8
-        My.Settings.Save()
-        'For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
     End Sub
 
     Private Sub Buttonarcsec_Click(sender As Object, e As EventArgs) Handles Buttonarcsec.Click
@@ -272,14 +213,8 @@ Public Class Configuration
         MainForm.angleCorrectionFactor = 3600.0
         My.Settings.AngleCorrectionFactor = 3600.0
         MainForm.AngleLabel.Text = "arcsec"
-        'MainForm.ComboBox_Range_UnitsA.Text = "arcsec"
-        My.Settings.Save()
-        'For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
+        MainForm.RangeUnits.Text = "arcsec"
+        MainForm.Axis_UnitsA.Text = "arcsec"
     End Sub
 
     Private Sub Buttonarcmin_Click(sender As Object, e As EventArgs) Handles Buttonarcmin.Click
@@ -290,16 +225,10 @@ Public Class Configuration
         Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.AngleLabel.Text = "arcmin"
-        'MainForm.ComboBox_Range_UnitsA.Text = "arcmin"
+        MainForm.RangeUnits.Text = "arcmin"
+        MainForm.Axis_UnitsA.Text = "arcmin"
         MainForm.angleCorrectionFactor = 60.0
         My.Settings.AngleCorrectionFactor = 60.0
-        My.Settings.Save()
-        ' For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        'Next
     End Sub
 
     Private Sub Buttondegree_Click(sender As Object, e As EventArgs) Handles Buttondegree.Click
@@ -310,35 +239,10 @@ Public Class Configuration
         Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.AngleLabel.Text = "degree"
-        'MainForm.ComboBox_Range_UnitsA.Text = "degree"
+        MainForm.RangeUnits.Text = "degree"
+        MainForm.Axis_UnitsA.Text = "degree"
         MainForm.angleCorrectionFactor = 1.0
         My.Settings.AngleCorrectionFactor = 1.0
-        My.Settings.Save()
-        'For MainForm.chartcounter = 0 To 1023
-        ' MainForm.positionSeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.positionSeries.Points.RemoveAt(0)
-        ' MainForm.velocitySeries.Points.AddXY(MainForm.chartcounter, 0.0)
-        ' MainForm.velocitySeries.Points.RemoveAt(0)
-        ' Next
     End Sub
 
-    Private Sub NumericUpDown_ARS_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_ARS.ValueChanged
-        MainForm.Angle_Reflector_Spacing = NumericUpDown_ARS.Value
-        My.Settings.Angle_Reflector_Spacing = NumericUpDown_ARS.Value
-        My.Settings.Save()
-    End Sub
-
-    Private Sub NumericUpDown_SL_Coefficient_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_SL_Coefficient.ValueChanged
-        MainForm.SLCoefficient = NumericUpDown_SL_Coefficient.Value
-        MainForm.straightnessMultiplier = NumericUpDown_SL_Coefficient.Value
-        My.Settings.SLCoefficient = NumericUpDown_SL_Coefficient.Value
-        My.Settings.Save()
-    End Sub
-
-    Private Sub NumericUpDown_SS_Coefficient_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_SS_Coefficient.ValueChanged
-        MainForm.SSCoefficient = NumericUpDown_SS_Coefficient.Value
-        MainForm.straightnessMultiplier = NumericUpDown_SS_Coefficient.Value
-        My.Settings.SSCoefficient = NumericUpDown_SL_Coefficient.Value
-        My.Settings.Save()
-    End Sub
 End Class

@@ -137,63 +137,219 @@ Partial Friend NotInheritable Class Settings
         End Set
     End Property
     
-    <Global.System.Configuration.UserScopedSettingAttribute(), _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.Configuration.DefaultSettingValueAttribute("25")> _
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("25")>  _
     Public Property Temperature() As Double
         Get
-            Return CType(Me("Temperature"), Double)
+            Return CType(Me("Temperature"),Double)
         End Get
-        Set(value As Double)
+        Set
             Me("Temperature") = value
         End Set
     End Property
-
-    <Global.System.Configuration.UserScopedSettingAttribute(), _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.Configuration.DefaultSettingValueAttribute("1")> _
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("760")>  _
     Public Property Pressure() As Double
         Get
-            Return CType(Me("Pressure"), Double)
+            Return CType(Me("Pressure"),Double)
         End Get
-        Set(value As Double)
+        Set
             Me("Pressure") = value
         End Set
     End Property
-
-    <Global.System.Configuration.UserScopedSettingAttribute(), _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.Configuration.DefaultSettingValueAttribute("50")> _
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("50")>  _
     Public Property Humidity() As Double
         Get
-            Return CType(Me("Humidity"), Double)
+            Return CType(Me("Humidity"),Double)
         End Get
-        Set(value As Double)
+        Set
             Me("Humidity") = value
         End Set
     End Property
-
-    <Global.System.Configuration.UserScopedSettingAttribute(), _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.Configuration.DefaultSettingValueAttribute("Degrees C")> _
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("Degrees C")>  _
     Public Property TempUnits() As String
         Get
-            Return CType(Me("TempUnits"), String)
+            Return CType(Me("TempUnits"),String)
         End Get
-        Set(value As String)
+        Set
             Me("TempUnits") = value
         End Set
     End Property
-
-    <Global.System.Configuration.UserScopedSettingAttribute(), _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.Configuration.DefaultSettingValueAttribute("mm/Hg")> _
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("mm/Hg")>  _
     Public Property PressureUnits() As String
         Get
-            Return CType(Me("PressureUnits"), String)
+            Return CType(Me("PressureUnits"),String)
         End Get
-        Set(value As String)
+        Set
             Me("PressureUnits") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1.0000000")>  _
+    Public Property TempFactor() As String
+        Get
+            Return CType(Me("TempFactor"),String)
+        End Get
+        Set
+            Me("TempFactor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1.0000000")>  _
+    Public Property PresFactor() As String
+        Get
+            Return CType(Me("PresFactor"),String)
+        End Get
+        Set
+            Me("PresFactor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1.0000000")>  _
+    Public Property HumiFactor() As String
+        Get
+            Return CType(Me("HumiFactor"),String)
+        End Get
+        Set
+            Me("HumiFactor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("632.991372")>  _
+    Public Property VacuumWavelength() As String
+        Get
+            Return CType(Me("VacuumWavelength"),String)
+        End Get
+        Set
+            Me("VacuumWavelength") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+    Public Property TFactor() As Double
+        Get
+            Return CType(Me("TFactor"),Double)
+        End Get
+        Set
+            Me("TFactor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+    Public Property PFactor() As Double
+        Get
+            Return CType(Me("PFactor"),Double)
+        End Get
+        Set
+            Me("PFactor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+    Public Property HFactor() As Double
+        Get
+            Return CType(Me("HFactor"),Double)
+        End Get
+        Set
+            Me("HFactor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+    Public Property ECFactor() As Double
+        Get
+            Return CType(Me("ECFactor"),Double)
+        End Get
+        Set
+            Me("ECFactor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("3")>  _
+    Public Property ScrollFactor() As Integer
+        Get
+            Return CType(Me("ScrollFactor"),Integer)
+        End Get
+        Set
+            Me("ScrollFactor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("3.75")>  _
+    Public Property TMREFFrequency() As Double
+        Get
+            Return CType(Me("TMREFFrequency"),Double)
+        End Get
+        Set
+            Me("TMREFFrequency") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("8")>  _
+    Public Property TMWaveform() As Integer
+        Get
+            Return CType(Me("TMWaveform"),Integer)
+        End Get
+        Set
+            Me("TMWaveform") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+    Public Property TMUnitsFactor() As Double
+        Get
+            Return CType(Me("TMUnitsFactor"),Double)
+        End Get
+        Set
+            Me("TMUnitsFactor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("LogFile1.txt")>  _
+    Public Property LogFile() As String
+        Get
+            Return CType(Me("LogFile"),String)
+        End Get
+        Set
+            Me("LogFile") = value
         End Set
     End Property
 End Class

@@ -27,7 +27,7 @@
       <Value Profile="(Default)">25</Value>
     </Setting>
     <Setting Name="Pressure" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">760</Value>
     </Setting>
     <Setting Name="Humidity" Type="System.Double" Scope="User">
       <Value Profile="(Default)">50</Value>
@@ -37,6 +37,45 @@
     </Setting>
     <Setting Name="PressureUnits" Type="System.String" Scope="User">
       <Value Profile="(Default)">mm/Hg</Value>
+    </Setting>
+    <Setting Name="TempFactor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0000000</Value>
+    </Setting>
+    <Setting Name="PresFactor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0000000</Value>
+    </Setting>
+    <Setting Name="HumiFactor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0000000</Value>
+    </Setting>
+    <Setting Name="VacuumWavelength" Type="System.String" Scope="User">
+      <Value Profile="(Default)">632.991372</Value>
+    </Setting>
+    <Setting Name="TFactor" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="PFactor" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="HFactor" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="ECFactor" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="ScrollFactor" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="TMREFFrequency" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">3.75</Value>
+    </Setting>
+    <Setting Name="TMWaveform" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
+    <Setting Name="TMUnitsFactor" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="LogFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LogFile1.txt</Value>
     </Setting>
   </Settings>
 </SettingsFile>

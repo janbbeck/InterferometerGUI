@@ -64,7 +64,7 @@ Partial Class TestMode
         '
         Me.ComboBox_Frequency.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Frequency.FormattingEnabled = True
-        Me.ComboBox_Frequency.Items.AddRange(New Object() {"0 to 0.1 Hz", "0 to 1 Hz", "0 to 10 Hz"})
+        Me.ComboBox_Frequency.Items.AddRange(New Object() {"0 to 0.1 Hz", "0 to 1 Hz", "0 to 10 Hz", "0 to 100 Hz", "0 to 1 kHz"})
         Me.ComboBox_Frequency.Location = New System.Drawing.Point(145, 112)
         Me.ComboBox_Frequency.Name = "ComboBox_Frequency"
         Me.ComboBox_Frequency.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -440,7 +440,7 @@ Partial Class TestMode
         '
         'Button_Triangle
         '
-        Me.Button_Triangle.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.Button_Triangle.BackColor = System.Drawing.SystemColors.Control
         Me.Button_Triangle.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
         Me.Button_Triangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Triangle.FlatStyle = System.Windows.Forms.FlatStyle.Popup
@@ -518,7 +518,7 @@ Partial Class TestMode
         Me.Location = New System.Drawing.Point(50, 400)
         Me.MaximizeBox = False
         Me.Name = "TestMode"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Test Mode Parameters"
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar_Amplitude, System.ComponentModel.ISupportInitialize).EndInit()
