@@ -79,16 +79,17 @@ Partial Class Help
         Me.LinkLabel1.TabStop = True
         Me.LinkLabel1.Text = "uMD1 Introduction"
         '
-        'Help
+        'Help1
         '
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 262)
         Me.Controls.Add(Me.LinkLabel1)
         Me.Controls.Add(Me.FGREFLabel)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.TMClose_Button)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "Help"
+        Me.Name = "Help1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Help"
         Me.ResumeLayout(False)

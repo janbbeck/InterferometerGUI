@@ -479,7 +479,8 @@ Partial Class TestMode
         'TestMode
         '
         Me.AcceptButton = Me.TMClose_Button
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(463, 488)
         Me.Controls.Add(Me.NumericUpDown_FGREF_Value)
         Me.Controls.Add(Me.FGREFMHz)

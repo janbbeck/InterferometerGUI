@@ -135,7 +135,11 @@ Public Class MainForm
     Public MFLoaded As Integer = 0
     Dim TMWaveform As Integer = 0
     Dim TMREFFrequency As Double = 1
-    ' Dim TMUnits As Double = 1
+    Dim temp1 As Integer = 0
+    Public TMWaveformFlag As Integer = 4
+    Dim DFT_Skip_Factor As Integer = 1
+    Dim zero As Double = 0
+    Dim ClearCounter As Integer = 0
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -149,6 +153,7 @@ Public Class MainForm
         'My.Settings.TMREFFrequency = TestMode.NumericUpDown_FGREF_Value.Value
         'My.Settings.TMWaveform = TMWaveform
         My.Settings.TMUnitsFactor = TMUnitsFactor
+        My.Settings.DFT_Skip_Factor = DFT_Skip_Factor
         My.Settings.Save()
     End Sub
 
@@ -435,7 +440,7 @@ Public Class MainForm
         Wavelength = compensation.ECFactor * CDbl(My.Settings.VacuumWavelength)
         WLText.Text = Wavelength.ToString("000.000000")
 
-        TMWaveform = My.Settings.TMWaveform
+        TMWaveformFlag = My.Settings.TMWaveformFlag
 
         TestMode.Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -446,16 +451,16 @@ Public Class MainForm
         TestMode.Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
-        If TMWaveform = 1 Then
+        If TMWaveformFlag = 1 Then
             TestMode.Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ElseIf TMWaveform = 2 Then
+        ElseIf TMWaveformFlag = 2 Then
             TestMode.Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             TestMode.Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ElseIf TMWaveform = 4 Then
+        ElseIf TMWaveformFlag = 4 Then
             TestMode.Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ElseIf TMWaveform = 8 Then
+        ElseIf TMWaveformFlag = 8 Then
             TestMode.Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
@@ -497,6 +502,25 @@ Public Class MainForm
         straightnessMultiplier = 1
         NumericUpDown_Scale.Value = My.Settings.ScrollFactor
         ScrollRate = CInt(NumericUpDown_Scale.Value)
+
+        DFT_Skip_Factor = My.Settings.DFT_Skip_Factor
+
+        If DFT_Skip_Factor = 30 Then
+            Frequency_Axis.Text = "  0.3         1                2                3                4                5                6               7                8                9              10"
+            ComboBox_DFT_Range.Text = "10"
+        ElseIf DFT_Skip_Factor = 10 Then
+            Frequency_Axis.Text = "    1          3                6                9               12             15              18              21             24              27             30"
+            DFT_Skip_Factor = 10
+            ComboBox_DFT_Range.Text = "30"
+        ElseIf DFT_Skip_Factor = 3 Then
+            Frequency_Axis.Text = "1  3   6    10              20              30              40              50              60             70              80              90            100"
+            ComboBox_DFT_Range.Text = "100"
+        ElseIf DFT_Skip_Factor = 1 Then
+            Frequency_Axis.Text = "   10        30              60              90            120            150            180            210            240          270             300"
+            ComboBox_DFT_Range.Text = "300"
+        End If
+
+        DFT_Hz.Visible = False
         MFLoaded = 1
     End Sub
 
@@ -526,7 +550,7 @@ Public Class MainForm
             Catch ex As Exception
                 MsgBox(ex.ToString)
             End Try
-          
+
             If TestmodeFlag = 0 Then
                 needsInitialZero = 1 ' make sure to zero out the reference system
             End If
@@ -534,10 +558,25 @@ Public Class MainForm
     End Sub
 
     Private Sub DataReceivedHandler(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+
+
         Try
             If SerialPort1.IsOpen Then
                 'Dim incomingData As String
                 incomingData = SerialPort1.ReadExisting()
+                ' If Not (captureFile Is Nothing) Then
+                ' If TestmodeFlag = 0 Then
+                ' temp1 = TMWaveformFlag
+                ' If TMWaveformFlag = 1 Then
+                ' If Capture_Flag = 1 Then
+                ' captureFile.Write(incomingData)
+                'End If
+                'End If
+                'End If
+                'End If
+                If Not (captureFile Is Nothing) And Capture_Flag = 1 And IgnoreCount = 0 And TestmodeFlag = 0 And TMWaveformFlag = 1 Then
+                    captureFile.Write(incomingData)
+                End If
                 'If Not (captureFile Is Nothing) Then
                 ' captureFile.Write(incomingData)
                 'End If
@@ -545,6 +584,13 @@ Public Class MainForm
                 If InStr(1, spDrLine, vbLf) > 0 Then
                     spBuffer = spDrLine.Substring(0, spDrLine.LastIndexOf(vbLf)) ' pull in the buffer up to the last line feed
                     spDrLine = spDrLine.Substring(spDrLine.LastIndexOf(vbLf) + 1) 'stuff the rest back into the incoming buffer
+                    '  If Not (captureFile Is Nothing) Then
+                    ' If TestmodeFlag = 0 Then
+                    ' If TestMode.TMWaveformFlag = 1 Then ' Test Mode is Constant
+                    ' captureFile.Write(incomingData)
+                    'End If
+                    'End If
+                    '   End If
                     'If Not (captureFile Is Nothing) Then
                     'captureFile.WriteLine(spDrLine)
                     'End If
@@ -585,10 +631,13 @@ Public Class MainForm
                     Dim values() As String = sets(k).Split(" ".ToCharArray)
                     'make sure the current set has exactly 14 fields
                     If values.Length.Equals(14) Then
-
                         'Console.Write(values(3) + vbCrLf)
                         If Not (captureFile Is Nothing) And Capture_Flag = 1 And IgnoreCount = 0 Then
-                            captureFile.Write("D:" + values(3) + " N:" + values(9) + vbCrLf)
+                            If TestmodeFlag = 1 Then
+                                captureFile.Write("D:" + values(3) + " N:" + values(9) + vbCrLf)
+                            ElseIf TestmodeFlag = 0 And Not TMWaveformFlag = 1 Then
+                                captureFile.Write("D:" + values(3) + " N:" + values(9) + vbCrLf)
+                            End If
                         End If
                         currentValue = Convert.ToDouble(values(3)) * Wavelength / 2 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         previousValue = Convert.ToDouble(values(6)) * Wavelength / 2 - CurrentValueCorrection
@@ -837,6 +886,9 @@ Public Class MainForm
         End If
         ScrollRate = CInt(NumericUpDown_Scale.Value)
         Frequency_Axis.Visible = False
+        ComboBox_DFT_Range.Visible = False
+        NumericUpDown_Scale.Visible = True
+        DFT_Hz.Visible = False
     End Sub
 
     Private Sub VelocityButton_Click(sender As Object, e As EventArgs) Handles VelocityButton.Click
@@ -886,6 +938,9 @@ Public Class MainForm
         End If
         ScrollRate = CInt(NumericUpDown_Scale.Value)
         Frequency_Axis.Visible = False
+        ComboBox_DFT_Range.Visible = False
+        NumericUpDown_Scale.Visible = True
+        DFT_Hz.Visible = False
     End Sub
 
     Private Sub AngleButton_Click(sender As Object, e As EventArgs) Handles AngleButton.Click
@@ -939,6 +994,9 @@ Public Class MainForm
 
         ScrollRate = CInt(NumericUpDown_Scale.Value)
         Frequency_Axis.Visible = False
+        ComboBox_DFT_Range.Visible = False
+        NumericUpDown_Scale.Visible = True
+        DFT_Hz.Visible = False
     End Sub
 
     Private Sub StraightnessLongButton_Click(sender As Object, e As EventArgs) Handles StraightnessLongButton.Click
@@ -992,6 +1050,9 @@ Public Class MainForm
         End If
 
         Frequency_Axis.Visible = False
+        ComboBox_DFT_Range.Visible = False
+        NumericUpDown_Scale.Visible = True
+        DFT_Hz.Visible = False
     End Sub
 
 
@@ -1046,6 +1107,9 @@ Public Class MainForm
 
         ScrollRate = CInt(NumericUpDown_Scale.Value)
         Frequency_Axis.Visible = False
+        ComboBox_DFT_Range.Visible = False
+        NumericUpDown_Scale.Visible = True
+        DFT_Hz.Visible = False
     End Sub
 
     Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
@@ -1076,13 +1140,16 @@ Public Class MainForm
         Axis_S.Visible = False
         Axis_UnitsA.Visible = False
         Graph_Label.Text = "Frequency (Hz)"
-        Compression_Label.Text = ""
+        Compression_Label.Text = "DFT Frequency Range"
         DFTMax = 0
         NumericUpDown_Scale.Visible = False
         Label_RangeTime.Visible = False
         Label_Range.Text = "DFT Amplitude Range"
         ScrollRate = 1
         Frequency_Axis.Visible = True
+        ComboBox_DFT_Range.Visible = True
+        NumericUpDown_Scale.Visible = False
+        DFT_Hz.Visible = True
     End Sub
 
     Private Sub TrackBar1_selectrionchangecommitted(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
@@ -1264,11 +1331,11 @@ Public Class MainForm
                 y3 = CDbl(angleQueuey.Dequeue())
                 graphCount = graphCount + CULng(1)
 
-                If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    ScrollRate = 1 ' For DFT only, should add proper axis and allow scrollrate to be selectable.
-                Else
-                    ScrollRate = CInt(NumericUpDown_Scale.Value)
-                End If
+                'If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                ' ScrollRate = 1 ' For DFT only, should add proper axis and allow scrollrate to be selectable.
+                ' Else
+                ScrollRate = CInt(NumericUpDown_Scale.Value)
+                'End If
 
                 If 0 = (graphCount Mod ScrollRate) Then
                     plotCount = plotCount + CULng(1)
@@ -1281,30 +1348,34 @@ Public Class MainForm
                     velocityValueList.Add(y2)
                     velocityValueList.RemoveAt(0)
                 End If
-                DFTValueList.Add(y2)
-                DFTValueList.RemoveAt(0)
+
+                If 0 = (graphCount Mod DFT_Skip_Factor) Then
+                    DFTValueList.Add(y2)
+                    DFTValueList.RemoveAt(0)
+                End If
+
             End While
-        ' DFT related
+            ' DFT related
 
-        Dim counter As Integer
-        'DFTMax = 0
-        If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
+            Dim counter As Integer
+            'DFTMax = 0
+            If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
 
-            ' If (SerialPort1.IsOpen And (TestmodeFlag = 0)) Or TestmodeFlag = 1 Then ' skip if nothing happening
-            If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
-                FFTdone = False
-                fftSeries.Points.Clear()
-                For counter = 0 To (CInt(((Dimension / 2) - 1)))
-                    fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) / 1048576 + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1048576)
-                    ' If (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) / 1048576 + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1048576 > DFTMax Then
-                    'DFTMax = 1 * (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter))
-                    'End If
-                Next
-                resetEvent.Set()
+                ' If (SerialPort1.IsOpen And (TestmodeFlag = 0)) Or TestmodeFlag = 1 Then ' skip if nothing happening
+                If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
+                    FFTdone = False
+                    fftSeries.Points.Clear()
+                    For counter = 0 To (CInt(((Dimension / 2) - 1)))
+                        fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) / 1048576 + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1048576)
+                        ' If (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) / 1048576 + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1048576 > DFTMax Then
+                        'DFTMax = 1 * (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter))
+                        'End If
+                    Next
+                    resetEvent.Set()
+                End If
+                'now update graphDIFF
             End If
-            'now update graphDIFF
-        End If
-        Chart1.ResetAutoValues()
+            Chart1.ResetAutoValues()
         End If
         'Chart1.ResetAutoValues()
         'Chart1.ChartAreas(0).RecalculateAxesScale()
@@ -1358,24 +1429,38 @@ Public Class MainForm
                     ' waveform = waveform + (0.00001 * 0.000655 / 0.002 * TMFreqValue * TestMode.TrackBar_Offset.Value)
                     ' simulationDistance = CLng(12638 * TMUnitsFactor * (waveform * TMAmpMult) * multiplier / 2)
 
-                ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    waveform = waveform + ((0.000655 * TMFreqValue) * bangbang)
-                    simulationDistance = CLng(CDbl(12638) * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
-                    If waveform > 1 Then
-                        bangbang = -1
-                    End If
+                    '  ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                    '      waveform = waveform + ((0.000655 * TMFreqValue) * bangbang)
+                    '      simulationDistance = CLng(CDbl(12638) * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
+                    '      If waveform > 1 Then
+                    ' bangbang = -1
+                    'End  If
 
-                    If waveform < -1 Then
-                        bangbang = 1
-                    End If
+                    'If waveform < -1 Then
+                    ' bangbang = 1
+                    ' End If
+
+                ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                    waveform = 2 / Math.PI * Math.Asin(Math.Sin(simcount * TMFreqValue * Math.PI / 1000 * 0.000655 / 0.002 + phase))
+
+                    simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
+                    'End If
+                    simcount = simcount + 1
+
 
                 ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                     waveform = Math.Sin(simcount * TMFreqValue * Math.PI / 1000 * 0.000655 / 0.002 + phase)
                     simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
                     'End If
                     simcount = simcount + 1
+                    If simulationDistance < previousSimulationDistance Then
+                        bangbang = -1
+                    Else
+                        bangbang = 1
+                    End If
                 End If
             End If
+
             simulationVelocity = (simulationDistance - previousSimulationDistance)
             simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
                 simulationDistance.ToString + " Previous Difference " + previousSimulationDistance.ToString +
@@ -1437,11 +1522,11 @@ Public Class MainForm
             Else
                 Label_RangeTime.Visible = False
             End If
-            If UnitLabel.Visible Then
-                RangeUnits.Text = UnitLabel.Text
+            If UnitLabel.Text = "Degree" Then
+                RangeUnits.Text = AngleLabel.Text
                 RangeUnits.Visible = True
             Else
-                RangeUnits.Text = AngleLabel.Text
+                RangeUnits.Text = UnitLabel.Text
                 RangeUnits.Visible = True
                 'Label_RangeTime.Visible = True
             End If
@@ -1467,4 +1552,27 @@ Public Class MainForm
         End If
     End Sub
 
+    Private Sub ComboBox_DFT_Range_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_DFT_Range.SelectedIndexChanged
+        If ComboBox_DFT_Range.Text = "10" Then
+            Frequency_Axis.Text = "  0.3         1                2                3                4                5                6               7                8                9              10"
+            DFT_Skip_Factor = 30
+        ElseIf ComboBox_DFT_Range.Text = "30" Then
+            Frequency_Axis.Text = "    1          3                6                9               12             15              18              21              24              27              30"
+            DFT_Skip_Factor = 10
+        ElseIf ComboBox_DFT_Range.Text = "100" Then
+            Frequency_Axis.Text = "1  3   6    10              20              30              40              50              60             70              80              90            100"
+            DFT_Skip_Factor = 3
+        ElseIf ComboBox_DFT_Range.Text = "300" Then
+            Frequency_Axis.Text = "   10        30              60              90            120            150            180            210            240          270             300"
+            DFT_Skip_Factor = 1
+        End If
+
+        If MFLoaded = 1 Then 'And FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+            For ClearCounter = 0 To Dimension - 1
+                DFTValueList.Add(zero)
+                DFTValueList.RemoveAt(0)
+            Next ClearCounter
+        End If
+
+    End Sub
 End Class

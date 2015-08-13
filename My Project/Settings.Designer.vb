@@ -320,12 +320,12 @@ Partial Friend NotInheritable Class Settings
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("8")>  _
-    Public Property TMWaveform() As Integer
+    Public Property TMWaveformFlag() As Integer
         Get
-            Return CType(Me("TMWaveform"),Integer)
+            Return CType(Me("TMWaveformFlag"),Integer)
         End Get
         Set
-            Me("TMWaveform") = value
+            Me("TMWaveformFlag") = value
         End Set
     End Property
     
@@ -350,6 +350,18 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("LogFile") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+    Public Property DFT_Skip_Factor() As Integer
+        Get
+            Return CType(Me("DFT_Skip_Factor"),Integer)
+        End Get
+        Set
+            Me("DFT_Skip_Factor") = value
         End Set
     End Property
 End Class

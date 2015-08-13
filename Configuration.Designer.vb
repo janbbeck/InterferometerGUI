@@ -404,7 +404,8 @@ Partial Class Configuration
         'Configuration
         '
         Me.AcceptButton = Me.OK_Button
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(428, 393)
         Me.Controls.Add(Me.TextBox3)
         Me.Controls.Add(Me.NumericUpDown_SS_Coefficient)

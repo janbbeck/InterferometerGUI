@@ -7,10 +7,9 @@ Public Class TestMode
     Dim OffsetMultiplier As Double = 0
     Dim oldZeroAdjustment As Double = 0
     Dim PreviousTMFreqValue As Double = 1
-    Dim WaveformFlag As Integer = 4
 
     Private Sub TestMode_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        WaveformFlag = My.Settings.TMWaveform
+        ' MainForm.TMWaveformFlag = My.Settings.TMWaveformFlag
         MainForm.TMUnitsFactor = My.Settings.TMUnitsFactor
         NumericUpDown_FGREF_Value.Value = CDec(My.Settings.TMREFFrequency)
 
@@ -46,7 +45,7 @@ Public Class TestMode
     Private Sub TMClose_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TMClose_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         My.Settings.TMREFFrequency = NumericUpDown_FGREF_Value.Value
-        My.Settings.TMWaveform = WaveformFlag
+        My.Settings.TMWaveformFlag = MainForm.TMWaveformFlag
         My.Settings.TMUnitsFactor = MainForm.TMUnitsFactor
         My.Settings.Save()
         Me.Close()
@@ -67,7 +66,7 @@ Public Class TestMode
         MainForm.IgnoreCount = 2
         MainForm.counter = 0
         MainForm.waveform = 0
-        WaveformFlag = 1
+        MainForm.TMWaveformFlag = 1
     End Sub
 
     Private Sub Button_Ramp_Click(sender As Object, e As EventArgs) Handles Button_Ramp.Click
@@ -90,7 +89,7 @@ Public Class TestMode
         MainForm.IgnoreCount = 2
         MainForm.simcount = 0
         MainForm.waveform = MainForm.IgnoreCount * -(0.00001 * MainForm.TMFreqValue * TrackBar_Offset.Value)
-        WaveformFlag = 2
+        MainForm.TMWaveformFlag = 2
     End Sub
 
     Private Sub Button_Triangle_Click(sender As Object, e As EventArgs) Handles Button_Triangle.Click
@@ -114,7 +113,7 @@ Public Class TestMode
         MainForm.counter = 0
         MainForm.waveform = MainForm.IgnoreCount * -(0.002 * MainForm.TMFreqValue)
         MainForm.bangbang = 1
-        WaveformFlag = 4
+        MainForm.TMWaveformFlag = 4
     End Sub
 
     Private Sub Button_Sine_Click(sender As Object, e As EventArgs) Handles Button_Sine.Click
@@ -139,7 +138,7 @@ Public Class TestMode
         MainForm.counter = 0
         MainForm.waveform = MainForm.IgnoreCount * -(0.002 * MainForm.TMFreqValue)
         MainForm.phase = 0
-        WaveformFlag = 8
+        MainForm.TMWaveformFlag = 8
     End Sub
 
     Private Sub ComboBox_Frequency_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Frequency.SelectedIndexChanged

@@ -68,7 +68,7 @@
     <Setting Name="TMREFFrequency" Type="System.Double" Scope="User">
       <Value Profile="(Default)">3.75</Value>
     </Setting>
-    <Setting Name="TMWaveform" Type="System.Int32" Scope="User">
+    <Setting Name="TMWaveformFlag" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">8</Value>
     </Setting>
     <Setting Name="TMUnitsFactor" Type="System.Double" Scope="User">
@@ -76,6 +76,9 @@
     </Setting>
     <Setting Name="LogFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">LogFile1.txt</Value>
+    </Setting>
+    <Setting Name="DFT_Skip_Factor" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

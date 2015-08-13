@@ -80,6 +80,8 @@ Partial Public Class MainForm
         Me.AngleLabel = New System.Windows.Forms.Label()
         Me.Label_RangeTime = New System.Windows.Forms.Label()
         Me.Frequency_Axis = New System.Windows.Forms.Label()
+        Me.ComboBox_DFT_Range = New System.Windows.Forms.ComboBox()
+        Me.DFT_Hz = New System.Windows.Forms.Label()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -311,7 +313,7 @@ Partial Public Class MainForm
         '
         Me.Graph_Label.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Graph_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 17.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Graph_Label.Location = New System.Drawing.Point(357, 505)
+        Me.Graph_Label.Location = New System.Drawing.Point(357, 510)
         Me.Graph_Label.Name = "Graph_Label"
         Me.Graph_Label.Size = New System.Drawing.Size(217, 33)
         Me.Graph_Label.TabIndex = 81
@@ -617,10 +619,35 @@ Partial Public Class MainForm
     "           60             70              80              90            100"
         Me.Frequency_Axis.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'ComboBox_DFT_Range
+        '
+        Me.ComboBox_DFT_Range.FormattingEnabled = True
+        Me.ComboBox_DFT_Range.Items.AddRange(New Object() {"10", "30", "100", "300"})
+        Me.ComboBox_DFT_Range.Location = New System.Drawing.Point(344, 244)
+        Me.ComboBox_DFT_Range.MaximumSize = New System.Drawing.Size(100, 0)
+        Me.ComboBox_DFT_Range.Name = "ComboBox_DFT_Range"
+        Me.ComboBox_DFT_Range.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.ComboBox_DFT_Range.Size = New System.Drawing.Size(42, 21)
+        Me.ComboBox_DFT_Range.TabIndex = 99
+        Me.ComboBox_DFT_Range.Text = "100"
+        Me.ComboBox_DFT_Range.Visible = False
+        '
+        'DFT_Hz
+        '
+        Me.DFT_Hz.AutoSize = True
+        Me.DFT_Hz.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DFT_Hz.Location = New System.Drawing.Point(388, 245)
+        Me.DFT_Hz.Name = "DFT_Hz"
+        Me.DFT_Hz.Size = New System.Drawing.Size(22, 15)
+        Me.DFT_Hz.TabIndex = 100
+        Me.DFT_Hz.Text = "Hz"
+        Me.DFT_Hz.Visible = False
+        '
         'MainForm
         '
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(880, 572)
+        Me.Controls.Add(Me.DFT_Hz)
+        Me.Controls.Add(Me.ComboBox_DFT_Range)
         Me.Controls.Add(Me.Frequency_Axis)
         Me.Controls.Add(Me.Label_RangeTime)
         Me.Controls.Add(Me.RangeUnits)
@@ -727,4 +754,6 @@ Partial Public Class MainForm
     Friend WithEvents AngleLabel As System.Windows.Forms.Label
     Friend WithEvents Label_RangeTime As System.Windows.Forms.Label
     Friend WithEvents Frequency_Axis As System.Windows.Forms.Label
+    Friend WithEvents ComboBox_DFT_Range As System.Windows.Forms.ComboBox
+    Friend WithEvents DFT_Hz As System.Windows.Forms.Label
 End Class
