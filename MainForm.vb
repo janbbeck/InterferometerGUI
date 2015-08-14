@@ -1112,6 +1112,10 @@ Public Class MainForm
         DFT_Hz.Visible = False
     End Sub
 
+    Private Sub FrequencyButton_BackgroundImageChanged(sender As Object, e As EventArgs) Handles FrequencyButton.BackgroundImageChanged
+        Me.ComboBox_Range.Text = "Auto"
+    End Sub
+
     Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
         DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -1556,11 +1560,11 @@ Public Class MainForm
 
         Else
             Chart1.ChartAreas(0).AxisY.Maximum = range
-            ' If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-            'Chart1.ChartAreas(0).AxisY.Minimum = 0
-            'Else
-            Chart1.ChartAreas(0).AxisY.Minimum = -range
-
+            If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                Chart1.ChartAreas(0).AxisY.Minimum = 0
+            Else
+                Chart1.ChartAreas(0).AxisY.Minimum = -range
+            End If
             If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                 Label_RangeTime.Visible = True
             Else
