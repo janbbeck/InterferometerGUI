@@ -1502,38 +1502,7 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub ComboBox_Range_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Range.SelectedIndexChanged
 
-        If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
-            Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
-            Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
-            Label_RangeTime.Visible = False
-            RangeUnits.Visible = False
-
-        Else
-            Chart1.ChartAreas(0).AxisY.Maximum = range
-            ' If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-            'Chart1.ChartAreas(0).AxisY.Minimum = 0
-            'Else
-            Chart1.ChartAreas(0).AxisY.Minimum = -range
-
-            If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                Label_RangeTime.Visible = True
-            Else
-                Label_RangeTime.Visible = False
-            End If
-            If UnitLabel.Text = "Degree" Then
-                RangeUnits.Text = AngleLabel.Text
-                RangeUnits.Visible = True
-            Else
-                RangeUnits.Text = UnitLabel.Text
-                RangeUnits.Visible = True
-                'Label_RangeTime.Visible = True
-            End If
-        End If
-        Chart1.ResetAutoValues()
-        Chart1.ChartAreas(0).RecalculateAxesScale()
-    End Sub
 
     Private Sub Capture_Button_Click(sender As Object, e As EventArgs) Handles Capture_Button.Click
         If Capture_Button.Text.Equals("Enable Capture") And
@@ -1574,5 +1543,39 @@ Public Class MainForm
             Next ClearCounter
         End If
 
+    End Sub
+
+
+
+    Private Sub ComboBox_Range_TextChanged(sender As Object, e As EventArgs) Handles ComboBox_Range.TextChanged
+        If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
+            Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
+            Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
+            Label_RangeTime.Visible = False
+            RangeUnits.Visible = False
+
+        Else
+            Chart1.ChartAreas(0).AxisY.Maximum = range
+            ' If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+            'Chart1.ChartAreas(0).AxisY.Minimum = 0
+            'Else
+            Chart1.ChartAreas(0).AxisY.Minimum = -range
+
+            If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                Label_RangeTime.Visible = True
+            Else
+                Label_RangeTime.Visible = False
+            End If
+            If UnitLabel.Text = "Degree" Then
+                RangeUnits.Text = AngleLabel.Text
+                RangeUnits.Visible = True
+            Else
+                RangeUnits.Text = UnitLabel.Text
+                RangeUnits.Visible = True
+                'Label_RangeTime.Visible = True
+            End If
+        End If
+        Chart1.ResetAutoValues()
+        Chart1.ChartAreas(0).RecalculateAxesScale()
     End Sub
 End Class
