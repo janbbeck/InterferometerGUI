@@ -13,7 +13,7 @@ Public Class MainForm
     ' Dim file As System.IO.StreamWriter
     Dim captureFile As System.IO.StreamWriter ' this is the log file to capture data
     Dim captureFileName As String = "" ' this is the name of the log file to capture data
-
+    Dim currentcapturefile As String = "logfile1.txt"
     Public positionSeries As New Series
     Public velocitySeries As New Series
     Public angleseries As New Series
@@ -30,9 +30,9 @@ Public Class MainForm
     Dim angleQueuey As New Queue()
     'defining the menu items for the main menu bar
     Dim menuItems As New List(Of MenuItem)
-    Dim myMenuItemexit As New MenuItem("&Exit")
-    Dim myMenuItemLogFile As New MenuItem("&Select Log File")
-    Dim myMenuItemConfiguration As New MenuItem("&Configuration")
+    Dim myMenuItemfinish As New MenuItem("&Finish")
+    Dim myMenuItemLogFile As New MenuItem("&Open Log File")
+    Dim myMenuItemConfiguration As New MenuItem("&Interferometer Configuration")
     Dim myMenuItemCompensation As New MenuItem("&Environmental Compensation")
     Dim myMenuItemTestMode As New MenuItem("&Test Mode")
     Dim myMenuItemUSBPort As New MenuItem("&USB Port")
@@ -75,10 +75,10 @@ Public Class MainForm
     Public needsInitialZero As Integer = 0
     Dim outerLoopCounter, innerLoopCounter As Integer
     Public DifferenceValue As Double = 0
-    Dim CurrentREFCount As UInt64 = 0
-    Dim PreviousREFCount As UInt64 = 0
-    Dim CurrentMEASCount As UInt64 = 0
-    Dim PreviousMEASCount As UInt64 = 0
+    Dim CurrentREFCount As Int64 = 0
+    Dim PreviousREFCount As Int64 = 0
+    Dim CurrentMEASCount As Int64 = 0
+    Dim PreviousMEASCount As Int64 = 0
     Public ErrorFlag As Integer = 0
     Public SuspendFlag As Integer = 0
     Dim MeasCountCorrection As UInt64 = 0
@@ -107,7 +107,10 @@ Public Class MainForm
     Public previoussimulationVelocity As Int64 = 0
     Public previoussimREFCount As Int64 = 0
     Public previoussimMEASCount As Int64 = 0
+    Public simulationPhase As Int64 = 0
     Public simulationSerial As UInt64 = 0
+    Public simulationLowSpeedCode As Int16 = 0
+    Public simulationLowSpeedData As Int32 = 0
     Public bangbang As Double = 1
     Public counter As Double = 0
     Dim simulatedData As String
@@ -122,7 +125,6 @@ Public Class MainForm
     Public TMAmpValue As Double = 1
     Public TMOfsValue As Double = 1
     Public EDEnabled As Integer = 1
-    ' Dim TimeScale As Integer = 5
     'Dim DFTThread As New Thread(AddressOf DFT)
     Private DFTThread As New System.ComponentModel.BackgroundWorker 'set new backgroundworker
     Dim resetEvent As ManualResetEvent = New ManualResetEvent(False)
@@ -140,6 +142,7 @@ Public Class MainForm
     Dim DFT_Skip_Factor As Integer = 1
     Dim zero As Double = 0
     Dim ClearCounter As Integer = 0
+    Dim DiagnosticValue As Int64 = 0
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -154,6 +157,7 @@ Public Class MainForm
         'My.Settings.TMWaveform = TMWaveform
         My.Settings.TMUnitsFactor = TMUnitsFactor
         My.Settings.DFT_Skip_Factor = DFT_Skip_Factor
+        My.Settings.LogFile = currentcapturefile
         My.Settings.Save()
     End Sub
 
@@ -196,7 +200,7 @@ Public Class MainForm
         'Next, attach that list to the USB top menu
         myMenuItemUSBPort.MenuItems.Add(myMenuItemUSBSubMenuCOMPorts)
         ' Next attach all the top menus to the menu bar.
-        mnuBar.MenuItems.Add(myMenuItemexit)
+        mnuBar.MenuItems.Add(myMenuItemfinish)
         mnuBar.MenuItems.Add(myMenuItemLogFile)
         mnuBar.MenuItems.Add(myMenuItemConfiguration)
         mnuBar.MenuItems.Add(myMenuItemCompensation)
@@ -206,13 +210,14 @@ Public Class MainForm
         ' Next replace the application with the menu bar we just crafted
         Me.Menu = mnuBar
         ' Finally, add the handlers to the menu items so that they can respond to clicks
-        AddHandler myMenuItemexit.Click, AddressOf Me.myMenuItemexit_Click
+        AddHandler myMenuItemfinish.Click, AddressOf Me.myMenuItemfinish_Click
         AddHandler myMenuItemLogFile.Click, AddressOf Me.myMenuItemLogFile_Click
         AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemConfiguration_Click
         AddHandler myMenuItemCompensation.Click, AddressOf Me.myMenuItemCompensation_Click
         AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
         AddHandler myMenuItemUSBPort.Popup, AddressOf Me.myMenuItemUSBPort_Click
         AddHandler myMenuItemHelp.Click, AddressOf Me.myMenuItemhelp_Click
+
         ' load user settings
         multiplier = My.Settings.Multiplier
         If multiplier = 1 Then
@@ -389,7 +394,6 @@ Public Class MainForm
 
         Configuration.NumericUpDown_SL_Coefficient.Value = CDec(My.Settings.SLCoefficient)
         Configuration.NumericUpDown_SS_Coefficient.Value = CDec(My.Settings.SSCoefficient)
-        'Dim temp As Decimal = CDec(My.Settings.SSCoefficient)
         Configuration.NumericUpDown_ARS.Value = CDec(My.Settings.Angle_Reflector_Spacing)
 
         Compensation.ComboBox_TempUnits.Text = My.Settings.TempUnits
@@ -520,7 +524,11 @@ Public Class MainForm
             ComboBox_DFT_Range.Text = "300"
         End If
 
+        currentcapturefile = My.Settings.LogFile
+        Logfile_Text.Visible = False
+        Logfile_Label.Visible = False
         DFT_Hz.Visible = False
+        Diagnostic1.Visible = False
         MFLoaded = 1
     End Sub
 
@@ -558,43 +566,20 @@ Public Class MainForm
     End Sub
 
     Private Sub DataReceivedHandler(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
-
-
         Try
             If SerialPort1.IsOpen Then
                 'Dim incomingData As String
                 incomingData = SerialPort1.ReadExisting()
-                ' If Not (captureFile Is Nothing) Then
-                ' If TestmodeFlag = 0 Then
-                ' temp1 = TMWaveformFlag
-                ' If TMWaveformFlag = 1 Then
-                ' If Capture_Flag = 1 Then
-                ' captureFile.Write(incomingData)
-                'End If
-                'End If
-                'End If
-                'End If
+
                 If Not (captureFile Is Nothing) And Capture_Flag = 1 And IgnoreCount = 0 And TestmodeFlag = 0 And TMWaveformFlag = 1 Then
-                    captureFile.Write(incomingData)
+                    captureFile.Write(incomingData) ' Back door to capture all incoming data: Test Mode off but set to Constant
                 End If
-                'If Not (captureFile Is Nothing) Then
-                ' captureFile.Write(incomingData)
-                'End If
-                spDrLine = spDrLine & incomingData 'important
+
+                spDrLine = spDrLine & incomingData ' important
                 If InStr(1, spDrLine, vbLf) > 0 Then
                     spBuffer = spDrLine.Substring(0, spDrLine.LastIndexOf(vbLf)) ' pull in the buffer up to the last line feed
-                    spDrLine = spDrLine.Substring(spDrLine.LastIndexOf(vbLf) + 1) 'stuff the rest back into the incoming buffer
-                    '  If Not (captureFile Is Nothing) Then
-                    ' If TestmodeFlag = 0 Then
-                    ' If TestMode.TMWaveformFlag = 1 Then ' Test Mode is Constant
-                    ' captureFile.Write(incomingData)
-                    'End If
-                    'End If
-                    '   End If
-                    'If Not (captureFile Is Nothing) Then
-                    'captureFile.WriteLine(spDrLine)
-                    'End If
-                    'process spBuffer
+                    spDrLine = spDrLine.Substring(spDrLine.LastIndexOf(vbLf) + 1) ' stuff the rest back into the incoming buffer
+
                     Try
                         If False = SimulationTimer.Enabled Then
                             Me.SetText(spBuffer)
@@ -624,29 +609,31 @@ Public Class MainForm
                 ' first split data into sets
                 Dim sets() As String = [text].Split(vbLf.ToCharArray)
                 For k = 0 To sets.Length - 1
-                    ' Dim values() As String = sets(k).Split(" ".ToCharArray)
-                    'make sure the current set has exactly 10 fields
-                    'If values.Length.Equals(10) Then
 
                     Dim values() As String = sets(k).Split(" ".ToCharArray)
-                    'make sure the current set has exactly 14 fields
-                    If values.Length.Equals(14) Then
+                    'make sure the current set has exactly 8 fields
+                    If values.Length.Equals(8) Then
                         'Console.Write(values(3) + vbCrLf)
+
                         If Not (captureFile Is Nothing) And Capture_Flag = 1 And IgnoreCount = 0 Then
-                            If TestmodeFlag = 1 Then
-                                captureFile.Write("D:" + values(3) + " N:" + values(9) + vbCrLf)
-                            ElseIf TestmodeFlag = 0 And Not TMWaveformFlag = 1 Then
-                                captureFile.Write("D:" + values(3) + " N:" + values(9) + vbCrLf)
+                            If TestmodeFlag = 1 Then  ' Capture all in Test Mode 
+                                captureFile.Write("R:" + values(0) + " M:" + values(1) + " D:" + values(2) + " V:" + values(3) + " P:" + values(4) + " N:" + values(5) + "T" + vbCrLf)
+                            ElseIf TestmodeFlag = 0 And Not TMWaveformFlag = 1 Then  ' Capture only Displacement and SN if normal mode
+                                captureFile.Write("D:" + values(2) + " N:" + values(5) + vbCrLf)
                             End If
                         End If
-                        currentValue = Convert.ToDouble(values(3)) * Wavelength / 2 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
-                        previousValue = Convert.ToDouble(values(6)) * Wavelength / 2 - CurrentValueCorrection
+
+                        currentValue = Convert.ToDouble(values(2)) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
+                        velocityValue = Convert.ToDouble(values(3)) * Wavelength / 2.0 * 610.35 ' Velocity = displacement difference in 1/610.35s * 610.35
+
+                        ' DiagnosticValue = Convert.ToInt64(values(5))
 
                         If IgnoreCount = 0 Then
                             If needsInitialZero = 1 Then
                                 zeroAdjustment = currentValue
+                                average = 0
                                 SuspendCurrentValue = 0
-                                'previousValue = currentValue
+                                previousValue = currentValue ' Updated for possible error checking, not currently used
                                 If Suspend.Text.Equals("Resume") Then  ' Force exit from Suspend mode
                                     Suspend.Text = "Suspend"
                                     Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
@@ -658,43 +645,37 @@ Public Class MainForm
                                 needsInitialZero = 0 ' make sure to zero out the reference system only once
                             End If
                         End If
-                        PreviousREFCount = CurrentREFCount ' Keep track of raw REF and MEAS counts
-                        CurrentREFCount = Convert.ToUInt64(values(1))
-                        PreviousMEASCount = CurrentMEASCount
-                        CurrentMEASCount = Convert.ToUInt64(values(0))
+
                         Try
-                            serialnumberdifference = Convert.ToUInt64(values(9)) - previousserialnumber
+                            serialnumberdifference = Convert.ToUInt64(values(5)) - previousserialnumber
                         Catch
                         End Try
-                        If 1 = serialnumberdifference Then
-                            REFFrequency = (CurrentREFCount - PreviousREFCount) / 1638
-                            MEASFrequency = (CurrentMEASCount - PreviousMEASCount) / 1638
+
+                        If serialnumberdifference = 1 Then
+                            REFFrequency = Convert.ToInt64(values(0)) / 1638
+                            MEASFrequency = Convert.ToInt64(values(1)) / 1638
                             DIFFFrequency = MEASFrequency - REFFrequency
                             If SuspendFlag = 0 Then
                                 If IgnoreCount = 0 Then
                                     ' If ErrorFlag = 0 Then
                                     If EDEnabled = 1 Then
-                                        If CurrentREFCount - PreviousREFCount = 0 Then
+                                        'If CurrentREFCount - PreviousREFCount = 0 Then
+                                        If REFFrequency = 0 Then
                                             ErrorFlag = ErrorFlag Or 1 ' REF is dead => REF (Head) Error
                                         End If
-                                        If CurrentMEASCount - PreviousMEASCount = 0 Then  ' MEAS is dead => MEAS (Path) Error
+                                        ' If CurrentMEASCount - PreviousMEASCount = 0 Then  ' MEAS is dead => MEAS (Path) Error
+                                        If MEASFrequency = 0 Then  ' MEAS is dead => MEAS (Path) Error
                                             ErrorFlag = ErrorFlag Or 2 ' MEAS is dead = > MEAS (Path) Error
                                         End If
                                         If MEASFrequency > ((2 * REFFrequency) - 0.1) Then
-                                            ErrorFlag = ErrorFlag Or 4 ' Excessive stage speed positive => Slew (Rate) error
+                                            ErrorFlag = ErrorFlag Or 4 ' Excessive stage speed positive => Slew (Rate+) error
                                         End If
                                         If MEASFrequency < 0.1 Then
-                                            ErrorFlag = ErrorFlag Or 8 ' Excessive stage speed negative => Slew (Rate) error
+                                            ErrorFlag = ErrorFlag Or 8 ' Excessive stage speed negative => Slew (Rate-) error
                                         End If
                                     End If
                                 End If
                             End If
-
-                            velocityValue = (previousValue - currentValue) * 610.35 ' 610.35 Hz update rate in PIC timer
-                            'Console.Write(" sample duplicate" + vbCrLf)
-                            ' If TestmodeFlag = 1 Then
-                            ' velocityValue = velocityValue / 3.0425
-                            'End If
 
                             unitCorrectmm = 1 / unitCorrectionFactor / 1000000
                             angleCorrectdegree = 1 / angleCorrectionFactor
@@ -730,13 +711,13 @@ Public Class MainForm
                         ElseIf 0 = serialnumberdifference Then
                             Console.Write(" sample duplicate" + vbCrLf)
                         Else
-                            Console.Write((Convert.ToUInt64(values(9)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
+                            Console.Write((Convert.ToUInt64(values(5)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
                         End If
                     Else 'values.length incorrect
                         Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
                     End If
                     Try
-                        previousserialnumber = Convert.ToUInt64(values(9))
+                        previousserialnumber = Convert.ToUInt64(values(5))
                     Catch
                     End Try
                 Next
@@ -777,17 +758,31 @@ Public Class MainForm
         Help.ShowDialog()
     End Sub
 
-    Private Sub myMenuItemexit_Click(sender As Object, e As EventArgs)
+    Private Sub myMenuItemfinish_Click(sender As Object, e As EventArgs)
         Close()
     End Sub
 
     Private Sub myMenuItemLogFile_Click(sender As Object, e As EventArgs)
-        If Not (captureFile Is Nothing) Then
+        ' If Not (captureFile Is Nothing) Then
+        Dim saveFileDialog1 As New SaveFileDialog()
+        If myMenuItemLogFile.Text = ("&Close Log File") Then ' Capture file is open
             captureFile.Close()
+            Logfile_Text.Visible = False
+            Logfile_Label.Visible = False
+            myMenuItemLogFile.Text = ("& Open Log File")
+        Else ' Capture file is null or closed
+            saveFileDialog1.FileName = currentcapturefile
+            saveFileDialog1.Filter = "Log Files |*.txt|All Files | *.*"
+            saveFileDialog1.Title = "Select a Log File for Capture of Measurement Data"
+            saveFileDialog1.ShowDialog()
+            captureFileName = saveFileDialog1.FileName.ToString()
+            captureFile = My.Computer.FileSystem.OpenTextFileWriter(captureFileName, False)
+            myMenuItemLogFile.Text = ("&Close Log File")
+            currentcapturefile = System.IO.Path.GetFileName(saveFileDialog1.FileName)
+            Logfile_Text.Visible = True
+            Logfile_Label.Visible = True
+            Logfile_Text.Text = currentcapturefile.ToString
         End If
-        OpenFileDialog1.ShowDialog()
-        captureFileName = OpenFileDialog1.FileName.ToString()
-        captureFile = My.Computer.FileSystem.OpenTextFileWriter(captureFileName, False)
     End Sub
 
     Private Sub myMenuItemConfiguration_Click(sender As Object, e As EventArgs)
@@ -851,43 +846,52 @@ Public Class MainForm
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        straightnessMultiplier = 1
+
+        UnitLabel.Visible = True
+        TimeLabel.Visible = False
+        AngleLabel.Visible = False
+
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
-        UnitLabel.Visible = True
-        Label_RangeTime.Visible = False
-        RangeUnits.Visible = True
-        RangeUnits.Text = UnitLabel.Text
-        TimeLabel.Visible = False
-        Graph_Label.Text = "Displacement"
-        ComboBox_Range.Visible = True
-        If GraphControl.Text.Equals("Enable Graph") Then
-            Label_Range.Visible = False
-        Else
-            Label_Range.Visible = True
-            Axis_UnitsD.Visible = True
-            Axis_S.Visible = False
-            Axis_UnitsA.Visible = False
-        End If
+
         Compression_Label.Text = "Time Compression"
         Label_Range.Text = "Displacement Range"
         Graph_Label.Text = "Displacement"
+        RangeUnits.Text = UnitLabel.Text
+
+        ScrollRate = CInt(NumericUpDown_Scale.Value)
+
+        If GraphControl.Text.Equals("Enable Graph") Then
+            Compression_Label.Visible = False
+            NumericUpDown_Scale.Visible = False
+            Label_Range.Visible = False
+            ComboBox_Range.Visible = False
+            RangeUnits.Visible = False
+            Axis_UnitsD.Visible = False
+        Else
+            Compression_Label.Visible = True
+            NumericUpDown_Scale.Visible = True
+            Label_Range.Visible = True
+            ComboBox_Range.Visible = True
+
+            If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
+                Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
+                Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
+                RangeUnits.Visible = False
+            Else
+                RangeUnits.Visible = True
+            End If
+
+            Axis_UnitsD.Visible = True
+        End If
+
         Axis_S.Visible = False
         AngleLabel.Visible = False
-        straightnessMultiplier = 1
-        NumericUpDown_Scale.Visible = True
-
-        If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
-            Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
-            Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
-            Label_RangeTime.Visible = False
-            RangeUnits.Visible = False
-        Else
-            RangeUnits.Visible = True
-        End If
-        ScrollRate = CInt(NumericUpDown_Scale.Value)
+        Axis_UnitsA.Visible = False
+        Label_RangeTime.Visible = False
         Frequency_Axis.Visible = False
         ComboBox_DFT_Range.Visible = False
-        NumericUpDown_Scale.Visible = True
         DFT_Hz.Visible = False
     End Sub
 
@@ -904,42 +908,52 @@ Public Class MainForm
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
+
+        UnitLabel.Visible = True
+        TimeLabel.Visible = True
+        AngleLabel.Visible = False
+
         Chart1.Series.Clear()
         Chart1.Series.Add(velocitySeries)
-        UnitLabel.Visible = True
-        RangeUnits.Visible = True
-        RangeUnits.Text = UnitLabel.Text
-        TimeLabel.Visible = True
-        Label_RangeTime.Visible = True
-        Axis_S.Visible = True
-        AngleLabel.Visible = False
-        ComboBox_Range.Visible = True
-        If GraphControl.Text.Equals("Enable Graph") Then
-            Label_Range.Visible = False
-        Else
-            Label_Range.Visible = True
-            Axis_UnitsD.Visible = True
-            Axis_S.Visible = True
-            Axis_UnitsA.Visible = False
-        End If
+
         Compression_Label.Text = "Time Compression"
         Label_Range.Text = "Velociy Range"
         Graph_Label.Text = "Velocity"
-        NumericUpDown_Scale.Visible = True
+        RangeUnits.Text = UnitLabel.Text
 
-        If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
-            Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
-            Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
-            Label_RangeTime.Visible = False
-            RangeUnits.Visible = False
-        Else
-            Label_RangeTime.Visible = True
-            RangeUnits.Visible = True
-        End If
         ScrollRate = CInt(NumericUpDown_Scale.Value)
+
+        If GraphControl.Text.Equals("Enable Graph") Then
+            RangeUnits.Visible = False
+            Label_Range.Visible = False
+            Label_RangeTime.Visible = False
+            Axis_UnitsD.Visible = False
+            Axis_S.Visible = False
+            NumericUpDown_Scale.Visible = False
+            ComboBox_Range.Visible = False
+        Else
+            Compression_Label.Visible = True
+            NumericUpDown_Scale.Visible = True
+            Label_Range.Visible = True
+            ComboBox_Range.Visible = True
+
+            If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
+                Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
+                Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
+                RangeUnits.Visible = False
+                Label_RangeTime.Visible = False
+            Else
+                RangeUnits.Visible = True
+                Label_RangeTime.Visible = True
+            End If
+
+            Axis_UnitsD.Visible = True
+            Axis_S.Visible = True
+        End If
+
+        Axis_UnitsA.Visible = False
         Frequency_Axis.Visible = False
         ComboBox_DFT_Range.Visible = False
-        NumericUpDown_Scale.Visible = True
         DFT_Hz.Visible = False
     End Sub
 
@@ -956,43 +970,49 @@ Public Class MainForm
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Chart1.Series.Clear()
-        Chart1.Series.Add(angleseries)
+        straightnessMultiplier = 1
+
         UnitLabel.Visible = False
         TimeLabel.Visible = False
         AngleLabel.Visible = True
-        Axis_UnitsA.Visible = True
-        Label_RangeTime.Visible = False
-        RangeUnits.Visible = True
-        RangeUnits.Text = AngleLabel.Text
-        straightnessMultiplier = 1
-        ComboBox_Range.Visible = True
 
-        If GraphControl.Text.Equals("Enable Graph") Then
-            Label_Range.Visible = False
-        Else
-            Label_Range.Visible = True
-            Axis_UnitsA.Visible = True
-        End If
+        Chart1.Series.Clear()
+        Chart1.Series.Add(angleseries)
 
         Compression_Label.Text = "Time Compression"
         Label_Range.Text = "Angle Range"
         Graph_Label.Text = "    Angle    "
-        Axis_UnitsD.Visible = False
-        Axis_S.Visible = False
-        NumericUpDown_Scale.Visible = True
-
-        If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
-            Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
-            Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
-            Label_RangeTime.Visible = False
-            RangeUnits.Visible = False
-        Else
-            Label_RangeTime.Visible = False
-            RangeUnits.Visible = True
-        End If
+        RangeUnits.Text = AngleLabel.Text
 
         ScrollRate = CInt(NumericUpDown_Scale.Value)
+
+        If GraphControl.Text.Equals("Enable Graph") Then
+            Compression_Label.Visible = False
+            NumericUpDown_Scale.Visible = False
+            ComboBox_Range.Visible = False
+            Label_Range.Visible = False
+            Label_RangeTime.Visible = False
+            Axis_UnitsA.Visible = False
+        Else
+            Compression_Label.Visible = True
+            NumericUpDown_Scale.Visible = True
+            Label_Range.Visible = True
+            ComboBox_Range.Visible = True
+
+            If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
+                Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
+                Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
+                RangeUnits.Visible = False
+                Label_RangeTime.Visible = False
+            Else
+                Label_RangeTime.Visible = False
+                RangeUnits.Visible = True
+            End If
+            Axis_UnitsA.Visible = True
+        End If
+
+        Axis_UnitsD.Visible = False
+        Axis_S.Visible = False
         Frequency_Axis.Visible = False
         ComboBox_DFT_Range.Visible = False
         NumericUpDown_Scale.Visible = True
@@ -1012,46 +1032,51 @@ Public Class MainForm
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Chart1.Series.Clear()
-        Chart1.Series.Add(positionSeries)
-        UnitLabel.Visible = True
-        RangeUnits.Visible = True
-        RangeUnits.Text = UnitLabel.Text
-        Label_RangeTime.Visible = False
-        TimeLabel.Visible = False
-        AngleLabel.Visible = False
-        Axis_S.Visible = False
-        ComboBox_Range.Visible = True
         straightnessMultiplier = Configuration.NumericUpDown_SL_Coefficient.Value
 
-        If GraphControl.Text.Equals("Enable Graph") Then
-            Label_Range.Visible = False
-        Else
-            Label_Range.Visible = True
-            Axis_UnitsD.Visible = True
-            Axis_S.Visible = False
-            Axis_UnitsA.Visible = False
-        End If
+        UnitLabel.Visible = True
+        TimeLabel.Visible = False
+        AngleLabel.Visible = False
+
+        Chart1.Series.Clear()
+        Chart1.Series.Add(positionSeries)
 
         Compression_Label.Text = "Time Compression"
         Label_Range.Text = "Straightness Long Range"
         Graph_Label.Text = "Straightness Long"
-        NumericUpDown_Scale.Visible = True
+        RangeUnits.Text = UnitLabel.Text
 
-        If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
-            Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
-            Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
-            Label_RangeTime.Visible = False
+        ScrollRate = CInt(NumericUpDown_Scale.Value)
+
+        If GraphControl.Text.Equals("Enable Graph") Then
+            Compression_Label.Visible = False
+            NumericUpDown_Scale.Visible = False
+            Label_Range.Visible = True
+            ComboBox_Range.Visible = False
             RangeUnits.Visible = False
+            Axis_UnitsD.Visible = False
         Else
-            Label_RangeTime.Visible = False
-            RangeUnits.Visible = True
-            ScrollRate = CInt(NumericUpDown_Scale.Value)
+            Compression_Label.Visible = True
+            NumericUpDown_Scale.Visible = True
+            ComboBox_Range.Visible = True
+
+            If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
+                Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
+                Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
+                RangeUnits.Visible = False
+            Else
+
+                RangeUnits.Visible = True
+            End If
+
+            Axis_UnitsD.Visible = True
         End If
 
+        Label_RangeTime.Visible = False
+        Axis_S.Visible = False
+        Axis_UnitsA.Visible = False
         Frequency_Axis.Visible = False
         ComboBox_DFT_Range.Visible = False
-        NumericUpDown_Scale.Visible = True
         DFT_Hz.Visible = False
     End Sub
 
@@ -1069,46 +1094,51 @@ Public Class MainForm
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Chart1.Series.Clear()
-        Chart1.Series.Add(positionSeries)
-        UnitLabel.Visible = True
-        RangeUnits.Visible = True
-        RangeUnits.Text = UnitLabel.Text
-        Label_RangeTime.Visible = False
-        TimeLabel.Visible = False
-        AngleLabel.Visible = False
-        Axis_S.Visible = False
-        ComboBox_Range.Visible = True
         straightnessMultiplier = Configuration.NumericUpDown_SS_Coefficient.Value
 
-        If GraphControl.Text.Equals("Enable Graph") Then
-            Label_Range.Visible = False
-        Else
-            Label_Range.Visible = True
-            Axis_UnitsD.Visible = True
-            Axis_S.Visible = False
-            Axis_UnitsA.Visible = False
-        End If
+        UnitLabel.Visible = True
+        TimeLabel.Visible = False
+        AngleLabel.Visible = False
+
+        Chart1.Series.Clear()
+        Chart1.Series.Add(positionSeries)
 
         Compression_Label.Text = "Time Compression"
         Label_Range.Text = "Straightness Short Range"
         Graph_Label.Text = "Straightness Short"
-        NumericUpDown_Scale.Visible = True
-
-        If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
-            Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
-            Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
-            Label_RangeTime.Visible = False
-            RangeUnits.Visible = False
-        Else
-            Label_RangeTime.Visible = False
-            RangeUnits.Visible = True
-        End If
+        RangeUnits.Text = UnitLabel.Text
 
         ScrollRate = CInt(NumericUpDown_Scale.Value)
+
+        If GraphControl.Text.Equals("Enable Graph") Then
+            Compression_Label.Visible = False
+            NumericUpDown_Scale.Visible = False
+            Label_Range.Visible = False
+            RangeUnits.Visible = False
+            ComboBox_Range.Visible = False
+            Axis_UnitsD.Visible = False
+        Else
+            Compression_Label.Visible = True
+            NumericUpDown_Scale.Visible = True
+            Label_Range.Visible = True
+            ComboBox_Range.Visible = True
+
+            If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
+                Chart1.ChartAreas(0).AxisY.Minimum = Double.NaN
+                Chart1.ChartAreas(0).AxisY.Maximum = Double.NaN
+                RangeUnits.Visible = False
+            Else
+                RangeUnits.Visible = True
+            End If
+
+            Axis_UnitsD.Visible = True
+        End If
+
+        Label_RangeTime.Visible = False
+        Axis_S.Visible = False
+        Axis_UnitsA.Visible = False
         Frequency_Axis.Visible = False
         ComboBox_DFT_Range.Visible = False
-        NumericUpDown_Scale.Visible = True
         DFT_Hz.Visible = False
     End Sub
 
@@ -1117,7 +1147,7 @@ Public Class MainForm
     End Sub
 
     Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
-        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.Orange1
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -1127,33 +1157,38 @@ Public Class MainForm
         StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.Orange1
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Chart1.Series.Clear()
-        Chart1.Series.Add(fftSeries)
+        straightnessMultiplier = 1
+
         UnitLabel.Visible = True
-        RangeUnits.Visible = False
-        Label_RangeTime.Visible = False
         TimeLabel.Visible = False
         AngleLabel.Visible = False
-        Axis_S.Visible = False
-        straightnessMultiplier = 1
-        Label_Range.Visible = Visible
+
+        Chart1.Series.Clear()
+        Chart1.Series.Add(fftSeries)
+
+        Graph_Label.Text = "Frequency (Hz)"
+
+        ScrollRate = 1
+
+        Compression_Label.Text = "DFT Frequency Range"
+        Compression_Label.Visible = True
+        NumericUpDown_Scale.Visible = False
+        ComboBox_DFT_Range.Visible = True
+        Label_Range.Text = "DFT Amplitude Range"
+        Label_Range.Visible = True
         ComboBox_Range.Visible = True
+        RangeUnits.Visible = False
+        Label_RangeTime.Visible = False
+
         Axis_UnitsD.Visible = False
         Axis_S.Visible = False
         Axis_UnitsA.Visible = False
-        Graph_Label.Text = "Frequency (Hz)"
-        Compression_Label.Text = "DFT Frequency Range"
+
         DFTMax = 0
-        NumericUpDown_Scale.Visible = False
-        Label_RangeTime.Visible = False
-        Label_Range.Text = "DFT Amplitude Range"
-        ScrollRate = 1
-        Frequency_Axis.Visible = True
-        ComboBox_DFT_Range.Visible = True
-        NumericUpDown_Scale.Visible = False
         DFT_Hz.Visible = True
+        Frequency_Axis.Visible = True
     End Sub
 
     Private Sub TrackBar1_selectrionchangecommitted(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
@@ -1263,15 +1298,24 @@ Public Class MainForm
                 DIFF.Visible = False
             End If
             'Kludge to prevent momentary flashes of large value when turning on Test Mode FG
-            If IgnoreCount = 0 And Math.Abs(currentValue - previousValue) < 100000000 Then
+            If IgnoreCount = 0 And Math.Abs(velocityValue) < 100000000 Then
+                '    If Not DiagnosticValue = 0 Then
+                '    DiagnosticValue = DiagnosticValue And &H7FFF
+                '    DiagnosticValue = DiagnosticValue Or &H8000
+                ' Diagnostic1.Text = DiagnosticValue.ToString("x0000")
+                ' Diagnostic1.Visible = True
+                'Else
+                '   Diagnostic1.Visible = False
+                'End If
+
                 If SuspendFlag = 1 Then
-                    ' ValueDisplay.Text = "Suspend   "
                     Suspend_Label.Visible = True
 
                 ElseIf EDEnabled = 1 And ErrorFlag > 0 Then
                     UnitLabel.Visible = False
                     TimeLabel.Visible = False
                     AngleLabel.Visible = False
+
                     If (ErrorFlag And 3) = 3 Then
                         ValueDisplay.Text = "  No Signals Error"
                     ElseIf (ErrorFlag And 3) = 1 Then
@@ -1310,16 +1354,15 @@ Public Class MainForm
                     ElseIf unitCorrectionFactor = 304.8 Then
                         ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
                     End If
-                End If
 
-                If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    TimeLabel.Visible = True
+                    If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                        TimeLabel.Visible = True
+                    End If
                 End If
             End If
         End If
 
         If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
-            '  Dim ScrollRate As Integer = CInt(NumericUpDown_Scale.Value)
             Dim x1 As Double
             Dim y1 As Double
             Dim x2 As Double
@@ -1335,11 +1378,7 @@ Public Class MainForm
                 y3 = CDbl(angleQueuey.Dequeue())
                 graphCount = graphCount + CULng(1)
 
-                'If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                ' ScrollRate = 1 ' For DFT only, should add proper axis and allow scrollrate to be selectable.
-                ' Else
                 ScrollRate = CInt(NumericUpDown_Scale.Value)
-                'End If
 
                 If 0 = (graphCount Mod ScrollRate) Then
                     plotCount = plotCount + CULng(1)
@@ -1362,18 +1401,14 @@ Public Class MainForm
             ' DFT related
 
             Dim counter As Integer
-            'DFTMax = 0
+
             If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then  ' are we doing dft?
 
-                ' If (SerialPort1.IsOpen And (TestmodeFlag = 0)) Or TestmodeFlag = 1 Then ' skip if nothing happening
                 If True = FFTdone Then   ' make sure we are not still busy with the previous calculation
                     FFTdone = False
                     fftSeries.Points.Clear()
                     For counter = 0 To (CInt(((Dimension / 2) - 1)))
                         fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) / 1048576 + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1048576)
-                        ' If (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) / 1048576 + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1048576 > DFTMax Then
-                        'DFTMax = 1 * (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter))
-                        'End If
                     Next
                     resetEvent.Set()
                 End If
@@ -1381,96 +1416,79 @@ Public Class MainForm
             End If
             Chart1.ResetAutoValues()
         End If
-        'Chart1.ResetAutoValues()
-        'Chart1.ChartAreas(0).RecalculateAxesScale()
-        ' Compression_Label.Visible = True
-        ' NumericUpDown_Scale.Visible = True
     End Sub
 
     Private Sub SimulationTimer_Tick(sender As Object, e As EventArgs) Handles SimulationTimer.Tick
 
-        ' here we are simulating data of the form of (not all fields are parsed by SetText:
+        ' USB Communications Format:
 
-        ' 0 MEAS Count
-        ' 1 REF Count
-        ' 2 "Difference: "  (ignored)
-        ' 3 SIMDistance
-        ' 4 " Previous      (ignored)
-        ' 5 Difference "    (ignored)
-        ' 6 PrevSIMDistance
-        ' 7 " overflow      (ignored)
-        ' 8 counter: "      (ignored)
-        ' 9 SIMSerialNum    
+        ' 0 SIMREFCount - PrevSIMREFCount
+        ' 1 SIMMEASCount - PrevSIMMEASCount
+        ' 2 SIMDistance
+        ' 3 SIMVelocity
+        ' 4 SIMPhase
+        ' 5 SIMSerialNum
+        ' 6 SIMLowSpeedCode
+        ' 7 SIMLowSpeedData
 
-        ' ignored     ignored     ignored     distance  ignored  ignored     velocity  ignored  ignored  serialcounter
-        ' simulatedData = "46838240776 4767908780 Difference: " + simulationDistance.ToString + " Previous Difference: " + simulationDistance.ToString + " overflow counter: " + simulationSerial.ToString
+        ' LowSpeedCode Format:
+
+        ' 0 No data
+        ' 1 Laser Power
+        ' 2 Signal Strength
+        ' 3 Temperature 1
+        ' 4 Temperature 2
+        ' 5 Pressure
+        ' 6 Humidity
+        ' 7 Data Source ID
+        ' 8+ Spare
 
         Dim counter As Integer
 
-        For counter = 0 To 14
+        For counter = 0 To 14 ' With simluationtimer at 25 ms, this produces 600 samples/second, close to 610.34
             simrefcount = simrefcount + CLng(TestMode.NumericUpDown_FGREF_Value.Value * 1638)
-            'simmeascount = simrefcount + CLng(simulationDistance * 0.162)
-            simmeascount = simrefcount + CLng(simulationDistance * 1) '0.162)
-            If SuspendFlag = 0 Then
-                ' If (simmeascount - previoussimMEASCount) > (2 * (simrefcount - previoussimREFCount) - 0) Then
-                '  simmeascount = previoussimMEASCount + CLng(2 * (simrefcount - previoussimREFCount) - 1)
-                '  IgnoreCount = 0
-                ' End If
+            simmeascount = simrefcount + CLng(simulationDistance * 1)
 
-                ' If (simmeascount - previoussimMEASCount) < 0 Then
-                '   simmeascount = previoussimMEASCount + CLng(1)
-                '  IgnoreCount = 0
-                '  End If
+            If TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                simulationDistance = CLng(12638 * (TMUnitsFactor * (TestMode.TrackBar_Offset.Value * 0.01 * TMAmpValue) * multiplier / 2))
+                waveform = 0
 
-                ' If IgnoreCount = 0 Then
-                If TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    simulationDistance = CLng(12638 * (TMUnitsFactor * (TestMode.TrackBar_Offset.Value * 0.01 * TMAmpValue) * multiplier / 2))
-                    waveform = 0
+            ElseIf TestMode.Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                waveform = waveform + ((0.000655 * TMFreqValue) * bangbang)
+                simulationDistance = CLng(CDbl(12638) * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
 
-                ElseIf TestMode.Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    waveform = waveform + ((0.000655 * TMFreqValue) * bangbang)
-                    simulationDistance = CLng(CDbl(12638) * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
-                    ' waveform = waveform + (0.00001 * 0.000655 / 0.002 * TMFreqValue * TestMode.TrackBar_Offset.Value)
-                    ' simulationDistance = CLng(12638 * TMUnitsFactor * (waveform * TMAmpMult) * multiplier / 2)
+            ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' Triangle implemented as Asin(sin()) to be consistent with Sin
+                waveform = 2 / Math.PI * Math.Asin(Math.Sin(simcount * (TMFreqValue * 0.1) * (Math.PI * 2) / 610.35 + phase))
+                simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
+                simcount = simcount + 1
 
-                    '  ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    '      waveform = waveform + ((0.000655 * TMFreqValue) * bangbang)
-                    '      simulationDistance = CLng(CDbl(12638) * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
-                    '      If waveform > 1 Then
-                    ' bangbang = -1
-                    'End  If
+            ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' At 1 Hz will do a cycle in 610.35 samples
+                waveform = Math.Sin(simcount * (TMFreqValue * 0.1) * (Math.PI * 2) / 610.35 + phase)
+                simulationDistance = CLng(12638.0 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2.0))
+                simcount = simcount + 1
+            End If
 
-                    'If waveform < -1 Then
-                    ' bangbang = 1
-                    ' End If
-
-                ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    waveform = 2 / Math.PI * Math.Asin(Math.Sin(simcount * TMFreqValue * Math.PI / 1000 * 0.000655 / 0.002 + phase))
-
-                    simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
-                    'End If
-                    simcount = simcount + 1
-
-
-                ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-                    waveform = Math.Sin(simcount * TMFreqValue * Math.PI / 1000 * 0.000655 / 0.002 + phase)
-                    simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
-                    'End If
-                    simcount = simcount + 1
-                    If simulationDistance < previousSimulationDistance Then
-                        bangbang = -1
-                    Else
-                        bangbang = 1
-                    End If
-                End If
+            If simulationDistance < 0 Then
+                bangbang = -1
+            Else
+                bangbang = 1
             End If
 
             simulationVelocity = (simulationDistance - previousSimulationDistance)
-            simulatedData = simmeascount.ToString("########### ") + simrefcount.ToString("########### ") + "Difference: " +
-                simulationDistance.ToString + " Previous Difference " + previousSimulationDistance.ToString +
-                " overflow counter: " + simulationSerial.ToString + 0.ToString("########### ") + 1.ToString("########### ") + 2.ToString("########### ") + 3.ToString("########### ")
-            '"displayAux1 " + "displayAux2 " + "displayAux3 " + "displayAux4 "
-            ' + simulationSerial.ToString + " " + simulationSerial.ToString + " " + simulationSerial.ToString + " " + simulationSerial.ToString '+ "displayAux1 " + "displayAux2 " + "displayAux3 " + "displayAux4 "
+
+            simulationPhase = 0
+            simulationLowSpeedCode = 0
+            simulationLowSpeedData = 0
+
+            simulatedData = (simrefcount - previoussimREFCount).ToString("D") + " " +
+             (simmeascount - previoussimMEASCount).ToString("D") + " " +
+             simulationDistance.ToString("D") + " " +
+             simulationVelocity.ToString("D") + " " +
+             simulationPhase.ToString("D") + " " +
+             simulationSerial.ToString("D") + " " +
+             simulationLowSpeedCode.ToString("D") + " " +
+             simulationLowSpeedData.ToString("D")
+
             simulationSerial = simulationSerial + CULng(1)
             previousSimulationDistance = simulationDistance
             previoussimulationVelocity = simulationVelocity
@@ -1482,45 +1500,45 @@ Public Class MainForm
     End Sub
 
     Private Sub REF_Click(sender As Object, e As EventArgs) Handles REF.Click
-        ErrorFlag = ErrorFlag Or 1  ' reset the REF part of the error variable
+        ErrorFlag = ErrorFlag Or 1  ' Set the REF bit of the error flag word
     End Sub
 
     Private Sub MEAS_Click(sender As Object, e As EventArgs) Handles MEAS.Click
-        ErrorFlag = ErrorFlag Or 2 ' reset the MEAS part of the error variable
+        ErrorFlag = ErrorFlag Or 2 ' Set the MEAS bit of the error flag word
     End Sub
 
     Private Sub DIFF_Click(sender As Object, e As EventArgs) Handles DIFF.Click
-        If currentValue > previousValue Then ErrorFlag = 4 Else ErrorFlag = 8
+        If velocityValue > 0 Then ErrorFlag = 4 Else ErrorFlag = 8 ' Set the Slew+ or Slew- bit of the error flag word
     End Sub
 
     Private Sub ComboBox_Range_click(sender As Object, e As EventArgs) Handles ComboBox_Range.Click
-        RangeUnits.Visible = True
+
         If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
-            ' If ComboBox_Range.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
             Label_RangeTime.Visible = True
+            Label_RangeTime.Text = "/s"
         Else
             Label_RangeTime.Visible = False
         End If
         If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
             RangeUnits.Visible = False
         End If
+        RangeUnits.Visible = True
     End Sub
 
-
-
     Private Sub Capture_Button_Click(sender As Object, e As EventArgs) Handles Capture_Button.Click
-        If Capture_Button.Text.Equals("Enable Capture") And
-              Not (captureFile Is Nothing) Then
-            ' Turn capture on
-            Capture_Button.Text = "Disable Capture"
-            Capture_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.GreenButton1
-            Capture_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Capture_Flag = 1
+        If Capture_Button.Text.Equals("Enable Capture") Then
+            If Not (captureFile Is Nothing) Then
+                ' Turn capture on
+                Capture_Button.Text = "Disable Capture"
+                Capture_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.GreenButton1
+                Capture_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+                Capture_Flag = 1
+            End If
         Else
             Capture_Button.Text = "Enable Capture"
             Capture_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Capture_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            captureFile.Write("Gap" + vbCrLf)
+            captureFile.Write(vbCrLf + "Gap" + vbCrLf + vbCrLf)
             Capture_Flag = 0
         End If
     End Sub
@@ -1546,10 +1564,7 @@ Public Class MainForm
                 DFTValueList.RemoveAt(0)
             Next ClearCounter
         End If
-
     End Sub
-
-
 
     Private Sub ComboBox_Range_TextChanged(sender As Object, e As EventArgs) Handles ComboBox_Range.TextChanged
         If Not Double.TryParse(ComboBox_Range.Text, range) Then     ' Boolean true if Auto
@@ -1576,10 +1591,10 @@ Public Class MainForm
             Else
                 RangeUnits.Text = UnitLabel.Text
                 RangeUnits.Visible = True
-                'Label_RangeTime.Visible = True
             End If
         End If
         Chart1.ResetAutoValues()
         Chart1.ChartAreas(0).RecalculateAxesScale()
     End Sub
+
 End Class

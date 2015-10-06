@@ -457,6 +457,7 @@ Partial Class TestMode
         Me.Button_Sine.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Button_Sine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Sine.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Button_Sine.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Button_Sine.Location = New System.Drawing.Point(39, 252)
         Me.Button_Sine.Name = "Button_Sine"
         Me.Button_Sine.Size = New System.Drawing.Size(81, 24)

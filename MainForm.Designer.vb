@@ -61,27 +61,30 @@ Partial Public Class MainForm
         Me.EDOff_Label = New System.Windows.Forms.Label()
         Me.ComboBox_Range = New System.Windows.Forms.ComboBox()
         Me.Label_Range = New System.Windows.Forms.Label()
-        Me.Capture_Button = New System.Windows.Forms.Button()
-        Me.GraphControl = New System.Windows.Forms.Button()
-        Me.Suspend = New System.Windows.Forms.Button()
-        Me.FrequencyButton = New System.Windows.Forms.Button()
-        Me.StraightnessShortButton = New System.Windows.Forms.Button()
-        Me.StraightnessLongButton = New System.Windows.Forms.Button()
-        Me.AngleButton = New System.Windows.Forms.Button()
-        Me.DisplacementButton = New System.Windows.Forms.Button()
-        Me.ZeroButton = New System.Windows.Forms.Button()
-        Me.VelocityButton = New System.Windows.Forms.Button()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Axis_UnitsD = New System.Windows.Forms.Label()
         Me.Axis_S = New System.Windows.Forms.Label()
         Me.Axis_UnitsA = New System.Windows.Forms.Label()
         Me.Suspend_Label = New System.Windows.Forms.Label()
-        Me.RangeUnits = New System.Windows.Forms.Label()
         Me.AngleLabel = New System.Windows.Forms.Label()
-        Me.Label_RangeTime = New System.Windows.Forms.Label()
         Me.Frequency_Axis = New System.Windows.Forms.Label()
         Me.ComboBox_DFT_Range = New System.Windows.Forms.ComboBox()
         Me.DFT_Hz = New System.Windows.Forms.Label()
+        Me.Logfile_Text = New System.Windows.Forms.Label()
+        Me.Logfile_Label = New System.Windows.Forms.Label()
+        Me.RangeUnits = New System.Windows.Forms.Label()
+        Me.Label_RangeTime = New System.Windows.Forms.Label()
+        Me.Capture_Button = New System.Windows.Forms.Button()
+        Me.StraightnessLongButton = New System.Windows.Forms.Button()
+        Me.GraphControl = New System.Windows.Forms.Button()
+        Me.Suspend = New System.Windows.Forms.Button()
+        Me.FrequencyButton = New System.Windows.Forms.Button()
+        Me.StraightnessShortButton = New System.Windows.Forms.Button()
+        Me.AngleButton = New System.Windows.Forms.Button()
+        Me.DisplacementButton = New System.Windows.Forms.Button()
+        Me.ZeroButton = New System.Windows.Forms.Button()
+        Me.VelocityButton = New System.Windows.Forms.Button()
+        Me.Diagnostic1 = New System.Windows.Forms.Label()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -90,9 +93,9 @@ Partial Public Class MainForm
         'ValueDisplay
         '
         Me.ValueDisplay.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ValueDisplay.Location = New System.Drawing.Point(188, 62)
+        Me.ValueDisplay.Location = New System.Drawing.Point(193, 62)
         Me.ValueDisplay.Name = "ValueDisplay"
-        Me.ValueDisplay.Size = New System.Drawing.Size(472, 67)
+        Me.ValueDisplay.Size = New System.Drawing.Size(481, 67)
         Me.ValueDisplay.TabIndex = 34
         Me.ValueDisplay.Text = "0.000"
         Me.ValueDisplay.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -173,20 +176,20 @@ Partial Public Class MainForm
         '
         'DIFF
         '
-        Me.DIFF.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DIFF.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(200, Byte), Integer))
-        Me.DIFF.Location = New System.Drawing.Point(706, 22)
+        Me.DIFF.Location = New System.Drawing.Point(702, 22)
         Me.DIFF.Name = "DIFF"
-        Me.DIFF.Size = New System.Drawing.Size(86, 24)
+        Me.DIFF.Size = New System.Drawing.Size(82, 24)
         Me.DIFF.TabIndex = 76
         Me.DIFF.Text = "0.00"
         Me.DIFF.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'DIFFKHzLabel
         '
-        Me.DIFFKHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DIFFKHzLabel.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFFKHzLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.DIFFKHzLabel.Location = New System.Drawing.Point(790, 22)
+        Me.DIFFKHzLabel.Location = New System.Drawing.Point(781, 22)
         Me.DIFFKHzLabel.Name = "DIFFKHzLabel"
         Me.DIFFKHzLabel.Size = New System.Drawing.Size(57, 24)
         Me.DIFFKHzLabel.TabIndex = 75
@@ -194,7 +197,7 @@ Partial Public Class MainForm
         '
         'DIFFLabel
         '
-        Me.DIFFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DIFFLabel.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DIFFLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.DIFFLabel.Location = New System.Drawing.Point(656, 22)
         Me.DIFFLabel.Name = "DIFFLabel"
@@ -204,9 +207,9 @@ Partial Public Class MainForm
         '
         'MEASMHzLabel
         '
-        Me.MEASMHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MEASMHzLabel.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MEASMHzLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.MEASMHzLabel.Location = New System.Drawing.Point(577, 22)
+        Me.MEASMHzLabel.Location = New System.Drawing.Point(569, 22)
         Me.MEASMHzLabel.Name = "MEASMHzLabel"
         Me.MEASMHzLabel.Size = New System.Drawing.Size(64, 26)
         Me.MEASMHzLabel.TabIndex = 73
@@ -214,9 +217,9 @@ Partial Public Class MainForm
         '
         'REFMHzLabel
         '
-        Me.REFMHzLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.REFMHzLabel.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.REFMHzLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.REFMHzLabel.Location = New System.Drawing.Point(369, 22)
+        Me.REFMHzLabel.Location = New System.Drawing.Point(363, 22)
         Me.REFMHzLabel.Name = "REFMHzLabel"
         Me.REFMHzLabel.Size = New System.Drawing.Size(58, 26)
         Me.REFMHzLabel.TabIndex = 72
@@ -224,31 +227,31 @@ Partial Public Class MainForm
         '
         'MEAS
         '
-        Me.MEAS.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MEAS.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MEAS.ForeColor = System.Drawing.Color.FromArgb(CType(CType(175, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.MEAS.Location = New System.Drawing.Point(514, 20)
+        Me.MEAS.Location = New System.Drawing.Point(510, 22)
         Me.MEAS.Name = "MEAS"
-        Me.MEAS.Size = New System.Drawing.Size(66, 26)
+        Me.MEAS.Size = New System.Drawing.Size(62, 26)
         Me.MEAS.TabIndex = 71
         Me.MEAS.Text = "0.000"
-        Me.MEAS.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.MEAS.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'REF
         '
-        Me.REF.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.REF.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.REF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(170, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.REF.Location = New System.Drawing.Point(304, 21)
+        Me.REF.Location = New System.Drawing.Point(304, 22)
         Me.REF.Name = "REF"
-        Me.REF.Size = New System.Drawing.Size(67, 24)
+        Me.REF.Size = New System.Drawing.Size(62, 24)
         Me.REF.TabIndex = 70
         Me.REF.Text = "0.000"
-        Me.REF.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.REF.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'MEASLabel
         '
-        Me.MEASLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MEASLabel.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MEASLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.MEASLabel.Location = New System.Drawing.Point(457, 22)
+        Me.MEASLabel.Location = New System.Drawing.Point(454, 22)
         Me.MEASLabel.Name = "MEASLabel"
         Me.MEASLabel.Size = New System.Drawing.Size(70, 26)
         Me.MEASLabel.TabIndex = 69
@@ -256,7 +259,7 @@ Partial Public Class MainForm
         '
         'REFLabel
         '
-        Me.REFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.REFLabel.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.REFLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.REFLabel.Location = New System.Drawing.Point(261, 22)
         Me.REFLabel.Name = "REFLabel"
@@ -266,9 +269,9 @@ Partial Public Class MainForm
         '
         'WLUnits
         '
-        Me.WLUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WLUnits.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.WLUnits.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.WLUnits.Location = New System.Drawing.Point(184, 22)
+        Me.WLUnits.Location = New System.Drawing.Point(172, 22)
         Me.WLUnits.Name = "WLUnits"
         Me.WLUnits.Size = New System.Drawing.Size(58, 26)
         Me.WLUnits.TabIndex = 79
@@ -276,7 +279,7 @@ Partial Public Class MainForm
         '
         'WLText
         '
-        Me.WLText.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WLText.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.WLText.ForeColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.WLText.Location = New System.Drawing.Point(81, 22)
         Me.WLText.Name = "WLText"
@@ -286,7 +289,7 @@ Partial Public Class MainForm
         '
         'WLlabel
         '
-        Me.WLlabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WLlabel.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.WLlabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
         Me.WLlabel.Location = New System.Drawing.Point(41, 22)
         Me.WLlabel.Name = "WLlabel"
@@ -301,19 +304,19 @@ Partial Public Class MainForm
         'TestModeLabel
         '
         Me.TestModeLabel.AutoSize = True
-        Me.TestModeLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TestModeLabel.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TestModeLabel.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.TestModeLabel.Location = New System.Drawing.Point(30, 59)
+        Me.TestModeLabel.Location = New System.Drawing.Point(30, 66)
         Me.TestModeLabel.Name = "TestModeLabel"
-        Me.TestModeLabel.Size = New System.Drawing.Size(132, 22)
+        Me.TestModeLabel.Size = New System.Drawing.Size(114, 18)
         Me.TestModeLabel.TabIndex = 80
         Me.TestModeLabel.Text = "Simulated Data"
         '
         'Graph_Label
         '
         Me.Graph_Label.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Graph_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 17.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Graph_Label.Location = New System.Drawing.Point(357, 510)
+        Me.Graph_Label.Font = New System.Drawing.Font("Arial", 17.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Graph_Label.Location = New System.Drawing.Point(357, 513)
         Me.Graph_Label.Name = "Graph_Label"
         Me.Graph_Label.Size = New System.Drawing.Size(217, 33)
         Me.Graph_Label.TabIndex = 81
@@ -322,7 +325,7 @@ Partial Public Class MainForm
         '
         'Compression_Label
         '
-        Me.Compression_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Compression_Label.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Compression_Label.Location = New System.Drawing.Point(164, 237)
         Me.Compression_Label.Name = "Compression_Label"
         Me.Compression_Label.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -345,18 +348,18 @@ Partial Public Class MainForm
         'EDOff_Label
         '
         Me.EDOff_Label.AutoSize = True
-        Me.EDOff_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EDOff_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.EDOff_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.EDOff_Label.Location = New System.Drawing.Point(30, 86)
+        Me.EDOff_Label.Location = New System.Drawing.Point(31, 84)
         Me.EDOff_Label.Name = "EDOff_Label"
-        Me.EDOff_Label.Size = New System.Drawing.Size(160, 22)
+        Me.EDOff_Label.Size = New System.Drawing.Size(144, 18)
         Me.EDOff_Label.TabIndex = 85
         Me.EDOff_Label.Text = "Error Detection Off"
         '
         'ComboBox_Range
         '
         Me.ComboBox_Range.FormattingEnabled = True
-        Me.ComboBox_Range.Items.AddRange(New Object() {"Auto", "Grow", "0.01", "0.02", "0.05", "0.1", "0.2", "0.5", "1", "2", "5", "10", "20", "50", "100", "200", "500", "1000", "Auto"})
+        Me.ComboBox_Range.Items.AddRange(New Object() {"Auto", "0.01", "0.02", "0.05", "0.1", "0.2", "0.5", "1", "2", "5", "10", "20", "50", "100", "200", "500", "1000"})
         Me.ComboBox_Range.Location = New System.Drawing.Point(654, 244)
         Me.ComboBox_Range.MaximumSize = New System.Drawing.Size(55, 0)
         Me.ComboBox_Range.Name = "ComboBox_Range"
@@ -368,8 +371,8 @@ Partial Public Class MainForm
         'Label_Range
         '
         Me.Label_Range.AutoSize = True
-        Me.Label_Range.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label_Range.Location = New System.Drawing.Point(426, 242)
+        Me.Label_Range.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label_Range.Location = New System.Drawing.Point(427, 243)
         Me.Label_Range.MaximumSize = New System.Drawing.Size(100, 20)
         Me.Label_Range.MinimumSize = New System.Drawing.Size(225, 20)
         Me.Label_Range.Name = "Label_Range"
@@ -377,6 +380,159 @@ Partial Public Class MainForm
         Me.Label_Range.Size = New System.Drawing.Size(225, 20)
         Me.Label_Range.TabIndex = 88
         Me.Label_Range.Text = "Displacement Range"
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.CheckFileExists = False
+        Me.OpenFileDialog1.DefaultExt = "txt"
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        Me.OpenFileDialog1.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+        Me.OpenFileDialog1.Title = "Please enter the name for the log file"
+        '
+        'Axis_UnitsD
+        '
+        Me.Axis_UnitsD.BackColor = System.Drawing.SystemColors.Control
+        Me.Axis_UnitsD.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis_UnitsD.Location = New System.Drawing.Point(50, 493)
+        Me.Axis_UnitsD.MaximumSize = New System.Drawing.Size(160, 20)
+        Me.Axis_UnitsD.MinimumSize = New System.Drawing.Size(10, 20)
+        Me.Axis_UnitsD.Name = "Axis_UnitsD"
+        Me.Axis_UnitsD.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.Axis_UnitsD.Size = New System.Drawing.Size(44, 20)
+        Me.Axis_UnitsD.TabIndex = 92
+        Me.Axis_UnitsD.Text = "mm"
+        '
+        'Axis_S
+        '
+        Me.Axis_S.BackColor = System.Drawing.SystemColors.Control
+        Me.Axis_S.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis_S.Location = New System.Drawing.Point(88, 493)
+        Me.Axis_S.Name = "Axis_S"
+        Me.Axis_S.Size = New System.Drawing.Size(28, 24)
+        Me.Axis_S.TabIndex = 93
+        Me.Axis_S.Text = "/s"
+        Me.Axis_S.Visible = False
+        '
+        'Axis_UnitsA
+        '
+        Me.Axis_UnitsA.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis_UnitsA.Location = New System.Drawing.Point(50, 493)
+        Me.Axis_UnitsA.MaximumSize = New System.Drawing.Size(160, 20)
+        Me.Axis_UnitsA.MinimumSize = New System.Drawing.Size(10, 20)
+        Me.Axis_UnitsA.Name = "Axis_UnitsA"
+        Me.Axis_UnitsA.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.Axis_UnitsA.Size = New System.Drawing.Size(60, 20)
+        Me.Axis_UnitsA.TabIndex = 94
+        Me.Axis_UnitsA.Text = "degree"
+        '
+        'Suspend_Label
+        '
+        Me.Suspend_Label.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Suspend_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Suspend_Label.Location = New System.Drawing.Point(697, 49)
+        Me.Suspend_Label.Name = "Suspend_Label"
+        Me.Suspend_Label.Size = New System.Drawing.Size(106, 26)
+        Me.Suspend_Label.TabIndex = 95
+        Me.Suspend_Label.Text = "Suspended"
+        Me.Suspend_Label.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Suspend_Label.Visible = False
+        '
+        'AngleLabel
+        '
+        Me.AngleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AngleLabel.Location = New System.Drawing.Point(666, 56)
+        Me.AngleLabel.Name = "AngleLabel"
+        Me.AngleLabel.Size = New System.Drawing.Size(177, 67)
+        Me.AngleLabel.TabIndex = 44
+        Me.AngleLabel.Text = "arcsec"
+        Me.AngleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.AngleLabel.Visible = False
+        '
+        'Frequency_Axis
+        '
+        Me.Frequency_Axis.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.Frequency_Axis.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Frequency_Axis.Location = New System.Drawing.Point(110, 500)
+        Me.Frequency_Axis.Name = "Frequency_Axis"
+        Me.Frequency_Axis.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.Frequency_Axis.Size = New System.Drawing.Size(745, 14)
+        Me.Frequency_Axis.TabIndex = 98
+        Me.Frequency_Axis.Text = "1 2  5      10              20              30              40              50   " & _
+    "           60             70              80              90            100"
+        Me.Frequency_Axis.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'ComboBox_DFT_Range
+        '
+        Me.ComboBox_DFT_Range.FormattingEnabled = True
+        Me.ComboBox_DFT_Range.Items.AddRange(New Object() {"10", "30", "100", "300"})
+        Me.ComboBox_DFT_Range.Location = New System.Drawing.Point(344, 244)
+        Me.ComboBox_DFT_Range.MaximumSize = New System.Drawing.Size(100, 0)
+        Me.ComboBox_DFT_Range.Name = "ComboBox_DFT_Range"
+        Me.ComboBox_DFT_Range.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.ComboBox_DFT_Range.Size = New System.Drawing.Size(42, 21)
+        Me.ComboBox_DFT_Range.TabIndex = 99
+        Me.ComboBox_DFT_Range.Text = "100"
+        Me.ComboBox_DFT_Range.Visible = False
+        '
+        'DFT_Hz
+        '
+        Me.DFT_Hz.AutoSize = True
+        Me.DFT_Hz.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DFT_Hz.Location = New System.Drawing.Point(388, 245)
+        Me.DFT_Hz.Name = "DFT_Hz"
+        Me.DFT_Hz.Size = New System.Drawing.Size(22, 15)
+        Me.DFT_Hz.TabIndex = 100
+        Me.DFT_Hz.Text = "Hz"
+        Me.DFT_Hz.Visible = False
+        '
+        'Logfile_Text
+        '
+        Me.Logfile_Text.AutoSize = True
+        Me.Logfile_Text.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Logfile_Text.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Logfile_Text.Location = New System.Drawing.Point(108, 102)
+        Me.Logfile_Text.MaximumSize = New System.Drawing.Size(200, 0)
+        Me.Logfile_Text.Name = "Logfile_Text"
+        Me.Logfile_Text.Size = New System.Drawing.Size(79, 18)
+        Me.Logfile_Text.TabIndex = 101
+        Me.Logfile_Text.Text = "Logfile.txt"
+        '
+        'Logfile_Label
+        '
+        Me.Logfile_Label.AutoSize = True
+        Me.Logfile_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Logfile_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Logfile_Label.Location = New System.Drawing.Point(31, 102)
+        Me.Logfile_Label.MaximumSize = New System.Drawing.Size(200, 0)
+        Me.Logfile_Label.Name = "Logfile_Label"
+        Me.Logfile_Label.Size = New System.Drawing.Size(81, 18)
+        Me.Logfile_Label.TabIndex = 102
+        Me.Logfile_Label.Text = "Log File is"
+        '
+        'RangeUnits
+        '
+        Me.RangeUnits.AutoSize = True
+        Me.RangeUnits.BackColor = System.Drawing.SystemColors.Control
+        Me.RangeUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RangeUnits.Location = New System.Drawing.Point(705, 244)
+        Me.RangeUnits.MaximumSize = New System.Drawing.Size(160, 20)
+        Me.RangeUnits.MinimumSize = New System.Drawing.Size(10, 20)
+        Me.RangeUnits.Name = "RangeUnits"
+        Me.RangeUnits.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.RangeUnits.Size = New System.Drawing.Size(30, 20)
+        Me.RangeUnits.TabIndex = 103
+        Me.RangeUnits.Text = "mm"
+        '
+        'Label_RangeTime
+        '
+        Me.Label_RangeTime.BackColor = System.Drawing.SystemColors.Control
+        Me.Label_RangeTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label_RangeTime.Location = New System.Drawing.Point(729, 244)
+        Me.Label_RangeTime.Name = "Label_RangeTime"
+        Me.Label_RangeTime.Size = New System.Drawing.Size(38, 24)
+        Me.Label_RangeTime.TabIndex = 104
+        Me.Label_RangeTime.Text = "/s"
+        Me.Label_RangeTime.Visible = False
         '
         'Capture_Button
         '
@@ -391,6 +547,20 @@ Partial Public Class MainForm
         Me.Capture_Button.Size = New System.Drawing.Size(100, 23)
         Me.Capture_Button.TabIndex = 91
         Me.Capture_Button.Text = "Enable Capture"
+        '
+        'StraightnessLongButton
+        '
+        Me.StraightnessLongButton.AccessibleDescription = ""
+        Me.StraightnessLongButton.AccessibleName = ""
+        Me.StraightnessLongButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.StraightnessLongButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.StraightnessLongButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.StraightnessLongButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.StraightnessLongButton.Location = New System.Drawing.Point(442, 185)
+        Me.StraightnessLongButton.Name = "StraightnessLongButton"
+        Me.StraightnessLongButton.Size = New System.Drawing.Size(114, 23)
+        Me.StraightnessLongButton.TabIndex = 42
+        Me.StraightnessLongButton.Text = "Straightness Long"
         '
         'GraphControl
         '
@@ -448,20 +618,6 @@ Partial Public Class MainForm
         Me.StraightnessShortButton.Size = New System.Drawing.Size(114, 23)
         Me.StraightnessShortButton.TabIndex = 43
         Me.StraightnessShortButton.Text = "Straightness Short"
-        '
-        'StraightnessLongButton
-        '
-        Me.StraightnessLongButton.AccessibleDescription = ""
-        Me.StraightnessLongButton.AccessibleName = ""
-        Me.StraightnessLongButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.StraightnessLongButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.StraightnessLongButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.StraightnessLongButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.StraightnessLongButton.Location = New System.Drawing.Point(442, 185)
-        Me.StraightnessLongButton.Name = "StraightnessLongButton"
-        Me.StraightnessLongButton.Size = New System.Drawing.Size(114, 23)
-        Me.StraightnessLongButton.TabIndex = 42
-        Me.StraightnessLongButton.Text = "Straightness Long"
         '
         'AngleButton
         '
@@ -522,135 +678,28 @@ Partial Public Class MainForm
         Me.VelocityButton.TabIndex = 32
         Me.VelocityButton.Text = "Velocity"
         '
-        'OpenFileDialog1
+        'Diagnostic1
         '
-        Me.OpenFileDialog1.CheckFileExists = False
-        Me.OpenFileDialog1.DefaultExt = "txt"
-        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-        Me.OpenFileDialog1.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
-        Me.OpenFileDialog1.Title = "Please enter the name for the log file"
-        '
-        'Axis_UnitsD
-        '
-        Me.Axis_UnitsD.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis_UnitsD.Location = New System.Drawing.Point(50, 493)
-        Me.Axis_UnitsD.MaximumSize = New System.Drawing.Size(160, 20)
-        Me.Axis_UnitsD.MinimumSize = New System.Drawing.Size(10, 20)
-        Me.Axis_UnitsD.Name = "Axis_UnitsD"
-        Me.Axis_UnitsD.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Axis_UnitsD.Size = New System.Drawing.Size(44, 20)
-        Me.Axis_UnitsD.TabIndex = 92
-        Me.Axis_UnitsD.Text = "mm"
-        '
-        'Axis_S
-        '
-        Me.Axis_S.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis_S.Location = New System.Drawing.Point(88, 493)
-        Me.Axis_S.Name = "Axis_S"
-        Me.Axis_S.Size = New System.Drawing.Size(28, 24)
-        Me.Axis_S.TabIndex = 93
-        Me.Axis_S.Text = "/s"
-        Me.Axis_S.Visible = False
-        '
-        'Axis_UnitsA
-        '
-        Me.Axis_UnitsA.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis_UnitsA.Location = New System.Drawing.Point(50, 493)
-        Me.Axis_UnitsA.MaximumSize = New System.Drawing.Size(160, 20)
-        Me.Axis_UnitsA.MinimumSize = New System.Drawing.Size(10, 20)
-        Me.Axis_UnitsA.Name = "Axis_UnitsA"
-        Me.Axis_UnitsA.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Axis_UnitsA.Size = New System.Drawing.Size(60, 20)
-        Me.Axis_UnitsA.TabIndex = 94
-        Me.Axis_UnitsA.Text = "degree"
-        '
-        'Suspend_Label
-        '
-        Me.Suspend_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Suspend_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.Suspend_Label.Location = New System.Drawing.Point(700, 49)
-        Me.Suspend_Label.Name = "Suspend_Label"
-        Me.Suspend_Label.Size = New System.Drawing.Size(106, 26)
-        Me.Suspend_Label.TabIndex = 95
-        Me.Suspend_Label.Text = "Suspended"
-        Me.Suspend_Label.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Suspend_Label.Visible = False
-        '
-        'RangeUnits
-        '
-        Me.RangeUnits.AutoSize = True
-        Me.RangeUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RangeUnits.Location = New System.Drawing.Point(703, 245)
-        Me.RangeUnits.Name = "RangeUnits"
-        Me.RangeUnits.Size = New System.Drawing.Size(25, 15)
-        Me.RangeUnits.TabIndex = 96
-        Me.RangeUnits.Text = "nm"
-        '
-        'AngleLabel
-        '
-        Me.AngleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AngleLabel.Location = New System.Drawing.Point(666, 56)
-        Me.AngleLabel.Name = "AngleLabel"
-        Me.AngleLabel.Size = New System.Drawing.Size(177, 67)
-        Me.AngleLabel.TabIndex = 44
-        Me.AngleLabel.Text = "arcsec"
-        Me.AngleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.AngleLabel.Visible = False
-        '
-        'Label_RangeTime
-        '
-        Me.Label_RangeTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label_RangeTime.Location = New System.Drawing.Point(729, 245)
-        Me.Label_RangeTime.Name = "Label_RangeTime"
-        Me.Label_RangeTime.Size = New System.Drawing.Size(20, 18)
-        Me.Label_RangeTime.TabIndex = 97
-        Me.Label_RangeTime.Text = "/s"
-        '
-        'Frequency_Axis
-        '
-        Me.Frequency_Axis.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Frequency_Axis.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Frequency_Axis.Location = New System.Drawing.Point(110, 494)
-        Me.Frequency_Axis.Name = "Frequency_Axis"
-        Me.Frequency_Axis.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frequency_Axis.Size = New System.Drawing.Size(745, 14)
-        Me.Frequency_Axis.TabIndex = 98
-        Me.Frequency_Axis.Text = "1 2  5      10              20              30              40              50   " & _
-    "           60             70              80              90            100"
-        Me.Frequency_Axis.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'ComboBox_DFT_Range
-        '
-        Me.ComboBox_DFT_Range.FormattingEnabled = True
-        Me.ComboBox_DFT_Range.Items.AddRange(New Object() {"10", "30", "100", "300"})
-        Me.ComboBox_DFT_Range.Location = New System.Drawing.Point(344, 244)
-        Me.ComboBox_DFT_Range.MaximumSize = New System.Drawing.Size(100, 0)
-        Me.ComboBox_DFT_Range.Name = "ComboBox_DFT_Range"
-        Me.ComboBox_DFT_Range.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.ComboBox_DFT_Range.Size = New System.Drawing.Size(42, 21)
-        Me.ComboBox_DFT_Range.TabIndex = 99
-        Me.ComboBox_DFT_Range.Text = "100"
-        Me.ComboBox_DFT_Range.Visible = False
-        '
-        'DFT_Hz
-        '
-        Me.DFT_Hz.AutoSize = True
-        Me.DFT_Hz.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DFT_Hz.Location = New System.Drawing.Point(388, 245)
-        Me.DFT_Hz.Name = "DFT_Hz"
-        Me.DFT_Hz.Size = New System.Drawing.Size(22, 15)
-        Me.DFT_Hz.TabIndex = 100
-        Me.DFT_Hz.Text = "Hz"
-        Me.DFT_Hz.Visible = False
+        Me.Diagnostic1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic1.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic1.Location = New System.Drawing.Point(30, 47)
+        Me.Diagnostic1.Name = "Diagnostic1"
+        Me.Diagnostic1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.Diagnostic1.Size = New System.Drawing.Size(61, 18)
+        Me.Diagnostic1.TabIndex = 105
+        Me.Diagnostic1.Text = " "
         '
         'MainForm
         '
         Me.ClientSize = New System.Drawing.Size(880, 572)
+        Me.Controls.Add(Me.Diagnostic1)
+        Me.Controls.Add(Me.Label_RangeTime)
+        Me.Controls.Add(Me.RangeUnits)
+        Me.Controls.Add(Me.Logfile_Label)
+        Me.Controls.Add(Me.Logfile_Text)
         Me.Controls.Add(Me.DFT_Hz)
         Me.Controls.Add(Me.ComboBox_DFT_Range)
         Me.Controls.Add(Me.Frequency_Axis)
-        Me.Controls.Add(Me.Label_RangeTime)
-        Me.Controls.Add(Me.RangeUnits)
         Me.Controls.Add(Me.Suspend_Label)
         Me.Controls.Add(Me.Axis_UnitsA)
         Me.Controls.Add(Me.Axis_S)
@@ -693,19 +742,19 @@ Partial Public Class MainForm
         Me.Controls.Add(Me.ZeroButton)
         Me.Controls.Add(Me.VelocityButton)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.HelpButton = True
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximizeBox = False
+        Me.HelpButton = true
+        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
+        Me.MaximizeBox = false
         Me.Name = "MainForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Interferometer GUI"
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        CType(Me.Chart1,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.TrackBar1,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.NumericUpDown_Scale,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents VelocityButton As System.Windows.Forms.Button
     Friend WithEvents ZeroButton As System.Windows.Forms.Button
     Friend WithEvents ValueDisplay As System.Windows.Forms.Label
@@ -750,10 +799,13 @@ Partial Public Class MainForm
     Friend WithEvents Axis_S As System.Windows.Forms.Label
     Friend WithEvents Axis_UnitsA As System.Windows.Forms.Label
     Friend WithEvents Suspend_Label As System.Windows.Forms.Label
-    Friend WithEvents RangeUnits As System.Windows.Forms.Label
     Friend WithEvents AngleLabel As System.Windows.Forms.Label
-    Friend WithEvents Label_RangeTime As System.Windows.Forms.Label
     Friend WithEvents Frequency_Axis As System.Windows.Forms.Label
     Friend WithEvents ComboBox_DFT_Range As System.Windows.Forms.ComboBox
     Friend WithEvents DFT_Hz As System.Windows.Forms.Label
+    Friend WithEvents Logfile_Text As System.Windows.Forms.Label
+    Friend WithEvents Logfile_Label As System.Windows.Forms.Label
+    Friend WithEvents RangeUnits As System.Windows.Forms.Label
+    Friend WithEvents Label_RangeTime As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic1 As System.Windows.Forms.Label
 End Class
