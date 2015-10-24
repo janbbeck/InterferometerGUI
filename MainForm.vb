@@ -142,6 +142,7 @@ Public Class MainForm
     Dim DFT_Skip_Factor As Integer = 1
     Dim zero As Double = 0
     Dim ClearCounter As Integer = 0
+    Dim CurrentValuePhase As Double = 0
     Dim DiagnosticValue As Int64 = 0
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
@@ -496,7 +497,34 @@ Public Class MainForm
         TMREFFrequency = CDec(My.Settings.TMREFFrequency)
 
         TrackBar1.Value = CInt(My.Settings.AveragingValue)
-        AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
+        averagingValue = 1000 * (1 - (1 / (Math.Pow(10, CDbl(TrackBar1.Value / 333)))))
+        AverageLabel.Text = (averagingValue / 1000).ToString("F3")
+
+        If ((TrackBar1.Value >= 0) And (TrackBar1.Value < 100)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+        ElseIf ((TrackBar1.Value >= 100) And (TrackBar1.Value < 300)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.Brown)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.Brown)
+        ElseIf ((TrackBar1.Value >= 300) And (TrackBar1.Value < 500)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkRed)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkRed)
+        ElseIf ((TrackBar1.Value >= 500) And (TrackBar1.Value < 600)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkOrange)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkOrange)
+        ElseIf ((TrackBar1.Value >= 600) And (TrackBar1.Value < 700)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkGoldenrod)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkGoldenrod)
+        ElseIf ((TrackBar1.Value >= 700) And (TrackBar1.Value < 800)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkGreen)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkGreen)
+        ElseIf ((TrackBar1.Value >= 800) And (TrackBar1.Value < 900)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkBlue)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkBlue)
+        Else : Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkViolet)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkViolet)
+        End If
+
         Timer1.Start()
         ' file = My.Computer.FileSystem.OpenTextFileWriter("data.txt", True)
         ' Initialize graph
@@ -523,12 +551,14 @@ Public Class MainForm
             Frequency_Axis.Text = "   10        30              60              90            120            150            180            210            240          270             300"
             ComboBox_DFT_Range.Text = "300"
         End If
+        Graph_Averaging_CheckBox.Visible = True
 
         currentcapturefile = My.Settings.LogFile
         Logfile_Text.Visible = False
         Logfile_Label.Visible = False
         DFT_Hz.Visible = False
         Diagnostic1.Visible = False
+        Diagnostic_Label.Visible = False
         MFLoaded = 1
     End Sub
 
@@ -623,15 +653,27 @@ Public Class MainForm
                             End If
                         End If
 
-                        currentValue = Convert.ToDouble(values(2)) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
-                        velocityValue = Convert.ToDouble(values(3)) * Wavelength / 2.0 * 610.35 ' Velocity = displacement difference in 1/610.35s * 610.35
+                        DiagnosticValue = Convert.ToInt64(values(4))
 
-                        ' DiagnosticValue = Convert.ToInt64(values(5))
+                        If (DiagnosticValue And &HE000) = 0 Then ' REF and MEAS both valid
+                            CurrentValuePhase = (CDbl(DiagnosticValue)) / 256
+                        Else : CurrentValuePhase = 0
+                        End If
+
+                        ' Check for screwups
+                        If (CurrentValuePhase > 1) Then CurrentValuePhase = 1
+                        If (CurrentValuePhase < 0) Then CurrentValuePhase = 0
+
+                        ' currentValue is REFCount - MEASCount - fractional offset between REF and MEAS rising edges
+                        currentValue = (Convert.ToDouble(values(2)) - CurrentValuePhase) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
+                        velocityValue = Convert.ToDouble(values(3)) * Wavelength / 2.0 * 610.35 ' Velocity = displacement difference in 1/610.35s * 610.35
 
                         If IgnoreCount = 0 Then
                             If needsInitialZero = 1 Then
                                 zeroAdjustment = currentValue
                                 average = 0
+                                averagingFromCurrent = 0
+                                averagingFromPrevious = 0
                                 SuspendCurrentValue = 0
                                 previousValue = currentValue ' Updated for possible error checking, not currently used
                                 If Suspend.Text.Equals("Resume") Then  ' Force exit from Suspend mode
@@ -685,8 +727,8 @@ Public Class MainForm
                                 If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode, no averaging
                                     average = velocityValue / multiplier
                                 Else
-                                    averagingFromPrevious = (0 + TrackBar1.Value / 100) * average ' nm
-                                    averagingFromCurrent = (1.0 - TrackBar1.Value / 100) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
+                                    averagingFromPrevious = (0 + averagingValue / 1000) * average ' nm
+                                    averagingFromCurrent = (1.0 - averagingValue / 1000) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
                                     average = averagingFromPrevious + averagingFromCurrent
                                 End If
 
@@ -699,27 +741,31 @@ Public Class MainForm
                                 If GraphControl.Text.Equals("Disable Graph") Then
                                     If IgnoreCount = 0 Then
                                         displacementQueuex.Enqueue(chartcounter)
-                                        displacementQueuey.Enqueue(straightnessMultiplier * unitCorrectmm * (currentValue - zeroAdjustment) / multiplier)
+                                        If Graph_Averaging_CheckBox.Checked = False Then
+                                            displacementQueuey.Enqueue(straightnessMultiplier * unitCorrectmm * (currentValue - zeroAdjustment) / multiplier)
+                                        Else
+                                            displacementQueuey.Enqueue(average * unitCorrectmm)
+                                        End If
                                         velocityQueuex.Enqueue(chartcounter)
                                         velocityQueuey.Enqueue(unitCorrectmm * velocityValue / multiplier)
                                         angleQueuex.Enqueue(chartcounter)
                                         angleQueuey.Enqueue(Math.Asin(average / 32.61 / 1000000) * angleCorrectdegree * 57.296)
                                         chartcounter = CULng(chartcounter + 1)
                                     End If
+                                    End If
                                 End If
+                            ElseIf 0 = serialnumberdifference Then
+                                Console.Write(" sample duplicate" + vbCrLf)
+                            Else
+                                Console.Write((Convert.ToUInt64(values(5)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
                             End If
-                        ElseIf 0 = serialnumberdifference Then
-                            Console.Write(" sample duplicate" + vbCrLf)
-                        Else
-                            Console.Write((Convert.ToUInt64(values(5)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
+                        Else 'values.length incorrect
+                            Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
                         End If
-                    Else 'values.length incorrect
-                        Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
-                    End If
-                    Try
-                        previousserialnumber = Convert.ToUInt64(values(5))
-                    Catch
-                    End Try
+                        Try
+                            previousserialnumber = Convert.ToUInt64(values(5))
+                        Catch
+                        End Try
                 Next
             Catch ex As Exception
                 'MsgBox(ex.ToString)
@@ -804,6 +850,7 @@ Public Class MainForm
         ErrorFlag = 0
         needsInitialZero = 1
         IgnoreCount = 0
+        Diagnostic_Label.Visible = False
     End Sub
 
     Private Sub DFT(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs)
@@ -863,6 +910,7 @@ Public Class MainForm
         ScrollRate = CInt(NumericUpDown_Scale.Value)
 
         If GraphControl.Text.Equals("Enable Graph") Then
+            Graph_Averaging_CheckBox.Visible = False
             Compression_Label.Visible = False
             NumericUpDown_Scale.Visible = False
             Label_Range.Visible = False
@@ -870,6 +918,7 @@ Public Class MainForm
             RangeUnits.Visible = False
             Axis_UnitsD.Visible = False
         Else
+            Graph_Averaging_CheckBox.Visible = True
             Compression_Label.Visible = True
             NumericUpDown_Scale.Visible = True
             Label_Range.Visible = True
@@ -923,7 +972,10 @@ Public Class MainForm
 
         ScrollRate = CInt(NumericUpDown_Scale.Value)
 
+        Graph_Averaging_CheckBox.Visible = False
+
         If GraphControl.Text.Equals("Enable Graph") Then
+            Compression_Label.Visible = False
             RangeUnits.Visible = False
             Label_Range.Visible = False
             Label_RangeTime.Visible = False
@@ -985,6 +1037,8 @@ Public Class MainForm
         RangeUnits.Text = AngleLabel.Text
 
         ScrollRate = CInt(NumericUpDown_Scale.Value)
+
+        Graph_Averaging_CheckBox.Visible = False
 
         If GraphControl.Text.Equals("Enable Graph") Then
             Compression_Label.Visible = False
@@ -1049,6 +1103,7 @@ Public Class MainForm
         ScrollRate = CInt(NumericUpDown_Scale.Value)
 
         If GraphControl.Text.Equals("Enable Graph") Then
+            Graph_Averaging_CheckBox.Visible = False
             Compression_Label.Visible = False
             NumericUpDown_Scale.Visible = False
             Label_Range.Visible = True
@@ -1056,6 +1111,7 @@ Public Class MainForm
             RangeUnits.Visible = False
             Axis_UnitsD.Visible = False
         Else
+            Graph_Averaging_CheckBox.Visible = True
             Compression_Label.Visible = True
             NumericUpDown_Scale.Visible = True
             ComboBox_Range.Visible = True
@@ -1111,6 +1167,7 @@ Public Class MainForm
         ScrollRate = CInt(NumericUpDown_Scale.Value)
 
         If GraphControl.Text.Equals("Enable Graph") Then
+            Graph_Averaging_CheckBox.Visible = False
             Compression_Label.Visible = False
             NumericUpDown_Scale.Visible = False
             Label_Range.Visible = False
@@ -1118,6 +1175,7 @@ Public Class MainForm
             ComboBox_Range.Visible = False
             Axis_UnitsD.Visible = False
         Else
+            Graph_Averaging_CheckBox.Visible = True
             Compression_Label.Visible = True
             NumericUpDown_Scale.Visible = True
             Label_Range.Visible = True
@@ -1172,6 +1230,7 @@ Public Class MainForm
 
         ScrollRate = 1
 
+        Graph_Averaging_CheckBox.Visible = False
         Compression_Label.Text = "DFT Frequency Range"
         Compression_Label.Visible = True
         NumericUpDown_Scale.Visible = False
@@ -1191,9 +1250,35 @@ Public Class MainForm
         Frequency_Axis.Visible = True
     End Sub
 
-    Private Sub TrackBar1_selectrionchangecommitted(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
-        averagingValue = TrackBar1.Value
-        AverageLabel.Text = (0 + TrackBar1.Value / 100).ToString("F")
+
+
+    Private Sub TrackBar1_selectionchangecommitted(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
+        averagingValue = 1000 * (1 - (1 / (Math.Pow(10, CDbl(TrackBar1.Value / 333)))))
+        AverageLabel.Text = (averagingValue / 1000).ToString("F3")
+        If ((TrackBar1.Value >= 0) And (TrackBar1.Value < 100)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
+        ElseIf ((TrackBar1.Value >= 100) And (TrackBar1.Value < 300)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.Brown)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.Brown)
+        ElseIf ((TrackBar1.Value >= 300) And (TrackBar1.Value < 500)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkRed)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkRed)
+        ElseIf ((TrackBar1.Value >= 500) And (TrackBar1.Value < 600)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkOrange)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkOrange)
+        ElseIf ((TrackBar1.Value >= 600) And (TrackBar1.Value < 700)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkGoldenrod)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkGoldenrod)
+        ElseIf ((TrackBar1.Value >= 700) And (TrackBar1.Value < 800)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkGreen)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkGreen)
+        ElseIf ((TrackBar1.Value >= 800) And (TrackBar1.Value < 900)) Then
+            Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkBlue)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkBlue)
+        Else : Averaging_Label.ForeColor = Color.FromKnownColor(KnownColor.DarkViolet)
+            AverageLabel.ForeColor = Color.FromKnownColor(KnownColor.DarkViolet)
+        End If
     End Sub
 
     Private Sub GraphControl_Click(sender As Object, e As EventArgs) Handles GraphControl.Click
@@ -1202,6 +1287,7 @@ Public Class MainForm
             Chart1.Hide()
             Me.Height = 298
             Graph_Label.Visible = False
+            Graph_Averaging_CheckBox.Visible = False
             Compression_Label.Visible = False
             NumericUpDown_Scale.Visible = False
             ComboBox_Range.Visible = False
@@ -1215,6 +1301,7 @@ Public Class MainForm
             Graph_Label.Visible = True
 
             If FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                Graph_Averaging_CheckBox.Visible = False
                 Compression_Label.Visible = True
                 NumericUpDown_Scale.Visible = False
                 ComboBox_Range.Visible = False
@@ -1223,6 +1310,7 @@ Public Class MainForm
                 Axis_S.Visible = False
                 Axis_UnitsA.Visible = False
             ElseIf VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                Graph_Averaging_CheckBox.Visible = False
                 Compression_Label.Visible = True
                 NumericUpDown_Scale.Visible = True
                 ComboBox_Range.Visible = True
@@ -1231,6 +1319,7 @@ Public Class MainForm
                 Axis_S.Visible = True
                 Axis_UnitsA.Visible = False
             ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                Graph_Averaging_CheckBox.Visible = False
                 Compression_Label.Visible = True
                 NumericUpDown_Scale.Visible = True
                 ComboBox_Range.Visible = True
@@ -1239,6 +1328,7 @@ Public Class MainForm
                 Axis_S.Visible = False
                 Axis_UnitsA.Visible = True
             Else
+                Graph_Averaging_CheckBox.Visible = True
                 Compression_Label.Visible = True
                 NumericUpDown_Scale.Visible = True
                 ComboBox_Range.Visible = True
@@ -1277,6 +1367,15 @@ Public Class MainForm
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' limit the update rate of the value to about 10 Hz
 
+        If Not DiagnosticValue = 0 Then
+            Diagnostic1.Text = DiagnosticValue.ToString("x0000")
+            Diagnostic1.Visible = True
+            Diagnostic_Label.Visible = True
+        Else
+            Diagnostic1.Visible = False
+            ' Diagnostic_Label.Visible = False
+        End If
+
         If IgnoreCount = 0 Then
             If REFFrequency > 0 Then
                 REF.Text = REFFrequency.ToString("0.000")
@@ -1297,16 +1396,9 @@ Public Class MainForm
             Else
                 DIFF.Visible = False
             End If
+
             'Kludge to prevent momentary flashes of large value when turning on Test Mode FG
             If IgnoreCount = 0 And Math.Abs(velocityValue) < 100000000 Then
-                '    If Not DiagnosticValue = 0 Then
-                '    DiagnosticValue = DiagnosticValue And &H7FFF
-                '    DiagnosticValue = DiagnosticValue Or &H8000
-                ' Diagnostic1.Text = DiagnosticValue.ToString("x0000")
-                ' Diagnostic1.Visible = True
-                'Else
-                '   Diagnostic1.Visible = False
-                'End If
 
                 If SuspendFlag = 1 Then
                     Suspend_Label.Visible = True
@@ -1331,28 +1423,28 @@ Public Class MainForm
                 ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
                     AngleLabel.Visible = True
                     If angleCorrectionFactor = 1 / 3600 Then
-                        ValueDisplay.Text = displayValue.ToString("##,###,###,###,##0.0") 'arcsec
+                        ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcsec
                     ElseIf angleCorrectionFactor = 1 / 60 Then
-                        ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcmin
+                        ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000.00") 'arcmin
                     ElseIf angleCorrectionFactor = 1.0 Then
-                        ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000,0") 'degree
+                        ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'degree
                     End If
                 Else
                     UnitLabel.Visible = True
                     If unitCorrectionFactor = 0.000001 Then
-                        ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'nm
+                        ValueDisplay.Text = displayValue.ToString("###,###,###,##0.00") 'nm
                     ElseIf unitCorrectionFactor = 0.001 Then
-                        ValueDisplay.Text = displayValue.ToString("#,###,###,###,##0.0") 'um
+                        ValueDisplay.Text = displayValue.ToString("##,###,###,##0.000") 'um
                     ElseIf unitCorrectionFactor = 1 Then
-                        ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000,0") 'mm
+                        ValueDisplay.Text = displayValue.ToString("##,###,##0.000,000") 'mm
                     ElseIf unitCorrectionFactor = 10 Then
-                        ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'cm
+                        ValueDisplay.Text = displayValue.ToString("#,###,##0.000,000,0") 'cm
                     ElseIf unitCorrectionFactor = 1000 Then
-                        ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'm
+                        ValueDisplay.Text = displayValue.ToString("#,###,##0.000,000,00") 'm
                     ElseIf unitCorrectionFactor = 25.4 Then
-                        ValueDisplay.Text = displayValue.ToString("###,###,##0.000,00") 'in
+                        ValueDisplay.Text = displayValue.ToString("#,###,##0.000,000,0") 'in
                     ElseIf unitCorrectionFactor = 304.8 Then
-                        ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'ft
+                        ValueDisplay.Text = displayValue.ToString("#,###,##0.000,000.00") 'ft
                     End If
 
                     If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
@@ -1422,14 +1514,14 @@ Public Class MainForm
 
         ' USB Communications Format:
 
-        ' 0 SIMREFCount - PrevSIMREFCount
-        ' 1 SIMMEASCount - PrevSIMMEASCount
-        ' 2 SIMDistance
-        ' 3 SIMVelocity
-        ' 4 SIMPhase
-        ' 5 SIMSerialNum
-        ' 6 SIMLowSpeedCode
-        ' 7 SIMLowSpeedData
+        ' 0 REFCount - PrevREFCount
+        ' 1 MEASCount - PrevMEASCount
+        ' 2 Distance - MEASCount - REFCount
+        ' 3 Velocity - Distance - PreviousDistance
+        ' 4 Phase - Fractional offset * 256, XOR 0x8000=no MEAS; 0x4000=no REF
+        ' 5 SerialNum
+        ' 6 LowSpeedCode
+        ' 7 LowSpeedData
 
         ' LowSpeedCode Format:
 
@@ -1445,9 +1537,9 @@ Public Class MainForm
 
         Dim counter As Integer
 
-        For counter = 0 To 14 ' With simluationtimer at 25 ms, this produces 600 samples/second, close to 610.34
+        For counter = 0 To 14 ' With simulation timer at 25 ms, this produces 600 samples/second, close to 610.34
             simrefcount = simrefcount + CLng(TestMode.NumericUpDown_FGREF_Value.Value * 1638)
-            simmeascount = simrefcount + CLng(simulationDistance * 1)
+            simmeascount = simrefcount + CLng(simulationDistance)
 
             If TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                 simulationDistance = CLng(12638 * (TMUnitsFactor * (TestMode.TrackBar_Offset.Value * 0.01 * TMAmpValue) * multiplier / 2))
@@ -1476,7 +1568,7 @@ Public Class MainForm
 
             simulationVelocity = (simulationDistance - previousSimulationDistance)
 
-            simulationPhase = 0
+            simulationPhase = &H80
             simulationLowSpeedCode = 0
             simulationLowSpeedData = 0
 
@@ -1597,4 +1689,7 @@ Public Class MainForm
         Chart1.ChartAreas(0).RecalculateAxesScale()
     End Sub
 
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles Graph_Averaging_CheckBox.CheckedChanged
+
+    End Sub
 End Class

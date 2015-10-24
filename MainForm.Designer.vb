@@ -85,6 +85,8 @@ Partial Public Class MainForm
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.VelocityButton = New System.Windows.Forms.Button()
         Me.Diagnostic1 = New System.Windows.Forms.Label()
+        Me.Diagnostic_Label = New System.Windows.Forms.Label()
+        Me.Graph_Averaging_CheckBox = New System.Windows.Forms.CheckBox()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -105,7 +107,7 @@ Partial Public Class MainForm
         Me.Chart1.BackColor = System.Drawing.Color.Transparent
         ChartArea1.Name = "ChartArea1"
         Me.Chart1.ChartAreas.Add(ChartArea1)
-        Me.Chart1.Location = New System.Drawing.Point(12, 269)
+        Me.Chart1.Location = New System.Drawing.Point(7, 269)
         Me.Chart1.Name = "Chart1"
         Me.Chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
         Me.Chart1.PaletteCustomColors = New System.Drawing.Color() {System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(150, Byte), Integer)), System.Drawing.Color.FromArgb(CType(CType(150, Byte), Integer), CType(CType(120, Byte), Integer), CType(CType(0, Byte), Integer))}
@@ -113,7 +115,7 @@ Partial Public Class MainForm
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Me.Chart1.Series.Add(Series1)
-        Me.Chart1.Size = New System.Drawing.Size(851, 228)
+        Me.Chart1.Size = New System.Drawing.Size(850, 228)
         Me.Chart1.TabIndex = 36
         Me.Chart1.Text = " "
         '
@@ -136,10 +138,10 @@ Partial Public Class MainForm
         '
         'TrackBar1
         '
-        Me.TrackBar1.Location = New System.Drawing.Point(391, 137)
-        Me.TrackBar1.Maximum = 99
+        Me.TrackBar1.Location = New System.Drawing.Point(375, 137)
+        Me.TrackBar1.Maximum = 999
         Me.TrackBar1.Name = "TrackBar1"
-        Me.TrackBar1.Size = New System.Drawing.Size(133, 45)
+        Me.TrackBar1.Size = New System.Drawing.Size(141, 45)
         Me.TrackBar1.TabIndex = 46
         Me.TrackBar1.TickFrequency = 10
         Me.TrackBar1.TickStyle = System.Windows.Forms.TickStyle.None
@@ -148,7 +150,7 @@ Partial Public Class MainForm
         '
         Me.Averaging_Label.AutoSize = True
         Me.Averaging_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Averaging_Label.Location = New System.Drawing.Point(312, 136)
+        Me.Averaging_Label.Location = New System.Drawing.Point(296, 136)
         Me.Averaging_Label.Name = "Averaging_Label"
         Me.Averaging_Label.Size = New System.Drawing.Size(84, 20)
         Me.Averaging_Label.TabIndex = 47
@@ -156,13 +158,13 @@ Partial Public Class MainForm
         '
         'AverageLabel
         '
-        Me.AverageLabel.AutoSize = True
         Me.AverageLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AverageLabel.Location = New System.Drawing.Point(517, 137)
+        Me.AverageLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.AverageLabel.Location = New System.Drawing.Point(509, 137)
         Me.AverageLabel.Name = "AverageLabel"
-        Me.AverageLabel.Size = New System.Drawing.Size(18, 20)
+        Me.AverageLabel.Size = New System.Drawing.Size(52, 20)
         Me.AverageLabel.TabIndex = 48
-        Me.AverageLabel.Text = "0"
+        Me.AverageLabel.Text = " 000"
         '
         'UnitLabel
         '
@@ -326,7 +328,7 @@ Partial Public Class MainForm
         'Compression_Label
         '
         Me.Compression_Label.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Compression_Label.Location = New System.Drawing.Point(164, 237)
+        Me.Compression_Label.Location = New System.Drawing.Point(321, 237)
         Me.Compression_Label.Name = "Compression_Label"
         Me.Compression_Label.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Compression_Label.Size = New System.Drawing.Size(179, 31)
@@ -336,7 +338,7 @@ Partial Public Class MainForm
         '
         'NumericUpDown_Scale
         '
-        Me.NumericUpDown_Scale.Location = New System.Drawing.Point(344, 245)
+        Me.NumericUpDown_Scale.Location = New System.Drawing.Point(501, 245)
         Me.NumericUpDown_Scale.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
         Me.NumericUpDown_Scale.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown_Scale.Name = "NumericUpDown_Scale"
@@ -360,7 +362,7 @@ Partial Public Class MainForm
         '
         Me.ComboBox_Range.FormattingEnabled = True
         Me.ComboBox_Range.Items.AddRange(New Object() {"Auto", "0.01", "0.02", "0.05", "0.1", "0.2", "0.5", "1", "2", "5", "10", "20", "50", "100", "200", "500", "1000"})
-        Me.ComboBox_Range.Location = New System.Drawing.Point(654, 244)
+        Me.ComboBox_Range.Location = New System.Drawing.Point(763, 244)
         Me.ComboBox_Range.MaximumSize = New System.Drawing.Size(55, 0)
         Me.ComboBox_Range.Name = "ComboBox_Range"
         Me.ComboBox_Range.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -372,7 +374,7 @@ Partial Public Class MainForm
         '
         Me.Label_Range.AutoSize = True
         Me.Label_Range.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label_Range.Location = New System.Drawing.Point(427, 243)
+        Me.Label_Range.Location = New System.Drawing.Point(536, 243)
         Me.Label_Range.MaximumSize = New System.Drawing.Size(100, 20)
         Me.Label_Range.MinimumSize = New System.Drawing.Size(225, 20)
         Me.Label_Range.Name = "Label_Range"
@@ -465,7 +467,7 @@ Partial Public Class MainForm
         '
         Me.ComboBox_DFT_Range.FormattingEnabled = True
         Me.ComboBox_DFT_Range.Items.AddRange(New Object() {"10", "30", "100", "300"})
-        Me.ComboBox_DFT_Range.Location = New System.Drawing.Point(344, 244)
+        Me.ComboBox_DFT_Range.Location = New System.Drawing.Point(501, 244)
         Me.ComboBox_DFT_Range.MaximumSize = New System.Drawing.Size(100, 0)
         Me.ComboBox_DFT_Range.Name = "ComboBox_DFT_Range"
         Me.ComboBox_DFT_Range.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -478,7 +480,7 @@ Partial Public Class MainForm
         '
         Me.DFT_Hz.AutoSize = True
         Me.DFT_Hz.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DFT_Hz.Location = New System.Drawing.Point(388, 245)
+        Me.DFT_Hz.Location = New System.Drawing.Point(545, 245)
         Me.DFT_Hz.Name = "DFT_Hz"
         Me.DFT_Hz.Size = New System.Drawing.Size(22, 15)
         Me.DFT_Hz.TabIndex = 100
@@ -514,7 +516,7 @@ Partial Public Class MainForm
         Me.RangeUnits.AutoSize = True
         Me.RangeUnits.BackColor = System.Drawing.SystemColors.Control
         Me.RangeUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RangeUnits.Location = New System.Drawing.Point(705, 244)
+        Me.RangeUnits.Location = New System.Drawing.Point(814, 244)
         Me.RangeUnits.MaximumSize = New System.Drawing.Size(160, 20)
         Me.RangeUnits.MinimumSize = New System.Drawing.Size(10, 20)
         Me.RangeUnits.Name = "RangeUnits"
@@ -527,7 +529,7 @@ Partial Public Class MainForm
         '
         Me.Label_RangeTime.BackColor = System.Drawing.SystemColors.Control
         Me.Label_RangeTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label_RangeTime.Location = New System.Drawing.Point(729, 244)
+        Me.Label_RangeTime.Location = New System.Drawing.Point(827, 244)
         Me.Label_RangeTime.Name = "Label_RangeTime"
         Me.Label_RangeTime.Size = New System.Drawing.Size(38, 24)
         Me.Label_RangeTime.TabIndex = 104
@@ -682,16 +684,43 @@ Partial Public Class MainForm
         '
         Me.Diagnostic1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Diagnostic1.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic1.Location = New System.Drawing.Point(30, 47)
+        Me.Diagnostic1.Location = New System.Drawing.Point(115, 48)
         Me.Diagnostic1.Name = "Diagnostic1"
         Me.Diagnostic1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Diagnostic1.Size = New System.Drawing.Size(61, 18)
+        Me.Diagnostic1.Size = New System.Drawing.Size(52, 18)
         Me.Diagnostic1.TabIndex = 105
-        Me.Diagnostic1.Text = " "
+        Me.Diagnostic1.Text = " 00000"
+        '
+        'Diagnostic_Label
+        '
+        Me.Diagnostic_Label.AutoSize = True
+        Me.Diagnostic_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic_Label.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic_Label.Location = New System.Drawing.Point(31, 48)
+        Me.Diagnostic_Label.Name = "Diagnostic_Label"
+        Me.Diagnostic_Label.Size = New System.Drawing.Size(87, 18)
+        Me.Diagnostic_Label.TabIndex = 106
+        Me.Diagnostic_Label.Text = "Diagnostic:"
+        '
+        'Graph_Averaging_CheckBox
+        '
+        Me.Graph_Averaging_CheckBox.AutoSize = True
+        Me.Graph_Averaging_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Graph_Averaging_CheckBox.Checked = True
+        Me.Graph_Averaging_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Graph_Averaging_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Graph_Averaging_CheckBox.Location = New System.Drawing.Point(118, 240)
+        Me.Graph_Averaging_CheckBox.Name = "Graph_Averaging_CheckBox"
+        Me.Graph_Averaging_CheckBox.Size = New System.Drawing.Size(177, 24)
+        Me.Graph_Averaging_CheckBox.TabIndex = 107
+        Me.Graph_Averaging_CheckBox.Text = " Graph Averaging On"
+        Me.Graph_Averaging_CheckBox.UseVisualStyleBackColor = True
         '
         'MainForm
         '
         Me.ClientSize = New System.Drawing.Size(880, 572)
+        Me.Controls.Add(Me.Graph_Averaging_CheckBox)
+        Me.Controls.Add(Me.Diagnostic_Label)
         Me.Controls.Add(Me.Diagnostic1)
         Me.Controls.Add(Me.Label_RangeTime)
         Me.Controls.Add(Me.RangeUnits)
@@ -742,19 +771,19 @@ Partial Public Class MainForm
         Me.Controls.Add(Me.ZeroButton)
         Me.Controls.Add(Me.VelocityButton)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.HelpButton = true
-        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
-        Me.MaximizeBox = false
+        Me.HelpButton = True
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
         Me.Name = "MainForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Interferometer GUI"
-        CType(Me.Chart1,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.TrackBar1,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.NumericUpDown_Scale,System.ComponentModel.ISupportInitialize).EndInit
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        Me.Text = " "
+        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
 
-End Sub
+    End Sub
     Friend WithEvents VelocityButton As System.Windows.Forms.Button
     Friend WithEvents ZeroButton As System.Windows.Forms.Button
     Friend WithEvents ValueDisplay As System.Windows.Forms.Label
@@ -808,4 +837,6 @@ End Sub
     Friend WithEvents RangeUnits As System.Windows.Forms.Label
     Friend WithEvents Label_RangeTime As System.Windows.Forms.Label
     Friend WithEvents Diagnostic1 As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic_Label As System.Windows.Forms.Label
+    Friend WithEvents Graph_Averaging_CheckBox As System.Windows.Forms.CheckBox
 End Class
