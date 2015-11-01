@@ -68,6 +68,7 @@ Public Class MainForm
     Dim velocityFromPrevious As Double = 0
     Dim angleFromPrevious As Double = 0
     Public average As Double = 0
+    Public PreviousAverage As Double = 0
     Public velocity As Double = 0
     Public angle As Double = 0
     Public TestmodeFlag As Integer = 0
@@ -674,7 +675,7 @@ Public Class MainForm
                         currentValue = (Convert.ToDouble(values(2)) - CurrentValuePhase) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         ' velocityValue = Convert.ToDouble(values(3)) * Wavelength / 2.0 * 610.35 ' Velocity = displacement difference in 1/610.35s * 610.35
                         velocityValue = (currentValue - previousValue) * 610.35
-                        angleValue = Math.Asin(currentValue / Configuration.NumericUpDown_ARS.Value / 1000000 / multiplier) * angleCorrectionFactor * 57.296
+                        angleValue = Math.Asin((currentValue - zeroAdjustment) / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296
                         ' displayValue = Math.Asin(average / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296
                         previousValue = currentValue
 
@@ -750,9 +751,13 @@ Public Class MainForm
                                 ' average = averagingFromPrevious + averagingFromCurrent
                                 'End If
 
+                                PreviousAverage = average
+
                                 averagingFromPrevious = (0 + averagingValue / 1000) * average ' nm
                                 averagingFromCurrent = (1.0 - averagingValue / 1000) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
                                 average = averagingFromPrevious + averagingFromCurrent
+
+                                ' velocity = (average - PreviousAverage) * 610.35
 
                                 velocityFromPrevious = (0 + averagingValue / 1000) * velocity ' nm
                                 velocityFromCurrent = velocityValue * (1.0 - averagingValue / 1000) / multiplier
@@ -763,7 +768,7 @@ Public Class MainForm
                                 angle = angleFromPrevious + angleFromCurrent
 
                                 If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
-                                    displayValue = angle * angleCorrectionFactor
+                                    displayValue = angle
                                 ElseIf VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode
                                     displayValue = velocity * unitCorrectmm
                                 Else : displayValue = average * unitCorrectmm
@@ -788,9 +793,9 @@ Public Class MainForm
                                         'velocityQueuey.Enqueue(unitCorrectmm * velocityValue / multiplier)
                                         angleQueuex.Enqueue(chartcounter)
                                         If Graph_Averaging_CheckBox.Checked = False Then
-                                            angleQueuey.Enqueue(angleValue * angleCorrectdegree)
+                                            angleQueuey.Enqueue(angleValue)
                                         Else
-                                            angleQueuey.Enqueue(angle * angleCorrectdegree)
+                                            angleQueuey.Enqueue(angle)
                                         End If
 
                                         ' angleQueuey.Enqueue(Math.Asin(average / 32.61 / 1000000) * angleCorrectdegree * 57.296)
@@ -1464,9 +1469,9 @@ Public Class MainForm
 
                 ElseIf AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
                     AngleLabel.Visible = True
-                    If angleCorrectionFactor = 1 / 3600 Then
+                    If angleCorrectionFactor = 3600 Then
                         ValueDisplay.Text = displayValue.ToString("###,###,###,##0.000") 'arcsec
-                    ElseIf angleCorrectionFactor = 1 / 60 Then
+                    ElseIf angleCorrectionFactor = 60 Then
                         ValueDisplay.Text = displayValue.ToString("#,###,###,##0.000.00") 'arcmin
                     ElseIf angleCorrectionFactor = 1.0 Then
                         ValueDisplay.Text = displayValue.ToString("###,###,##0.000,000") 'degree
