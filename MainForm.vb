@@ -1,6 +1,6 @@
-﻿' some important sources for techniques used here:
+﻿' some important sources for techniques saverageused here:
 'https://eshkay.wordpress.com/2013/03/25/vb-net-serial-port-communication-with-datareceived-event/
-'https://msdn.microsoft.com/en-us/library/ms171728.aspx
+'https://msdn.microsoft.com/en-us/library/ms171728.aspxvelocityse
 
 Imports System.Text
 Imports System.Windows.Forms.DataVisualization.Charting
@@ -65,11 +65,17 @@ Public Class MainForm
     Dim DFTValueList As New List(Of Double)
     Dim angleValueList As New List(Of Double)
     Dim averagingFromPrevious As Double = 0
+    Dim velocityFromPrevious As Double = 0
+    Dim angleFromPrevious As Double = 0
     Public average As Double = 0
+    Public velocity As Double = 0
+    Public angle As Double = 0
     Public TestmodeFlag As Integer = 0
     Public Dimension As Integer = 1024     ' this value determines both the size of the plot graphs and the number of data points in the DFT
     Dim RealPartOfDFT(CInt(Dimension / 2)) As Double
     Dim averagingFromCurrent As Double = 0
+    Dim velocityFromCurrent As Double = 0
+    Dim angleFromCurrent As Double = 0
     Dim ImaginaryPartOfDFT(CInt(Dimension / 2)) As Double
     Dim DFTMax As Double = 0
     Public needsInitialZero As Integer = 0
@@ -661,19 +667,31 @@ Public Class MainForm
                         End If
 
                         ' Check for screwups
-                        If (CurrentValuePhase > 1) Then CurrentValuePhase = 1
+                        If (CurrentValuePhase > 1.5) Then CurrentValuePhase = 1
                         If (CurrentValuePhase < 0) Then CurrentValuePhase = 0
 
                         ' currentValue is REFCount - MEASCount - fractional offset between REF and MEAS rising edges
                         currentValue = (Convert.ToDouble(values(2)) - CurrentValuePhase) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
-                        velocityValue = Convert.ToDouble(values(3)) * Wavelength / 2.0 * 610.35 ' Velocity = displacement difference in 1/610.35s * 610.35
+                        ' velocityValue = Convert.ToDouble(values(3)) * Wavelength / 2.0 * 610.35 ' Velocity = displacement difference in 1/610.35s * 610.35
+                        velocityValue = (currentValue - previousValue) * 610.35
+                        angleValue = Math.Asin(currentValue / Configuration.NumericUpDown_ARS.Value / 1000000 / multiplier) * angleCorrectionFactor * 57.296
+                        ' displayValue = Math.Asin(average / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296
+                        previousValue = currentValue
 
                         If IgnoreCount = 0 Then
                             If needsInitialZero = 1 Then
                                 zeroAdjustment = currentValue
                                 average = 0
+                                velocity = 0
+                                angle = 0
+                                velocityValue = 0
+                                angleValue = 0
                                 averagingFromCurrent = 0
                                 averagingFromPrevious = 0
+                                velocityFromCurrent = 0
+                                velocityFromPrevious = 0
+                                angleFromCurrent = 0
+                                angleFromPrevious = 0
                                 SuspendCurrentValue = 0
                                 previousValue = currentValue ' Updated for possible error checking, not currently used
                                 If Suspend.Text.Equals("Resume") Then  ' Force exit from Suspend mode
@@ -724,18 +742,31 @@ Public Class MainForm
 
                             If SuspendFlag = 0 Then
 
-                                If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode, no averaging
-                                    average = velocityValue / multiplier
-                                Else
-                                    averagingFromPrevious = (0 + averagingValue / 1000) * average ' nm
-                                    averagingFromCurrent = (1.0 - averagingValue / 1000) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
-                                    average = averagingFromPrevious + averagingFromCurrent
-                                End If
+                                '      If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode, no averaging
+                                ' average = velocityValue / multiplier
+                                'Else
+                                '   averagingFromPrevious = (0 + averagingValue / 1000) * average ' nm
+                                '  averagingFromCurrent = (1.0 - averagingValue / 1000) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
+                                ' average = averagingFromPrevious + averagingFromCurrent
+                                'End If
+
+                                averagingFromPrevious = (0 + averagingValue / 1000) * average ' nm
+                                averagingFromCurrent = (1.0 - averagingValue / 1000) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
+                                average = averagingFromPrevious + averagingFromCurrent
+
+                                velocityFromPrevious = (0 + averagingValue / 1000) * velocity ' nm
+                                velocityFromCurrent = velocityValue * (1.0 - averagingValue / 1000) / multiplier
+                                velocity = velocityFromPrevious + velocityFromCurrent
+
+                                angleFromPrevious = (0 + averagingValue / 1000) * angle
+                                angleFromCurrent = angleValue * (1.0 - averagingValue / 1000)
+                                angle = angleFromPrevious + angleFromCurrent
 
                                 If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
-                                    displayValue = Math.Asin(average / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296 ' arcsin(Dmm / 32.61) and Radians to arcsecs
-                                Else
-                                    displayValue = average * unitCorrectmm
+                                    displayValue = angle * angleCorrectionFactor
+                                ElseIf VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode
+                                    displayValue = velocity * unitCorrectmm
+                                Else : displayValue = average * unitCorrectmm
                                 End If
 
                                 If GraphControl.Text.Equals("Disable Graph") Then
@@ -746,22 +777,35 @@ Public Class MainForm
                                         Else
                                             displacementQueuey.Enqueue(average * unitCorrectmm)
                                         End If
+                                       
                                         velocityQueuex.Enqueue(chartcounter)
-                                        velocityQueuey.Enqueue(unitCorrectmm * velocityValue / multiplier)
+                                        If Graph_Averaging_CheckBox.Checked = False Then
+                                            velocityQueuey.Enqueue(unitCorrectmm * velocityValue / multiplier)
+                                        Else
+                                            velocityQueuey.Enqueue(velocity * unitCorrectmm)
+                                        End If
+
+                                        'velocityQueuey.Enqueue(unitCorrectmm * velocityValue / multiplier)
                                         angleQueuex.Enqueue(chartcounter)
-                                        angleQueuey.Enqueue(Math.Asin(average / 32.61 / 1000000) * angleCorrectdegree * 57.296)
+                                        If Graph_Averaging_CheckBox.Checked = False Then
+                                            angleQueuey.Enqueue(angleValue * angleCorrectdegree)
+                                        Else
+                                            angleQueuey.Enqueue(angle * angleCorrectdegree)
+                                        End If
+
+                                        ' angleQueuey.Enqueue(Math.Asin(average / 32.61 / 1000000) * angleCorrectdegree * 57.296)
                                         chartcounter = CULng(chartcounter + 1)
                                     End If
                                     End If
-                                End If
-                            ElseIf 0 = serialnumberdifference Then
-                                Console.Write(" sample duplicate" + vbCrLf)
-                            Else
-                                Console.Write((Convert.ToUInt64(values(5)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
                             End If
-                        Else 'values.length incorrect
-                            Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
+                        ElseIf 0 = serialnumberdifference Then
+                            Console.Write(" sample duplicate" + vbCrLf)
+                        Else
+                            Console.Write((Convert.ToUInt64(values(5)) - previousserialnumber - 1).ToString + " sample(s) number skipped" + vbCrLf)
                         End If
+                    Else 'values.length incorrect
+                        Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
+                    End If
                         Try
                             previousserialnumber = Convert.ToUInt64(values(5))
                         Catch
@@ -972,9 +1016,8 @@ Public Class MainForm
 
         ScrollRate = CInt(NumericUpDown_Scale.Value)
 
-        Graph_Averaging_CheckBox.Visible = False
-
         If GraphControl.Text.Equals("Enable Graph") Then
+            Graph_Averaging_CheckBox.Visible = False
             Compression_Label.Visible = False
             RangeUnits.Visible = False
             Label_Range.Visible = False
@@ -984,6 +1027,7 @@ Public Class MainForm
             NumericUpDown_Scale.Visible = False
             ComboBox_Range.Visible = False
         Else
+            Graph_Averaging_CheckBox.Visible = True
             Compression_Label.Visible = True
             NumericUpDown_Scale.Visible = True
             Label_Range.Visible = True
@@ -1038,9 +1082,8 @@ Public Class MainForm
 
         ScrollRate = CInt(NumericUpDown_Scale.Value)
 
-        Graph_Averaging_CheckBox.Visible = False
-
         If GraphControl.Text.Equals("Enable Graph") Then
+            Graph_Averaging_CheckBox.Visible = False
             Compression_Label.Visible = False
             NumericUpDown_Scale.Visible = False
             ComboBox_Range.Visible = False
@@ -1048,6 +1091,7 @@ Public Class MainForm
             Label_RangeTime.Visible = False
             Axis_UnitsA.Visible = False
         Else
+            Graph_Averaging_CheckBox.Visible = True
             Compression_Label.Visible = True
             NumericUpDown_Scale.Visible = True
             Label_Range.Visible = True
@@ -1205,11 +1249,9 @@ Public Class MainForm
     End Sub
 
     Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
-        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.Orange1
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.Orange1
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
