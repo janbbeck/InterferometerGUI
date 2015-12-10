@@ -46,6 +46,9 @@ Public Class MainForm
     Dim spDrLine As String = ""
     Dim spBuffer As String = ""
     Public zeroAdjustment As Double = 0  ' this is what we need to set the data back to zero
+    Public zeroAdjustment1 As Double = 0
+    Public zeroAdjustment2 As Double = 0
+    Public zeroAdjustment3 As Double = 0
     Public unitCorrectionFactor As Double = 1.0 ' 1.0 = nm 0.001 = um etc
     Public unitCorrectmm As Double = 1.0 ' 1.0 = mm 0.001 = um etc
     Public angleCorrectionFactor As Double = 3600.0 ' 3600 = arcsec 60 = arcmin 1 = degree
@@ -56,11 +59,26 @@ Public Class MainForm
     Public SLCoefficient As Double = 360
     Public SSCoefficient As Double = 36
     Public currentValue As Double = 0
+    Public currentValue1 As Double = 0
+    Public currentValue2 As Double = 0
+    Public currentValue3 As Double = 0
     Public previousValue As Double = 0
+    Public previousValue1 As Double = 0
+    Public previousValue2 As Double = 0
+    Public previousValue3 As Double = 0
     Dim velocityValue As Double = 0
+    Dim velocityValue1 As Double = 0
+    Dim velocityValue2 As Double = 0
+    Dim velocityValue3 As Double = 0
     Dim angleValue As Double = 0
+    Dim angleValue1 As Double = 0
+    Dim angleValue2 As Double = 0
+    Dim angleValue3 As Double = 0
     Dim averagingValue As Double = 0
     Public displayValue As Double = 0
+    Public displayValue1 As Double = 0
+    Public displayValue2 As Double = 0
+    Public displayValue3 As Double = 0
     Dim velocityValueList As New List(Of Double)
     Dim DFTValueList As New List(Of Double)
     Dim angleValueList As New List(Of Double)
@@ -68,9 +86,18 @@ Public Class MainForm
     Dim velocityFromPrevious As Double = 0
     Dim angleFromPrevious As Double = 0
     Public average As Double = 0
+    Public average1 As Double = 0
+    Public average2 As Double = 0
+    Public average3 As Double = 0
     Public PreviousAverage As Double = 0
     Public velocity As Double = 0
+    Public velocity1 As Double = 0
+    Public velocity2 As Double = 0
+    Public velocity3 As Double = 0
     Public angle As Double = 0
+    Public angle1 As Double = 0
+    Public angle2 As Double = 0
+    Public angle3 As Double = 0
     Public TestmodeFlag As Integer = 0
     Public Dimension As Integer = 1024     ' this value determines both the size of the plot graphs and the number of data points in the DFT
     Dim RealPartOfDFT(CInt(Dimension / 2)) As Double
@@ -90,11 +117,17 @@ Public Class MainForm
     Public SuspendFlag As Integer = 0
     Dim MeasCountCorrection As UInt64 = 0
     Public CurrentValueCorrection As Double = 0
+    Public CurrentValueCorrection1 As Double = 0
+    Public CurrentValueCorrection2 As Double = 0
+    Public CurrentValueCorrection3 As Double = 0
     Dim SuspenREFCount As UInt64 = 0
     Dim SuspendMEASCount As UInt64 = 0
     Dim graphCount As UInt64 = CULng(Dimension)
     Dim plotCount As UInt64 = CULng(Dimension)
     Public SuspendCurrentValue As Double = 0
+    Public SuspendCurrentValue1 As Double = 0
+    Public SuspendCurrentValue2 As Double = 0
+    Public SuspendCurrentValue3 As Double = 0
     Public REFFrequency As Double = 0
     Public MEASFrequency As Double = 0
     Public DIFFFrequency As Double = 0
@@ -107,22 +140,34 @@ Public Class MainForm
     Public previousserialnumber As UInt64 = 0
     Dim serialnumberdifference As UInt64 = 0
     Public Wavelength As Double = 632.991372 ' Corrected wavelength
-    Public simulationDistance As Int64 = 0
     Public previousSimulationDistance As Int64 = 0
     Public waveform As Double = 0
-    Public simulationVelocity As Int64 = 0
     Public previoussimulationVelocity As Int64 = 0
     Public previoussimREFCount As Int64 = 0
     Public previoussimMEASCount As Int64 = 0
+    Public simrefcount As Int64 = 0
+    Public simmeascount As Int64 = 0
+    Public simulationDistance As Int64 = 0
+    Public simulationVelocity As Int64 = 0
     Public simulationPhase As Int64 = 0
+    Public simMEASFrequencyCount1 As Int64 = 0
+    Public simulationDistance1 As Int64 = 0
+    Public simulationVelocity1 As Int64 = 0
+    Public simulationPhase1 As Int64 = 0
+    Public simMEASFrequencyCount2 As Int64 = 0
+    Public simulationDistance2 As Int64 = 0
+    Public simulationVelocity2 As Int64 = 0
+    Public simulationPhase2 As Int64 = 0
+    Public simMEASFrequencyCount3 As Int64 = 0
+    Public simulationDistance3 As Int64 = 0
+    Public simulationVelocity3 As Int64 = 0
+    Public simulationPhase3 As Int64 = 0
     Public simulationSerial As UInt64 = 0
     Public simulationLowSpeedCode As Int16 = 0
     Public simulationLowSpeedData As Int32 = 0
     Public bangbang As Double = 1
     Public counter As Double = 0
-    Dim simulatedData As String
-    Public simrefcount As Int64 = 0
-    Public simmeascount As Int64 = 0
+    Dim simulatedData As String  
     Public simcount As Double = 0
     Public TMUnitsFactor As Double = 0
     Public TMFreqMult As Double = 1
@@ -150,7 +195,28 @@ Public Class MainForm
     Dim zero As Double = 0
     Dim ClearCounter As Integer = 0
     Dim CurrentValuePhase As Double = 0
-    Dim DiagnosticValue As Int64 = 0
+    Dim CurrentValuePhase1 As Double = 0
+    Dim CurrentValuePhase2 As Double = 0
+    Dim CurrentValuePhase3 As Double = 0
+    Dim PreviousCurrentValuePhase As Double = 0
+    Dim PhaseValue As Integer = 0
+    Dim PhaseValue1 As Integer = 0
+    Dim PhaseValue2 As Integer = 0
+    Dim PhaseValue3 As Integer = 0
+    Dim Diagnostic2Value As Integer = 0
+    Dim Diagnostic3Value As Integer = 0
+    Dim Diagnostic4Value As Integer = 0
+    Dim Diagnostic4Count As Integer = 0
+    Dim Diagnostic4Save As Integer = 0
+    Dim LowSpeedCode As Integer = 0
+    Dim LowSpeedData As Integer = 0
+    Dim TemperatureAutoValue As Integer = 0
+    Dim PressureAutoValue As Integer = 0
+    Dim HumidityAutoValue As Integer = 0
+    Dim AxisData(4, 5) As Int64 ' First index selects Axis Primary,1,2,3; second parameter selects REFFreqCount,MEASFreqCount, Displacement, Velocity, Phase. 
+    Dim PrimaryAxisSelect As Integer = 1
+    Public MultipleAxesFlag As Integer = 1 ' Bits 0,1,2 = Axis 1,2,3, bit 4 is multiaxis enable
+    Public TMMultipleAxesFlag As Integer = 1
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -159,13 +225,49 @@ Public Class MainForm
         If Not (captureFile Is Nothing) Then
             captureFile.Close()
         End If
+
         My.Settings.AveragingValue = TrackBar1.Value
         My.Settings.ScrollFactor = CInt(NumericUpDown_Scale.Value)
-        'My.Settings.TMREFFrequency = TestMode.NumericUpDown_FGREF_Value.Value
-        'My.Settings.TMWaveform = TMWaveform
         My.Settings.TMUnitsFactor = TMUnitsFactor
         My.Settings.DFT_Skip_Factor = DFT_Skip_Factor
         My.Settings.LogFile = currentcapturefile
+
+        If (Configuration.Interpolation_CheckBox.Checked = True) Then
+            My.Settings.InterpolationFlag = 1
+        Else
+            My.Settings.InterpolationFlag = 0
+        End If
+
+        If (TestMode.Diagnostic_Enable_CheckBox.Checked = True) Then
+            My.Settings.DiagnosticReadoutFlag = 1
+        Else
+            My.Settings.DiagnosticReadoutFlag = 0
+        End If
+
+        If (TestMode.Error_Detection_CheckBox.Checked = True) Then
+            My.Settings.ErrorDetectionFlag = 1
+        Else
+            My.Settings.ErrorDetectionFlag = 0
+        End If
+
+        If (Compensation.Temperature_Auto_CheckBox.Checked = True) Then
+            My.Settings.TemperatureCompAutoFlag = 1
+        Else
+            My.Settings.TemperatureCompAutoFlag = 0
+        End If
+
+        If (Compensation.Pressure_Auto_CheckBox.Checked = True) Then
+            My.Settings.PressureCompAutoFlag = 1
+        Else
+            My.Settings.PressureCompAutoFlag = 0
+        End If
+
+        If (Compensation.Humidity_Auto_Checkbox.Checked = True) Then
+            My.Settings.HumidityCompAutoFlag = 1
+        Else
+            My.Settings.HumidityCompAutoFlag = 0
+        End If
+
         My.Settings.Save()
     End Sub
 
@@ -283,7 +385,7 @@ Public Class MainForm
             Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
             Configuration.Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            UnitLabel.Text = "um"
+            UnitLabel.Text = "μm"
         ElseIf unitCorrectionFactor = 1 Then
             Configuration.Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -366,6 +468,10 @@ Public Class MainForm
             UnitLabel.Text = "ft"
         End If
 
+        Axis1_Units_Label.Text = UnitLabel.Text
+        Axis2_Units_Label.Text = UnitLabel.Text
+        Axis3_Units_Label.Text = UnitLabel.Text
+
         angleCorrectionFactor = My.Settings.AngleCorrectionFactor
 
         If angleCorrectionFactor = 1 / 3600.0 Then
@@ -393,6 +499,10 @@ Public Class MainForm
             Configuration.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
             AngleLabel.Text = "degree"
         End If
+
+        Axis1_Angle_Label.Text = AngleLabel.Text
+        Axis2_Angle_Label.Text = AngleLabel.Text
+        Axis3_Angle_Label.Text = AngleLabel.Text
 
         Axis_UnitsA.Text = AngleLabel.Text
         Axis_UnitsD.Text = UnitLabel.Text
@@ -449,8 +559,26 @@ Public Class MainForm
         End If
 
         Compensation.NumericUpDown_Wavelength.Value = CDec(My.Settings.VacuumWavelength)
-        Wavelength = compensation.ECFactor * CDbl(My.Settings.VacuumWavelength)
+        Wavelength = Compensation.ECFactor * CDbl(My.Settings.VacuumWavelength)
         WLText.Text = Wavelength.ToString("000.000000")
+
+        If My.Settings.TemperatureCompAutoFlag = 1 Then
+            Compensation.Temperature_Auto_CheckBox.Checked = True
+        Else
+            Compensation.Temperature_Auto_CheckBox.Checked = False
+        End If
+
+        If My.Settings.PressureCompAutoFlag = 1 Then
+            Compensation.Pressure_Auto_CheckBox.Checked = True
+        Else
+            Compensation.Pressure_Auto_CheckBox.Checked = False
+        End If
+
+        If My.Settings.HumidityCompAutoFlag = 1 Then
+            Compensation.Humidity_Auto_Checkbox.Checked = True
+        Else
+            Compensation.Humidity_Auto_Checkbox.Checked = False
+        End If
 
         TMWaveformFlag = My.Settings.TMWaveformFlag
 
@@ -480,7 +608,7 @@ Public Class MainForm
         TMUnitsFactor = My.Settings.TMUnitsFactor
 
         If TMUnitsFactor = 0.001 Then
-            TestMode.ComboBox_Units.Text = "um"
+            TestMode.ComboBox_Units.Text = "μm"
         ElseIf TMUnitsFactor = 1 Then
             TestMode.ComboBox_Units.Text = "mm"
         ElseIf TMUnitsFactor = 10 Then
@@ -558,14 +686,39 @@ Public Class MainForm
             Frequency_Axis.Text = "   10        30              60              90            120            150            180            210            240          270             300"
             ComboBox_DFT_Range.Text = "300"
         End If
+
         Graph_Averaging_CheckBox.Visible = True
+
+        If My.Settings.InterpolationFlag = 1 Then
+            Configuration.Interpolation_CheckBox.Checked = True
+        Else
+            Configuration.Interpolation_CheckBox.Checked = False
+        End If
+
+        If My.Settings.DiagnosticReadoutFlag = 1 Then
+            TestMode.Diagnostic_Enable_CheckBox.Checked = True
+        Else
+            TestMode.Diagnostic_Enable_CheckBox.Checked = False
+        End If
+
+        If My.Settings.ErrorDetectionFlag = 1 Then
+            TestMode.Error_Detection_CheckBox.Checked = True
+        Else
+            TestMode.Error_Detection_CheckBox.Checked = False
+        End If
 
         currentcapturefile = My.Settings.LogFile
         Logfile_Text.Visible = False
         Logfile_Label.Visible = False
         DFT_Hz.Visible = False
         Diagnostic1.Visible = False
-        Diagnostic_Label.Visible = False
+        Diagnostic1_Label.Visible = False
+        Diagnostic2a.Visible = False
+        Diagnostic2_Label.Visible = False
+        Diagnostic3a.Visible = False
+        Diagnostic3_Label.Visible = False
+        Diagnostic4.Visible = False
+        Diagnostic4_Label.Visible = False
         MFLoaded = 1
     End Sub
 
@@ -649,8 +802,92 @@ Public Class MainForm
 
                     Dim values() As String = sets(k).Split(" ".ToCharArray)
                     'make sure the current set has exactly 8 fields
-                    If values.Length.Equals(8) Then
-                        'Console.Write(values(3) + vbCrLf)
+                    If values.Length.Equals(8) Or values.Length.Equals(16) Then
+
+                        AxisData(1, 0) = Convert.ToInt64(values(0)) ' REFFreqCount (same for all 3 axes)
+                        AxisData(1, 1) = Convert.ToInt64(values(1)) ' MEAS1FreqCount
+                        AxisData(1, 2) = Convert.ToInt64(values(2)) ' TotalDistance1
+                        AxisData(1, 3) = Convert.ToInt64(values(3)) ' Velocity1Count
+                        AxisData(1, 4) = Convert.ToInt32(values(4)) ' Phase1Value
+
+                        If values.Length.Equals(16) Then
+                            If MultipleAxesFlag > 1 Then
+                                AxisData(2, 0) = Convert.ToInt64(values(0)) ' REFFreqCount (same for all 3 axes)
+                                AxisData(2, 1) = Convert.ToInt64(values(8)) ' MEAS2FreqCount
+                                AxisData(2, 2) = Convert.ToInt64(values(9)) ' TotalDistance2
+                                AxisData(2, 3) = Convert.ToInt64(values(10)) ' Velocity2Count
+                                AxisData(2, 4) = Convert.ToInt32(values(11)) ' Phase2Value
+
+                                AxisData(3, 0) = Convert.ToInt64(values(0)) ' REFFreqCount (same for all 3 axes)
+                                AxisData(3, 1) = Convert.ToInt64(values(12)) ' MEAS3FreqCount
+                                AxisData(3, 2) = Convert.ToInt64(values(13)) ' TotalDistance3
+                                AxisData(3, 3) = Convert.ToInt64(values(14)) ' Velocity3Count
+                                AxisData(3, 4) = Convert.ToInt32(values(15)) ' Phase3Value
+
+                                currentValue1 = (Convert.ToDouble(AxisData(1, 2)) - CurrentValuePhase1) * Wavelength / 2.0 - CurrentValueCorrection1 ' Difference in nm; 1/2 wavelength, because path traveled at least twice
+                                currentValue2 = (Convert.ToDouble(AxisData(2, 2)) - CurrentValuePhase2) * Wavelength / 2.0 - CurrentValueCorrection2 ' Difference in nm; 1/2 wavelength, because path traveled at least twice
+                                currentValue3 = (Convert.ToDouble(AxisData(3, 2)) - CurrentValuePhase3) * Wavelength / 2.0 - CurrentValueCorrection3 ' Difference in nm; 1/2 wavelength, because path traveled at least twice
+
+                                velocityValue1 = (currentValue1 - previousValue1) * 610.35
+                                velocityValue2 = (currentValue2 - previousValue2) * 610.35
+                                velocityValue3 = (currentValue3 - previousValue3) * 610.35
+
+                                previousValue1 = currentValue1
+                                previousValue2 = currentValue2
+                                previousValue3 = currentValue3
+
+                                angleValue1 = Math.Asin((currentValue1 - zeroAdjustment1) / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296
+                                angleValue2 = Math.Asin((currentValue2 - zeroAdjustment2) / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296
+                                angleValue3 = Math.Asin((currentValue3 - zeroAdjustment3) / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296
+
+                                If Configuration.Interpolation_CheckBox.Checked = True Then
+                                    ' PhaseValue = Convert.ToInt32(values(4))
+                                    PhaseValue1 = CInt(AxisData(1, 4))
+                                    PhaseValue2 = CInt(AxisData(2, 4))
+                                    PhaseValue3 = CInt(AxisData(3, 4))
+
+                                    If (PhaseValue1 And &H7E00) = 0 Then
+                                        CurrentValuePhase1 = (CDbl(PhaseValue1)) / 256
+                                    ElseIf (PhaseValue1 < 0) Then ' REF and MEAS both valid
+                                        CurrentValuePhase1 = (CDbl(PhaseValue1)) / 256
+                                    Else
+                                        Diagnostic4Count = 10
+                                        Diagnostic4Save = PhaseValue1
+                                        CurrentValuePhase1 = 0
+                                    End If
+
+                                    If (PhaseValue2 And &H7E00) = 0 Then
+                                        CurrentValuePhase2 = (CDbl(PhaseValue2)) / 256
+                                    ElseIf (PhaseValue2 < 0) Then ' REF and MEAS both valid
+                                        CurrentValuePhase2 = (CDbl(PhaseValue2)) / 256
+                                    Else
+                                        Diagnostic4Count = 10
+                                        Diagnostic4Save = PhaseValue2
+                                        CurrentValuePhase2 = 0
+                                    End If
+
+                                    If (PhaseValue3 And &H7E00) = 0 Then
+                                        CurrentValuePhase3 = (CDbl(PhaseValue3)) / 256
+                                    ElseIf (PhaseValue3 < 0) Then ' REF and MEAS both valid
+                                        CurrentValuePhase3 = (CDbl(PhaseValue3)) / 256
+                                    Else
+                                        Diagnostic4Count = 10
+                                        Diagnostic4Save = PhaseValue1
+                                        CurrentValuePhase3 = 0
+                                    End If
+                                Else
+                                    CurrentValuePhase1 = 0
+                                    CurrentValuePhase2 = 0
+                                    CurrentValuePhase3 = 0
+                                End If
+                            End If
+                        End If
+
+                        AxisData(0, 0) = AxisData(PrimaryAxisSelect, 0) ' REFFreqCount (same for all 3 axes)
+                        AxisData(0, 1) = AxisData(PrimaryAxisSelect, 1) ' Primary MEASFreqCount
+                        AxisData(0, 2) = AxisData(PrimaryAxisSelect, 2) ' Primary TotalDistance
+                        AxisData(0, 3) = AxisData(PrimaryAxisSelect, 3) ' Primary VelocityCount
+                        AxisData(0, 4) = AxisData(PrimaryAxisSelect, 4) ' Primary PhaseValue
 
                         If Not (captureFile Is Nothing) And Capture_Flag = 1 And IgnoreCount = 0 Then
                             If TestmodeFlag = 1 Then  ' Capture all in Test Mode 
@@ -660,19 +897,43 @@ Public Class MainForm
                             End If
                         End If
 
-                        DiagnosticValue = Convert.ToInt64(values(4))
+                        LowSpeedCode = Convert.ToInt32(values(6)) ' Low Speed Code
+                        LowSpeedData = Convert.ToInt32(values(7)) ' Low Speed Data
 
-                        If (DiagnosticValue And &HE000) = 0 Then ' REF and MEAS both valid
-                            CurrentValuePhase = (CDbl(DiagnosticValue)) / 256
-                        Else : CurrentValuePhase = 0
+                        If (LowSpeedCode = 103) And (Compensation.Temperature_Auto_CheckBox.Checked = True) Then
+                            TemperatureAutoValue = LowSpeedData
+                        ElseIf (LowSpeedCode = 105) And (Compensation.Pressure_Auto_CheckBox.Checked = True) Then
+                            PressureAutoValue = LowSpeedData
+                        ElseIf (LowSpeedCode = 106) And (Compensation.Humidity_Auto_Checkbox.Checked = True) Then
+                            HumidityAutoValue = LowSpeedData
+                        ElseIf (LowSpeedCode = 111) Then
+                            Diagnostic2Value = LowSpeedData
+                        ElseIf (LowSpeedCode = 101) Then
+                            Diagnostic3Value = LowSpeedData
+                        ElseIf (LowSpeedCode = 51) Then
+                            MultipleAxesFlag = LowSpeedData
                         End If
 
-                        ' Check for screwups
-                        If (CurrentValuePhase > 1.5) Then CurrentValuePhase = 1
-                        If (CurrentValuePhase < 0) Then CurrentValuePhase = 0
+                        ' Data computation for primary axis
+                        If Configuration.Interpolation_CheckBox.Checked = True Then
+                            ' PhaseValue = Convert.ToInt32(values(4))
+                            PhaseValue = CInt(AxisData(0, 4))
+                            If (PhaseValue And &H7E00) = 0 Then
+                                CurrentValuePhase = (CDbl(PhaseValue)) / 256
+                            ElseIf (PhaseValue < 0) Then ' REF and MEAS both valid
+                                CurrentValuePhase = (CDbl(PhaseValue)) / 256
+                            Else
+                                Diagnostic4Count = 10
+                                Diagnostic4Save = PhaseValue
+                                CurrentValuePhase = 0
+                                ' CurrentValuePhase = PreviousCurrentValuePhase ' Use the previous value
+                            End If
+                        Else
+                            CurrentValuePhase = 0
+                        End If
 
-                        ' currentValue is REFCount - MEASCount - fractional offset between REF and MEAS rising edges
-                        currentValue = (Convert.ToDouble(values(2)) - CurrentValuePhase) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
+                        ' currentValue = (Convert.ToDouble(values(2)) - CurrentValuePhase) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
+                        currentValue = (Convert.ToDouble(AxisData(0, 2)) - CurrentValuePhase) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         ' velocityValue = Convert.ToDouble(values(3)) * Wavelength / 2.0 * 610.35 ' Velocity = displacement difference in 1/610.35s * 610.35
                         velocityValue = (currentValue - previousValue) * 610.35
                         angleValue = Math.Asin((currentValue - zeroAdjustment) / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296
@@ -682,11 +943,29 @@ Public Class MainForm
                         If IgnoreCount = 0 Then
                             If needsInitialZero = 1 Then
                                 zeroAdjustment = currentValue
+                                zeroAdjustment1 = currentValue1
+                                zeroAdjustment2 = currentValue2
+                                zeroAdjustment3 = currentValue3
                                 average = 0
+                                average1 = 0
+                                average2 = 0
+                                average3 = 0
                                 velocity = 0
+                                velocity1 = 0
+                                velocity2 = 0
+                                velocity3 = 0
                                 angle = 0
+                                angle1 = 0
+                                angle2 = 0
+                                angle3 = 0
                                 velocityValue = 0
+                                velocityValue1 = 0
+                                velocityValue2 = 0
+                                velocityValue3 = 0
                                 angleValue = 0
+                                angleValue1 = 0
+                                angleValue2 = 0
+                                angleValue3 = 0
                                 averagingFromCurrent = 0
                                 averagingFromPrevious = 0
                                 velocityFromCurrent = 0
@@ -694,8 +973,16 @@ Public Class MainForm
                                 angleFromCurrent = 0
                                 angleFromPrevious = 0
                                 SuspendCurrentValue = 0
-                                previousValue = currentValue ' Updated for possible error checking, not currently used
-                                If Suspend.Text.Equals("Resume") Then  ' Force exit from Suspend mode
+                                SuspendCurrentValue1 = 0
+                                SuspendCurrentValue2 = 0
+                                SuspendCurrentValue3 = 0
+                                previousValue = currentValue
+                                previousValue1 = currentValue1
+                                previousValue2 = currentValue2
+                                previousValue3 = currentValue3
+                                Diagnostic4.Visible = False
+
+                                If Suspend.Text.Equals("Resume") Then  ' force exit from suspend mode
                                     Suspend.Text = "Suspend"
                                     Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
                                     Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
@@ -706,25 +993,22 @@ Public Class MainForm
                                 needsInitialZero = 0 ' make sure to zero out the reference system only once
                             End If
                         End If
-
                         Try
                             serialnumberdifference = Convert.ToUInt64(values(5)) - previousserialnumber
                         Catch
                         End Try
 
                         If serialnumberdifference = 1 Then
-                            REFFrequency = Convert.ToInt64(values(0)) / 1638
-                            MEASFrequency = Convert.ToInt64(values(1)) / 1638
+                            REFFrequency = AxisData(0, 0) / 1638
+                            MEASFrequency = AxisData(0, 1) / 1638
                             DIFFFrequency = MEASFrequency - REFFrequency
                             If SuspendFlag = 0 Then
                                 If IgnoreCount = 0 Then
                                     ' If ErrorFlag = 0 Then
                                     If EDEnabled = 1 Then
-                                        'If CurrentREFCount - PreviousREFCount = 0 Then
                                         If REFFrequency = 0 Then
                                             ErrorFlag = ErrorFlag Or 1 ' REF is dead => REF (Head) Error
                                         End If
-                                        ' If CurrentMEASCount - PreviousMEASCount = 0 Then  ' MEAS is dead => MEAS (Path) Error
                                         If MEASFrequency = 0 Then  ' MEAS is dead => MEAS (Path) Error
                                             ErrorFlag = ErrorFlag Or 2 ' MEAS is dead = > MEAS (Path) Error
                                         End If
@@ -743,21 +1027,10 @@ Public Class MainForm
 
                             If SuspendFlag = 0 Then
 
-                                '      If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode, no averaging
-                                ' average = velocityValue / multiplier
-                                'Else
-                                '   averagingFromPrevious = (0 + averagingValue / 1000) * average ' nm
-                                '  averagingFromCurrent = (1.0 - averagingValue / 1000) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
-                                ' average = averagingFromPrevious + averagingFromCurrent
-                                'End If
-
                                 PreviousAverage = average
-
                                 averagingFromPrevious = (0 + averagingValue / 1000) * average ' nm
                                 averagingFromCurrent = (1.0 - averagingValue / 1000) * straightnessMultiplier * (currentValue - zeroAdjustment) / multiplier
                                 average = averagingFromPrevious + averagingFromCurrent
-
-                                ' velocity = (average - PreviousAverage) * 610.35
 
                                 velocityFromPrevious = (0 + averagingValue / 1000) * velocity ' nm
                                 velocityFromCurrent = velocityValue * (1.0 - averagingValue / 1000) / multiplier
@@ -766,6 +1039,35 @@ Public Class MainForm
                                 angleFromPrevious = (0 + averagingValue / 1000) * angle
                                 angleFromCurrent = angleValue * (1.0 - averagingValue / 1000)
                                 angle = angleFromPrevious + angleFromCurrent
+
+                                If MultipleAxesFlag > 1 Then
+
+                                    average1 = straightnessMultiplier * (currentValue1 - zeroAdjustment1) / multiplier
+                                    average2 = straightnessMultiplier * (currentValue2 - zeroAdjustment2) / multiplier
+                                    average3 = straightnessMultiplier * (currentValue3 - zeroAdjustment3) / multiplier
+
+                                    velocity1 = velocityValue1 / multiplier
+                                    velocity2 = velocityValue2 / multiplier
+                                    velocity3 = velocityValue3 / multiplier
+
+                                    angle1 = angleValue1
+                                    angle2 = angleValue2
+                                    angle3 = angleValue3
+
+                                    If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
+                                        displayValue1 = angle1
+                                        displayValue2 = angle2
+                                        displayValue3 = angle3
+                                    ElseIf VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' velocity mode
+                                        displayValue1 = velocity1 * unitCorrectmm
+                                        displayValue2 = velocity2 * unitCorrectmm
+                                        displayValue3 = velocity3 * unitCorrectmm
+                                    Else
+                                        displayValue1 = average1 * unitCorrectmm
+                                        displayValue2 = average2 * unitCorrectmm
+                                        displayValue3 = average3 * unitCorrectmm
+                                    End If
+                                End If
 
                                 If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
                                     displayValue = angle
@@ -782,7 +1084,7 @@ Public Class MainForm
                                         Else
                                             displacementQueuey.Enqueue(average * unitCorrectmm)
                                         End If
-                                       
+
                                         velocityQueuex.Enqueue(chartcounter)
                                         If Graph_Averaging_CheckBox.Checked = False Then
                                             velocityQueuey.Enqueue(unitCorrectmm * velocityValue / multiplier)
@@ -801,7 +1103,7 @@ Public Class MainForm
                                         ' angleQueuey.Enqueue(Math.Asin(average / 32.61 / 1000000) * angleCorrectdegree * 57.296)
                                         chartcounter = CULng(chartcounter + 1)
                                     End If
-                                    End If
+                                End If
                             End If
                         ElseIf 0 = serialnumberdifference Then
                             Console.Write(" sample duplicate" + vbCrLf)
@@ -811,10 +1113,10 @@ Public Class MainForm
                     Else 'values.length incorrect
                         Console.Write("values.length incorrect " + values.Length.ToString + vbCrLf)
                     End If
-                        Try
-                            previousserialnumber = Convert.ToUInt64(values(5))
-                        Catch
-                        End Try
+                    Try
+                        previousserialnumber = Convert.ToUInt64(values(5))
+                    Catch
+                    End Try
                 Next
             Catch ex As Exception
                 'MsgBox(ex.ToString)
@@ -898,8 +1200,15 @@ Public Class MainForm
     Private Sub ZeroButton_Click(sender As Object, e As EventArgs) Handles ZeroButton.Click
         ErrorFlag = 0
         needsInitialZero = 1
-        IgnoreCount = 0
-        Diagnostic_Label.Visible = False
+        IgnoreCount = 1
+        Diagnostic1_Label.Visible = False
+        Diagnostic4_Label.Visible = False
+        If Suspend.Text.Equals("Resume") Then
+            Axis1_Value.Text = "0.000"
+            Axis2_Value.Text = "0.000"
+            Axis3_Value.Text = "0.000"
+            ValueDisplay.Text = "0.000"
+        End If
     End Sub
 
     Private Sub DFT(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs)
@@ -947,6 +1256,18 @@ Public Class MainForm
         UnitLabel.Visible = True
         TimeLabel.Visible = False
         AngleLabel.Visible = False
+
+        Axis1_Units_Label.Visible = Axis1_Label.Visible
+        Axis2_Units_Label.Visible = Axis2_Label.Visible
+        Axis3_Units_Label.Visible = Axis3_Label.Visible
+
+        Axis1_Time_Label.Visible = False
+        Axis2_Time_Label.Visible = False
+        Axis3_Time_Label.Visible = False
+
+        Axis1_Angle_Label.Visible = False
+        Axis2_Angle_Label.Visible = False
+        Axis3_Angle_Label.Visible = False
 
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
@@ -1010,6 +1331,18 @@ Public Class MainForm
         UnitLabel.Visible = True
         TimeLabel.Visible = True
         AngleLabel.Visible = False
+
+        Axis1_Units_Label.Visible = Axis1_Label.Visible
+        Axis2_Units_Label.Visible = Axis2_Label.Visible
+        Axis3_Units_Label.Visible = Axis3_Label.Visible
+
+        Axis1_Time_Label.Visible = Axis1_Label.Visible
+        Axis2_Time_Label.Visible = Axis2_Label.Visible
+        Axis3_Time_Label.Visible = Axis3_Label.Visible
+
+        Axis1_Angle_Label.Visible = False
+        Axis2_Angle_Label.Visible = False
+        Axis3_Angle_Label.Visible = False
 
         Chart1.Series.Clear()
         Chart1.Series.Add(velocitySeries)
@@ -1077,6 +1410,18 @@ Public Class MainForm
         TimeLabel.Visible = False
         AngleLabel.Visible = True
 
+        Axis1_Units_Label.Visible = False
+        Axis2_Units_Label.Visible = False
+        Axis3_Units_Label.Visible = False
+
+        Axis1_Time_Label.Visible = False
+        Axis2_Time_Label.Visible = False
+        Axis3_Time_Label.Visible = False
+
+        Axis1_Angle_Label.Visible = Axis1_Label.Visible
+        Axis2_Angle_Label.Visible = Axis2_Label.Visible
+        Axis3_Angle_Label.Visible = Axis3_Label.Visible
+
         Chart1.Series.Clear()
         Chart1.Series.Add(angleseries)
 
@@ -1141,6 +1486,18 @@ Public Class MainForm
         TimeLabel.Visible = False
         AngleLabel.Visible = False
 
+        Axis1_Units_Label.Visible = Axis1_Label.Visible
+        Axis2_Units_Label.Visible = Axis2_Label.Visible
+        Axis3_Units_Label.Visible = Axis3_Label.Visible
+
+        Axis1_Time_Label.Visible = False
+        Axis2_Time_Label.Visible = False
+        Axis3_Time_Label.Visible = False
+
+        Axis1_Angle_Label.Visible = False
+        Axis2_Angle_Label.Visible = False
+        Axis3_Angle_Label.Visible = False
+
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
 
@@ -1204,6 +1561,18 @@ Public Class MainForm
         UnitLabel.Visible = True
         TimeLabel.Visible = False
         AngleLabel.Visible = False
+
+        Axis1_Units_Label.Visible = Axis1_Label.Visible
+        Axis2_Units_Label.Visible = Axis2_Label.Visible
+        Axis3_Units_Label.Visible = Axis3_Label.Visible
+
+        Axis1_Time_Label.Visible = False
+        Axis2_Time_Label.Visible = False
+        Axis3_Time_Label.Visible = False
+
+        Axis1_Angle_Label.Visible = False
+        Axis2_Angle_Label.Visible = False
+        Axis3_Angle_Label.Visible = False
 
         Chart1.Series.Clear()
         Chart1.Series.Add(positionSeries)
@@ -1270,6 +1639,18 @@ Public Class MainForm
         TimeLabel.Visible = False
         AngleLabel.Visible = False
 
+        Axis1_Units_Label.Visible = Axis1_Label.Visible
+        Axis2_Units_Label.Visible = Axis2_Label.Visible
+        Axis3_Units_Label.Visible = Axis3_Label.Visible
+
+        Axis1_Time_Label.Visible = False
+        Axis2_Time_Label.Visible = False
+        Axis3_Time_Label.Visible = False
+
+        Axis1_Angle_Label.Visible = False
+        Axis2_Angle_Label.Visible = False
+        Axis3_Angle_Label.Visible = False
+
         Chart1.Series.Clear()
         Chart1.Series.Add(fftSeries)
 
@@ -1296,8 +1677,6 @@ Public Class MainForm
         DFT_Hz.Visible = True
         Frequency_Axis.Visible = True
     End Sub
-
-
 
     Private Sub TrackBar1_selectionchangecommitted(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
         averagingValue = 1000 * (1 - (1 / (Math.Pow(10, CDbl(TrackBar1.Value / 333)))))
@@ -1398,13 +1777,19 @@ Public Class MainForm
             Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.YellowButton1
             Suspend.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
             SuspendCurrentValue = currentValue
-            Suspend_Label.Visible = True
+            SuspendCurrentValue1 = currentValue1
+            SuspendCurrentValue2 = currentValue2
+            SuspendCurrentValue3 = currentValue3
+            '            Suspend_Label.Visible = True
             SuspendFlag = 1
         Else                                     ' Exit Suspend mode
             Suspend.Text = "Suspend"
             Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
             CurrentValueCorrection = CurrentValueCorrection + currentValue - SuspendCurrentValue
+            CurrentValueCorrection1 = CurrentValueCorrection1 + currentValue1 - SuspendCurrentValue1
+            CurrentValueCorrection2 = CurrentValueCorrection2 + currentValue2 - SuspendCurrentValue2
+            CurrentValueCorrection3 = CurrentValueCorrection3 + currentValue3 - SuspendCurrentValue3
             Suspend_Label.Visible = False
             SuspendFlag = 0
             ErrorFlag = 0
@@ -1413,14 +1798,101 @@ Public Class MainForm
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' limit the update rate of the value to about 10 Hz
+        If ((MultipleAxesFlag And &H9) = &H9) Then
+            Axis1_Label.Visible = True
+        End If
+        If ((MultipleAxesFlag And &H1) = 0) Then
+            Axis1_Label.Visible = False
+            Axis1_Value.Visible = False
+            Axis1_Units_Label.Visible = False
+            Axis1_Time_Label.Visible = False
+            Axis1_Angle_Label.Visible = False
+        End If
+        If ((MultipleAxesFlag And &HA) = &HA) Then
+            Axis2_Label.Visible = True
+        End If
+        If ((MultipleAxesFlag And &H2) = 0) Then
+            Axis2_Label.Visible = False
+            Axis2_Value.Visible = False
+            Axis2_Units_Label.Visible = False
+            Axis2_Time_Label.Visible = False
+            Axis2_Angle_Label.Visible = False
+        End If
+        If ((MultipleAxesFlag And &HC) = &HC) Then
+            Axis3_Label.Visible = True
+        End If
+        If ((MultipleAxesFlag And &H4) = 0) Then
+            Axis3_Label.Visible = False
+            Axis3_Value.Visible = False
+            Axis3_Units_Label.Visible = False
+            Axis3_Time_Label.Visible = False
+            Axis3_Angle_Label.Visible = False
+        End If
+        If TestMode.Diagnostic_Enable_CheckBox.Checked = True Then
+            If (PhaseValue And &H7E00) = 0 Or PhaseValue < 0 Then ' REF or MEAS valid
+                '   If Not PhaseValue = 0 Then
+                Diagnostic1.Text = PhaseValue.ToString("###0") ' Phase
+                Diagnostic1.Visible = True
+                Diagnostic1_Label.Visible = True
+            Else
+                Diagnostic1.Visible = False
+            End If
 
-        If Not DiagnosticValue = 0 Then
-            Diagnostic1.Text = DiagnosticValue.ToString("x0000")
-            Diagnostic1.Visible = True
-            Diagnostic_Label.Visible = True
+            If Not (Diagnostic2Value And &HFF00) = &H8000 Then
+                Diagnostic2a.Text = (((((Diagnostic2Value >> 8) And &HFF) + 128) And &HFF) - 128).ToString("d0")     ' REFToMEAS
+                Diagnostic2a.Visible = True
+                Diagnostic2_Label.Visible = True
+            Else
+                Diagnostic2a.Visible = False
+            End If
+
+            If Not (Diagnostic2Value And &HFF) = &H80 Then
+
+                Diagnostic2b.Text = ((((Diagnostic2Value And &HFF) + 128) And &HFF) - 128).ToString("d0")     ' REFPeriod
+                Diagnostic2b.Visible = True
+                Diagnostic2_Label.Visible = True
+            Else
+                Diagnostic2b.Visible = False
+            End If
+
+            If Not (Diagnostic3Value And &HFF00) = &H8000 Then
+                Diagnostic3a.Text = (((((Diagnostic3Value >> 8) And &HFF) + 128) And &HFF) - 128).ToString("d0")     ' Second REF change or calculated REF delay
+                Diagnostic3a.Visible = True
+                Diagnostic3_Label.Visible = True
+            Else
+                Diagnostic3a.Visible = False
+            End If
+
+
+            If Not (Diagnostic3Value And &HFF) = &H80 Then
+                Diagnostic3b.Text = ((((Diagnostic3Value And &HFF) + 128) And &HFF) - 128).ToString("#0") ' First REF change
+                Diagnostic3b.Visible = True
+                Diagnostic3_Label.Visible = True
+            Else
+                Diagnostic3b.Visible = False
+            End If
+
+            If (Diagnostic4Count > 0) Then
+                Diagnostic4.Text = Diagnostic4Save.ToString("x0000") ' NoChange Flag Word
+                Diagnostic4.Visible = True
+                Diagnostic4_Label.Visible = True
+                Diagnostic4Count -= 1
+            Else
+                If (Diagnostic4Count <= 0) Then
+                    Diagnostic4.Visible = False
+                End If
+            End If
         Else
             Diagnostic1.Visible = False
-            ' Diagnostic_Label.Visible = False
+            Diagnostic2a.Visible = False
+            Diagnostic2b.Visible = False
+            Diagnostic3a.Visible = False
+            Diagnostic3b.Visible = False
+            Diagnostic4.Visible = False
+            Diagnostic1_Label.Visible = False
+            Diagnostic2_Label.Visible = False
+            Diagnostic3_Label.Visible = False
+            Diagnostic4_Label.Visible = False
         End If
 
         If IgnoreCount = 0 Then
@@ -1437,6 +1909,7 @@ Public Class MainForm
             Else
                 MEAS.Visible = False
             End If
+
             If REFFrequency > 0 And MEASFrequency > 0 Then
                 DIFF.Text = (DIFFFrequency * 1000).ToString("#,##0.00")
                 DIFF.Visible = True
@@ -1445,10 +1918,10 @@ Public Class MainForm
             End If
 
             'Kludge to prevent momentary flashes of large value when turning on Test Mode FG
-            If IgnoreCount = 0 And Math.Abs(velocityValue) < 100000000 Then
+            If IgnoreCount = 0 Then ' And Math.Abs(velocityValue) < 100000000 Then
 
                 If SuspendFlag = 1 Then
-                    Suspend_Label.Visible = True
+                    ' Suspend_Label.Visible = True
 
                 ElseIf EDEnabled = 1 And ErrorFlag > 0 Then
                     UnitLabel.Visible = False
@@ -1498,8 +1971,112 @@ Public Class MainForm
                         TimeLabel.Visible = True
                     End If
                 End If
+
+                If SuspendFlag = 0 Then
+                    If ((MultipleAxesFlag And &H9) = &H9) Then
+                        Axis1_Value.Visible = True
+                        If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
+                            If angleCorrectionFactor = 3600 Then
+                                Axis1_Value.Text = displayValue1.ToString("###,###,###,##0.000") 'arcsec
+                            ElseIf angleCorrectionFactor = 60 Then
+                                Axis1_Value.Text = displayValue1.ToString("#,###,###,##0.000.00") 'arcmin
+                            ElseIf angleCorrectionFactor = 1.0 Then
+                                Axis1_Value.Text = displayValue1.ToString("###,###,##0.000,000") 'degree
+                            End If
+                        Else
+                            Axis1_Units_Label.Visible = True
+                            If unitCorrectionFactor = 0.000001 Then
+                                Axis1_Value.Text = displayValue1.ToString("###,###,###,##0.00") 'nm
+                            ElseIf unitCorrectionFactor = 0.001 Then
+                                Axis1_Value.Text = displayValue1.ToString("##,###,###,##0.000") 'um
+                            ElseIf unitCorrectionFactor = 1 Then
+                                Axis1_Value.Text = displayValue1.ToString("##,###,##0.000,000") 'mm
+                            ElseIf unitCorrectionFactor = 10 Then
+                                Axis1_Value.Text = displayValue1.ToString("#,###,##0.000,000,0") 'cm
+                            ElseIf unitCorrectionFactor = 1000 Then
+                                Axis1_Value.Text = displayValue1.ToString("#,###,##0.000,000,00") 'm
+                            ElseIf unitCorrectionFactor = 25.4 Then
+                                Axis1_Value.Text = displayValue1.ToString("#,###,##0.000,000,0") 'in
+                            ElseIf unitCorrectionFactor = 304.8 Then
+                                Axis1_Value.Text = displayValue1.ToString("#,###,##0.000,000.00") 'ft
+                            End If
+
+                            If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                                Axis1_Time_Label.Visible = True
+                            End If
+                        End If
+                    End If
+
+                    If ((MultipleAxesFlag And &HA) = &HA) Then
+                        Axis2_Value.Visible = True
+                        If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
+                            If angleCorrectionFactor = 3600 Then
+                                Axis2_Value.Text = displayValue2.ToString("###,###,###,##0.000") 'arcsec
+                            ElseIf angleCorrectionFactor = 60 Then
+                                Axis2_Value.Text = displayValue2.ToString("#,###,###,##0.000.00") 'arcmin
+                            ElseIf angleCorrectionFactor = 1.0 Then
+                                Axis2_Value.Text = displayValue2.ToString("###,###,##0.000,000") 'degree
+                            End If
+                        Else
+                            Axis2_Units_Label.Visible = True
+                            If unitCorrectionFactor = 0.000001 Then
+                                Axis2_Value.Text = displayValue2.ToString("###,###,###,##0.00") 'nm
+                            ElseIf unitCorrectionFactor = 0.001 Then
+                                Axis2_Value.Text = displayValue2.ToString("##,###,###,##0.000") 'um
+                            ElseIf unitCorrectionFactor = 1 Then
+                                Axis2_Value.Text = displayValue2.ToString("##,###,##0.000,000") 'mm
+                            ElseIf unitCorrectionFactor = 10 Then
+                                Axis2_Value.Text = displayValue2.ToString("#,###,##0.000,000,0") 'cm
+                            ElseIf unitCorrectionFactor = 1000 Then
+                                Axis2_Value.Text = displayValue2.ToString("#,###,##0.000,000,00") 'm
+                            ElseIf unitCorrectionFactor = 25.4 Then
+                                Axis2_Value.Text = displayValue2.ToString("#,###,##0.000,000,0") 'in
+                            ElseIf unitCorrectionFactor = 304.8 Then
+                                Axis2_Value.Text = displayValue2.ToString("#,###,##0.000,000.00") 'ft
+                            End If
+
+                            If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                                Axis2_Time_Label.Visible = True
+                            End If
+                        End If
+                    End If
+
+                    If ((MultipleAxesFlag And &HC) = &HC) Then
+                        Axis3_Value.Visible = True
+                        If AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' angle mode
+                            If angleCorrectionFactor = 3600 Then
+                                Axis3_Value.Text = displayValue3.ToString("###,###,###,##0.000") 'arcsec
+                            ElseIf angleCorrectionFactor = 60 Then
+                                Axis3_Value.Text = displayValue3.ToString("#,###,###,##0.000.00") 'arcmin
+                            ElseIf angleCorrectionFactor = 1.0 Then
+                                Axis3_Value.Text = displayValue3.ToString("###,###,##0.000,000") 'degree
+                            End If
+                        Else
+                            Axis3_Units_Label.Visible = True
+                            If unitCorrectionFactor = 0.000001 Then
+                                Axis3_Value.Text = displayValue3.ToString("###,###,###,##0.00") 'nm
+                            ElseIf unitCorrectionFactor = 0.001 Then
+                                Axis3_Value.Text = displayValue3.ToString("##,###,###,##0.000") 'um
+                            ElseIf unitCorrectionFactor = 1 Then
+                                Axis3_Value.Text = displayValue3.ToString("##,###,##0.000,000") 'mm
+                            ElseIf unitCorrectionFactor = 10 Then
+                                Axis3_Value.Text = displayValue3.ToString("#,###,##0.000,000,0") 'cm
+                            ElseIf unitCorrectionFactor = 1000 Then
+                                Axis3_Value.Text = displayValue3.ToString("#,###,##0.000,000,00") 'm
+                            ElseIf unitCorrectionFactor = 25.4 Then
+                                Axis3_Value.Text = displayValue3.ToString("#,###,##0.000,000,0") 'in
+                            ElseIf unitCorrectionFactor = 304.8 Then
+                                Axis3_Value.Text = displayValue3.ToString("#,###,##0.000,000.00") 'ft
+                            End If
+                            If VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+                                Axis3_Time_Label.Visible = True
+                            End If
+                        End If
+                    End If
+                End If
             End If
         End If
+
 
         If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
             Dim x1 As Double
@@ -1547,7 +2124,11 @@ Public Class MainForm
                     FFTdone = False
                     fftSeries.Points.Clear()
                     For counter = 0 To (CInt(((Dimension / 2) - 1)))
-                        fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) / 1048576 + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1048576)
+                        '                        fftSeries.Points.AddXY(counter, (ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) / 1048576 + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1048576)
+                        'fftSeries.Points.AddXY(counter, (Math.Sqrt((ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)))) / 1048576 + (Math.Sqrt((RealPartOfDFT(counter) * RealPartOfDFT(counter))) / 1048576))
+                        'fftSeries.Points.AddXY(counter, (Math.Sqrt((ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1024)))
+                        '                        fftSeries.Points.AddXY(counter, Math.Sqrt((ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) / 1048576 + (RealPartOfDFT(counter) * RealPartOfDFT(counter)) / 1048576))
+                        fftSeries.Points.AddXY(counter, Math.Sqrt((ImaginaryPartOfDFT(counter) * ImaginaryPartOfDFT(counter)) + (RealPartOfDFT(counter) * RealPartOfDFT(counter))) / 1024)
                     Next
                     resetEvent.Set()
                 End If
@@ -1561,26 +2142,55 @@ Public Class MainForm
 
         ' USB Communications Format:
 
-        ' 0 REFCount - PrevREFCount
-        ' 1 MEASCount - PrevMEASCount
-        ' 2 Distance - MEASCount - REFCount
-        ' 3 Velocity - Distance - PreviousDistance
-        ' 4 Phase - Fractional offset * 256, XOR 0x8000=no MEAS; 0x4000=no REF
-        ' 5 SerialNum
-        ' 6 LowSpeedCode
-        ' 7 LowSpeedData
+        ' Standard (Single Axis) Data:
 
-        ' LowSpeedCode Format:
+        '  0: REF Frequency Count
+        '  1: MEAS Frequency Count 1
+        '  2: Distance 1
+        '  3: Velocity Count 1
+        '  4: Phase 1 - Fractional offset * 256 XOR 0x4000=no PORTB MEAS 1; 0x2000=no PORTB 2nd REF; 0x1000=no PORTB 1st REF
+        '                                        0x800=no Timer3/5 MEAS 1; 0x400=no Timer3/5 2nd REF; 0x200=no Timer3/5 1st REF
+        '  5: Sequence Number
+        '  6: LowSpeedCode
+        '  7: LowSpeedData
 
-        ' 0 No data
-        ' 1 Laser Power
-        ' 2 Signal Strength
-        ' 3 Temperature 1
-        ' 4 Temperature 2
-        ' 5 Pressure
-        ' 6 Humidity
-        ' 7 Data Source ID
-        ' 8+ Spare
+        ' Add these when Multiple Axes are Enabled:
+
+        '  8: MEAS Frequency Count 2
+        '  9: Distance 2
+        ' 10: Velocity Count 2
+        ' 11: Phase 2
+        ' 12: MEAS Frequency Count 3
+        ' 13: Distance 3
+        ' 14: Velocity Count 3
+        ' 15: Phase 3
+
+        ' LowSpeedCode (specifies contents of LowSpeedData):
+
+        ' 0-99 GUI Data/Control:
+
+        '  0: No Data
+        '  1: Laser Power
+        '  2: Signal Strength
+        '  3: Temperature 1
+        '  4: Temperature 2
+        '  5: Pressure
+        '  6: Humidity
+        '  7: Data Source ID
+
+        ' 51: Multiple Axes Control. Bits 2-0 of Low Speed Data correspond to Axes 3-1 On/Off. Default 001.
+        '     If firmware detects Axis 2 or 3 active, it will send code to turn on multiaxis mode and switch to 16 packet format.
+        '     As soon as GUI sees either 16 packet format or Code 51 with bits 1 or 2 set, it will switch to multiaxis mode.
+        '     Return to single axis mode will require a hardware reset and GUI restart.
+
+        ' 100-199 Diagnostics:
+
+        ' 101: Phase FirstREFChange (LB) and SecondREFChange (HB) (Averaging 1)
+        ' 102: Phase REFPeriod (LB) and REFtoMeas (HB) (Averaging 1)
+        ' 111: Phase FirstREFChange (LB) and SecondREFChange (HB) (Averaging 2)
+        ' 112: Phase REFPeriod (LB) and REFtoMeas (HB) (Averaging 2)
+
+        ' 200-255: Reserved
 
         Dim counter As Integer
 
@@ -1615,24 +2225,83 @@ Public Class MainForm
 
             simulationVelocity = (simulationDistance - previousSimulationDistance)
 
-            simulationPhase = &H80
-            simulationLowSpeedCode = 0
-            simulationLowSpeedData = 0
+            simulationPhase = &H0
 
-            simulatedData = (simrefcount - previoussimREFCount).ToString("D") + " " +
-             (simmeascount - previoussimMEASCount).ToString("D") + " " +
-             simulationDistance.ToString("D") + " " +
-             simulationVelocity.ToString("D") + " " +
-             simulationPhase.ToString("D") + " " +
-             simulationSerial.ToString("D") + " " +
-             simulationLowSpeedCode.ToString("D") + " " +
-             simulationLowSpeedData.ToString("D")
+            simulationLowSpeedCode = 51
+            If (TMMultipleAxesFlag And &H8) = &H8 Then
+                simulationLowSpeedData = TMMultipleAxesFlag
+            Else
+                simulationLowSpeedData = &H1
+            End If
+
+            If Not (simulationLowSpeedData And &H1) = 0 Then
+                simMEASFrequencyCount1 = simmeascount - previoussimMEASCount
+                simulationDistance1 = simulationDistance
+                simulationVelocity1 = simulationVelocity
+                simulationPhase1 = simulationPhase
+            Else
+                simMEASFrequencyCount1 = 0
+                simulationDistance1 = 0
+                simulationVelocity1 = 0
+                simulationPhase1 = 0
+            End If
+            If Not (simulationLowSpeedData And &H2) = 0 Then
+                simMEASFrequencyCount2 = simmeascount - previoussimMEASCount
+                simulationDistance2 = simulationDistance
+                simulationVelocity2 = simulationVelocity
+                simulationPhase2 = simulationPhase
+            Else
+                simMEASFrequencyCount2 = 0
+                simulationDistance2 = 0
+                simulationVelocity2 = 0
+                simulationPhase2 = 0
+            End If
+            If Not (simulationLowSpeedData And &H4) = 0 Then
+                simMEASFrequencyCount3 = simmeascount - previoussimMEASCount
+                simulationDistance3 = simulationDistance
+                simulationVelocity3 = simulationVelocity
+                simulationPhase3 = simulationPhase
+            Else
+                simMEASFrequencyCount3 = 0
+                simulationDistance3 = 0
+                simulationVelocity3 = 0
+                simulationPhase3 = 0
+            End If
+
+            If Not (TMMultipleAxesFlag And &H8) = 0 Then ' Muliple axes mode
+                simulatedData = (simrefcount - previoussimREFCount).ToString("D") + " " +
+                 simMEASFrequencyCount1.ToString("D") + " " +
+                 simulationDistance1.ToString("D") + " " +
+                 simulationVelocity1.ToString("D") + " " +
+                 simulationPhase1.ToString("D") + " " +
+                 simulationSerial.ToString("D") + " " +
+                 simulationLowSpeedCode.ToString("D") + " " +
+                 simulationLowSpeedData.ToString("D") + " " +
+                 simMEASFrequencyCount2.ToString("D") + " " +
+                 simulationDistance2.ToString("D") + " " +
+                 simulationVelocity2.ToString("D") + " " +
+                 simulationPhase2.ToString("D") + " " +
+                 simMEASFrequencyCount3.ToString("D") + " " +
+                 simulationDistance3.ToString("D") + " " +
+                 simulationVelocity3.ToString("D") + " " +
+                 simulationPhase3.ToString("D")
+            Else ' Single axis mode
+                simulatedData = (simrefcount - previoussimREFCount).ToString("D") + " " +
+                 (simmeascount - previoussimMEASCount).ToString("D") + " " +
+                 simulationDistance.ToString("D") + " " +
+                 simulationVelocity.ToString("D") + " " +
+                 simulationPhase.ToString("D") + " " +
+                 simulationSerial.ToString("D") + " " +
+                 simulationLowSpeedCode.ToString("D") + " " +
+                 simulationLowSpeedData.ToString("D")
+            End If
 
             simulationSerial = simulationSerial + CULng(1)
             previousSimulationDistance = simulationDistance
             previoussimulationVelocity = simulationVelocity
             previoussimREFCount = simrefcount
             previoussimMEASCount = simmeascount
+
             Me.SetText(simulatedData)
         Next
 
@@ -1697,7 +2366,7 @@ Public Class MainForm
             DFT_Skip_Factor = 1
         End If
 
-        If MFLoaded = 1 Then 'And FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+        If MFLoaded = 1 Then ' And FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
             For ClearCounter = 0 To Dimension - 1
                 DFTValueList.Add(zero)
                 DFTValueList.RemoveAt(0)
@@ -1736,7 +2405,34 @@ Public Class MainForm
         Chart1.ChartAreas(0).RecalculateAxesScale()
     End Sub
 
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles Graph_Averaging_CheckBox.CheckedChanged
-
+    Private Sub Axis1_Label_Click(sender As Object, e As EventArgs) Handles Axis1_Label.Click
+        PrimaryAxisSelect = 1
+        Axis1_Label.ForeColor = Color.FromKnownColor(KnownColor.BlueViolet)
+        Axis2_Label.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Axis3_Label.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        ErrorFlag = 0
+        '        needsInitialZero = 1
+        IgnoreCount = 0
     End Sub
+
+    Private Sub Axis2_Label_Click(sender As Object, e As EventArgs) Handles Axis2_Label.Click
+        PrimaryAxisSelect = 2
+        Axis1_Label.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Axis2_Label.ForeColor = Color.FromKnownColor(KnownColor.BlueViolet)
+        Axis3_Label.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        ErrorFlag = 0
+        '       needsInitialZero = 1
+        IgnoreCount = 0
+    End Sub
+
+    Private Sub Axis3_Label_Click(sender As Object, e As EventArgs) Handles Axis3_Label.Click
+        PrimaryAxisSelect = 3
+        Axis1_Label.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Axis2_Label.ForeColor = Color.FromKnownColor(KnownColor.Black)
+        Axis3_Label.ForeColor = Color.FromKnownColor(KnownColor.BlueViolet)
+        ErrorFlag = 0
+        '      needsInitialZero = 1
+        IgnoreCount = 0
+    End Sub
+
 End Class

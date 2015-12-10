@@ -364,6 +364,78 @@ Partial Friend NotInheritable Class Settings
             Me("DFT_Skip_Factor") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+    Public Property InterpolationFlag() As Integer
+        Get
+            Return CType(Me("InterpolationFlag"),Integer)
+        End Get
+        Set
+            Me("InterpolationFlag") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+    Public Property DiagnosticReadoutFlag() As Integer
+        Get
+            Return CType(Me("DiagnosticReadoutFlag"),Integer)
+        End Get
+        Set
+            Me("DiagnosticReadoutFlag") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+    Public Property ErrorDetectionFlag() As Integer
+        Get
+            Return CType(Me("ErrorDetectionFlag"),Integer)
+        End Get
+        Set
+            Me("ErrorDetectionFlag") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+    Public Property TemperatureCompAutoFlag() As Integer
+        Get
+            Return CType(Me("TemperatureCompAutoFlag"),Integer)
+        End Get
+        Set
+            Me("TemperatureCompAutoFlag") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+    Public Property PressureCompAutoFlag() As Integer
+        Get
+            Return CType(Me("PressureCompAutoFlag"),Integer)
+        End Get
+        Set
+            Me("PressureCompAutoFlag") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+    Public Property HumidityCompAutoFlag() As Integer
+        Get
+            Return CType(Me("HumidityCompAutoFlag"),Integer)
+        End Get
+        Set
+            Me("HumidityCompAutoFlag") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

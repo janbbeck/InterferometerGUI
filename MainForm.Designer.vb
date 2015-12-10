@@ -85,8 +85,31 @@ Partial Public Class MainForm
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.VelocityButton = New System.Windows.Forms.Button()
         Me.Diagnostic1 = New System.Windows.Forms.Label()
-        Me.Diagnostic_Label = New System.Windows.Forms.Label()
+        Me.Diagnostic1_Label = New System.Windows.Forms.Label()
         Me.Graph_Averaging_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Diagnostic2_Label = New System.Windows.Forms.Label()
+        Me.Diagnostic2a = New System.Windows.Forms.Label()
+        Me.Diagnostic3_Label = New System.Windows.Forms.Label()
+        Me.Diagnostic3a = New System.Windows.Forms.Label()
+        Me.Diagnostic4_Label = New System.Windows.Forms.Label()
+        Me.Diagnostic4 = New System.Windows.Forms.Label()
+        Me.Diagnostic2b = New System.Windows.Forms.Label()
+        Me.Diagnostic3b = New System.Windows.Forms.Label()
+        Me.Axis1_Value = New System.Windows.Forms.Label()
+        Me.Axis1_Label = New System.Windows.Forms.Label()
+        Me.Axis2_Label = New System.Windows.Forms.Label()
+        Me.Axis2_Value = New System.Windows.Forms.Label()
+        Me.Axis3_Label = New System.Windows.Forms.Label()
+        Me.Axis3_Value = New System.Windows.Forms.Label()
+        Me.Axis1_Angle_Label = New System.Windows.Forms.Label()
+        Me.Axis1_Units_Label = New System.Windows.Forms.Label()
+        Me.Axis1_Time_Label = New System.Windows.Forms.Label()
+        Me.Axis2_Time_Label = New System.Windows.Forms.Label()
+        Me.Axis2_Units_Label = New System.Windows.Forms.Label()
+        Me.Axis2_Angle_Label = New System.Windows.Forms.Label()
+        Me.Axis3_Time_Label = New System.Windows.Forms.Label()
+        Me.Axis3_Units_Label = New System.Windows.Forms.Label()
+        Me.Axis3_Angle_Label = New System.Windows.Forms.Label()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -97,9 +120,9 @@ Partial Public Class MainForm
         Me.ValueDisplay.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ValueDisplay.Location = New System.Drawing.Point(193, 62)
         Me.ValueDisplay.Name = "ValueDisplay"
-        Me.ValueDisplay.Size = New System.Drawing.Size(481, 67)
+        Me.ValueDisplay.Size = New System.Drawing.Size(485, 61)
         Me.ValueDisplay.TabIndex = 34
-        Me.ValueDisplay.Text = "0.000"
+        Me.ValueDisplay.Text = "0.000000"
         Me.ValueDisplay.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Chart1
@@ -184,7 +207,7 @@ Partial Public Class MainForm
         Me.DIFF.Name = "DIFF"
         Me.DIFF.Size = New System.Drawing.Size(82, 24)
         Me.DIFF.TabIndex = 76
-        Me.DIFF.Text = "0.00"
+        Me.DIFF.Text = " 0.000"
         Me.DIFF.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'DIFFKHzLabel
@@ -308,7 +331,7 @@ Partial Public Class MainForm
         Me.TestModeLabel.AutoSize = True
         Me.TestModeLabel.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TestModeLabel.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.TestModeLabel.Location = New System.Drawing.Point(30, 66)
+        Me.TestModeLabel.Location = New System.Drawing.Point(30, 70)
         Me.TestModeLabel.Name = "TestModeLabel"
         Me.TestModeLabel.Size = New System.Drawing.Size(114, 18)
         Me.TestModeLabel.TabIndex = 80
@@ -352,7 +375,7 @@ Partial Public Class MainForm
         Me.EDOff_Label.AutoSize = True
         Me.EDOff_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.EDOff_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.EDOff_Label.Location = New System.Drawing.Point(31, 84)
+        Me.EDOff_Label.Location = New System.Drawing.Point(31, 86)
         Me.EDOff_Label.Name = "EDOff_Label"
         Me.EDOff_Label.Size = New System.Drawing.Size(144, 18)
         Me.EDOff_Label.TabIndex = 85
@@ -431,7 +454,7 @@ Partial Public Class MainForm
         '
         Me.Suspend_Label.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Suspend_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.Suspend_Label.Location = New System.Drawing.Point(697, 49)
+        Me.Suspend_Label.Location = New System.Drawing.Point(736, 45)
         Me.Suspend_Label.Name = "Suspend_Label"
         Me.Suspend_Label.Size = New System.Drawing.Size(106, 26)
         Me.Suspend_Label.TabIndex = 95
@@ -442,13 +465,12 @@ Partial Public Class MainForm
         'AngleLabel
         '
         Me.AngleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AngleLabel.Location = New System.Drawing.Point(666, 56)
+        Me.AngleLabel.Location = New System.Drawing.Point(668, 56)
         Me.AngleLabel.Name = "AngleLabel"
         Me.AngleLabel.Size = New System.Drawing.Size(177, 67)
         Me.AngleLabel.TabIndex = 44
         Me.AngleLabel.Text = "arcsec"
         Me.AngleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.AngleLabel.Visible = False
         '
         'Frequency_Axis
         '
@@ -684,23 +706,23 @@ Partial Public Class MainForm
         '
         Me.Diagnostic1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Diagnostic1.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic1.Location = New System.Drawing.Point(115, 48)
+        Me.Diagnostic1.Location = New System.Drawing.Point(176, 4)
         Me.Diagnostic1.Name = "Diagnostic1"
-        Me.Diagnostic1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Diagnostic1.Size = New System.Drawing.Size(52, 18)
         Me.Diagnostic1.TabIndex = 105
-        Me.Diagnostic1.Text = " 00000"
+        Me.Diagnostic1.Text = " 0000"
+        Me.Diagnostic1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'Diagnostic_Label
+        'Diagnostic1_Label
         '
-        Me.Diagnostic_Label.AutoSize = True
-        Me.Diagnostic_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic_Label.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic_Label.Location = New System.Drawing.Point(31, 48)
-        Me.Diagnostic_Label.Name = "Diagnostic_Label"
-        Me.Diagnostic_Label.Size = New System.Drawing.Size(87, 18)
-        Me.Diagnostic_Label.TabIndex = 106
-        Me.Diagnostic_Label.Text = "Diagnostic:"
+        Me.Diagnostic1_Label.AutoSize = True
+        Me.Diagnostic1_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic1_Label.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic1_Label.Location = New System.Drawing.Point(91, 4)
+        Me.Diagnostic1_Label.Name = "Diagnostic1_Label"
+        Me.Diagnostic1_Label.Size = New System.Drawing.Size(99, 18)
+        Me.Diagnostic1_Label.TabIndex = 106
+        Me.Diagnostic1_Label.Text = "Diagnostic 1:"
         '
         'Graph_Averaging_CheckBox
         '
@@ -716,11 +738,290 @@ Partial Public Class MainForm
         Me.Graph_Averaging_CheckBox.Text = " Graph Averaging On"
         Me.Graph_Averaging_CheckBox.UseVisualStyleBackColor = True
         '
+        'Diagnostic2_Label
+        '
+        Me.Diagnostic2_Label.AutoSize = True
+        Me.Diagnostic2_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic2_Label.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic2_Label.Location = New System.Drawing.Point(238, 4)
+        Me.Diagnostic2_Label.Name = "Diagnostic2_Label"
+        Me.Diagnostic2_Label.Size = New System.Drawing.Size(99, 18)
+        Me.Diagnostic2_Label.TabIndex = 109
+        Me.Diagnostic2_Label.Text = "Diagnostic 2:"
+        '
+        'Diagnostic2a
+        '
+        Me.Diagnostic2a.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic2a.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic2a.Location = New System.Drawing.Point(335, 4)
+        Me.Diagnostic2a.Name = "Diagnostic2a"
+        Me.Diagnostic2a.Size = New System.Drawing.Size(33, 18)
+        Me.Diagnostic2a.TabIndex = 108
+        Me.Diagnostic2a.Text = " 00"
+        Me.Diagnostic2a.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Diagnostic3_Label
+        '
+        Me.Diagnostic3_Label.AutoSize = True
+        Me.Diagnostic3_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic3_Label.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic3_Label.Location = New System.Drawing.Point(401, 4)
+        Me.Diagnostic3_Label.Name = "Diagnostic3_Label"
+        Me.Diagnostic3_Label.Size = New System.Drawing.Size(99, 18)
+        Me.Diagnostic3_Label.TabIndex = 111
+        Me.Diagnostic3_Label.Text = "Diagnostic 3:"
+        '
+        'Diagnostic3a
+        '
+        Me.Diagnostic3a.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic3a.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic3a.Location = New System.Drawing.Point(498, 4)
+        Me.Diagnostic3a.Name = "Diagnostic3a"
+        Me.Diagnostic3a.Size = New System.Drawing.Size(32, 18)
+        Me.Diagnostic3a.TabIndex = 110
+        Me.Diagnostic3a.Text = " 00"
+        Me.Diagnostic3a.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Diagnostic4_Label
+        '
+        Me.Diagnostic4_Label.AutoSize = True
+        Me.Diagnostic4_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic4_Label.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic4_Label.Location = New System.Drawing.Point(563, 4)
+        Me.Diagnostic4_Label.Name = "Diagnostic4_Label"
+        Me.Diagnostic4_Label.Size = New System.Drawing.Size(103, 18)
+        Me.Diagnostic4_Label.TabIndex = 113
+        Me.Diagnostic4_Label.Text = " Diagnostic 4:"
+        '
+        'Diagnostic4
+        '
+        Me.Diagnostic4.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic4.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic4.Location = New System.Drawing.Point(665, 4)
+        Me.Diagnostic4.Name = "Diagnostic4"
+        Me.Diagnostic4.Size = New System.Drawing.Size(52, 18)
+        Me.Diagnostic4.TabIndex = 112
+        Me.Diagnostic4.Text = " 0000"
+        Me.Diagnostic4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Diagnostic2b
+        '
+        Me.Diagnostic2b.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic2b.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic2b.Location = New System.Drawing.Point(362, 4)
+        Me.Diagnostic2b.Name = "Diagnostic2b"
+        Me.Diagnostic2b.Size = New System.Drawing.Size(30, 18)
+        Me.Diagnostic2b.TabIndex = 114
+        Me.Diagnostic2b.Text = " 00"
+        Me.Diagnostic2b.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Diagnostic3b
+        '
+        Me.Diagnostic3b.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic3b.ForeColor = System.Drawing.Color.Blue
+        Me.Diagnostic3b.Location = New System.Drawing.Point(526, 4)
+        Me.Diagnostic3b.Name = "Diagnostic3b"
+        Me.Diagnostic3b.Size = New System.Drawing.Size(32, 18)
+        Me.Diagnostic3b.TabIndex = 115
+        Me.Diagnostic3b.Text = " 00"
+        Me.Diagnostic3b.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Axis1_Value
+        '
+        Me.Axis1_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis1_Value.Location = New System.Drawing.Point(98, 49)
+        Me.Axis1_Value.Name = "Axis1_Value"
+        Me.Axis1_Value.Size = New System.Drawing.Size(118, 22)
+        Me.Axis1_Value.TabIndex = 116
+        Me.Axis1_Value.Text = "0.000000"
+        Me.Axis1_Value.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.Axis1_Value.Visible = False
+        '
+        'Axis1_Label
+        '
+        Me.Axis1_Label.AutoSize = True
+        Me.Axis1_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis1_Label.ForeColor = System.Drawing.Color.BlueViolet
+        Me.Axis1_Label.Location = New System.Drawing.Point(41, 49)
+        Me.Axis1_Label.Name = "Axis1_Label"
+        Me.Axis1_Label.Size = New System.Drawing.Size(53, 18)
+        Me.Axis1_Label.TabIndex = 117
+        Me.Axis1_Label.Text = "Axis 1:"
+        Me.Axis1_Label.Visible = False
+        '
+        'Axis2_Label
+        '
+        Me.Axis2_Label.AutoSize = True
+        Me.Axis2_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis2_Label.ForeColor = System.Drawing.Color.Black
+        Me.Axis2_Label.Location = New System.Drawing.Point(282, 49)
+        Me.Axis2_Label.Name = "Axis2_Label"
+        Me.Axis2_Label.Size = New System.Drawing.Size(53, 18)
+        Me.Axis2_Label.TabIndex = 119
+        Me.Axis2_Label.Text = "Axis 2:"
+        Me.Axis2_Label.Visible = False
+        '
+        'Axis2_Value
+        '
+        Me.Axis2_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis2_Value.Location = New System.Drawing.Point(340, 49)
+        Me.Axis2_Value.Name = "Axis2_Value"
+        Me.Axis2_Value.Size = New System.Drawing.Size(115, 22)
+        Me.Axis2_Value.TabIndex = 118
+        Me.Axis2_Value.Text = "0.000000"
+        Me.Axis2_Value.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.Axis2_Value.Visible = False
+        '
+        'Axis3_Label
+        '
+        Me.Axis3_Label.AutoSize = True
+        Me.Axis3_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis3_Label.ForeColor = System.Drawing.Color.Black
+        Me.Axis3_Label.Location = New System.Drawing.Point(515, 49)
+        Me.Axis3_Label.Name = "Axis3_Label"
+        Me.Axis3_Label.Size = New System.Drawing.Size(53, 18)
+        Me.Axis3_Label.TabIndex = 121
+        Me.Axis3_Label.Text = "Axis 3:"
+        Me.Axis3_Label.Visible = False
+        '
+        'Axis3_Value
+        '
+        Me.Axis3_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis3_Value.Location = New System.Drawing.Point(573, 49)
+        Me.Axis3_Value.Name = "Axis3_Value"
+        Me.Axis3_Value.Size = New System.Drawing.Size(119, 22)
+        Me.Axis3_Value.TabIndex = 120
+        Me.Axis3_Value.Text = "0.000000"
+        Me.Axis3_Value.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.Axis3_Value.Visible = False
+        '
+        'Axis1_Angle_Label
+        '
+        Me.Axis1_Angle_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis1_Angle_Label.ImageAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.Axis1_Angle_Label.Location = New System.Drawing.Point(214, 49)
+        Me.Axis1_Angle_Label.Name = "Axis1_Angle_Label"
+        Me.Axis1_Angle_Label.Size = New System.Drawing.Size(56, 18)
+        Me.Axis1_Angle_Label.TabIndex = 122
+        Me.Axis1_Angle_Label.Text = "arcsec"
+        Me.Axis1_Angle_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Axis1_Angle_Label.Visible = False
+        '
+        'Axis1_Units_Label
+        '
+        Me.Axis1_Units_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis1_Units_Label.Location = New System.Drawing.Point(214, 47)
+        Me.Axis1_Units_Label.Name = "Axis1_Units_Label"
+        Me.Axis1_Units_Label.Size = New System.Drawing.Size(32, 22)
+        Me.Axis1_Units_Label.TabIndex = 123
+        Me.Axis1_Units_Label.Text = "nm"
+        Me.Axis1_Units_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Axis1_Units_Label.Visible = False
+        '
+        'Axis1_Time_Label
+        '
+        Me.Axis1_Time_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis1_Time_Label.Location = New System.Drawing.Point(242, 49)
+        Me.Axis1_Time_Label.Name = "Axis1_Time_Label"
+        Me.Axis1_Time_Label.Size = New System.Drawing.Size(28, 19)
+        Me.Axis1_Time_Label.TabIndex = 124
+        Me.Axis1_Time_Label.Text = "/s"
+        Me.Axis1_Time_Label.Visible = False
+        '
+        'Axis2_Time_Label
+        '
+        Me.Axis2_Time_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis2_Time_Label.Location = New System.Drawing.Point(481, 49)
+        Me.Axis2_Time_Label.Name = "Axis2_Time_Label"
+        Me.Axis2_Time_Label.Size = New System.Drawing.Size(28, 19)
+        Me.Axis2_Time_Label.TabIndex = 127
+        Me.Axis2_Time_Label.Text = "/s"
+        Me.Axis2_Time_Label.Visible = False
+        '
+        'Axis2_Units_Label
+        '
+        Me.Axis2_Units_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis2_Units_Label.Location = New System.Drawing.Point(453, 47)
+        Me.Axis2_Units_Label.Name = "Axis2_Units_Label"
+        Me.Axis2_Units_Label.Size = New System.Drawing.Size(32, 22)
+        Me.Axis2_Units_Label.TabIndex = 126
+        Me.Axis2_Units_Label.Text = "nm"
+        Me.Axis2_Units_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Axis2_Units_Label.Visible = False
+        '
+        'Axis2_Angle_Label
+        '
+        Me.Axis2_Angle_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis2_Angle_Label.ImageAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.Axis2_Angle_Label.Location = New System.Drawing.Point(453, 49)
+        Me.Axis2_Angle_Label.Name = "Axis2_Angle_Label"
+        Me.Axis2_Angle_Label.Size = New System.Drawing.Size(56, 18)
+        Me.Axis2_Angle_Label.TabIndex = 125
+        Me.Axis2_Angle_Label.Text = "arcsec"
+        Me.Axis2_Angle_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Axis2_Angle_Label.Visible = False
+        '
+        'Axis3_Time_Label
+        '
+        Me.Axis3_Time_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis3_Time_Label.Location = New System.Drawing.Point(718, 49)
+        Me.Axis3_Time_Label.Name = "Axis3_Time_Label"
+        Me.Axis3_Time_Label.Size = New System.Drawing.Size(28, 19)
+        Me.Axis3_Time_Label.TabIndex = 130
+        Me.Axis3_Time_Label.Text = "/s"
+        Me.Axis3_Time_Label.Visible = False
+        '
+        'Axis3_Units_Label
+        '
+        Me.Axis3_Units_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis3_Units_Label.Location = New System.Drawing.Point(690, 47)
+        Me.Axis3_Units_Label.Name = "Axis3_Units_Label"
+        Me.Axis3_Units_Label.Size = New System.Drawing.Size(32, 22)
+        Me.Axis3_Units_Label.TabIndex = 129
+        Me.Axis3_Units_Label.Text = "nm"
+        Me.Axis3_Units_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Axis3_Units_Label.Visible = False
+        '
+        'Axis3_Angle_Label
+        '
+        Me.Axis3_Angle_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis3_Angle_Label.ImageAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.Axis3_Angle_Label.Location = New System.Drawing.Point(690, 49)
+        Me.Axis3_Angle_Label.Name = "Axis3_Angle_Label"
+        Me.Axis3_Angle_Label.Size = New System.Drawing.Size(56, 18)
+        Me.Axis3_Angle_Label.TabIndex = 128
+        Me.Axis3_Angle_Label.Text = "arcsec"
+        Me.Axis3_Angle_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Axis3_Angle_Label.Visible = False
+        '
         'MainForm
         '
         Me.ClientSize = New System.Drawing.Size(880, 572)
+        Me.Controls.Add(Me.Axis3_Time_Label)
+        Me.Controls.Add(Me.Axis3_Units_Label)
+        Me.Controls.Add(Me.Axis3_Angle_Label)
+        Me.Controls.Add(Me.Axis2_Time_Label)
+        Me.Controls.Add(Me.Axis2_Units_Label)
+        Me.Controls.Add(Me.Axis2_Angle_Label)
+        Me.Controls.Add(Me.Axis1_Time_Label)
+        Me.Controls.Add(Me.Axis1_Units_Label)
+        Me.Controls.Add(Me.Axis1_Angle_Label)
+        Me.Controls.Add(Me.Axis3_Label)
+        Me.Controls.Add(Me.Axis3_Value)
+        Me.Controls.Add(Me.Axis2_Label)
+        Me.Controls.Add(Me.Axis2_Value)
+        Me.Controls.Add(Me.Axis1_Label)
+        Me.Controls.Add(Me.Axis1_Value)
+        Me.Controls.Add(Me.Diagnostic3b)
+        Me.Controls.Add(Me.Diagnostic2b)
+        Me.Controls.Add(Me.Diagnostic4_Label)
+        Me.Controls.Add(Me.Diagnostic4)
+        Me.Controls.Add(Me.Diagnostic3_Label)
+        Me.Controls.Add(Me.Diagnostic3a)
+        Me.Controls.Add(Me.Diagnostic2_Label)
+        Me.Controls.Add(Me.Diagnostic2a)
         Me.Controls.Add(Me.Graph_Averaging_CheckBox)
-        Me.Controls.Add(Me.Diagnostic_Label)
+        Me.Controls.Add(Me.Diagnostic1_Label)
         Me.Controls.Add(Me.Diagnostic1)
         Me.Controls.Add(Me.Label_RangeTime)
         Me.Controls.Add(Me.RangeUnits)
@@ -837,6 +1138,29 @@ Partial Public Class MainForm
     Friend WithEvents RangeUnits As System.Windows.Forms.Label
     Friend WithEvents Label_RangeTime As System.Windows.Forms.Label
     Friend WithEvents Diagnostic1 As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic_Label As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic1_Label As System.Windows.Forms.Label
     Friend WithEvents Graph_Averaging_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Diagnostic2_Label As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic2a As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic3_Label As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic3a As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic4_Label As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic4 As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic2b As System.Windows.Forms.Label
+    Friend WithEvents Diagnostic3b As System.Windows.Forms.Label
+    Friend WithEvents Axis1_Value As System.Windows.Forms.Label
+    Friend WithEvents Axis1_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis2_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis2_Value As System.Windows.Forms.Label
+    Friend WithEvents Axis3_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis3_Value As System.Windows.Forms.Label
+    Friend WithEvents Axis1_Angle_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis1_Units_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis1_Time_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis2_Time_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis2_Units_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis2_Angle_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis3_Time_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis3_Units_Label As System.Windows.Forms.Label
+    Friend WithEvents Axis3_Angle_Label As System.Windows.Forms.Label
 End Class

@@ -14,7 +14,7 @@ Public Class TestMode
         NumericUpDown_FGREF_Value.Value = CDec(My.Settings.TMREFFrequency)
 
         If MainForm.TMUnitsFactor = 0.001 Then
-            ComboBox_Units.Text = "um"
+            ComboBox_Units.Text = "μm"
         ElseIf MainForm.TMUnitsFactor = 1 Then
             ComboBox_Units.Text = "mm"
         ElseIf MainForm.TMUnitsFactor = 10 Then
@@ -39,6 +39,12 @@ Public Class TestMode
             If (Math.PI * 12.65 * MainForm.TMUnitsFactor) * MainForm.TMFreqMult * MainForm.TMAmpValue > ((NumericUpDown_FGREF_Value.Value - 0.1) * 100) Then
                 TextBox_Units_Caution.Visible = True
             End If
+        End If
+        If Multiple_Axes_Enable_CheckBox.Checked = True Then
+            Axis_Select_Label.Visible = True
+            Axis1_CheckBox.Visible = True
+            Axis2_Checkbox.Visible = True
+            Axis3_CheckBox.Visible = True
         End If
     End Sub
 
@@ -230,7 +236,7 @@ Public Class TestMode
 
     Private Sub ComboBox_Units_Selectedindexchanged(sender As Object, e As EventArgs) Handles ComboBox_Units.SelectedIndexChanged
         If MainForm.MFLoaded = 1 Then
-            If ComboBox_Units.Text.Equals("um") Then
+            If ComboBox_Units.Text.Equals("μm") Then
                 MainForm.TMUnitsFactor = 0.001
             ElseIf ComboBox_Units.Text.Equals("mm") Then
                 MainForm.TMUnitsFactor = 1
@@ -315,28 +321,58 @@ Public Class TestMode
                 MainForm.SuspendFlag = 0
             End If
 
+
+            '      MainForm.MultipleAxesFlag = 1
+            '      MainForm.TMMultipleAxesFlag = 1
+            'Axis_Select_Label.Visible = False
+            'Axis1_CheckBox.Visible = False
+            'Axis2_Checkbox.Visible = False
+            'Axis3_CheckBox.Visible = False
+            'MainForm.Axis1_Label.Visible = False
+            'MainForm.Axis1_Value.Visible = False
+            'MainForm.Axis1_Units_Label.Visible = False
+            'MainForm.Axis1_Time_Label.Visible = False
+            'MainForm.Axis1_Angle_Label.Visible = False
+            'MainForm.Axis2_Label.Visible = False
+            'MainForm.Axis2_Value.Visible = False
+            'MainForm.Axis2_Units_Label.Visible = False
+            'MainForm.Axis2_Time_Label.Visible = False
+            'MainForm.Axis2_Angle_Label.Visible = False
+            'MainForm.Axis3_Label.Visible = False
+            'MainForm.Axis3_Value.Visible = False
+            'MainForm.Axis3_Units_Label.Visible = False
+            'MainForm.Axis3_Time_Label.Visible = False
+            'MainForm.Axis3_Angle_Label.Visible = False
+
             MainForm.SimulationTimer.Enabled = False
         End If
     End Sub
 
-    Private Sub ED_On_Button_Click(sender As Object, e As EventArgs) Handles EDOn_Button.Click
-        EDOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        EDOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        EDOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        EDOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.EDOff_Label.Visible = False
-        MainForm.ErrorFlag = 0
-        MainForm.EDEnabled = 1
+    Private Sub Error_Detection_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Error_Detection_CheckBox.CheckedChanged
+        If Error_Detection_CheckBox.Checked = True Then
+            MainForm.EDOff_Label.Visible = False
+            MainForm.ErrorFlag = 0
+            MainForm.EDEnabled = 1
+        Else
+            MainForm.EDOff_Label.Visible = True
+            MainForm.ErrorFlag = 0
+            MainForm.EDEnabled = 0
+        End If
     End Sub
 
-    Private Sub ED_Off_Button_Click(sender As Object, e As EventArgs) Handles EDOff_Button.Click
-        EDOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
-        EDOff_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        EDOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
-        EDOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.EDOff_Label.Visible = True
-        MainForm.ErrorFlag = 0
-        MainForm.EDEnabled = 0
+    Private Sub Diagnostic_Enable_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Error_Detection_CheckBox.CheckedChanged
+        If Diagnostic_Enable_CheckBox.Checked = False Then
+            MainForm.Diagnostic1.Visible = False
+            MainForm.Diagnostic2a.Visible = False
+            MainForm.Diagnostic2b.Visible = False
+            MainForm.Diagnostic3a.Visible = False
+            MainForm.Diagnostic3b.Visible = False
+            MainForm.Diagnostic4.Visible = False
+            MainForm.Diagnostic1_Label.Visible = False
+            MainForm.Diagnostic2_Label.Visible = False
+            MainForm.Diagnostic3_Label.Visible = False
+            MainForm.Diagnostic4_Label.Visible = False
+        End If
     End Sub
 
     Private Sub ZeroButton_Click(sender As Object, e As EventArgs) Handles ZeroButton.Click
@@ -367,4 +403,114 @@ Public Class TestMode
         End If
     End Sub
 
+    Private Sub Multiple_Axes_Enable_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Multiple_Axes_Enable_CheckBox.CheckedChanged
+        If MainForm.MFLoaded = 1 Then
+            If Multiple_Axes_Enable_CheckBox.Checked = True Then
+                MainForm.MultipleAxesFlag = &H8
+                MainForm.TMMultipleAxesFlag = &H8
+                Axis_Select_Label.Visible = True
+                Axis1_CheckBox.Visible = True
+                Axis2_Checkbox.Visible = True
+                Axis3_CheckBox.Visible = True
+                If Axis1_CheckBox.Checked = True Then
+                    MainForm.MultipleAxesFlag = MainForm.MultipleAxesFlag Or &H1
+                    MainForm.TMMultipleAxesFlag = MainForm.TMMultipleAxesFlag Or &H1
+                    MainForm.Axis1_Label.Visible = True
+                    MainForm.Axis1_Value.Visible = True
+                End If
+                If Axis2_Checkbox.Checked = True Then
+                    MainForm.MultipleAxesFlag = MainForm.MultipleAxesFlag Or &H2
+                    MainForm.TMMultipleAxesFlag = MainForm.TMMultipleAxesFlag Or &H2
+                    MainForm.Axis2_Label.Visible = True
+                    MainForm.Axis2_Value.Visible = True
+                End If
+                If Axis3_CheckBox.Checked = True Then
+                    MainForm.MultipleAxesFlag = MainForm.MultipleAxesFlag Or &H4
+                    MainForm.TMMultipleAxesFlag = MainForm.TMMultipleAxesFlag Or &H4
+                    MainForm.Axis3_Label.Visible = True
+                    MainForm.Axis3_Value.Visible = True
+                End If
+            Else
+                MainForm.MultipleAxesFlag = 1
+                MainForm.TMMultipleAxesFlag = 1
+                Axis_Select_Label.Visible = False
+                Axis1_CheckBox.Visible = False
+                Axis2_Checkbox.Visible = False
+                Axis3_CheckBox.Visible = False
+                MainForm.Axis1_Label.Visible = False
+                MainForm.Axis1_Value.Visible = False
+                MainForm.Axis1_Units_Label.Visible = False
+                MainForm.Axis1_Time_Label.Visible = False
+                MainForm.Axis1_Angle_Label.Visible = False
+                MainForm.Axis2_Label.Visible = False
+                MainForm.Axis2_Value.Visible = False
+                MainForm.Axis2_Units_Label.Visible = False
+                MainForm.Axis2_Time_Label.Visible = False
+                MainForm.Axis2_Angle_Label.Visible = False
+                MainForm.Axis3_Label.Visible = False
+                MainForm.Axis3_Value.Visible = False
+                MainForm.Axis3_Units_Label.Visible = False
+                MainForm.Axis3_Time_Label.Visible = False
+                MainForm.Axis3_Angle_Label.Visible = False
+            End If
+        End If
+    End Sub
+
+    Private Sub Axis1_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Axis1_CheckBox.CheckedChanged
+        If MainForm.MFLoaded = 1 Then
+            If Axis1_CheckBox.Checked = True Then
+                MainForm.MultipleAxesFlag = MainForm.MultipleAxesFlag Or &H1
+                MainForm.TMMultipleAxesFlag = MainForm.TMMultipleAxesFlag Or &H1
+                MainForm.Axis1_Label.Visible = True
+                MainForm.Axis1_Value.Visible = True
+            Else
+                MainForm.MultipleAxesFlag = MainForm.MultipleAxesFlag And &HFFFE
+                MainForm.TMMultipleAxesFlag = MainForm.TMMultipleAxesFlag And &HFFFE
+                MainForm.Axis1_Label.Visible = False
+                MainForm.Axis1_Value.Visible = False
+                MainForm.Axis1_Units_Label.Visible = False
+                MainForm.Axis1_Time_Label.Visible = False
+                MainForm.Axis1_Angle_Label.Visible = False
+            End If
+        End If
+    End Sub
+
+    Private Sub Axis2_Checkbox_CheckedChanged(sender As Object, e As EventArgs) Handles Axis2_Checkbox.CheckedChanged
+        If MainForm.MFLoaded = 1 Then
+            If Axis2_Checkbox.Checked = True Then
+                MainForm.MultipleAxesFlag = MainForm.MultipleAxesFlag Or &H2
+                MainForm.TMMultipleAxesFlag = MainForm.TMMultipleAxesFlag Or &H2
+                MainForm.Axis2_Label.Visible = True
+                MainForm.Axis2_Value.Visible = True
+            Else
+                MainForm.MultipleAxesFlag = MainForm.MultipleAxesFlag And &HFFFD
+                MainForm.TMMultipleAxesFlag = MainForm.TMMultipleAxesFlag And &HFFFD
+                MainForm.Axis2_Label.Visible = False
+                MainForm.Axis2_Value.Visible = False
+                MainForm.Axis2_Units_Label.Visible = False
+                MainForm.Axis2_Time_Label.Visible = False
+                MainForm.Axis2_Angle_Label.Visible = False
+            End If
+        End If
+    End Sub
+
+    Private Sub Axis3_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Axis3_CheckBox.CheckedChanged
+        If MainForm.MFLoaded = 1 Then
+            If Axis3_CheckBox.Checked = True Then
+                MainForm.TMMultipleAxesFlag = MainForm.TMMultipleAxesFlag Or &H4
+                MainForm.MultipleAxesFlag = MainForm.TMMultipleAxesFlag Or &H4
+                MainForm.Axis3_Label.Visible = True
+                MainForm.Axis3_Value.Visible = True
+            Else
+                MainForm.MultipleAxesFlag = MainForm.MultipleAxesFlag And &HFFFB
+                MainForm.TMMultipleAxesFlag = MainForm.TMMultipleAxesFlag And &HFFFB
+                MainForm.Axis3_Label.Visible = False
+                MainForm.Axis3_Label.Visible = False
+                MainForm.Axis3_Value.Visible = False
+                MainForm.Axis3_Units_Label.Visible = False
+                MainForm.Axis3_Time_Label.Visible = False
+                MainForm.Axis3_Angle_Label.Visible = False
+            End If
+        End If
+    End Sub
 End Class

@@ -67,6 +67,9 @@ Public Class Configuration
         MainForm.UnitLabel.Text = "nm"
         MainForm.RangeUnits.Text = "nm"
         MainForm.Axis_UnitsD.Text = "nm"
+        MainForm.Axis1_Units_Label.Text = "nm"
+        MainForm.Axis2_Units_Label.Text = "nm"
+        MainForm.Axis3_Units_Label.Text = "nm"
         MainForm.unitCorrectionFactor = 0.000001
         My.Settings.UnitCorrectionFactor = 0.000001
     End Sub
@@ -86,9 +89,12 @@ Public Class Configuration
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        MainForm.UnitLabel.Text = "um"
-        MainForm.RangeUnits.Text = "um"
-        MainForm.Axis_UnitsD.Text = "um"
+        MainForm.UnitLabel.Text = "μm"
+        MainForm.RangeUnits.Text = "μm"
+        MainForm.Axis_UnitsD.Text = "μm"
+        MainForm.Axis1_Units_Label.Text = "μm"
+        MainForm.Axis2_Units_Label.Text = "μm"
+        MainForm.Axis3_Units_Label.Text = "μm"
         MainForm.unitCorrectionFactor = 0.001
         My.Settings.UnitCorrectionFactor = 0.001
     End Sub
@@ -133,6 +139,9 @@ Public Class Configuration
         MainForm.UnitLabel.Text = "cm"
         MainForm.RangeUnits.Text = "cm"
         MainForm.Axis_UnitsD.Text = "cm"
+        MainForm.Axis1_Units_Label.Text = "cm"
+        MainForm.Axis2_Units_Label.Text = "cm"
+        MainForm.Axis3_Units_Label.Text = "cm"
         MainForm.unitCorrectionFactor = 10
         My.Settings.UnitCorrectionFactor = 10
     End Sub
@@ -155,6 +164,9 @@ Public Class Configuration
         MainForm.UnitLabel.Text = "m"
         MainForm.RangeUnits.Text = "m"
         MainForm.Axis_UnitsD.Text = "m"
+        MainForm.Axis1_Units_Label.Text = "m"
+        MainForm.Axis2_Units_Label.Text = "m"
+        MainForm.Axis3_Units_Label.Text = "m"
         MainForm.unitCorrectionFactor = 1000
     End Sub
 
@@ -176,6 +188,9 @@ Public Class Configuration
         MainForm.UnitLabel.Text = "in"
         MainForm.RangeUnits.Text = "in"
         MainForm.Axis_UnitsD.Text = "in"
+        MainForm.Axis1_Units_Label.Text = "in"
+        MainForm.Axis2_Units_Label.Text = "in"
+        MainForm.Axis3_Units_Label.Text = "in"
         MainForm.unitCorrectionFactor = 25.4
         My.Settings.UnitCorrectionFactor = 25.4
     End Sub
@@ -198,7 +213,9 @@ Public Class Configuration
         MainForm.UnitLabel.Text = "ft"
         MainForm.RangeUnits.Text = "ft"
         MainForm.Axis_UnitsD.Text = "ft"
-        'MainForm.ComboBox_Range_UnitsD.Text = "ft"
+        MainForm.Axis1_Units_Label.Text = "ft"
+        MainForm.Axis2_Units_Label.Text = "ft"
+        MainForm.Axis3_Units_Label.Text = "ft"
         MainForm.unitCorrectionFactor = 304.8
         My.Settings.UnitCorrectionFactor = 304.8
     End Sub
@@ -215,6 +232,9 @@ Public Class Configuration
         MainForm.AngleLabel.Text = "arcsec"
         MainForm.RangeUnits.Text = "arcsec"
         MainForm.Axis_UnitsA.Text = "arcsec"
+        MainForm.Axis1_Angle_Label.Text = "arcsec"
+        MainForm.Axis2_Angle_Label.Text = "arcsec"
+        MainForm.Axis3_Angle_Label.Text = "arcsec"
     End Sub
 
     Private Sub Buttonarcmin_Click(sender As Object, e As EventArgs) Handles Buttonarcmin.Click
@@ -227,6 +247,9 @@ Public Class Configuration
         MainForm.AngleLabel.Text = "arcmin"
         MainForm.RangeUnits.Text = "arcmin"
         MainForm.Axis_UnitsA.Text = "arcmin"
+        MainForm.Axis1_Angle_Label.Text = "arcmin"
+        MainForm.Axis2_Angle_Label.Text = "arcmin"
+        MainForm.Axis3_Angle_Label.Text = "arcmin"
         MainForm.angleCorrectionFactor = 60.0
         My.Settings.AngleCorrectionFactor = 60.0
     End Sub
@@ -241,6 +264,9 @@ Public Class Configuration
         MainForm.AngleLabel.Text = "degree"
         MainForm.RangeUnits.Text = "degree"
         MainForm.Axis_UnitsA.Text = "degree"
+        MainForm.Axis1_Angle_Label.Text = "degree"
+        MainForm.Axis2_Angle_Label.Text = "degree"
+        MainForm.Axis3_Angle_Label.Text = "degree"
         MainForm.angleCorrectionFactor = 1.0
         My.Settings.AngleCorrectionFactor = 1.0
     End Sub

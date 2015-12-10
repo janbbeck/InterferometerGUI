@@ -48,6 +48,7 @@ Partial Class Configuration
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.NumericUpDown_SS_Coefficient = New System.Windows.Forms.NumericUpDown()
         Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.Interpolation_CheckBox = New System.Windows.Forms.CheckBox()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.NumericUpDown_ARS, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_SL_Coefficient, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -174,7 +175,7 @@ Partial Class Configuration
         Me.Buttonum.Name = "Buttonum"
         Me.Buttonum.Size = New System.Drawing.Size(50, 23)
         Me.Buttonum.TabIndex = 57
-        Me.Buttonum.Text = "um"
+        Me.Buttonum.Text = "μm"
         '
         'Buttonmm
         '
@@ -401,12 +402,27 @@ Partial Class Configuration
         Me.TextBox3.TabIndex = 81
         Me.TextBox3.Text = "mm"
         '
+        'Interpolation_CheckBox
+        '
+        Me.Interpolation_CheckBox.AutoSize = True
+        Me.Interpolation_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Interpolation_CheckBox.Checked = True
+        Me.Interpolation_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Interpolation_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Interpolation_CheckBox.Location = New System.Drawing.Point(245, 184)
+        Me.Interpolation_CheckBox.Name = "Interpolation_CheckBox"
+        Me.Interpolation_CheckBox.Size = New System.Drawing.Size(105, 21)
+        Me.Interpolation_CheckBox.TabIndex = 108
+        Me.Interpolation_CheckBox.Text = "Interpolation"
+        Me.Interpolation_CheckBox.UseVisualStyleBackColor = True
+        '
         'Configuration
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(428, 393)
+        Me.Controls.Add(Me.Interpolation_CheckBox)
         Me.Controls.Add(Me.TextBox3)
         Me.Controls.Add(Me.NumericUpDown_SS_Coefficient)
         Me.Controls.Add(Me.TextBox2)
@@ -470,5 +486,6 @@ Partial Class Configuration
     Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
     Friend WithEvents NumericUpDown_SS_Coefficient As System.Windows.Forms.NumericUpDown
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents Interpolation_CheckBox As System.Windows.Forms.CheckBox
 
 End Class

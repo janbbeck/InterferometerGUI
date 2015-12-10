@@ -39,21 +39,25 @@ Partial Class TestMode
         Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.ComboBox_Units = New System.Windows.Forms.ComboBox()
         Me.TextBox5 = New System.Windows.Forms.TextBox()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TextBox_Units_Caution = New System.Windows.Forms.TextBox()
         Me.FGREFLabel = New System.Windows.Forms.TextBox()
         Me.FGREFMHz = New System.Windows.Forms.TextBox()
         Me.NumericUpDown_FGREF_Value = New System.Windows.Forms.NumericUpDown()
         Me.TMClose_Button = New System.Windows.Forms.Button()
         Me.ZeroButton = New System.Windows.Forms.Button()
-        Me.EDOff_Button = New System.Windows.Forms.Button()
-        Me.EDOn_Button = New System.Windows.Forms.Button()
         Me.FGOff_Button = New System.Windows.Forms.Button()
         Me.FGOn_Button = New System.Windows.Forms.Button()
         Me.Button_Constant = New System.Windows.Forms.Button()
         Me.Button_Triangle = New System.Windows.Forms.Button()
         Me.Button_Sine = New System.Windows.Forms.Button()
         Me.Button_Ramp = New System.Windows.Forms.Button()
+        Me.Error_Detection_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Diagnostic_Enable_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Multiple_Axes_Enable_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Axis1_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Axis2_Checkbox = New System.Windows.Forms.CheckBox()
+        Me.Axis3_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Axis_Select_Label = New System.Windows.Forms.TextBox()
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Amplitude, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Offset, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -254,8 +258,8 @@ Partial Class TestMode
         '
         Me.ComboBox_Units.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Units.FormattingEnabled = True
-        Me.ComboBox_Units.Items.AddRange(New Object() {"um", "mm", "cm", "m", "in", "ft"})
-        Me.ComboBox_Units.Location = New System.Drawing.Point(339, 305)
+        Me.ComboBox_Units.Items.AddRange(New Object() {"μm", "mm", "cm", "m", "in", "ft"})
+        Me.ComboBox_Units.Location = New System.Drawing.Point(339, 321)
         Me.ComboBox_Units.Name = "ComboBox_Units"
         Me.ComboBox_Units.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Units.Size = New System.Drawing.Size(39, 21)
@@ -268,7 +272,7 @@ Partial Class TestMode
         Me.TextBox5.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox5.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox5.Location = New System.Drawing.Point(282, 306)
+        Me.TextBox5.Location = New System.Drawing.Point(282, 322)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.ReadOnly = True
         Me.TextBox5.Size = New System.Drawing.Size(56, 15)
@@ -276,28 +280,13 @@ Partial Class TestMode
         Me.TextBox5.Text = " Units"
         Me.TextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'TextBox1
-        '
-        Me.TextBox1.BackColor = System.Drawing.SystemColors.Control
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(265, 342)
-        Me.TextBox1.MaximumSize = New System.Drawing.Size(60, 30)
-        Me.TextBox1.MinimumSize = New System.Drawing.Size(150, 30)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ReadOnly = True
-        Me.TextBox1.Size = New System.Drawing.Size(150, 30)
-        Me.TextBox1.TabIndex = 39
-        Me.TextBox1.Text = "Error Detection"
-        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
         'TextBox_Units_Caution
         '
         Me.TextBox_Units_Caution.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBox_Units_Caution.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox_Units_Caution.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_Units_Caution.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.TextBox_Units_Caution.Location = New System.Drawing.Point(275, 287)
+        Me.TextBox_Units_Caution.Location = New System.Drawing.Point(275, 303)
         Me.TextBox_Units_Caution.MaximumSize = New System.Drawing.Size(200, 0)
         Me.TextBox_Units_Caution.MinimumSize = New System.Drawing.Size(100, 0)
         Me.TextBox_Units_Caution.Name = "TextBox_Units_Caution"
@@ -314,7 +303,7 @@ Partial Class TestMode
         Me.FGREFLabel.BackColor = System.Drawing.SystemColors.Menu
         Me.FGREFLabel.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.FGREFLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FGREFLabel.Location = New System.Drawing.Point(89, 306)
+        Me.FGREFLabel.Location = New System.Drawing.Point(89, 322)
         Me.FGREFLabel.Name = "FGREFLabel"
         Me.FGREFLabel.ReadOnly = True
         Me.FGREFLabel.Size = New System.Drawing.Size(46, 15)
@@ -328,7 +317,7 @@ Partial Class TestMode
         Me.FGREFMHz.BackColor = System.Drawing.SystemColors.Menu
         Me.FGREFMHz.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.FGREFMHz.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.5!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FGREFMHz.Location = New System.Drawing.Point(182, 306)
+        Me.FGREFMHz.Location = New System.Drawing.Point(182, 322)
         Me.FGREFMHz.Name = "FGREFMHz"
         Me.FGREFMHz.ReadOnly = True
         Me.FGREFMHz.Size = New System.Drawing.Size(46, 15)
@@ -341,7 +330,7 @@ Partial Class TestMode
         Me.NumericUpDown_FGREF_Value.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.NumericUpDown_FGREF_Value.DecimalPlaces = 2
         Me.NumericUpDown_FGREF_Value.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
-        Me.NumericUpDown_FGREF_Value.Location = New System.Drawing.Point(136, 306)
+        Me.NumericUpDown_FGREF_Value.Location = New System.Drawing.Point(136, 322)
         Me.NumericUpDown_FGREF_Value.Maximum = New Decimal(New Integer() {20, 0, 0, 0})
         Me.NumericUpDown_FGREF_Value.Minimum = New Decimal(New Integer() {2, 0, 0, 65536})
         Me.NumericUpDown_FGREF_Value.Name = "NumericUpDown_FGREF_Value"
@@ -356,7 +345,7 @@ Partial Class TestMode
         Me.TMClose_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.TMClose_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.TMClose_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.TMClose_Button.Location = New System.Drawing.Point(198, 432)
+        Me.TMClose_Button.Location = New System.Drawing.Point(198, 476)
         Me.TMClose_Button.Name = "TMClose_Button"
         Me.TMClose_Button.Size = New System.Drawing.Size(67, 23)
         Me.TMClose_Button.TabIndex = 1
@@ -375,31 +364,6 @@ Partial Class TestMode
         Me.ZeroButton.Size = New System.Drawing.Size(105, 23)
         Me.ZeroButton.TabIndex = 41
         Me.ZeroButton.Text = "Reset Display"
-        '
-        'EDOff_Button
-        '
-        Me.EDOff_Button.BackColor = System.Drawing.SystemColors.Control
-        Me.EDOff_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
-        Me.EDOff_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.EDOff_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.EDOff_Button.Location = New System.Drawing.Point(275, 381)
-        Me.EDOff_Button.Name = "EDOff_Button"
-        Me.EDOff_Button.Size = New System.Drawing.Size(47, 24)
-        Me.EDOff_Button.TabIndex = 38
-        Me.EDOff_Button.Text = "OFF"
-        Me.EDOff_Button.UseVisualStyleBackColor = False
-        '
-        'EDOn_Button
-        '
-        Me.EDOn_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
-        Me.EDOn_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.EDOn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.EDOn_Button.Location = New System.Drawing.Point(351, 381)
-        Me.EDOn_Button.Name = "EDOn_Button"
-        Me.EDOn_Button.Size = New System.Drawing.Size(55, 24)
-        Me.EDOn_Button.TabIndex = 37
-        Me.EDOn_Button.Text = "ON"
-        Me.EDOn_Button.UseVisualStyleBackColor = True
         '
         'FGOff_Button
         '
@@ -477,20 +441,120 @@ Partial Class TestMode
         Me.Button_Ramp.Text = "Ramp"
         Me.Button_Ramp.UseVisualStyleBackColor = True
         '
+        'Error_Detection_CheckBox
+        '
+        Me.Error_Detection_CheckBox.AutoSize = True
+        Me.Error_Detection_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Error_Detection_CheckBox.Checked = True
+        Me.Error_Detection_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Error_Detection_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Error_Detection_CheckBox.Location = New System.Drawing.Point(283, 406)
+        Me.Error_Detection_CheckBox.Name = "Error_Detection_CheckBox"
+        Me.Error_Detection_CheckBox.Size = New System.Drawing.Size(123, 21)
+        Me.Error_Detection_CheckBox.TabIndex = 109
+        Me.Error_Detection_CheckBox.Text = "Error Detection"
+        Me.Error_Detection_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Diagnostic_Enable_CheckBox
+        '
+        Me.Diagnostic_Enable_CheckBox.AutoSize = True
+        Me.Diagnostic_Enable_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Diagnostic_Enable_CheckBox.Checked = True
+        Me.Diagnostic_Enable_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Diagnostic_Enable_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic_Enable_CheckBox.Location = New System.Drawing.Point(248, 427)
+        Me.Diagnostic_Enable_CheckBox.Name = "Diagnostic_Enable_CheckBox"
+        Me.Diagnostic_Enable_CheckBox.Size = New System.Drawing.Size(158, 21)
+        Me.Diagnostic_Enable_CheckBox.TabIndex = 110
+        Me.Diagnostic_Enable_CheckBox.Text = "Diagnostic Readouts"
+        Me.Diagnostic_Enable_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Multiple_Axes_Enable_CheckBox
+        '
+        Me.Multiple_Axes_Enable_CheckBox.AutoSize = True
+        Me.Multiple_Axes_Enable_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Multiple_Axes_Enable_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Multiple_Axes_Enable_CheckBox.Location = New System.Drawing.Point(263, 354)
+        Me.Multiple_Axes_Enable_CheckBox.Name = "Multiple_Axes_Enable_CheckBox"
+        Me.Multiple_Axes_Enable_CheckBox.Size = New System.Drawing.Size(143, 21)
+        Me.Multiple_Axes_Enable_CheckBox.TabIndex = 111
+        Me.Multiple_Axes_Enable_CheckBox.Text = "Multiple Axis Mode"
+        Me.Multiple_Axes_Enable_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Axis1_CheckBox
+        '
+        Me.Axis1_CheckBox.AutoSize = True
+        Me.Axis1_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Axis1_CheckBox.Checked = True
+        Me.Axis1_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Axis1_CheckBox.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis1_CheckBox.Location = New System.Drawing.Point(285, 375)
+        Me.Axis1_CheckBox.Name = "Axis1_CheckBox"
+        Me.Axis1_CheckBox.Size = New System.Drawing.Size(36, 19)
+        Me.Axis1_CheckBox.TabIndex = 112
+        Me.Axis1_CheckBox.Text = " 1"
+        Me.Axis1_CheckBox.UseVisualStyleBackColor = True
+        Me.Axis1_CheckBox.Visible = False
+        '
+        'Axis2_Checkbox
+        '
+        Me.Axis2_Checkbox.AutoSize = True
+        Me.Axis2_Checkbox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Axis2_Checkbox.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis2_Checkbox.Location = New System.Drawing.Point(324, 375)
+        Me.Axis2_Checkbox.Name = "Axis2_Checkbox"
+        Me.Axis2_Checkbox.Size = New System.Drawing.Size(36, 19)
+        Me.Axis2_Checkbox.TabIndex = 113
+        Me.Axis2_Checkbox.Text = " 2"
+        Me.Axis2_Checkbox.UseVisualStyleBackColor = True
+        Me.Axis2_Checkbox.Visible = False
+        '
+        'Axis3_CheckBox
+        '
+        Me.Axis3_CheckBox.AutoSize = True
+        Me.Axis3_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Axis3_CheckBox.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis3_CheckBox.Location = New System.Drawing.Point(363, 375)
+        Me.Axis3_CheckBox.Name = "Axis3_CheckBox"
+        Me.Axis3_CheckBox.Size = New System.Drawing.Size(36, 19)
+        Me.Axis3_CheckBox.TabIndex = 114
+        Me.Axis3_CheckBox.Text = " 3"
+        Me.Axis3_CheckBox.UseVisualStyleBackColor = True
+        Me.Axis3_CheckBox.Visible = False
+        '
+        'Axis_Select_Label
+        '
+        Me.Axis_Select_Label.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Axis_Select_Label.BackColor = System.Drawing.SystemColors.Menu
+        Me.Axis_Select_Label.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Axis_Select_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.Axis_Select_Label.Location = New System.Drawing.Point(247, 375)
+        Me.Axis_Select_Label.Name = "Axis_Select_Label"
+        Me.Axis_Select_Label.ReadOnly = True
+        Me.Axis_Select_Label.Size = New System.Drawing.Size(46, 14)
+        Me.Axis_Select_Label.TabIndex = 115
+        Me.Axis_Select_Label.Text = " Axis:"
+        Me.Axis_Select_Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.Axis_Select_Label.Visible = False
+        '
         'TestMode
         '
         Me.AcceptButton = Me.TMClose_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(463, 488)
+        Me.ClientSize = New System.Drawing.Size(463, 531)
+        Me.Controls.Add(Me.Axis_Select_Label)
+        Me.Controls.Add(Me.Axis3_CheckBox)
+        Me.Controls.Add(Me.Axis2_Checkbox)
+        Me.Controls.Add(Me.Axis1_CheckBox)
+        Me.Controls.Add(Me.Multiple_Axes_Enable_CheckBox)
+        Me.Controls.Add(Me.Diagnostic_Enable_CheckBox)
+        Me.Controls.Add(Me.Error_Detection_CheckBox)
         Me.Controls.Add(Me.NumericUpDown_FGREF_Value)
         Me.Controls.Add(Me.FGREFMHz)
         Me.Controls.Add(Me.FGREFLabel)
         Me.Controls.Add(Me.ZeroButton)
         Me.Controls.Add(Me.TextBox_Units_Caution)
-        Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.EDOff_Button)
-        Me.Controls.Add(Me.EDOn_Button)
         Me.Controls.Add(Me.FGOff_Button)
         Me.Controls.Add(Me.TextBox5)
         Me.Controls.Add(Me.ComboBox_Units)
@@ -552,12 +616,16 @@ Partial Class TestMode
     Friend WithEvents ComboBox_Units As System.Windows.Forms.ComboBox
     Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
     Friend WithEvents FGOff_Button As System.Windows.Forms.Button
-    Friend WithEvents EDOff_Button As System.Windows.Forms.Button
-    Friend WithEvents EDOn_Button As System.Windows.Forms.Button
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents TextBox_Units_Caution As System.Windows.Forms.TextBox
     Friend WithEvents ZeroButton As System.Windows.Forms.Button
     Friend WithEvents FGREFLabel As System.Windows.Forms.TextBox
     Friend WithEvents FGREFMHz As System.Windows.Forms.TextBox
     Friend WithEvents NumericUpDown_FGREF_Value As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Error_Detection_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Diagnostic_Enable_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Multiple_Axes_Enable_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Axis1_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Axis2_Checkbox As System.Windows.Forms.CheckBox
+    Friend WithEvents Axis3_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Axis_Select_Label As System.Windows.Forms.TextBox
 End Class

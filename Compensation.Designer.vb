@@ -45,6 +45,10 @@ Partial Class Compensation
         Me.CMPDone_Button = New System.Windows.Forms.Button()
         Me.ECOff_Button = New System.Windows.Forms.Button()
         Me.ECOn_Button = New System.Windows.Forms.Button()
+        Me.Temperature_Auto_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Pressure_Auto_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Humidity_Auto_Checkbox = New System.Windows.Forms.CheckBox()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.NumericUpDown_Humidity, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Pressure, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -56,11 +60,15 @@ Partial Class Compensation
         '
         Me.TableLayoutPanel1.AccessibleName = ""
         Me.TableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.TableLayoutPanel1.ColumnCount = 4
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.76923!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.23077!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 96.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 96.0!))
+        Me.TableLayoutPanel1.ColumnCount = 5
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.26904!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.73096!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 107.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 93.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 45.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.Humidity_Auto_Checkbox, 4, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.Pressure_Auto_CheckBox, 4, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.Temperature_Auto_CheckBox, 4, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.ComboBox_TempUnits, 2, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.TextBox_ECValue, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.TextBox_Pressure, 0, 2)
@@ -76,16 +84,17 @@ Partial Class Compensation
         Me.TableLayoutPanel1.Controls.Add(Me.TextBox_Temperature, 0, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.TextBox_Humidity, 0, 3)
         Me.TableLayoutPanel1.Controls.Add(Me.Textbox_ECUnits, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.TextBox1, 4, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.TextBox_TempFactor, 3, 1)
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(32, 29)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 4
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 43.93939!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 56.06061!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(344, 122)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(428, 122)
         Me.TableLayoutPanel1.TabIndex = 3
         '
         'ComboBox_TempUnits
@@ -93,7 +102,7 @@ Partial Class Compensation
         Me.ComboBox_TempUnits.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_TempUnits.FormattingEnabled = True
         Me.ComboBox_TempUnits.Items.AddRange(New Object() {"Degrees C", "Degrees F", "Degrees K"})
-        Me.ComboBox_TempUnits.Location = New System.Drawing.Point(161, 32)
+        Me.ComboBox_TempUnits.Location = New System.Drawing.Point(196, 32)
         Me.ComboBox_TempUnits.Name = "ComboBox_TempUnits"
         Me.ComboBox_TempUnits.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_TempUnits.Size = New System.Drawing.Size(72, 21)
@@ -106,7 +115,7 @@ Partial Class Compensation
         Me.TextBox_ECValue.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox_ECValue.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_ECValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_ECValue.Location = New System.Drawing.Point(95, 6)
+        Me.TextBox_ECValue.Location = New System.Drawing.Point(114, 6)
         Me.TextBox_ECValue.Name = "TextBox_ECValue"
         Me.TextBox_ECValue.ReadOnly = True
         Me.TextBox_ECValue.Size = New System.Drawing.Size(41, 14)
@@ -119,7 +128,7 @@ Partial Class Compensation
         Me.TextBox_Pressure.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBox_Pressure.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_Pressure.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_Pressure.Location = New System.Drawing.Point(10, 67)
+        Me.TextBox_Pressure.Location = New System.Drawing.Point(15, 68)
         Me.TextBox_Pressure.Name = "TextBox_Pressure"
         Me.TextBox_Pressure.ReadOnly = True
         Me.TextBox_Pressure.Size = New System.Drawing.Size(62, 13)
@@ -131,7 +140,7 @@ Partial Class Compensation
         '
         Me.NumericUpDown_Humidity.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.NumericUpDown_Humidity.Increment = New Decimal(New Integer() {10, 0, 0, 0})
-        Me.NumericUpDown_Humidity.Location = New System.Drawing.Point(90, 95)
+        Me.NumericUpDown_Humidity.Location = New System.Drawing.Point(109, 95)
         Me.NumericUpDown_Humidity.Name = "NumericUpDown_Humidity"
         Me.NumericUpDown_Humidity.Size = New System.Drawing.Size(51, 20)
         Me.NumericUpDown_Humidity.TabIndex = 5
@@ -141,7 +150,7 @@ Partial Class Compensation
         'NumericUpDown_Pressure
         '
         Me.NumericUpDown_Pressure.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown_Pressure.Location = New System.Drawing.Point(90, 64)
+        Me.NumericUpDown_Pressure.Location = New System.Drawing.Point(109, 64)
         Me.NumericUpDown_Pressure.Maximum = New Decimal(New Integer() {1520, 0, 0, 0})
         Me.NumericUpDown_Pressure.Minimum = New Decimal(New Integer() {380, 0, 0, 0})
         Me.NumericUpDown_Pressure.Name = "NumericUpDown_Pressure"
@@ -152,7 +161,8 @@ Partial Class Compensation
         '
         'TextBox_HumiFactor
         '
-        Me.TextBox_HumiFactor.Location = New System.Drawing.Point(249, 93)
+        Me.TextBox_HumiFactor.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.TextBox_HumiFactor.Location = New System.Drawing.Point(296, 95)
         Me.TextBox_HumiFactor.Name = "TextBox_HumiFactor"
         Me.TextBox_HumiFactor.ReadOnly = True
         Me.TextBox_HumiFactor.Size = New System.Drawing.Size(75, 20)
@@ -161,7 +171,8 @@ Partial Class Compensation
         '
         'TextBox_PresFactor
         '
-        Me.TextBox_PresFactor.Location = New System.Drawing.Point(249, 62)
+        Me.TextBox_PresFactor.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.TextBox_PresFactor.Location = New System.Drawing.Point(296, 64)
         Me.TextBox_PresFactor.Name = "TextBox_PresFactor"
         Me.TextBox_PresFactor.ReadOnly = True
         Me.TextBox_PresFactor.Size = New System.Drawing.Size(75, 20)
@@ -174,7 +185,7 @@ Partial Class Compensation
         Me.TextBox_ECParameter.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox_ECParameter.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_ECParameter.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_ECParameter.Location = New System.Drawing.Point(4, 6)
+        Me.TextBox_ECParameter.Location = New System.Drawing.Point(8, 6)
         Me.TextBox_ECParameter.Name = "TextBox_ECParameter"
         Me.TextBox_ECParameter.ReadOnly = True
         Me.TextBox_ECParameter.Size = New System.Drawing.Size(75, 14)
@@ -188,7 +199,7 @@ Partial Class Compensation
         Me.TextBox_ECFactor.BackColor = System.Drawing.SystemColors.Control
         Me.TextBox_ECFactor.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_ECFactor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_ECFactor.Location = New System.Drawing.Point(269, 6)
+        Me.TextBox_ECFactor.Location = New System.Drawing.Point(308, 6)
         Me.TextBox_ECFactor.Name = "TextBox_ECFactor"
         Me.TextBox_ECFactor.ReadOnly = True
         Me.TextBox_ECFactor.Size = New System.Drawing.Size(51, 14)
@@ -201,7 +212,7 @@ Partial Class Compensation
         Me.ComboBox_Pressure_Units.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Pressure_Units.FormattingEnabled = True
         Me.ComboBox_Pressure_Units.Items.AddRange(New Object() {"mm/Hg", "mBar"})
-        Me.ComboBox_Pressure_Units.Location = New System.Drawing.Point(161, 63)
+        Me.ComboBox_Pressure_Units.Location = New System.Drawing.Point(197, 64)
         Me.ComboBox_Pressure_Units.Name = "ComboBox_Pressure_Units"
         Me.ComboBox_Pressure_Units.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Pressure_Units.Size = New System.Drawing.Size(71, 21)
@@ -213,7 +224,7 @@ Partial Class Compensation
         Me.ComboBox_Humidity_Units.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBox_Humidity_Units.FormattingEnabled = True
         Me.ComboBox_Humidity_Units.Items.AddRange(New Object() {"Rel %"})
-        Me.ComboBox_Humidity_Units.Location = New System.Drawing.Point(161, 95)
+        Me.ComboBox_Humidity_Units.Location = New System.Drawing.Point(197, 95)
         Me.ComboBox_Humidity_Units.Name = "ComboBox_Humidity_Units"
         Me.ComboBox_Humidity_Units.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ComboBox_Humidity_Units.Size = New System.Drawing.Size(71, 21)
@@ -223,7 +234,7 @@ Partial Class Compensation
         'NumericUpDown_Temperature
         '
         Me.NumericUpDown_Temperature.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.NumericUpDown_Temperature.Location = New System.Drawing.Point(88, 32)
+        Me.NumericUpDown_Temperature.Location = New System.Drawing.Point(107, 33)
         Me.NumericUpDown_Temperature.Maximum = New Decimal(New Integer() {70, 0, 0, 0})
         Me.NumericUpDown_Temperature.Name = "NumericUpDown_Temperature"
         Me.NumericUpDown_Temperature.Size = New System.Drawing.Size(55, 20)
@@ -236,7 +247,7 @@ Partial Class Compensation
         Me.TextBox_Temperature.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBox_Temperature.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_Temperature.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_Temperature.Location = New System.Drawing.Point(10, 36)
+        Me.TextBox_Temperature.Location = New System.Drawing.Point(15, 36)
         Me.TextBox_Temperature.Name = "TextBox_Temperature"
         Me.TextBox_Temperature.ReadOnly = True
         Me.TextBox_Temperature.Size = New System.Drawing.Size(62, 13)
@@ -249,7 +260,7 @@ Partial Class Compensation
         Me.TextBox_Humidity.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBox_Humidity.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_Humidity.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_Humidity.Location = New System.Drawing.Point(10, 99)
+        Me.TextBox_Humidity.Location = New System.Drawing.Point(15, 99)
         Me.TextBox_Humidity.Name = "TextBox_Humidity"
         Me.TextBox_Humidity.ReadOnly = True
         Me.TextBox_Humidity.Size = New System.Drawing.Size(62, 13)
@@ -263,7 +274,7 @@ Partial Class Compensation
         Me.Textbox_ECUnits.BackColor = System.Drawing.SystemColors.Control
         Me.Textbox_ECUnits.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Textbox_ECUnits.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Textbox_ECUnits.Location = New System.Drawing.Point(158, 6)
+        Me.Textbox_ECUnits.Location = New System.Drawing.Point(194, 6)
         Me.Textbox_ECUnits.Name = "Textbox_ECUnits"
         Me.Textbox_ECUnits.Size = New System.Drawing.Size(77, 14)
         Me.Textbox_ECUnits.TabIndex = 16
@@ -272,7 +283,8 @@ Partial Class Compensation
         '
         'TextBox_TempFactor
         '
-        Me.TextBox_TempFactor.Location = New System.Drawing.Point(249, 30)
+        Me.TextBox_TempFactor.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.TextBox_TempFactor.Location = New System.Drawing.Point(296, 33)
         Me.TextBox_TempFactor.Name = "TextBox_TempFactor"
         Me.TextBox_TempFactor.ReadOnly = True
         Me.TextBox_TempFactor.Size = New System.Drawing.Size(75, 20)
@@ -284,7 +296,7 @@ Partial Class Compensation
         Me.WL_Label.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.WL_Label.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.WL_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.WL_Label.Location = New System.Drawing.Point(267, 178)
+        Me.WL_Label.Location = New System.Drawing.Point(320, 177)
         Me.WL_Label.Name = "WL_Label"
         Me.WL_Label.ReadOnly = True
         Me.WL_Label.Size = New System.Drawing.Size(104, 13)
@@ -297,7 +309,7 @@ Partial Class Compensation
         Me.TextBox3.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBox3.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox3.Location = New System.Drawing.Point(51, 175)
+        Me.TextBox3.Location = New System.Drawing.Point(83, 174)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.ReadOnly = True
         Me.TextBox3.Size = New System.Drawing.Size(139, 13)
@@ -310,7 +322,7 @@ Partial Class Compensation
         Me.NumericUpDown_Wavelength.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.NumericUpDown_Wavelength.DecimalPlaces = 6
         Me.NumericUpDown_Wavelength.Increment = New Decimal(New Integer() {1, 0, 0, 393216})
-        Me.NumericUpDown_Wavelength.Location = New System.Drawing.Point(279, 203)
+        Me.NumericUpDown_Wavelength.Location = New System.Drawing.Point(332, 202)
         Me.NumericUpDown_Wavelength.Maximum = New Decimal(New Integer() {633000000, 0, 0, 393216})
         Me.NumericUpDown_Wavelength.Minimum = New Decimal(New Integer() {632000000, 0, 0, 393216})
         Me.NumericUpDown_Wavelength.Name = "NumericUpDown_Wavelength"
@@ -326,11 +338,11 @@ Partial Class Compensation
         Me.CMPDone_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.CMPDone_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.CMPDone_Button.ForeColor = System.Drawing.Color.Black
-        Me.CMPDone_Button.Location = New System.Drawing.Point(188, 253)
+        Me.CMPDone_Button.Location = New System.Drawing.Point(215, 254)
         Me.CMPDone_Button.Name = "CMPDone_Button"
         Me.CMPDone_Button.Size = New System.Drawing.Size(67, 23)
         Me.CMPDone_Button.TabIndex = 1
-        Me.CMPDone_Button.Text = "CLOSEE"
+        Me.CMPDone_Button.Text = "CLOSE"
         '
         'ECOff_Button
         '
@@ -339,7 +351,7 @@ Partial Class Compensation
         Me.ECOff_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ECOff_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ECOff_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.ECOff_Button.Location = New System.Drawing.Point(56, 201)
+        Me.ECOff_Button.Location = New System.Drawing.Point(89, 201)
         Me.ECOff_Button.Name = "ECOff_Button"
         Me.ECOff_Button.Size = New System.Drawing.Size(47, 24)
         Me.ECOff_Button.TabIndex = 38
@@ -352,19 +364,72 @@ Partial Class Compensation
         Me.ECOn_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ECOn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ECOn_Button.ForeColor = System.Drawing.Color.Black
-        Me.ECOn_Button.Location = New System.Drawing.Point(128, 201)
+        Me.ECOn_Button.Location = New System.Drawing.Point(161, 201)
         Me.ECOn_Button.Name = "ECOn_Button"
         Me.ECOn_Button.Size = New System.Drawing.Size(55, 24)
         Me.ECOn_Button.TabIndex = 37
         Me.ECOn_Button.Text = "ON"
         Me.ECOn_Button.UseVisualStyleBackColor = True
         '
+        'Temperature_Auto_CheckBox
+        '
+        Me.Temperature_Auto_CheckBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
+        Me.Temperature_Auto_CheckBox.AutoSize = True
+        Me.Temperature_Auto_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Temperature_Auto_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Temperature_Auto_CheckBox.Location = New System.Drawing.Point(396, 30)
+        Me.Temperature_Auto_CheckBox.Name = "Temperature_Auto_CheckBox"
+        Me.Temperature_Auto_CheckBox.Size = New System.Drawing.Size(15, 26)
+        Me.Temperature_Auto_CheckBox.TabIndex = 110
+        Me.Temperature_Auto_CheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.Temperature_Auto_CheckBox.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.TextBox1.BackColor = System.Drawing.SystemColors.Control
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(384, 6)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.ReadOnly = True
+        Me.TextBox1.Size = New System.Drawing.Size(40, 14)
+        Me.TextBox1.TabIndex = 112
+        Me.TextBox1.Text = "Auto"
+        Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'Pressure_Auto_CheckBox
+        '
+        Me.Pressure_Auto_CheckBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
+        Me.Pressure_Auto_CheckBox.AutoSize = True
+        Me.Pressure_Auto_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Pressure_Auto_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pressure_Auto_CheckBox.Location = New System.Drawing.Point(396, 63)
+        Me.Pressure_Auto_CheckBox.Name = "Pressure_Auto_CheckBox"
+        Me.Pressure_Auto_CheckBox.Size = New System.Drawing.Size(15, 23)
+        Me.Pressure_Auto_CheckBox.TabIndex = 113
+        Me.Pressure_Auto_CheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.Pressure_Auto_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Humidity_Auto_Checkbox
+        '
+        Me.Humidity_Auto_Checkbox.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
+        Me.Humidity_Auto_Checkbox.AutoSize = True
+        Me.Humidity_Auto_Checkbox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Humidity_Auto_Checkbox.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Humidity_Auto_Checkbox.Location = New System.Drawing.Point(396, 93)
+        Me.Humidity_Auto_Checkbox.Name = "Humidity_Auto_Checkbox"
+        Me.Humidity_Auto_Checkbox.Size = New System.Drawing.Size(15, 25)
+        Me.Humidity_Auto_Checkbox.TabIndex = 114
+        Me.Humidity_Auto_Checkbox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.Humidity_Auto_Checkbox.UseVisualStyleBackColor = True
+        '
         'Compensation
         '
         Me.AcceptButton = Me.CMPDone_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(410, 305)
+        Me.ClientSize = New System.Drawing.Size(491, 302)
         Me.Controls.Add(Me.NumericUpDown_Wavelength)
         Me.Controls.Add(Me.TextBox3)
         Me.Controls.Add(Me.WL_Label)
@@ -410,4 +475,8 @@ Partial Class Compensation
     Friend WithEvents WL_Label As System.Windows.Forms.TextBox
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
     Friend WithEvents NumericUpDown_Wavelength As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Humidity_Auto_Checkbox As System.Windows.Forms.CheckBox
+    Friend WithEvents Pressure_Auto_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Temperature_Auto_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
 End Class

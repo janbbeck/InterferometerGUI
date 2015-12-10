@@ -50,7 +50,7 @@ Public Class Compensation
 
             TCorrection = 1 / (1 + (0.000271375 * 293 / (273 + TemperatureC)))
             TextBox_TempFactor.Text = TCorrection.ToString("#0.000000000")
-          
+
             If ECOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
                 ECFactor = TCorrection * PCorrection * HCorrection
                 MainForm.Wavelength = NumericUpDown_Wavelength.Value * ECFactor
@@ -59,7 +59,8 @@ Public Class Compensation
         End If
     End Sub
 
-    Private Sub ComboBox_TempUnits_SelectedValueChangeCommitted(sender As Object, e As EventArgs) Handles ComboBox_TempUnits.SelectionChangeCommitted
+    Private Sub ComboBox_TempUnits_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_TempUnits.SelectedIndexChanged
+
         If MainForm.MFLoaded = 1 Then
             Temperature = NumericUpDown_Temperature.Value
             If ComboBox_TempUnits.Text.Equals("Degrees C") Then
@@ -110,7 +111,7 @@ Public Class Compensation
         End If
     End Sub
 
-    Private Sub ComboBox_Pressure_Units_SelectedChangeCommitted(sender As Object, e As EventArgs) Handles ComboBox_Pressure_Units.SelectionChangeCommitted
+    Private Sub ComboBox_Pressure_Units_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox_Pressure_Units.SelectedIndexChanged
         If MainForm.MFLoaded = 1 Then
             Pressure = NumericUpDown_Pressure.Value
             If ComboBox_Pressure_Units.Text.Equals("mm/Hg") Then
