@@ -801,7 +801,7 @@ Public Class MainForm
                 For k = 0 To sets.Length - 1
 
                     Dim values() As String = sets(k).Split(" ".ToCharArray)
-                    'make sure the current set has exactly 8 fields
+                    'make sure the current set has exactly 8 fields or 16 fields
                     If values.Length.Equals(8) Or values.Length.Equals(16) Then
 
                         AxisData(1, 0) = Convert.ToInt64(values(0)) ' REFFreqCount (same for all 3 axes)
@@ -811,15 +811,21 @@ Public Class MainForm
                         AxisData(1, 4) = Convert.ToInt32(values(4)) ' Phase1Value
 
                         If values.Length.Equals(16) Then
+                            AxisData(2, 1) = Convert.ToInt64(values(8)) ' MEAS2FreqCount
+                            If AxisData(2, 1) > 0 Then ' Test for MEAS2FreqCounts
+                                MultipleAxesFlag = MultipleAxesFlag Or &HA ' Set Mutiple-Axis Mode with axis 2 enabled
+                            End If
+                            AxisData(3, 1) = Convert.ToInt64(values(12)) ' MEAS3FreqCount
+                            If AxisData(3, 1) > 0 Then ' Test for MEAS3FreqCounts
+                                MultipleAxesFlag = MultipleAxesFlag Or &HC ' Set Mutiple-Axis Mode with axis 3 enabled
+                            End If
                             If MultipleAxesFlag > 1 Then
                                 AxisData(2, 0) = Convert.ToInt64(values(0)) ' REFFreqCount (same for all 3 axes)
-                                AxisData(2, 1) = Convert.ToInt64(values(8)) ' MEAS2FreqCount
                                 AxisData(2, 2) = Convert.ToInt64(values(9)) ' TotalDistance2
                                 AxisData(2, 3) = Convert.ToInt64(values(10)) ' Velocity2Count
                                 AxisData(2, 4) = Convert.ToInt32(values(11)) ' Phase2Value
 
                                 AxisData(3, 0) = Convert.ToInt64(values(0)) ' REFFreqCount (same for all 3 axes)
-                                AxisData(3, 1) = Convert.ToInt64(values(12)) ' MEAS3FreqCount
                                 AxisData(3, 2) = Convert.ToInt64(values(13)) ' TotalDistance3
                                 AxisData(3, 3) = Convert.ToInt64(values(14)) ' Velocity3Count
                                 AxisData(3, 4) = Convert.ToInt32(values(15)) ' Phase3Value
@@ -910,8 +916,8 @@ Public Class MainForm
                             Diagnostic2Value = LowSpeedData
                         ElseIf (LowSpeedCode = 101) Then
                             Diagnostic3Value = LowSpeedData
-                        ElseIf (LowSpeedCode = 51) Then
-                            MultipleAxesFlag = LowSpeedData
+                            '  ElseIf (LowSpeedCode = 51) Then
+                            '      MultipleAxesFlag = LowSpeedData
                         End If
 
                         ' Data computation for primary axis
@@ -2178,7 +2184,7 @@ Public Class MainForm
         '  6: Humidity
         '  7: Data Source ID
 
-        ' 51: Multiple Axes Control. Bits 2-0 of Low Speed Data correspond to Axes 3-1 On/Off. Default 001.
+        ' Axed 51: Multiple Axes Control. Bits 2-0 of Low Speed Data correspond to Axes 3-1 On/Off. Default 001.
         '     If firmware detects Axis 2 or 3 active, it will send code to turn on multiaxis mode and switch to 16 packet format.
         '     As soon as GUI sees either 16 packet format or Code 51 with bits 1 or 2 set, it will switch to multiaxis mode.
         '     Return to single axis mode will require a hardware reset and GUI restart.
@@ -2227,14 +2233,16 @@ Public Class MainForm
 
             simulationPhase = &H0
 
-            simulationLowSpeedCode = 51
-            If (TMMultipleAxesFlag And &H8) = &H8 Then
-                simulationLowSpeedData = TMMultipleAxesFlag
-            Else
-                simulationLowSpeedData = &H1
-            End If
+            simulationLowSpeedCode = 0
+            simulationLowSpeedData = 0
+            'simulationLowSpeedCode = 51
+            'If (TMMultipleAxesFlag And &H8) = &H8 Then
+            ' simulationLowSpeedData = TMMultipleAxesFlag
+            ' Else
+            ' simulationLowSpeedData = &H1
+            ' End If
 
-            If Not (simulationLowSpeedData And &H1) = 0 Then
+            If Not (TMMultipleAxesFlag And &H1) = 0 Then
                 simMEASFrequencyCount1 = simmeascount - previoussimMEASCount
                 simulationDistance1 = simulationDistance
                 simulationVelocity1 = simulationVelocity
@@ -2245,7 +2253,7 @@ Public Class MainForm
                 simulationVelocity1 = 0
                 simulationPhase1 = 0
             End If
-            If Not (simulationLowSpeedData And &H2) = 0 Then
+            If Not (TMMultipleAxesFlag And &H2) = 0 Then
                 simMEASFrequencyCount2 = simmeascount - previoussimMEASCount
                 simulationDistance2 = simulationDistance
                 simulationVelocity2 = simulationVelocity
@@ -2256,7 +2264,7 @@ Public Class MainForm
                 simulationVelocity2 = 0
                 simulationPhase2 = 0
             End If
-            If Not (simulationLowSpeedData And &H4) = 0 Then
+            If Not (TMMultipleAxesFlag And &H4) = 0 Then
                 simMEASFrequencyCount3 = simmeascount - previoussimMEASCount
                 simulationDistance3 = simulationDistance
                 simulationVelocity3 = simulationVelocity
