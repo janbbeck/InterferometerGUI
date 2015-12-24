@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("uMD GUI")> 
-<Assembly: AssemblyCopyright("Copyright Jan Beck and Sam Goldwasser")> 
+<Assembly: AssemblyCopyright("Copyright Sam and Jan")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
@@ -32,4 +32,4 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 <Assembly: AssemblyVersion("1.0.*")> 
-<Assembly: AssemblyFileVersion("1.0.*")> 
+<Assembly: AssemblyFileVersion("1.0.0.0")> 
