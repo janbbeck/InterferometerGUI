@@ -11,7 +11,6 @@ Public Class Compensation
     Public TCorrection As Double = 1
     Public PCorrection As Double = 1
     Public HCorrection As Double = 1
-
     Public ECFactor As Double = 1
 
     Private Sub CMPDone_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CMPDone_Button.Click
