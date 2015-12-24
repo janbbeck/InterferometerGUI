@@ -37,6 +37,8 @@ Public Class MainForm
     Dim myMenuItemTestMode As New MenuItem("&Test Mode")
     Dim myMenuItemUSBPort As New MenuItem("&USB Port")
     Dim myMenuItemHelp As New MenuItem("&Help")
+    Dim myMenuItemInformation As New MenuItem("&Information")
+    Dim myMenuItemAbout As New MenuItem("&About")
     Dim myMenuItemNew As New MenuItem("&New")
     Dim myMenuItemUSBSubMenuCOMPorts As New MenuItem("&DummyText")
 
@@ -217,6 +219,9 @@ Public Class MainForm
     Dim PrimaryAxisSelect As Integer = 1
     Public MultipleAxesFlag As Integer = 1 ' Bits 0,1,2 = Axis 1,2,3, bit 4 is multiaxis enable
     Public TMMultipleAxesFlag As Integer = 1
+    Dim FirmwareVersion As Integer = 0
+    Dim FirmwareVersionSet As Integer = 0
+    Dim uMDVersion As String = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -272,6 +277,9 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
+
+        About.uMD_Version.Text = uMDVersion
+
         AddHandler DFTThread.DoWork, AddressOf DFT
         DisplacementButton_Click(sender, e)
         Chart1.Series.Clear()
@@ -305,20 +313,38 @@ Public Class MainForm
 
         DFTThread.RunWorkerAsync()
         fftSeries.ChartType = SeriesChartType.FastLine
-        'first lets create an empty submenu for the com port list under the USB top menu
+
+        ' Menu Stuff
+        ' first lets create an empty submenu for the com port list under the USB top menu
         menuItems.Add(myMenuItemUSBSubMenuCOMPorts)    ' need an empty list to be able to delete/change them at runtime
-        'Next, attach that list to the USB top menu
+
+        ' Next, attach that list to the USB top menu
         myMenuItemUSBPort.MenuItems.Add(myMenuItemUSBSubMenuCOMPorts)
+
         ' Next attach all the top menus to the menu bar.
         mnuBar.MenuItems.Add(myMenuItemfinish)
         mnuBar.MenuItems.Add(myMenuItemLogFile)
         mnuBar.MenuItems.Add(myMenuItemConfiguration)
         mnuBar.MenuItems.Add(myMenuItemCompensation)
         mnuBar.MenuItems.Add(myMenuItemTestMode)
+        '        mnuBar.MenuItems.Add(myMenuItemHelp)
         mnuBar.MenuItems.Add(myMenuItemHelp)
         mnuBar.MenuItems.Add(myMenuItemUSBPort)
+        ' mnuBar.MenuItems.Add(myMenuItemOptions)
+
+        '      AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemhelp_Click
+        '     myMenuItemHelp.MenuItems.Add(myMenuItemConfiguration)
+
+  
+
+        myMenuItemHelp.MenuItems.Add(myMenuItemInformation)
+        AddHandler myMenuItemInformation.Click, AddressOf Me.myMenuIteminformation_Click
+        myMenuItemHelp.MenuItems.Add(myMenuItemAbout)
+        AddHandler myMenuItemAbout.Click, AddressOf Me.myMenuItemabout_Click
+
         ' Next replace the application with the menu bar we just crafted
         Me.Menu = mnuBar
+
         ' Finally, add the handlers to the menu items so that they can respond to clicks
         AddHandler myMenuItemfinish.Click, AddressOf Me.myMenuItemfinish_Click
         AddHandler myMenuItemLogFile.Click, AddressOf Me.myMenuItemLogFile_Click
@@ -326,7 +352,9 @@ Public Class MainForm
         AddHandler myMenuItemCompensation.Click, AddressOf Me.myMenuItemCompensation_Click
         AddHandler myMenuItemTestMode.Click, AddressOf Me.myMenuItemTestMode_Click
         AddHandler myMenuItemUSBPort.Popup, AddressOf Me.myMenuItemUSBPort_Click
-        AddHandler myMenuItemHelp.Click, AddressOf Me.myMenuItemhelp_Click
+        '   AddHandler myMenuItemHelp.Popup, AddressOf Me.myMenuItemhelp_Click
+
+    
 
         ' load user settings
         multiplier = My.Settings.Multiplier
@@ -906,18 +934,18 @@ Public Class MainForm
                         LowSpeedCode = Convert.ToInt32(values(6)) ' Low Speed Code
                         LowSpeedData = Convert.ToInt32(values(7)) ' Low Speed Data
 
-                        If (LowSpeedCode = 103) And (Compensation.Temperature_Auto_CheckBox.Checked = True) Then
+                        If (LowSpeedCode = 3) And (Compensation.Temperature_Auto_CheckBox.Checked = True) Then
                             TemperatureAutoValue = LowSpeedData
-                        ElseIf (LowSpeedCode = 105) And (Compensation.Pressure_Auto_CheckBox.Checked = True) Then
+                        ElseIf (LowSpeedCode = 5) And (Compensation.Pressure_Auto_CheckBox.Checked = True) Then
                             PressureAutoValue = LowSpeedData
-                        ElseIf (LowSpeedCode = 106) And (Compensation.Humidity_Auto_Checkbox.Checked = True) Then
+                        ElseIf (LowSpeedCode = 6) And (Compensation.Humidity_Auto_Checkbox.Checked = True) Then
                             HumidityAutoValue = LowSpeedData
+                        ElseIf (LowSpeedCode = 10) Then
+                            FirmwareVersion = LowSpeedData
                         ElseIf (LowSpeedCode = 111) Then
                             Diagnostic2Value = LowSpeedData
                         ElseIf (LowSpeedCode = 101) Then
                             Diagnostic3Value = LowSpeedData
-                            '  ElseIf (LowSpeedCode = 51) Then
-                            '      MultipleAxesFlag = LowSpeedData
                         End If
 
                         ' Data computation for primary axis
@@ -1157,8 +1185,12 @@ Public Class MainForm
         Next
     End Sub
 
-    Private Sub myMenuItemhelp_Click(sender As Object, e As EventArgs)
-        Help.ShowDialog()
+    Private Sub myMenuIteminformation_Click(sender As Object, e As EventArgs)
+        information.ShowDialog()
+    End Sub
+
+    Private Sub myMenuItemabout_Click(sender As Object, e As EventArgs)
+        About.ShowDialog()
     End Sub
 
     Private Sub myMenuItemfinish_Click(sender As Object, e As EventArgs)
@@ -1803,7 +1835,15 @@ Public Class MainForm
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        ' limit the update rate of the value to about 10 Hz
+        ' limit the update rate of the value to about 60 Hz
+  
+        If (FirmwareVersionSet = 0) Then
+            If Not (FirmwareVersion = 0) Then
+                About.Firmware_Version.Text = CStr(CDec(FirmwareVersion / 100))
+                FirmwareVersionSet = 1
+            End If
+        End If
+
         If ((MultipleAxesFlag And &H9) = &H9) Then
             Axis1_Label.Visible = True
         End If
@@ -1834,6 +1874,29 @@ Public Class MainForm
             Axis3_Time_Label.Visible = False
             Axis3_Angle_Label.Visible = False
         End If
+
+        If ((Not (TemperatureAutoValue) = 0) And (Compensation.Temperature_Auto_CheckBox.Checked = True) And (TemperatureAutoValue >= 0) And (TemperatureAutoValue <= 7000)) Then
+            If (Compensation.ComboBox_TempUnits.Text = "Degrees F") Then
+                Compensation.NumericUpDown_Temperature.Value = CDec((TemperatureAutoValue * 9 / 500) + 32)
+            ElseIf (Compensation.ComboBox_TempUnits.Text = "Degrees K") Then
+                Compensation.NumericUpDown_Temperature.Value = CDec((TemperatureAutoValue / 100) + 273)
+            Else
+                Compensation.NumericUpDown_Temperature.Value = CDec(TemperatureAutoValue / 100)
+            End If
+        End If
+
+        If ((Not (PressureAutoValue) = 0) And (Compensation.Pressure_Auto_CheckBox.Checked = True) And (PressureAutoValue >= 50000) And (PressureAutoValue <= 200000)) Then
+            If (Compensation.ComboBox_Pressure_Units.Text = "mm/Hg") Then
+                Compensation.NumericUpDown_Pressure.Value = CDec(PressureAutoValue * 0.76 / 100)
+            Else
+                Compensation.NumericUpDown_Pressure.Value = CDec(PressureAutoValue / 100)
+            End If
+        End If
+
+        If ((Not (HumidityAutoValue) = 0) And (Compensation.Humidity_Auto_Checkbox.Checked = True) And (HumidityAutoValue >= 0) And (HumidityAutoValue <= 1000)) Then
+            Compensation.NumericUpDown_Humidity.Value = CDec(HumidityAutoValue / 10)
+        End If
+
         If TestMode.Diagnostic_Enable_CheckBox.Checked = True Then
             If (PhaseValue And &H7E00) = 0 Or PhaseValue < 0 Then ' REF or MEAS valid
                 '   If Not PhaseValue = 0 Then
@@ -2083,7 +2146,6 @@ Public Class MainForm
             End If
         End If
 
-
         If GraphControl.Text.Equals("Disable Graph") Then   ' are we graphing?
             Dim x1 As Double
             Dim y1 As Double
@@ -2184,10 +2246,7 @@ Public Class MainForm
         '  6: Humidity
         '  7: Data Source ID
 
-        ' Axed 51: Multiple Axes Control. Bits 2-0 of Low Speed Data correspond to Axes 3-1 On/Off. Default 001.
-        '     If firmware detects Axis 2 or 3 active, it will send code to turn on multiaxis mode and switch to 16 packet format.
-        '     As soon as GUI sees either 16 packet format or Code 51 with bits 1 or 2 set, it will switch to multiaxis mode.
-        '     Return to single axis mode will require a hardware reset and GUI restart.
+        ' 10: Firmware Version # XXX.YY
 
         ' 100-199 Diagnostics:
 
@@ -2233,8 +2292,21 @@ Public Class MainForm
 
             simulationPhase = &H0
 
-            simulationLowSpeedCode = 0
-            simulationLowSpeedData = 0
+            If (CInt(simulationSerial) And &HF) = 3 Then
+                simulationLowSpeedCode = 3
+                simulationLowSpeedData = 3400
+            End If
+
+            If (CInt(simulationSerial) And &HF) = 5 Then
+                simulationLowSpeedCode = 5
+                simulationLowSpeedData = 74600
+            End If
+
+            If (CInt(simulationSerial) And &HF) = 6 Then
+                simulationLowSpeedCode = 6
+                simulationLowSpeedData = 890
+            End If
+
             'simulationLowSpeedCode = 51
             'If (TMMultipleAxesFlag And &H8) = &H8 Then
             ' simulationLowSpeedData = TMMultipleAxesFlag

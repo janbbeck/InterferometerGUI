@@ -44,6 +44,7 @@
     <DocumentationFile>InterferometerGUI.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,9 +55,10 @@
     <DocumentationFile>InterferometerGUI.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\interferometer.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\uMD1icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -89,10 +91,16 @@
     <Compile Include="Configuration.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Help.Designer.vb">
-      <DependentUpon>Help.vb</DependentUpon>
+    <Compile Include="About.Designer.vb">
+      <DependentUpon>About.vb</DependentUpon>
     </Compile>
-    <Compile Include="Help.vb">
+    <Compile Include="About.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="information.Designer.vb">
+      <DependentUpon>information.vb</DependentUpon>
+    </Compile>
+    <Compile Include="information.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.vb">
@@ -130,8 +138,11 @@
     <EmbeddedResource Include="Configuration.resx">
       <DependentUpon>Configuration.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Help.resx">
-      <DependentUpon>Help.vb</DependentUpon>
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="information.resx">
+      <DependentUpon>information.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.vb</DependentUpon>
@@ -182,12 +193,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ActiveButton6.gif" />
+    <Content Include="Resources\uMD1icon.ico" />
     <None Include="Resources\Orange1.gif" />
     <None Include="Resources\YellowButton11.gif" />
     <None Include="Resources\InActiveButton41.gif" />
     <None Include="Resources\DisabledButton1.gif" />
     <None Include="Resources\GreenButton1.gif" />
-    <Content Include="Resources\interferometer.ico" />
     <None Include="Resources\Smiley3.gif" />
   </ItemGroup>
   <ItemGroup />

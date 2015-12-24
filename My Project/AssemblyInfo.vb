@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("ComPort")> 
+<Assembly: AssemblyTitle("uMD GUI")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("MS")> 
-<Assembly: AssemblyProduct("ComPort")> 
-<Assembly: AssemblyCopyright("Copyright Microsoft 2005")> 
+<Assembly: AssemblyCompany("")> 
+<Assembly: AssemblyProduct("uMD GUI")> 
+<Assembly: AssemblyCopyright("Copyright Jan Beck and Sam Goldwasser")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.0")> 
-<Assembly: AssemblyFileVersion("1.0.0.0")> 
+<Assembly: AssemblyVersion("1.0.*")> 
+<Assembly: AssemblyFileVersion("1.0.*")> 

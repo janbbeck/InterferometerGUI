@@ -23,7 +23,6 @@ Partial Class Configuration
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Configuration))
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Button2x = New System.Windows.Forms.Button()
@@ -49,25 +48,10 @@ Partial Class Configuration
         Me.NumericUpDown_SS_Coefficient = New System.Windows.Forms.NumericUpDown()
         Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.Interpolation_CheckBox = New System.Windows.Forms.CheckBox()
-        Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.NumericUpDown_ARS, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_SL_Coefficient, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_SS_Coefficient, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.68493!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.31507!))
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(179, 341)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(146, 29)
-        Me.TableLayoutPanel1.TabIndex = 0
         '
         'OK_Button
         '
@@ -76,7 +60,7 @@ Partial Class Configuration
         Me.OK_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.OK_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.OK_Button.ForeColor = System.Drawing.Color.Black
-        Me.OK_Button.Location = New System.Drawing.Point(3, 3)
+        Me.OK_Button.Location = New System.Drawing.Point(182, 343)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -422,6 +406,7 @@ Partial Class Configuration
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(428, 393)
+        Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Interpolation_CheckBox)
         Me.Controls.Add(Me.TextBox3)
         Me.Controls.Add(Me.NumericUpDown_SS_Coefficient)
@@ -446,14 +431,12 @@ Partial Class Configuration
         Me.Controls.Add(Me.Button2x)
         Me.Controls.Add(Me.Button4x)
         Me.Controls.Add(Me.Button1x)
-        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "Configuration"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Configuration"
-        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.Text = "Micro Measurement Display Configuration"
         CType(Me.NumericUpDown_ARS, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown_SL_Coefficient, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown_SS_Coefficient, System.ComponentModel.ISupportInitialize).EndInit()
@@ -461,7 +444,6 @@ Partial Class Configuration
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Button2x As System.Windows.Forms.Button
     Friend WithEvents Button4x As System.Windows.Forms.Button

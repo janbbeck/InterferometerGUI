@@ -43,6 +43,13 @@ Partial Class TestMode
         Me.FGREFLabel = New System.Windows.Forms.TextBox()
         Me.FGREFMHz = New System.Windows.Forms.TextBox()
         Me.NumericUpDown_FGREF_Value = New System.Windows.Forms.NumericUpDown()
+        Me.Error_Detection_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Diagnostic_Enable_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Multiple_Axes_Enable_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Axis1_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Axis2_Checkbox = New System.Windows.Forms.CheckBox()
+        Me.Axis3_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Axis_Select_Label = New System.Windows.Forms.TextBox()
         Me.TMClose_Button = New System.Windows.Forms.Button()
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.FGOff_Button = New System.Windows.Forms.Button()
@@ -51,13 +58,6 @@ Partial Class TestMode
         Me.Button_Triangle = New System.Windows.Forms.Button()
         Me.Button_Sine = New System.Windows.Forms.Button()
         Me.Button_Ramp = New System.Windows.Forms.Button()
-        Me.Error_Detection_CheckBox = New System.Windows.Forms.CheckBox()
-        Me.Diagnostic_Enable_CheckBox = New System.Windows.Forms.CheckBox()
-        Me.Multiple_Axes_Enable_CheckBox = New System.Windows.Forms.CheckBox()
-        Me.Axis1_CheckBox = New System.Windows.Forms.CheckBox()
-        Me.Axis2_Checkbox = New System.Windows.Forms.CheckBox()
-        Me.Axis3_CheckBox = New System.Windows.Forms.CheckBox()
-        Me.Axis_Select_Label = New System.Windows.Forms.TextBox()
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Amplitude, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar_Offset, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -339,6 +339,102 @@ Partial Class TestMode
         Me.NumericUpDown_FGREF_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.NumericUpDown_FGREF_Value.Value = New Decimal(New Integer() {3750, 0, 0, 196608})
         '
+        'Error_Detection_CheckBox
+        '
+        Me.Error_Detection_CheckBox.AutoSize = True
+        Me.Error_Detection_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Error_Detection_CheckBox.Checked = True
+        Me.Error_Detection_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Error_Detection_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Error_Detection_CheckBox.Location = New System.Drawing.Point(283, 406)
+        Me.Error_Detection_CheckBox.Name = "Error_Detection_CheckBox"
+        Me.Error_Detection_CheckBox.Size = New System.Drawing.Size(123, 21)
+        Me.Error_Detection_CheckBox.TabIndex = 109
+        Me.Error_Detection_CheckBox.Text = "Error Detection"
+        Me.Error_Detection_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Diagnostic_Enable_CheckBox
+        '
+        Me.Diagnostic_Enable_CheckBox.AutoSize = True
+        Me.Diagnostic_Enable_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Diagnostic_Enable_CheckBox.Checked = True
+        Me.Diagnostic_Enable_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Diagnostic_Enable_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Diagnostic_Enable_CheckBox.Location = New System.Drawing.Point(248, 427)
+        Me.Diagnostic_Enable_CheckBox.Name = "Diagnostic_Enable_CheckBox"
+        Me.Diagnostic_Enable_CheckBox.Size = New System.Drawing.Size(158, 21)
+        Me.Diagnostic_Enable_CheckBox.TabIndex = 110
+        Me.Diagnostic_Enable_CheckBox.Text = "Diagnostic Readouts"
+        Me.Diagnostic_Enable_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Multiple_Axes_Enable_CheckBox
+        '
+        Me.Multiple_Axes_Enable_CheckBox.AutoSize = True
+        Me.Multiple_Axes_Enable_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Multiple_Axes_Enable_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Multiple_Axes_Enable_CheckBox.Location = New System.Drawing.Point(263, 354)
+        Me.Multiple_Axes_Enable_CheckBox.Name = "Multiple_Axes_Enable_CheckBox"
+        Me.Multiple_Axes_Enable_CheckBox.Size = New System.Drawing.Size(143, 21)
+        Me.Multiple_Axes_Enable_CheckBox.TabIndex = 111
+        Me.Multiple_Axes_Enable_CheckBox.Text = "Multiple Axis Mode"
+        Me.Multiple_Axes_Enable_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Axis1_CheckBox
+        '
+        Me.Axis1_CheckBox.AutoSize = True
+        Me.Axis1_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Axis1_CheckBox.Checked = True
+        Me.Axis1_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Axis1_CheckBox.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis1_CheckBox.Location = New System.Drawing.Point(285, 375)
+        Me.Axis1_CheckBox.Name = "Axis1_CheckBox"
+        Me.Axis1_CheckBox.Size = New System.Drawing.Size(36, 19)
+        Me.Axis1_CheckBox.TabIndex = 112
+        Me.Axis1_CheckBox.Text = " 1"
+        Me.Axis1_CheckBox.UseVisualStyleBackColor = True
+        Me.Axis1_CheckBox.Visible = False
+        '
+        'Axis2_Checkbox
+        '
+        Me.Axis2_Checkbox.AutoSize = True
+        Me.Axis2_Checkbox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Axis2_Checkbox.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis2_Checkbox.Location = New System.Drawing.Point(324, 375)
+        Me.Axis2_Checkbox.Name = "Axis2_Checkbox"
+        Me.Axis2_Checkbox.Size = New System.Drawing.Size(36, 19)
+        Me.Axis2_Checkbox.TabIndex = 113
+        Me.Axis2_Checkbox.Text = " 2"
+        Me.Axis2_Checkbox.UseVisualStyleBackColor = True
+        Me.Axis2_Checkbox.Visible = False
+        '
+        'Axis3_CheckBox
+        '
+        Me.Axis3_CheckBox.AutoSize = True
+        Me.Axis3_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Axis3_CheckBox.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis3_CheckBox.Location = New System.Drawing.Point(363, 375)
+        Me.Axis3_CheckBox.Name = "Axis3_CheckBox"
+        Me.Axis3_CheckBox.Size = New System.Drawing.Size(36, 19)
+        Me.Axis3_CheckBox.TabIndex = 114
+        Me.Axis3_CheckBox.Text = " 3"
+        Me.Axis3_CheckBox.UseVisualStyleBackColor = True
+        Me.Axis3_CheckBox.Visible = False
+        '
+        'Axis_Select_Label
+        '
+        Me.Axis_Select_Label.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Axis_Select_Label.BackColor = System.Drawing.SystemColors.Menu
+        Me.Axis_Select_Label.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Axis_Select_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.Axis_Select_Label.Location = New System.Drawing.Point(247, 375)
+        Me.Axis_Select_Label.Name = "Axis_Select_Label"
+        Me.Axis_Select_Label.ReadOnly = True
+        Me.Axis_Select_Label.Size = New System.Drawing.Size(46, 14)
+        Me.Axis_Select_Label.TabIndex = 115
+        Me.Axis_Select_Label.Text = " Axis:"
+        Me.Axis_Select_Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.Axis_Select_Label.Visible = False
+        '
         'TMClose_Button
         '
         Me.TMClose_Button.Anchor = System.Windows.Forms.AnchorStyles.None
@@ -441,102 +537,6 @@ Partial Class TestMode
         Me.Button_Ramp.Text = "Ramp"
         Me.Button_Ramp.UseVisualStyleBackColor = True
         '
-        'Error_Detection_CheckBox
-        '
-        Me.Error_Detection_CheckBox.AutoSize = True
-        Me.Error_Detection_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Error_Detection_CheckBox.Checked = True
-        Me.Error_Detection_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Error_Detection_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Error_Detection_CheckBox.Location = New System.Drawing.Point(283, 406)
-        Me.Error_Detection_CheckBox.Name = "Error_Detection_CheckBox"
-        Me.Error_Detection_CheckBox.Size = New System.Drawing.Size(123, 21)
-        Me.Error_Detection_CheckBox.TabIndex = 109
-        Me.Error_Detection_CheckBox.Text = "Error Detection"
-        Me.Error_Detection_CheckBox.UseVisualStyleBackColor = True
-        '
-        'Diagnostic_Enable_CheckBox
-        '
-        Me.Diagnostic_Enable_CheckBox.AutoSize = True
-        Me.Diagnostic_Enable_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Diagnostic_Enable_CheckBox.Checked = True
-        Me.Diagnostic_Enable_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Diagnostic_Enable_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic_Enable_CheckBox.Location = New System.Drawing.Point(248, 427)
-        Me.Diagnostic_Enable_CheckBox.Name = "Diagnostic_Enable_CheckBox"
-        Me.Diagnostic_Enable_CheckBox.Size = New System.Drawing.Size(158, 21)
-        Me.Diagnostic_Enable_CheckBox.TabIndex = 110
-        Me.Diagnostic_Enable_CheckBox.Text = "Diagnostic Readouts"
-        Me.Diagnostic_Enable_CheckBox.UseVisualStyleBackColor = True
-        '
-        'Multiple_Axes_Enable_CheckBox
-        '
-        Me.Multiple_Axes_Enable_CheckBox.AutoSize = True
-        Me.Multiple_Axes_Enable_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Multiple_Axes_Enable_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Multiple_Axes_Enable_CheckBox.Location = New System.Drawing.Point(263, 354)
-        Me.Multiple_Axes_Enable_CheckBox.Name = "Multiple_Axes_Enable_CheckBox"
-        Me.Multiple_Axes_Enable_CheckBox.Size = New System.Drawing.Size(143, 21)
-        Me.Multiple_Axes_Enable_CheckBox.TabIndex = 111
-        Me.Multiple_Axes_Enable_CheckBox.Text = "Multiple Axis Mode"
-        Me.Multiple_Axes_Enable_CheckBox.UseVisualStyleBackColor = True
-        '
-        'Axis1_CheckBox
-        '
-        Me.Axis1_CheckBox.AutoSize = True
-        Me.Axis1_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Axis1_CheckBox.Checked = True
-        Me.Axis1_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Axis1_CheckBox.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis1_CheckBox.Location = New System.Drawing.Point(285, 375)
-        Me.Axis1_CheckBox.Name = "Axis1_CheckBox"
-        Me.Axis1_CheckBox.Size = New System.Drawing.Size(36, 19)
-        Me.Axis1_CheckBox.TabIndex = 112
-        Me.Axis1_CheckBox.Text = " 1"
-        Me.Axis1_CheckBox.UseVisualStyleBackColor = True
-        Me.Axis1_CheckBox.Visible = False
-        '
-        'Axis2_Checkbox
-        '
-        Me.Axis2_Checkbox.AutoSize = True
-        Me.Axis2_Checkbox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Axis2_Checkbox.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis2_Checkbox.Location = New System.Drawing.Point(324, 375)
-        Me.Axis2_Checkbox.Name = "Axis2_Checkbox"
-        Me.Axis2_Checkbox.Size = New System.Drawing.Size(36, 19)
-        Me.Axis2_Checkbox.TabIndex = 113
-        Me.Axis2_Checkbox.Text = " 2"
-        Me.Axis2_Checkbox.UseVisualStyleBackColor = True
-        Me.Axis2_Checkbox.Visible = False
-        '
-        'Axis3_CheckBox
-        '
-        Me.Axis3_CheckBox.AutoSize = True
-        Me.Axis3_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Axis3_CheckBox.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis3_CheckBox.Location = New System.Drawing.Point(363, 375)
-        Me.Axis3_CheckBox.Name = "Axis3_CheckBox"
-        Me.Axis3_CheckBox.Size = New System.Drawing.Size(36, 19)
-        Me.Axis3_CheckBox.TabIndex = 114
-        Me.Axis3_CheckBox.Text = " 3"
-        Me.Axis3_CheckBox.UseVisualStyleBackColor = True
-        Me.Axis3_CheckBox.Visible = False
-        '
-        'Axis_Select_Label
-        '
-        Me.Axis_Select_Label.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Axis_Select_Label.BackColor = System.Drawing.SystemColors.Menu
-        Me.Axis_Select_Label.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.Axis_Select_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
-        Me.Axis_Select_Label.Location = New System.Drawing.Point(247, 375)
-        Me.Axis_Select_Label.Name = "Axis_Select_Label"
-        Me.Axis_Select_Label.ReadOnly = True
-        Me.Axis_Select_Label.Size = New System.Drawing.Size(46, 14)
-        Me.Axis_Select_Label.TabIndex = 115
-        Me.Axis_Select_Label.Text = " Axis:"
-        Me.Axis_Select_Label.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.Axis_Select_Label.Visible = False
-        '
         'TestMode
         '
         Me.AcceptButton = Me.TMClose_Button
@@ -584,7 +584,7 @@ Partial Class TestMode
         Me.MaximizeBox = False
         Me.Name = "TestMode"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Test Mode Parameters"
+        Me.Text = "Micro Measurement Display Test Mode Parameters"
         CType(Me.Trackbar_Frequency, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar_Amplitude, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar_Offset, System.ComponentModel.ISupportInitialize).EndInit()
