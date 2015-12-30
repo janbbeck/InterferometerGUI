@@ -169,7 +169,7 @@ Public Class MainForm
     Public simulationLowSpeedData As Int32 = 0
     Public bangbang As Double = 1
     Public counter As Double = 0
-    Dim simulatedData As String  
+    Dim simulatedData As String
     Public simcount As Double = 0
     Public TMUnitsFactor As Double = 0
     Public TMFreqMult As Double = 1
@@ -210,11 +210,13 @@ Public Class MainForm
     Dim Diagnostic4Value As Integer = 0
     Dim Diagnostic4Count As Integer = 0
     Dim Diagnostic4Save As Integer = 0
+    Dim Diagnostic5Value As Integer = 0
+    Dim Timer1Counts As Integer = 0
     Dim LowSpeedCode As Integer = 0
     Dim LowSpeedData As Integer = 0
-    Dim TemperatureAutoValue As Integer = 0
-    Dim PressureAutoValue As Integer = 0
-    Dim HumidityAutoValue As Integer = 0
+    Dim TemperatureAutoValue As Integer = -1
+    Dim PressureAutoValue As Integer = -1
+    Dim HumidityAutoValue As Integer = -1
     Dim AxisData(4, 5) As Int64 ' First index selects Axis Primary,1,2,3; second parameter selects REFFreqCount,MEASFreqCount, Displacement, Velocity, Phase. 
     Dim PrimaryAxisSelect As Integer = 1
     Public MultipleAxesFlag As Integer = 1 ' Bits 0,1,2 = Axis 1,2,3, bit 4 is multiaxis enable
@@ -222,6 +224,9 @@ Public Class MainForm
     Dim FirmwareVersion As Integer = 0
     Dim FirmwareVersionSet As Integer = 0
     Dim uMDVersion As String = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()
+    Dim SampleFrequency As Double = 610.35
+    Dim SamplePeriod As Double = 1638.4
+    Dim SimulationSamples As Integer = 15
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         'SerialPort1.Close() ' this hangs the program. known MS bug https://social.msdn.microsoft.com/Forums/en-US/ce8ce1a3-64ed-4f26-b9ad-e2ff1d3be0a5/serial-port-hangs-whilst-closing?forum=Vsexpressvcs
@@ -255,6 +260,13 @@ Public Class MainForm
             My.Settings.ErrorDetectionFlag = 0
         End If
 
+        My.Settings.TempFactor = Compensation.TextBox_TempFactor.Text
+        My.Settings.PresFactor = Compensation.TextBox_PresFactor.Text
+        My.Settings.HumiFactor = Compensation.TextBox_HumiFactor.Text
+        My.Settings.TFactor = Compensation.TCorrection
+        My.Settings.PFactor = Compensation.PCorrection
+        My.Settings.HFactor = Compensation.HCorrection
+
         If (Compensation.Temperature_Auto_CheckBox.Checked = True) Then
             My.Settings.TemperatureCompAutoFlag = 1
         Else
@@ -277,7 +289,8 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles Me.Load
-
+        '     uMDVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()
+        '  About.uMD_Version.Text = uMDVersion
         About.uMD_Version.Text = uMDVersion
 
         AddHandler DFTThread.DoWork, AddressOf DFT
@@ -335,7 +348,7 @@ Public Class MainForm
         '      AddHandler myMenuItemConfiguration.Click, AddressOf Me.myMenuItemhelp_Click
         '     myMenuItemHelp.MenuItems.Add(myMenuItemConfiguration)
 
-  
+
 
         myMenuItemHelp.MenuItems.Add(myMenuItemInformation)
         AddHandler myMenuItemInformation.Click, AddressOf Me.myMenuIteminformation_Click
@@ -354,144 +367,142 @@ Public Class MainForm
         AddHandler myMenuItemUSBPort.Popup, AddressOf Me.myMenuItemUSBPort_Click
         '   AddHandler myMenuItemHelp.Popup, AddressOf Me.myMenuItemhelp_Click
 
-    
-
         ' load user settings
         multiplier = My.Settings.Multiplier
         If multiplier = 1 Then
-            Configuration.Button1x.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Button1x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Button2x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Button4x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Button4x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         ElseIf multiplier = 2 Then
-            Configuration.Button1x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Button1x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Button2x.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Button2x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Button4x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Button4x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         ElseIf multiplier = 4 Then
-            Configuration.Button1x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Button1x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Button2x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Button4x.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Button4x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
 
         unitCorrectionFactor = My.Settings.UnitCorrectionFactor
         If unitCorrectionFactor = 0.000001 Then
-            Configuration.Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
             UnitLabel.Text = "nm"
         ElseIf unitCorrectionFactor = 0.001 Then
-            Configuration.Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
             UnitLabel.Text = "μm"
         ElseIf unitCorrectionFactor = 1 Then
-            Configuration.Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
             UnitLabel.Text = "mm"
         ElseIf unitCorrectionFactor = 10 Then
-            Configuration.Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
             UnitLabel.Text = "cm"
         ElseIf unitCorrectionFactor = 1000 Then
-            Configuration.Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
             UnitLabel.Text = "m"
         ElseIf unitCorrectionFactor = 25.4 Then
-            Configuration.Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
             UnitLabel.Text = "in"
         ElseIf unitCorrectionFactor = 304.8 Then
-            Configuration.Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
             UnitLabel.Text = "ft"
         End If
@@ -503,27 +514,27 @@ Public Class MainForm
         angleCorrectionFactor = My.Settings.AngleCorrectionFactor
 
         If angleCorrectionFactor = 1 / 3600.0 Then
-            Configuration.Buttonarcsec.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttonarcsec.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Buttonarcmin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonarcmin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttondegree.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
             AngleLabel.Text = "arcsec"
         ElseIf angleCorrectionFactor = 1 / 60.0 Then
-            Configuration.Buttonarcsec.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonarcsec.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Configuration.Buttonarcmin.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttonarcmin.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttondegree.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
             AngleLabel.Text = "arcmin"
         ElseIf angleCorrectionFactor = 1.0 Then
-            Configuration.Buttonarcsec.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonarcsec.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttonarcmin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Configuration.Buttonarcmin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Configuration.Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Configuration.Buttondegree.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Configuration.Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Configuration.Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
             AngleLabel.Text = "degree"
         End If
@@ -575,14 +586,14 @@ Public Class MainForm
         Compensation.ECFactor = My.Settings.ECFactor
 
         If Compensation.ECFactor = 1 Then
-            Compensation.ECOff_Button.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Compensation.ECOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Compensation.ECOff_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-            Compensation.ECOn_Button.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Compensation.ECOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Compensation.ECOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
         Else
-            Compensation.ECOff_Button.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Compensation.ECOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Compensation.ECOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
-            Compensation.ECOn_Button.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            Compensation.ECOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             Compensation.ECOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
 
@@ -610,26 +621,26 @@ Public Class MainForm
 
         TMWaveformFlag = My.Settings.TMWaveformFlag
 
-        TestMode.Button_Constant.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        TestMode.Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        TestMode.Button_Ramp.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        TestMode.Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         TestMode.Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        TestMode.Button_Triangle.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        TestMode.Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        TestMode.Button_Sine.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        TestMode.Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         If TMWaveformFlag = 1 Then
-            TestMode.Button_Constant.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            TestMode.Button_Constant.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf TMWaveformFlag = 2 Then
-            TestMode.Button_Ramp.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            TestMode.Button_Ramp.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             TestMode.Button_Ramp.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf TMWaveformFlag = 4 Then
-            TestMode.Button_Triangle.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            TestMode.Button_Triangle.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ElseIf TMWaveformFlag = 8 Then
-            TestMode.Button_Sine.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+            TestMode.Button_Sine.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
             TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         End If
 
@@ -739,14 +750,18 @@ Public Class MainForm
         Logfile_Text.Visible = False
         Logfile_Label.Visible = False
         DFT_Hz.Visible = False
-        Diagnostic1.Visible = False
-        Diagnostic1_Label.Visible = False
-        Diagnostic2a.Visible = False
-        Diagnostic2_Label.Visible = False
-        Diagnostic3a.Visible = False
-        Diagnostic3_Label.Visible = False
-        Diagnostic4.Visible = False
-        Diagnostic4_Label.Visible = False
+        Phase_Value.Visible = False
+        Phase_Label.Visible = False
+        PBA_RM_Value.Visible = False
+        PORTB_Label.Visible = False
+        RMA_RM_Value.Visible = False
+        REFMEAS_Label.Visible = False
+        Phase_Error_Value.Visible = False
+        Phase_Error_Label.Visible = False
+        Sample_Frequency_Value.Visible = False
+        Sample_Frequency_Label.Visible = False
+        DP32_Percent_Value.Visible = False
+        DP32_Percent_Label.Visible = False
         MFLoaded = 1
     End Sub
 
@@ -862,9 +877,9 @@ Public Class MainForm
                                 currentValue2 = (Convert.ToDouble(AxisData(2, 2)) - CurrentValuePhase2) * Wavelength / 2.0 - CurrentValueCorrection2 ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                                 currentValue3 = (Convert.ToDouble(AxisData(3, 2)) - CurrentValuePhase3) * Wavelength / 2.0 - CurrentValueCorrection3 ' Difference in nm; 1/2 wavelength, because path traveled at least twice
 
-                                velocityValue1 = (currentValue1 - previousValue1) * 610.35
-                                velocityValue2 = (currentValue2 - previousValue2) * 610.35
-                                velocityValue3 = (currentValue3 - previousValue3) * 610.35
+                                velocityValue1 = (currentValue1 - previousValue1) * SampleFrequency
+                                velocityValue2 = (currentValue2 - previousValue2) * SampleFrequency
+                                velocityValue3 = (currentValue3 - previousValue3) * SampleFrequency
 
                                 previousValue1 = currentValue1
                                 previousValue2 = currentValue2
@@ -940,12 +955,18 @@ Public Class MainForm
                             PressureAutoValue = LowSpeedData
                         ElseIf (LowSpeedCode = 6) And (Compensation.Humidity_Auto_Checkbox.Checked = True) Then
                             HumidityAutoValue = LowSpeedData
+                        ElseIf (LowSpeedCode = 8) Then
+                            SampleFrequency = LowSpeedData / 100
+                            SamplePeriod = 1000000 / SampleFrequency
+                            SimulationSamples = CInt(SampleFrequency / 40)
                         ElseIf (LowSpeedCode = 10) Then
                             FirmwareVersion = LowSpeedData
                         ElseIf (LowSpeedCode = 111) Then
                             Diagnostic2Value = LowSpeedData
                         ElseIf (LowSpeedCode = 101) Then
                             Diagnostic3Value = LowSpeedData
+                        ElseIf (LowSpeedCode = 121) Then
+                            Timer1Counts = LowSpeedData
                         End If
 
                         ' Data computation for primary axis
@@ -968,8 +989,8 @@ Public Class MainForm
 
                         ' currentValue = (Convert.ToDouble(values(2)) - CurrentValuePhase) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
                         currentValue = (Convert.ToDouble(AxisData(0, 2)) - CurrentValuePhase) * Wavelength / 2.0 - CurrentValueCorrection ' Difference in nm; 1/2 wavelength, because path traveled at least twice
-                        ' velocityValue = Convert.ToDouble(values(3)) * Wavelength / 2.0 * 610.35 ' Velocity = displacement difference in 1/610.35s * 610.35
-                        velocityValue = (currentValue - previousValue) * 610.35
+                        ' velocityValue = Convert.ToDouble(values(3)) * Wavelength / 2.0 * SampleFrequency ' Velocity = displacement difference in 1/SampleFrequencys * SampleFrequency
+                        velocityValue = (currentValue - previousValue) * SampleFrequency
                         angleValue = Math.Asin((currentValue - zeroAdjustment) / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296
                         ' displayValue = Math.Asin(average / Configuration.NumericUpDown_ARS.Value / 1000000) * angleCorrectionFactor * 57.296
                         previousValue = currentValue
@@ -1014,11 +1035,11 @@ Public Class MainForm
                                 previousValue1 = currentValue1
                                 previousValue2 = currentValue2
                                 previousValue3 = currentValue3
-                                Diagnostic4.Visible = False
+                                Phase_Error_Value.Visible = False
 
                                 If Suspend.Text.Equals("Resume") Then  ' force exit from suspend mode
                                     Suspend.Text = "Suspend"
-                                    Suspend.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+                                    Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
                                     Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
                                     Suspend_Label.Visible = False
                                     SuspendFlag = 0
@@ -1033,8 +1054,8 @@ Public Class MainForm
                         End Try
 
                         If serialnumberdifference = 1 Then
-                            REFFrequency = AxisData(0, 0) / 1638
-                            MEASFrequency = AxisData(0, 1) / 1638
+                            REFFrequency = AxisData(0, 0) / SamplePeriod
+                            MEASFrequency = AxisData(0, 1) / SamplePeriod
                             DIFFFrequency = MEASFrequency - REFFrequency
                             If SuspendFlag = 0 Then
                                 If IgnoreCount = 0 Then
@@ -1239,8 +1260,8 @@ Public Class MainForm
         ErrorFlag = 0
         needsInitialZero = 1
         IgnoreCount = 1
-        Diagnostic1_Label.Visible = False
-        Diagnostic4_Label.Visible = False
+        '  Phase_Label.Visible = False
+        Phase_Error_Label.Visible = False
         If Suspend.Text.Equals("Resume") Then
             Axis1_Value.Text = "0.000"
             Axis2_Value.Text = "0.000"
@@ -1277,17 +1298,17 @@ Public Class MainForm
     End Sub
 
     Private Sub DisplacementButton_Click(sender As Object, e As EventArgs) Handles DisplacementButton.Click
-        DisplacementButton.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        VelocityButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        FrequencyButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         straightnessMultiplier = 1
 
@@ -1353,17 +1374,17 @@ Public Class MainForm
     End Sub
 
     Private Sub VelocityButton_Click(sender As Object, e As EventArgs) Handles VelocityButton.Click
-        DisplacementButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        VelocityButton.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        AngleButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        FrequencyButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
 
         UnitLabel.Visible = True
@@ -1430,17 +1451,17 @@ Public Class MainForm
     End Sub
 
     Private Sub AngleButton_Click(sender As Object, e As EventArgs) Handles AngleButton.Click
-        DisplacementButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        VelocityButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        StraightnessLongButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        FrequencyButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         straightnessMultiplier = 1
 
@@ -1506,17 +1527,17 @@ Public Class MainForm
     End Sub
 
     Private Sub StraightnessLongButton_Click(sender As Object, e As EventArgs) Handles StraightnessLongButton.Click
-        DisplacementButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        VelocityButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        StraightnessShortButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        FrequencyButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         straightnessMultiplier = Configuration.NumericUpDown_SL_Coefficient.Value
 
@@ -1582,17 +1603,17 @@ Public Class MainForm
 
 
     Private Sub StraightnessShortButton_Click(sender As Object, e As EventArgs) Handles StraightnessShortButton.Click
-        DisplacementButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        VelocityButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         VelocityButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        AngleButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        AngleButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        FrequencyButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
         straightnessMultiplier = Configuration.NumericUpDown_SS_Coefficient.Value
 
@@ -1661,15 +1682,15 @@ Public Class MainForm
     End Sub
 
     Private Sub FrequencyButton_Click(sender As Object, e As EventArgs) Handles FrequencyButton.Click
-        DisplacementButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        DisplacementButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         DisplacementButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        VelocityButton.BackgroundImage = uMDGUI.My.Resources.Resources.Orange1
+        VelocityButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.Orange1
         AngleButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessLongButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessLongButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        StraightnessShortButton.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+        StraightnessShortButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
         StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        FrequencyButton.BackgroundImage = uMDGUI.My.Resources.Resources.Orange1
+        FrequencyButton.BackgroundImage = InterferometerGUI.My.Resources.Resources.Orange1
         FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         straightnessMultiplier = 1
 
@@ -1812,7 +1833,7 @@ Public Class MainForm
     Private Sub Suspend_Click(sender As Object, e As EventArgs) Handles Suspend.Click
         If Suspend.Text.Equals("Suspend") Then  ' Enter Suspend mode
             Suspend.Text = "Resume"
-            Suspend.BackgroundImage = uMDGUI.My.Resources.Resources.YellowButton1
+            Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.YellowButton1
             Suspend.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
             SuspendCurrentValue = currentValue
             SuspendCurrentValue1 = currentValue1
@@ -1822,7 +1843,7 @@ Public Class MainForm
             SuspendFlag = 1
         Else                                     ' Exit Suspend mode
             Suspend.Text = "Suspend"
-            Suspend.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Suspend.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Suspend.ForeColor = Color.FromKnownColor(KnownColor.Black)
             CurrentValueCorrection = CurrentValueCorrection + currentValue - SuspendCurrentValue
             CurrentValueCorrection1 = CurrentValueCorrection1 + currentValue1 - SuspendCurrentValue1
@@ -1875,7 +1896,7 @@ Public Class MainForm
             Axis3_Angle_Label.Visible = False
         End If
 
-        If ((Not (TemperatureAutoValue) = 0) And (Compensation.Temperature_Auto_CheckBox.Checked = True) And (TemperatureAutoValue >= 0) And (TemperatureAutoValue <= 7000)) Then
+        If ((Compensation.Temperature_Auto_CheckBox.Checked = True) And (TemperatureAutoValue >= 0) And (TemperatureAutoValue <= 7000)) Then
             If (Compensation.ComboBox_TempUnits.Text = "Degrees F") Then
                 Compensation.NumericUpDown_Temperature.Value = CDec((TemperatureAutoValue * 9 / 500) + 32)
             ElseIf (Compensation.ComboBox_TempUnits.Text = "Degrees K") Then
@@ -1885,7 +1906,7 @@ Public Class MainForm
             End If
         End If
 
-        If ((Not (PressureAutoValue) = 0) And (Compensation.Pressure_Auto_CheckBox.Checked = True) And (PressureAutoValue >= 50000) And (PressureAutoValue <= 200000)) Then
+        If ((Compensation.Pressure_Auto_CheckBox.Checked = True) And (PressureAutoValue >= 50000) And (PressureAutoValue <= 200000)) Then
             If (Compensation.ComboBox_Pressure_Units.Text = "mm/Hg") Then
                 Compensation.NumericUpDown_Pressure.Value = CDec(PressureAutoValue * 0.76 / 100)
             Else
@@ -1893,75 +1914,95 @@ Public Class MainForm
             End If
         End If
 
-        If ((Not (HumidityAutoValue) = 0) And (Compensation.Humidity_Auto_Checkbox.Checked = True) And (HumidityAutoValue >= 0) And (HumidityAutoValue <= 1000)) Then
+        If ((Compensation.Humidity_Auto_Checkbox.Checked = True) And (HumidityAutoValue >= 0) And (HumidityAutoValue <= 1000)) Then
             Compensation.NumericUpDown_Humidity.Value = CDec(HumidityAutoValue / 10)
         End If
 
         If TestMode.Diagnostic_Enable_CheckBox.Checked = True Then
+            Phase_Label.Visible = True
+            PORTB_Label.Visible = True
+            REFMEAS_Label.Visible = True
+            Phase_Error_Label.Visible = True
+            Sample_Frequency_Label.Visible = True
+            DP32_Percent_Label.Visible = True
+
             If (PhaseValue And &H7E00) = 0 Or PhaseValue < 0 Then ' REF or MEAS valid
                 '   If Not PhaseValue = 0 Then
-                Diagnostic1.Text = PhaseValue.ToString("###0") ' Phase
-                Diagnostic1.Visible = True
-                Diagnostic1_Label.Visible = True
+                Phase_Value.Text = PhaseValue.ToString("###0") ' Phase
+                Phase_Value.Visible = True
             Else
-                Diagnostic1.Visible = False
+                Phase_Value.Visible = False
             End If
 
             If Not (Diagnostic2Value And &HFF00) = &H8000 Then
-                Diagnostic2a.Text = (((((Diagnostic2Value >> 8) And &HFF) + 128) And &HFF) - 128).ToString("d0")     ' REFToMEAS
-                Diagnostic2a.Visible = True
-                Diagnostic2_Label.Visible = True
+                PBA_RM_Value.Text = (((((Diagnostic2Value >> 8) And &HFF) + 128) And &HFF) - 128).ToString("d0") ' REFToMEAS
+                PBA_RM_Value.Visible = True
+                PORTB_Label.Visible = True
             Else
-                Diagnostic2a.Visible = False
+                PBA_RM_Value.Visible = False
             End If
 
             If Not (Diagnostic2Value And &HFF) = &H80 Then
 
-                Diagnostic2b.Text = ((((Diagnostic2Value And &HFF) + 128) And &HFF) - 128).ToString("d0")     ' REFPeriod
-                Diagnostic2b.Visible = True
-                Diagnostic2_Label.Visible = True
+                PBA_RP_Value.Text = ((((Diagnostic2Value And &HFF) + 128) And &HFF) - 128).ToString("d0") ' REFPeriod
+                PBA_RP_Value.Visible = True
+                PORTB_Label.Visible = True
             Else
-                Diagnostic2b.Visible = False
+                PBA_RP_Value.Visible = False
             End If
 
             If Not (Diagnostic3Value And &HFF00) = &H8000 Then
-                Diagnostic3a.Text = (((((Diagnostic3Value >> 8) And &HFF) + 128) And &HFF) - 128).ToString("d0")     ' Second REF change or calculated REF delay
-                Diagnostic3a.Visible = True
-                Diagnostic3_Label.Visible = True
+                RMA_RM_Value.Text = (((((Diagnostic3Value >> 8) And &HFF) + 128) And &HFF) - 128).ToString("d0") ' Second REF change or calculated REF delay
+                RMA_RM_Value.Visible = True
+                REFMEAS_Label.Visible = True
             Else
-                Diagnostic3a.Visible = False
+                RMA_RM_Value.Visible = False
             End If
 
-
             If Not (Diagnostic3Value And &HFF) = &H80 Then
-                Diagnostic3b.Text = ((((Diagnostic3Value And &HFF) + 128) And &HFF) - 128).ToString("#0") ' First REF change
-                Diagnostic3b.Visible = True
-                Diagnostic3_Label.Visible = True
+                RMA_RP__Value.Text = ((((Diagnostic3Value And &HFF) + 128) And &HFF) - 128).ToString("#0") ' First REF change
+                RMA_RP__Value.Visible = True
+                REFMEAS_Label.Visible = True
             Else
-                Diagnostic3b.Visible = False
+                RMA_RP__Value.Visible = False
             End If
 
             If (Diagnostic4Count > 0) Then
-                Diagnostic4.Text = Diagnostic4Save.ToString("x0000") ' NoChange Flag Word
-                Diagnostic4.Visible = True
-                Diagnostic4_Label.Visible = True
+                Phase_Error_Value.Text = Diagnostic4Save.ToString("x0000") ' NoChange Flag Word
+                Phase_Error_Value.Visible = True
+                Phase_Error_Label.Visible = True
                 Diagnostic4Count -= 1
             Else
                 If (Diagnostic4Count <= 0) Then
-                    Diagnostic4.Visible = False
+                    Phase_Error_Value.Visible = False
                 End If
             End If
+
+            If Not (Timer1Counts) = 0 Then
+                Sample_Frequency_Value.Visible = True
+                Sample_Frequency_Value.Text = (SampleFrequency).ToString("###.00")
+                Sample_Frequency_Label.Visible = True
+                DP32_Percent_Value.Text = (CLng(Timer1Counts) / 655.36).ToString("###.00")
+                DP32_Percent_Value.Visible = True
+            Else
+                Sample_Frequency_Value.Visible = False
+                DP32_Percent_Value.Visible = False
+            End If
         Else
-            Diagnostic1.Visible = False
-            Diagnostic2a.Visible = False
-            Diagnostic2b.Visible = False
-            Diagnostic3a.Visible = False
-            Diagnostic3b.Visible = False
-            Diagnostic4.Visible = False
-            Diagnostic1_Label.Visible = False
-            Diagnostic2_Label.Visible = False
-            Diagnostic3_Label.Visible = False
-            Diagnostic4_Label.Visible = False
+            Phase_Value.Visible = False
+            PBA_RM_Value.Visible = False
+            PBA_RP_Value.Visible = False
+            RMA_RM_Value.Visible = False
+            RMA_RP__Value.Visible = False
+            Phase_Error_Value.Visible = False
+            Sample_Frequency_Value.Visible = False
+            DP32_Percent_Value.Visible = False
+            Phase_Label.Visible = False
+            PORTB_Label.Visible = False
+            REFMEAS_Label.Visible = False
+            Phase_Error_Label.Visible = False
+            Sample_Frequency_Label.Visible = False
+            DP32_Percent_Label.Visible = False
         End If
 
         If IgnoreCount = 0 Then
@@ -2240,11 +2281,12 @@ Public Class MainForm
         '  0: No Data
         '  1: Laser Power
         '  2: Signal Strength
-        '  3: Temperature 1
-        '  4: Temperature 2
-        '  5: Pressure
-        '  6: Humidity
-        '  7: Data Source ID
+        '  3: Temperature 1 (XXX.YY, 0 to 70.00 degC)
+        '  4: Temperature 2 (XXX.YY, 0 to 70.00 degC)
+        '  5: Pressure (XXX.YY mBar, 500.00 to 2000.00)
+        '  6: Humidity (XXX.Y%, 0 to 100.0)
+
+        '  8: Sample Frequency (XXX.YY Hz, default is 610.35 Hz)
 
         ' 10: Firmware Version # XXX.YY
 
@@ -2255,12 +2297,14 @@ Public Class MainForm
         ' 111: Phase FirstREFChange (LB) and SecondREFChange (HB) (Averaging 2)
         ' 112: Phase REFPeriod (LB) and REFtoMeas (HB) (Averaging 2)
 
+        ' 121: Number of 40 MHz CPU clocks spent in capture and analysis
+
         ' 200-255: Reserved
 
         Dim counter As Integer
 
-        For counter = 0 To 14 ' With simulation timer at 25 ms, this produces 600 samples/second, close to 610.34
-            simrefcount = simrefcount + CLng(TestMode.NumericUpDown_FGREF_Value.Value * 1638)
+        For counter = 0 To SimulationSamples ' With simulation timer at 25 ms, this produces 600 samples/second, close to 610.35
+            simrefcount = simrefcount + CLng(TestMode.NumericUpDown_FGREF_Value.Value * SamplePeriod)
             simmeascount = simrefcount + CLng(simulationDistance)
 
             If TestMode.Button_Constant.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
@@ -2272,12 +2316,12 @@ Public Class MainForm
                 simulationDistance = CLng(CDbl(12638) * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
 
             ElseIf TestMode.Button_Triangle.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' Triangle implemented as Asin(sin()) to be consistent with Sin
-                waveform = 2 / Math.PI * Math.Asin(Math.Sin(simcount * (TMFreqValue * 0.1) * (Math.PI * 2) / 610.35 + phase))
+                waveform = 2 / Math.PI * Math.Asin(Math.Sin(simcount * (TMFreqValue * 0.1) * (Math.PI * 2) / SampleFrequency + phase))
                 simulationDistance = CLng(12638 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2))
                 simcount = simcount + 1
 
-            ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' At 1 Hz will do a cycle in 610.35 samples
-                waveform = Math.Sin(simcount * (TMFreqValue * 0.1) * (Math.PI * 2) / 610.35 + phase)
+            ElseIf TestMode.Button_Sine.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then ' At 1 Hz will do a cycle in SampleFrequency samples
+                waveform = Math.Sin(simcount * (TMFreqValue * 0.1) * (Math.PI * 2) / SampleFrequency + phase)
                 simulationDistance = CLng(12638.0 * TMUnitsFactor * ((waveform + TestMode.TrackBar_Offset.Value) * 0.01 * TMAmpValue * multiplier / 2.0))
                 simcount = simcount + 1
             End If
@@ -2306,6 +2350,11 @@ Public Class MainForm
                 simulationLowSpeedCode = 6
                 simulationLowSpeedData = 890
             End If
+
+            '     If (CInt(simulationSerial) And &HF) = 8 Then
+            'simulationLowSpeedCode = 8
+            'simulationLowSpeedData = 61035
+            'End If
 
             'simulationLowSpeedCode = 51
             'If (TMMultipleAxesFlag And &H8) = &H8 Then
@@ -2418,13 +2467,13 @@ Public Class MainForm
             If Not (captureFile Is Nothing) Then
                 ' Turn capture on
                 Capture_Button.Text = "Disable Capture"
-                Capture_Button.BackgroundImage = uMDGUI.My.Resources.Resources.GreenButton1
+                Capture_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.GreenButton1
                 Capture_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
                 Capture_Flag = 1
             End If
         Else
             Capture_Button.Text = "Enable Capture"
-            Capture_Button.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
+            Capture_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
             Capture_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
             captureFile.Write(vbCrLf + "Gap" + vbCrLf + vbCrLf)
             Capture_Flag = 0
@@ -2514,5 +2563,4 @@ Public Class MainForm
         '      needsInitialZero = 1
         IgnoreCount = 0
     End Sub
-
 End Class

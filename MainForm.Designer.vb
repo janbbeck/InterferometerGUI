@@ -74,17 +74,17 @@ Partial Public Class MainForm
         Me.Logfile_Label = New System.Windows.Forms.Label()
         Me.RangeUnits = New System.Windows.Forms.Label()
         Me.Label_RangeTime = New System.Windows.Forms.Label()
-        Me.Diagnostic1 = New System.Windows.Forms.Label()
-        Me.Diagnostic1_Label = New System.Windows.Forms.Label()
+        Me.Phase_Value = New System.Windows.Forms.Label()
+        Me.Phase_Label = New System.Windows.Forms.Label()
         Me.Graph_Averaging_CheckBox = New System.Windows.Forms.CheckBox()
-        Me.Diagnostic2_Label = New System.Windows.Forms.Label()
-        Me.Diagnostic2a = New System.Windows.Forms.Label()
-        Me.Diagnostic3_Label = New System.Windows.Forms.Label()
-        Me.Diagnostic3a = New System.Windows.Forms.Label()
-        Me.Diagnostic4_Label = New System.Windows.Forms.Label()
-        Me.Diagnostic4 = New System.Windows.Forms.Label()
-        Me.Diagnostic2b = New System.Windows.Forms.Label()
-        Me.Diagnostic3b = New System.Windows.Forms.Label()
+        Me.PORTB_Label = New System.Windows.Forms.Label()
+        Me.PBA_RM_Value = New System.Windows.Forms.Label()
+        Me.REFMEAS_Label = New System.Windows.Forms.Label()
+        Me.RMA_RM_Value = New System.Windows.Forms.Label()
+        Me.Phase_Error_Label = New System.Windows.Forms.Label()
+        Me.Phase_Error_Value = New System.Windows.Forms.Label()
+        Me.PBA_RP_Value = New System.Windows.Forms.Label()
+        Me.RMA_RP__Value = New System.Windows.Forms.Label()
         Me.Axis1_Value = New System.Windows.Forms.Label()
         Me.Axis1_Label = New System.Windows.Forms.Label()
         Me.Axis2_Label = New System.Windows.Forms.Label()
@@ -110,6 +110,10 @@ Partial Public Class MainForm
         Me.DisplacementButton = New System.Windows.Forms.Button()
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.VelocityButton = New System.Windows.Forms.Button()
+        Me.DP32_Percent_Label = New System.Windows.Forms.Label()
+        Me.DP32_Percent_Value = New System.Windows.Forms.Label()
+        Me.Sample_Frequency_Label = New System.Windows.Forms.Label()
+        Me.Sample_Frequency_Value = New System.Windows.Forms.Label()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -558,27 +562,27 @@ Partial Public Class MainForm
         Me.Label_RangeTime.Text = "/s"
         Me.Label_RangeTime.Visible = False
         '
-        'Diagnostic1
+        'Phase_Value
         '
-        Me.Diagnostic1.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic1.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic1.Location = New System.Drawing.Point(176, 4)
-        Me.Diagnostic1.Name = "Diagnostic1"
-        Me.Diagnostic1.Size = New System.Drawing.Size(52, 18)
-        Me.Diagnostic1.TabIndex = 105
-        Me.Diagnostic1.Text = " 0000"
-        Me.Diagnostic1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Phase_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Phase_Value.ForeColor = System.Drawing.Color.Blue
+        Me.Phase_Value.Location = New System.Drawing.Point(136, 4)
+        Me.Phase_Value.Name = "Phase_Value"
+        Me.Phase_Value.Size = New System.Drawing.Size(52, 18)
+        Me.Phase_Value.TabIndex = 105
+        Me.Phase_Value.Text = " 0000"
+        Me.Phase_Value.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'Diagnostic1_Label
+        'Phase_Label
         '
-        Me.Diagnostic1_Label.AutoSize = True
-        Me.Diagnostic1_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic1_Label.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic1_Label.Location = New System.Drawing.Point(91, 4)
-        Me.Diagnostic1_Label.Name = "Diagnostic1_Label"
-        Me.Diagnostic1_Label.Size = New System.Drawing.Size(99, 18)
-        Me.Diagnostic1_Label.TabIndex = 106
-        Me.Diagnostic1_Label.Text = "Diagnostic 1:"
+        Me.Phase_Label.AutoSize = True
+        Me.Phase_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Phase_Label.ForeColor = System.Drawing.Color.Blue
+        Me.Phase_Label.Location = New System.Drawing.Point(93, 4)
+        Me.Phase_Label.Name = "Phase_Label"
+        Me.Phase_Label.Size = New System.Drawing.Size(56, 18)
+        Me.Phase_Label.TabIndex = 106
+        Me.Phase_Label.Text = "Phase:"
         '
         'Graph_Averaging_CheckBox
         '
@@ -594,93 +598,93 @@ Partial Public Class MainForm
         Me.Graph_Averaging_CheckBox.Text = " Graph Averaging On"
         Me.Graph_Averaging_CheckBox.UseVisualStyleBackColor = True
         '
-        'Diagnostic2_Label
+        'PORTB_Label
         '
-        Me.Diagnostic2_Label.AutoSize = True
-        Me.Diagnostic2_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic2_Label.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic2_Label.Location = New System.Drawing.Point(238, 4)
-        Me.Diagnostic2_Label.Name = "Diagnostic2_Label"
-        Me.Diagnostic2_Label.Size = New System.Drawing.Size(99, 18)
-        Me.Diagnostic2_Label.TabIndex = 109
-        Me.Diagnostic2_Label.Text = "Diagnostic 2:"
+        Me.PORTB_Label.AutoSize = True
+        Me.PORTB_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PORTB_Label.ForeColor = System.Drawing.Color.Blue
+        Me.PORTB_Label.Location = New System.Drawing.Point(194, 4)
+        Me.PORTB_Label.Name = "PORTB_Label"
+        Me.PORTB_Label.Size = New System.Drawing.Size(94, 18)
+        Me.PORTB_Label.TabIndex = 109
+        Me.PORTB_Label.Text = "PBA RM RP:"
         '
-        'Diagnostic2a
+        'PBA_RM_Value
         '
-        Me.Diagnostic2a.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic2a.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic2a.Location = New System.Drawing.Point(335, 4)
-        Me.Diagnostic2a.Name = "Diagnostic2a"
-        Me.Diagnostic2a.Size = New System.Drawing.Size(33, 18)
-        Me.Diagnostic2a.TabIndex = 108
-        Me.Diagnostic2a.Text = " 00"
-        Me.Diagnostic2a.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.PBA_RM_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PBA_RM_Value.ForeColor = System.Drawing.Color.Blue
+        Me.PBA_RM_Value.Location = New System.Drawing.Point(285, 4)
+        Me.PBA_RM_Value.Name = "PBA_RM_Value"
+        Me.PBA_RM_Value.Size = New System.Drawing.Size(35, 18)
+        Me.PBA_RM_Value.TabIndex = 108
+        Me.PBA_RM_Value.Text = " -00"
+        Me.PBA_RM_Value.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'Diagnostic3_Label
+        'REFMEAS_Label
         '
-        Me.Diagnostic3_Label.AutoSize = True
-        Me.Diagnostic3_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic3_Label.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic3_Label.Location = New System.Drawing.Point(401, 4)
-        Me.Diagnostic3_Label.Name = "Diagnostic3_Label"
-        Me.Diagnostic3_Label.Size = New System.Drawing.Size(99, 18)
-        Me.Diagnostic3_Label.TabIndex = 111
-        Me.Diagnostic3_Label.Text = "Diagnostic 3:"
+        Me.REFMEAS_Label.AutoSize = True
+        Me.REFMEAS_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.REFMEAS_Label.ForeColor = System.Drawing.Color.Blue
+        Me.REFMEAS_Label.Location = New System.Drawing.Point(350, 4)
+        Me.REFMEAS_Label.Name = "REFMEAS_Label"
+        Me.REFMEAS_Label.Size = New System.Drawing.Size(97, 18)
+        Me.REFMEAS_Label.TabIndex = 111
+        Me.REFMEAS_Label.Text = "RMA RM RP:"
         '
-        'Diagnostic3a
+        'RMA_RM_Value
         '
-        Me.Diagnostic3a.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic3a.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic3a.Location = New System.Drawing.Point(498, 4)
-        Me.Diagnostic3a.Name = "Diagnostic3a"
-        Me.Diagnostic3a.Size = New System.Drawing.Size(32, 18)
-        Me.Diagnostic3a.TabIndex = 110
-        Me.Diagnostic3a.Text = " 00"
-        Me.Diagnostic3a.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.RMA_RM_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RMA_RM_Value.ForeColor = System.Drawing.Color.Blue
+        Me.RMA_RM_Value.Location = New System.Drawing.Point(444, 4)
+        Me.RMA_RM_Value.Name = "RMA_RM_Value"
+        Me.RMA_RM_Value.Size = New System.Drawing.Size(34, 18)
+        Me.RMA_RM_Value.TabIndex = 110
+        Me.RMA_RM_Value.Text = " 00"
+        Me.RMA_RM_Value.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'Diagnostic4_Label
+        'Phase_Error_Label
         '
-        Me.Diagnostic4_Label.AutoSize = True
-        Me.Diagnostic4_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic4_Label.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic4_Label.Location = New System.Drawing.Point(563, 4)
-        Me.Diagnostic4_Label.Name = "Diagnostic4_Label"
-        Me.Diagnostic4_Label.Size = New System.Drawing.Size(103, 18)
-        Me.Diagnostic4_Label.TabIndex = 113
-        Me.Diagnostic4_Label.Text = " Diagnostic 4:"
+        Me.Phase_Error_Label.AutoSize = True
+        Me.Phase_Error_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Phase_Error_Label.ForeColor = System.Drawing.Color.Blue
+        Me.Phase_Error_Label.Location = New System.Drawing.Point(505, 4)
+        Me.Phase_Error_Label.Name = "Phase_Error_Label"
+        Me.Phase_Error_Label.Size = New System.Drawing.Size(36, 18)
+        Me.Phase_Error_Label.TabIndex = 113
+        Me.Phase_Error_Label.Text = " PE:"
         '
-        'Diagnostic4
+        'Phase_Error_Value
         '
-        Me.Diagnostic4.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic4.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic4.Location = New System.Drawing.Point(665, 4)
-        Me.Diagnostic4.Name = "Diagnostic4"
-        Me.Diagnostic4.Size = New System.Drawing.Size(52, 18)
-        Me.Diagnostic4.TabIndex = 112
-        Me.Diagnostic4.Text = " 0000"
-        Me.Diagnostic4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Phase_Error_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Phase_Error_Value.ForeColor = System.Drawing.Color.Blue
+        Me.Phase_Error_Value.Location = New System.Drawing.Point(538, 4)
+        Me.Phase_Error_Value.Name = "Phase_Error_Value"
+        Me.Phase_Error_Value.Size = New System.Drawing.Size(44, 18)
+        Me.Phase_Error_Value.TabIndex = 112
+        Me.Phase_Error_Value.Text = " 0000"
+        Me.Phase_Error_Value.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'Diagnostic2b
+        'PBA_RP_Value
         '
-        Me.Diagnostic2b.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic2b.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic2b.Location = New System.Drawing.Point(362, 4)
-        Me.Diagnostic2b.Name = "Diagnostic2b"
-        Me.Diagnostic2b.Size = New System.Drawing.Size(30, 18)
-        Me.Diagnostic2b.TabIndex = 114
-        Me.Diagnostic2b.Text = " 00"
-        Me.Diagnostic2b.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.PBA_RP_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PBA_RP_Value.ForeColor = System.Drawing.Color.Blue
+        Me.PBA_RP_Value.Location = New System.Drawing.Point(316, 4)
+        Me.PBA_RP_Value.Name = "PBA_RP_Value"
+        Me.PBA_RP_Value.Size = New System.Drawing.Size(28, 18)
+        Me.PBA_RP_Value.TabIndex = 114
+        Me.PBA_RP_Value.Text = " 00"
+        Me.PBA_RP_Value.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'Diagnostic3b
+        'RMA_RP__Value
         '
-        Me.Diagnostic3b.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Diagnostic3b.ForeColor = System.Drawing.Color.Blue
-        Me.Diagnostic3b.Location = New System.Drawing.Point(526, 4)
-        Me.Diagnostic3b.Name = "Diagnostic3b"
-        Me.Diagnostic3b.Size = New System.Drawing.Size(32, 18)
-        Me.Diagnostic3b.TabIndex = 115
-        Me.Diagnostic3b.Text = " 00"
-        Me.Diagnostic3b.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.RMA_RP__Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RMA_RP__Value.ForeColor = System.Drawing.Color.Blue
+        Me.RMA_RP__Value.Location = New System.Drawing.Point(474, 4)
+        Me.RMA_RP__Value.Name = "RMA_RP__Value"
+        Me.RMA_RP__Value.Size = New System.Drawing.Size(28, 18)
+        Me.RMA_RP__Value.TabIndex = 115
+        Me.RMA_RP__Value.Text = " 00"
+        Me.RMA_RP__Value.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Axis1_Value
         '
@@ -854,7 +858,7 @@ Partial Public Class MainForm
         '
         Me.Capture_Button.AccessibleDescription = ""
         Me.Capture_Button.AccessibleName = ""
-        Me.Capture_Button.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
+        Me.Capture_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Capture_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Capture_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Capture_Button.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -868,7 +872,7 @@ Partial Public Class MainForm
         '
         Me.StraightnessLongButton.AccessibleDescription = ""
         Me.StraightnessLongButton.AccessibleName = ""
-        Me.StraightnessLongButton.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
+        Me.StraightnessLongButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.StraightnessLongButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.StraightnessLongButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.StraightnessLongButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -882,7 +886,7 @@ Partial Public Class MainForm
         '
         Me.GraphControl.AccessibleDescription = ""
         Me.GraphControl.AccessibleName = ""
-        Me.GraphControl.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
+        Me.GraphControl.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.GraphControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.GraphControl.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.GraphControl.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -896,7 +900,7 @@ Partial Public Class MainForm
         '
         Me.Suspend.AccessibleDescription = ""
         Me.Suspend.AccessibleName = ""
-        Me.Suspend.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
+        Me.Suspend.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.Suspend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Suspend.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Suspend.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -910,7 +914,7 @@ Partial Public Class MainForm
         '
         Me.FrequencyButton.AccessibleDescription = ""
         Me.FrequencyButton.AccessibleName = ""
-        Me.FrequencyButton.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
+        Me.FrequencyButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.FrequencyButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.FrequencyButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.FrequencyButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
@@ -925,7 +929,7 @@ Partial Public Class MainForm
         '
         Me.StraightnessShortButton.AccessibleDescription = ""
         Me.StraightnessShortButton.AccessibleName = ""
-        Me.StraightnessShortButton.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
+        Me.StraightnessShortButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.StraightnessShortButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.StraightnessShortButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.StraightnessShortButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -939,7 +943,7 @@ Partial Public Class MainForm
         '
         Me.AngleButton.AccessibleDescription = ""
         Me.AngleButton.AccessibleName = ""
-        Me.AngleButton.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
+        Me.AngleButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.AngleButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.AngleButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.AngleButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -954,7 +958,7 @@ Partial Public Class MainForm
         Me.DisplacementButton.AccessibleDescription = ""
         Me.DisplacementButton.AccessibleName = ""
         Me.DisplacementButton.BackColor = System.Drawing.SystemColors.Control
-        Me.DisplacementButton.BackgroundImage = Global.uMDGUI.My.Resources.Resources.ActiveButton6
+        Me.DisplacementButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
         Me.DisplacementButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.DisplacementButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.DisplacementButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
@@ -970,7 +974,7 @@ Partial Public Class MainForm
         '
         Me.ZeroButton.AccessibleDescription = ""
         Me.ZeroButton.AccessibleName = ""
-        Me.ZeroButton.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
+        Me.ZeroButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.ZeroButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ZeroButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -984,7 +988,7 @@ Partial Public Class MainForm
         '
         Me.VelocityButton.AccessibleDescription = ""
         Me.VelocityButton.AccessibleName = ""
-        Me.VelocityButton.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
+        Me.VelocityButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
         Me.VelocityButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.VelocityButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.VelocityButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -994,9 +998,57 @@ Partial Public Class MainForm
         Me.VelocityButton.TabIndex = 32
         Me.VelocityButton.Text = "Velocity"
         '
+        'DP32_Percent_Label
+        '
+        Me.DP32_Percent_Label.AutoSize = True
+        Me.DP32_Percent_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DP32_Percent_Label.ForeColor = System.Drawing.Color.Blue
+        Me.DP32_Percent_Label.Location = New System.Drawing.Point(703, 4)
+        Me.DP32_Percent_Label.Name = "DP32_Percent_Label"
+        Me.DP32_Percent_Label.Size = New System.Drawing.Size(66, 18)
+        Me.DP32_Percent_Label.TabIndex = 132
+        Me.DP32_Percent_Label.Text = "DP32 %:"
+        '
+        'DP32_Percent_Value
+        '
+        Me.DP32_Percent_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DP32_Percent_Value.ForeColor = System.Drawing.Color.Blue
+        Me.DP32_Percent_Value.Location = New System.Drawing.Point(766, 4)
+        Me.DP32_Percent_Value.Name = "DP32_Percent_Value"
+        Me.DP32_Percent_Value.Size = New System.Drawing.Size(52, 18)
+        Me.DP32_Percent_Value.TabIndex = 131
+        Me.DP32_Percent_Value.Text = " 0000"
+        Me.DP32_Percent_Value.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Sample_Frequency_Label
+        '
+        Me.Sample_Frequency_Label.AutoSize = True
+        Me.Sample_Frequency_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Sample_Frequency_Label.ForeColor = System.Drawing.Color.Blue
+        Me.Sample_Frequency_Label.Location = New System.Drawing.Point(588, 4)
+        Me.Sample_Frequency_Label.Name = "Sample_Frequency_Label"
+        Me.Sample_Frequency_Label.Size = New System.Drawing.Size(54, 18)
+        Me.Sample_Frequency_Label.TabIndex = 134
+        Me.Sample_Frequency_Label.Text = "SF Hz:"
+        '
+        'Sample_Frequency_Value
+        '
+        Me.Sample_Frequency_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Sample_Frequency_Value.ForeColor = System.Drawing.Color.Blue
+        Me.Sample_Frequency_Value.Location = New System.Drawing.Point(642, 4)
+        Me.Sample_Frequency_Value.Name = "Sample_Frequency_Value"
+        Me.Sample_Frequency_Value.Size = New System.Drawing.Size(58, 18)
+        Me.Sample_Frequency_Value.TabIndex = 133
+        Me.Sample_Frequency_Value.Text = " 000.00"
+        Me.Sample_Frequency_Value.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'MainForm
         '
         Me.ClientSize = New System.Drawing.Size(880, 572)
+        Me.Controls.Add(Me.Sample_Frequency_Label)
+        Me.Controls.Add(Me.Sample_Frequency_Value)
+        Me.Controls.Add(Me.DP32_Percent_Label)
+        Me.Controls.Add(Me.DP32_Percent_Value)
         Me.Controls.Add(Me.Axis3_Time_Label)
         Me.Controls.Add(Me.Axis3_Units_Label)
         Me.Controls.Add(Me.Axis3_Angle_Label)
@@ -1012,17 +1064,17 @@ Partial Public Class MainForm
         Me.Controls.Add(Me.Axis2_Value)
         Me.Controls.Add(Me.Axis1_Label)
         Me.Controls.Add(Me.Axis1_Value)
-        Me.Controls.Add(Me.Diagnostic3b)
-        Me.Controls.Add(Me.Diagnostic2b)
-        Me.Controls.Add(Me.Diagnostic4_Label)
-        Me.Controls.Add(Me.Diagnostic4)
-        Me.Controls.Add(Me.Diagnostic3_Label)
-        Me.Controls.Add(Me.Diagnostic3a)
-        Me.Controls.Add(Me.Diagnostic2_Label)
-        Me.Controls.Add(Me.Diagnostic2a)
+        Me.Controls.Add(Me.RMA_RP__Value)
+        Me.Controls.Add(Me.PBA_RP_Value)
+        Me.Controls.Add(Me.Phase_Error_Label)
+        Me.Controls.Add(Me.Phase_Error_Value)
+        Me.Controls.Add(Me.REFMEAS_Label)
+        Me.Controls.Add(Me.RMA_RM_Value)
+        Me.Controls.Add(Me.PORTB_Label)
+        Me.Controls.Add(Me.PBA_RM_Value)
         Me.Controls.Add(Me.Graph_Averaging_CheckBox)
-        Me.Controls.Add(Me.Diagnostic1_Label)
-        Me.Controls.Add(Me.Diagnostic1)
+        Me.Controls.Add(Me.Phase_Label)
+        Me.Controls.Add(Me.Phase_Value)
         Me.Controls.Add(Me.Label_RangeTime)
         Me.Controls.Add(Me.RangeUnits)
         Me.Controls.Add(Me.Logfile_Label)
@@ -1139,17 +1191,17 @@ Partial Public Class MainForm
     Friend WithEvents Logfile_Label As System.Windows.Forms.Label
     Friend WithEvents RangeUnits As System.Windows.Forms.Label
     Friend WithEvents Label_RangeTime As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic1 As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic1_Label As System.Windows.Forms.Label
+    Friend WithEvents Phase_Value As System.Windows.Forms.Label
+    Friend WithEvents Phase_Label As System.Windows.Forms.Label
     Friend WithEvents Graph_Averaging_CheckBox As System.Windows.Forms.CheckBox
-    Friend WithEvents Diagnostic2_Label As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic2a As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic3_Label As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic3a As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic4_Label As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic4 As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic2b As System.Windows.Forms.Label
-    Friend WithEvents Diagnostic3b As System.Windows.Forms.Label
+    Friend WithEvents PORTB_Label As System.Windows.Forms.Label
+    Friend WithEvents PBA_RM_Value As System.Windows.Forms.Label
+    Friend WithEvents REFMEAS_Label As System.Windows.Forms.Label
+    Friend WithEvents RMA_RM_Value As System.Windows.Forms.Label
+    Friend WithEvents Phase_Error_Label As System.Windows.Forms.Label
+    Friend WithEvents Phase_Error_Value As System.Windows.Forms.Label
+    Friend WithEvents PBA_RP_Value As System.Windows.Forms.Label
+    Friend WithEvents RMA_RP__Value As System.Windows.Forms.Label
     Friend WithEvents Axis1_Value As System.Windows.Forms.Label
     Friend WithEvents Axis1_Label As System.Windows.Forms.Label
     Friend WithEvents Axis2_Label As System.Windows.Forms.Label
@@ -1165,4 +1217,8 @@ Partial Public Class MainForm
     Friend WithEvents Axis3_Time_Label As System.Windows.Forms.Label
     Friend WithEvents Axis3_Units_Label As System.Windows.Forms.Label
     Friend WithEvents Axis3_Angle_Label As System.Windows.Forms.Label
+    Friend WithEvents DP32_Percent_Label As System.Windows.Forms.Label
+    Friend WithEvents DP32_Percent_Value As System.Windows.Forms.Label
+    Friend WithEvents Sample_Frequency_Label As System.Windows.Forms.Label
+    Friend WithEvents Sample_Frequency_Value As System.Windows.Forms.Label
 End Class
