@@ -362,16 +362,16 @@ Public Class TestMode
 
     Private Sub Diagnostic_Enable_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Error_Detection_CheckBox.CheckedChanged
         If Diagnostic_Enable_CheckBox.Checked = False Then
-            MainForm.Diagnostic1.Visible = False
-            MainForm.Diagnostic2a.Visible = False
-            MainForm.Diagnostic2b.Visible = False
-            MainForm.Diagnostic3a.Visible = False
-            MainForm.Diagnostic3b.Visible = False
-            MainForm.Diagnostic4.Visible = False
-            MainForm.Diagnostic1_Label.Visible = False
-            MainForm.Diagnostic2_Label.Visible = False
-            MainForm.Diagnostic3_Label.Visible = False
-            MainForm.Diagnostic4_Label.Visible = False
+            MainForm.Phase_Value.Visible = False
+            MainForm.PBA_RM_Value.Visible = False
+            MainForm.PBA_RP_Value.Visible = False
+            MainForm.RMA_RM_Value.Visible = False
+            MainForm.RMA_RP__Value.Visible = False
+            MainForm.Phase_Error_Value.Visible = False
+            MainForm.Phase_Label.Visible = False
+            MainForm.PORTB_Label.Visible = False
+            MainForm.REFMEAS_Label.Visible = False
+            MainForm.Phase_Error_Label.Visible = False
         End If
     End Sub
 
