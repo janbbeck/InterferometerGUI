@@ -438,7 +438,7 @@ Partial Class TestMode
         'TMClose_Button
         '
         Me.TMClose_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TMClose_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.TMClose_Button.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.TMClose_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.TMClose_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.TMClose_Button.Location = New System.Drawing.Point(198, 476)
@@ -451,7 +451,7 @@ Partial Class TestMode
         '
         Me.ZeroButton.AccessibleDescription = ""
         Me.ZeroButton.AccessibleName = ""
-        Me.ZeroButton.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.ZeroButton.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.ZeroButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ZeroButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ZeroButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -464,7 +464,7 @@ Partial Class TestMode
         'FGOff_Button
         '
         Me.FGOff_Button.BackColor = System.Drawing.SystemColors.Control
-        Me.FGOff_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.FGOff_Button.BackgroundImage = Global.uMDGUI.My.Resources.Resources.ActiveButton6
         Me.FGOff_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.FGOff_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.FGOff_Button.Location = New System.Drawing.Point(207, 31)
@@ -476,7 +476,7 @@ Partial Class TestMode
         '
         'FGOn_Button
         '
-        Me.FGOn_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.FGOn_Button.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.FGOn_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.FGOn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.FGOn_Button.Location = New System.Drawing.Point(283, 31)
@@ -488,7 +488,7 @@ Partial Class TestMode
         '
         'Button_Constant
         '
-        Me.Button_Constant.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Button_Constant.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Button_Constant.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Constant.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button_Constant.Location = New System.Drawing.Point(39, 145)
@@ -501,7 +501,7 @@ Partial Class TestMode
         'Button_Triangle
         '
         Me.Button_Triangle.BackColor = System.Drawing.SystemColors.Control
-        Me.Button_Triangle.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.Button_Triangle.BackgroundImage = Global.uMDGUI.My.Resources.Resources.ActiveButton6
         Me.Button_Triangle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Triangle.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button_Triangle.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
@@ -514,7 +514,7 @@ Partial Class TestMode
         '
         'Button_Sine
         '
-        Me.Button_Sine.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Button_Sine.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Button_Sine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Sine.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button_Sine.ForeColor = System.Drawing.SystemColors.ControlText
@@ -527,7 +527,7 @@ Partial Class TestMode
         '
         'Button_Ramp
         '
-        Me.Button_Ramp.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Button_Ramp.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Button_Ramp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button_Ramp.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button_Ramp.Location = New System.Drawing.Point(38, 181)

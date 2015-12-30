@@ -80,7 +80,7 @@ Partial Class Configuration
         Me.Button2x.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Button2x.AccessibleName = "Send AT Command Button"
         Me.Button2x.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.Button2x.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.Button2x.BackgroundImage = Global.uMDGUI.My.Resources.Resources.ActiveButton6
         Me.Button2x.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button2x.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button2x.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -95,7 +95,7 @@ Partial Class Configuration
         '
         Me.Button4x.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Button4x.AccessibleName = "Send AT Command Button"
-        Me.Button4x.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Button4x.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Button4x.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button4x.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button4x.ForeColor = System.Drawing.Color.Black
@@ -111,7 +111,7 @@ Partial Class Configuration
         Me.Button1x.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Button1x.AccessibleName = "Send AT Command Button"
         Me.Button1x.BackColor = System.Drawing.SystemColors.Control
-        Me.Button1x.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Button1x.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Button1x.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button1x.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button1x.ForeColor = System.Drawing.Color.Black
@@ -136,7 +136,7 @@ Partial Class Configuration
         '
         Me.Buttonnm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonnm.AccessibleName = "Send AT Command Button"
-        Me.Buttonnm.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttonnm.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonnm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonnm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonnm.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -150,7 +150,7 @@ Partial Class Configuration
         '
         Me.Buttonum.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonum.AccessibleName = "Send AT Command Button"
-        Me.Buttonum.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttonum.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonum.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonum.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonum.ForeColor = System.Drawing.Color.Black
@@ -166,7 +166,7 @@ Partial Class Configuration
         Me.Buttonmm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonmm.AccessibleName = "Send AT Command Button"
         Me.Buttonmm.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.Buttonmm.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.Buttonmm.BackgroundImage = Global.uMDGUI.My.Resources.Resources.ActiveButton6
         Me.Buttonmm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonmm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonmm.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
@@ -182,7 +182,7 @@ Partial Class Configuration
         '
         Me.Buttoncm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttoncm.AccessibleName = "Send AT Command Button"
-        Me.Buttoncm.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttoncm.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Buttoncm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttoncm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttoncm.ForeColor = System.Drawing.Color.Black
@@ -197,7 +197,7 @@ Partial Class Configuration
         '
         Me.Buttonm.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonm.AccessibleName = "Send AT Command Button"
-        Me.Buttonm.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttonm.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonm.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonm.ForeColor = System.Drawing.Color.Black
@@ -212,7 +212,7 @@ Partial Class Configuration
         '
         Me.Buttonin.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonin.AccessibleName = "Send AT Command Button"
-        Me.Buttonin.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttonin.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonin.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonin.ForeColor = System.Drawing.Color.Black
@@ -227,7 +227,7 @@ Partial Class Configuration
         '
         Me.Buttonft.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonft.AccessibleName = "Send AT Command Button"
-        Me.Buttonft.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttonft.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonft.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonft.ForeColor = System.Drawing.Color.Black
@@ -243,7 +243,7 @@ Partial Class Configuration
         Me.Buttonarcsec.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonarcsec.AccessibleName = "Send AT Command Button"
         Me.Buttonarcsec.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.Buttonarcsec.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.Buttonarcsec.BackgroundImage = Global.uMDGUI.My.Resources.Resources.ActiveButton6
         Me.Buttonarcsec.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonarcsec.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonarcsec.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
@@ -268,7 +268,7 @@ Partial Class Configuration
         '
         Me.Buttonarcmin.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttonarcmin.AccessibleName = "Send AT Command Button"
-        Me.Buttonarcmin.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttonarcmin.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Buttonarcmin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttonarcmin.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttonarcmin.ForeColor = System.Drawing.Color.Black
@@ -283,7 +283,7 @@ Partial Class Configuration
         '
         Me.Buttondegree.AccessibleDescription = "Button to send an AT command to the modem."
         Me.Buttondegree.AccessibleName = "Send AT Command Button"
-        Me.Buttondegree.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.Buttondegree.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.Buttondegree.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Buttondegree.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Buttondegree.ForeColor = System.Drawing.Color.Black

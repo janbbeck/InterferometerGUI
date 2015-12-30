@@ -165,9 +165,9 @@ Public Class Compensation
     End Sub
 
     Private Sub ECOn_Button_Click(sender As Object, e As EventArgs) Handles ECOn_Button.Click
-        ECOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        ECOff_Button.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         ECOff_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        ECOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        ECOn_Button.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         ECOn_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         ECFactor = TCorrection * PCorrection * HCorrection
         MainForm.Wavelength = NumericUpDown_Wavelength.Value * ECFactor
@@ -175,9 +175,9 @@ Public Class Compensation
     End Sub
 
     Private Sub ECOff_Button_Click(sender As Object, e As EventArgs) Handles ECOff_Button.Click
-        ECOff_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        ECOff_Button.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         ECOff_Button.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        ECOn_Button.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        ECOn_Button.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         ECOn_Button.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.Wavelength = NumericUpDown_Wavelength.Value    ' should this not be a default value when we press off??
         ECFactor = 1.0

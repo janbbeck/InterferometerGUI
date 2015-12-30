@@ -17,52 +17,52 @@ Public Class Configuration
     End Sub
 
     Private Sub Button1x_Click_1(sender As Object, e As EventArgs) Handles Button1x.Click
-        Button1x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Button1x.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Button1x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button2x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button4x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button4x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.multiplier = 1
         My.Settings.Multiplier = 1
     End Sub
 
     Private Sub Button2x_Click_1(sender As Object, e As EventArgs) Handles Button2x.Click
-        Button1x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button1x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Button2x.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Button2x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Button4x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button4x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.multiplier = 2
         My.Settings.Multiplier = 2
     End Sub
 
     Private Sub Button4x_Click_1(sender As Object, e As EventArgs) Handles Button4x.Click
-        Button1x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button1x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Button1x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button2x.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Button2x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Button2x.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Button4x.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Button4x.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.multiplier = 4
         My.Settings.Multiplier = 4
     End Sub
 
     Private Sub Buttonnm_Click(sender As Object, e As EventArgs) Handles Buttonnm.Click
-        Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "nm"
         MainForm.RangeUnits.Text = "nm"
@@ -75,19 +75,19 @@ Public Class Configuration
     End Sub
 
     Private Sub Buttonum_Click(sender As Object, e As EventArgs) Handles Buttonum.Click
-        Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttonum.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "μm"
         MainForm.RangeUnits.Text = "μm"
@@ -100,19 +100,19 @@ Public Class Configuration
     End Sub
 
     Private Sub Buttonmm_Click(sender As Object, e As EventArgs) Handles Buttonmm.Click
-        Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "mm"
         MainForm.RangeUnits.Text = "mm"
@@ -122,19 +122,19 @@ Public Class Configuration
     End Sub
 
     Private Sub Buttoncm_Click(sender As Object, e As EventArgs) Handles Buttoncm.Click
-        Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "cm"
         MainForm.RangeUnits.Text = "cm"
@@ -147,19 +147,19 @@ Public Class Configuration
     End Sub
 
     Private Sub Buttonm_Click(sender As Object, e As EventArgs) Handles Buttonm.Click
-        Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttonm.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "m"
         MainForm.RangeUnits.Text = "m"
@@ -171,19 +171,19 @@ Public Class Configuration
     End Sub
 
     Private Sub Buttonin_Click(sender As Object, e As EventArgs) Handles Buttonin.Click
-        Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.UnitLabel.Text = "in"
         MainForm.RangeUnits.Text = "in"
@@ -196,19 +196,19 @@ Public Class Configuration
     End Sub
 
     Private Sub Buttonft_Click(sender As Object, e As EventArgs) Handles Buttonft.Click
-        Buttonnm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonnm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonnm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonum.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonum.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonum.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonmm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonmm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonmm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttoncm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttoncm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttoncm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonm.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonm.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonm.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonft.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttonft.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttonft.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.UnitLabel.Text = "ft"
         MainForm.RangeUnits.Text = "ft"
@@ -221,11 +221,11 @@ Public Class Configuration
     End Sub
 
     Private Sub Buttonarcsec_Click(sender As Object, e As EventArgs) Handles Buttonarcsec.Click
-        Buttonarcsec.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttonarcsec.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Buttonarcmin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonarcmin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttondegree.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.angleCorrectionFactor = 3600.0
         My.Settings.AngleCorrectionFactor = 3600.0
@@ -238,11 +238,11 @@ Public Class Configuration
     End Sub
 
     Private Sub Buttonarcmin_Click(sender As Object, e As EventArgs) Handles Buttonarcmin.Click
-        Buttonarcsec.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonarcsec.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonarcmin.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttonarcmin.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
-        Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttondegree.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.AngleLabel.Text = "arcmin"
         MainForm.RangeUnits.Text = "arcmin"
@@ -255,11 +255,11 @@ Public Class Configuration
     End Sub
 
     Private Sub Buttondegree_Click(sender As Object, e As EventArgs) Handles Buttondegree.Click
-        Buttonarcsec.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonarcsec.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonarcsec.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttonarcmin.BackgroundImage = InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Buttonarcmin.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Buttonarcmin.ForeColor = Color.FromKnownColor(KnownColor.Black)
-        Buttondegree.BackgroundImage = InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Buttondegree.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Buttondegree.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.AngleLabel.Text = "degree"
         MainForm.RangeUnits.Text = "degree"

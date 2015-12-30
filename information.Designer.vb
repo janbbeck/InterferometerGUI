@@ -32,7 +32,7 @@ Partial Class information
         'TMClose_Button
         '
         Me.TMClose_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TMClose_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.TMClose_Button.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.TMClose_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.TMClose_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.TMClose_Button.Location = New System.Drawing.Point(136, 222)
@@ -44,7 +44,7 @@ Partial Class information
         'Button1
         '
         Me.Button1.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Button1.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.Smiley3
+        Me.Button1.BackgroundImage = Global.uMDGUI.My.Resources.Resources.Smiley3
         Me.Button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button1.FlatAppearance.BorderSize = 0
         Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat

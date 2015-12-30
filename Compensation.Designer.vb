@@ -387,7 +387,7 @@ Partial Class Compensation
         'CMPDone_Button
         '
         Me.CMPDone_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CMPDone_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.CMPDone_Button.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.CMPDone_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.CMPDone_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.CMPDone_Button.ForeColor = System.Drawing.Color.Black
@@ -400,7 +400,7 @@ Partial Class Compensation
         'ECOff_Button
         '
         Me.ECOff_Button.BackColor = System.Drawing.SystemColors.Control
-        Me.ECOff_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.ActiveButton6
+        Me.ECOff_Button.BackgroundImage = Global.uMDGUI.My.Resources.Resources.ActiveButton6
         Me.ECOff_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ECOff_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ECOff_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
@@ -413,7 +413,7 @@ Partial Class Compensation
         '
         'ECOn_Button
         '
-        Me.ECOn_Button.BackgroundImage = Global.InterferometerGUI.My.Resources.Resources.InActiveButton4
+        Me.ECOn_Button.BackgroundImage = Global.uMDGUI.My.Resources.Resources.InActiveButton4
         Me.ECOn_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ECOn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ECOn_Button.ForeColor = System.Drawing.Color.Black
