@@ -35,7 +35,7 @@ Public Class MainForm
     Dim myMenuItemConfiguration As New MenuItem("&Interferometer Configuration")
     Dim myMenuItemCompensation As New MenuItem("&Environmental Compensation")
     Dim myMenuItemTestMode As New MenuItem("&Test Mode")
-    Dim myMenuItemUSBPort As New MenuItem("&USB Port")
+    Dim myMenuItemUSBPort As New MenuItem("&COM Port")
     Dim myMenuItemHelp As New MenuItem("&Help")
     Dim myMenuItemInformation As New MenuItem("&Information")
     Dim myMenuItemAbout As New MenuItem("&About")
@@ -888,7 +888,10 @@ Public Class MainForm
                 ' first split data into sets
                 Dim sets() As String = [text].Split(vbLf.ToCharArray)
                 For k = 0 To sets.Length - 1
-
+                    ' any line beginning with a '!' is debug info.
+                    If sets(k).StartsWith("!") Then
+                        Console.Write(sets(k) + vbCrLf)
+                    End If
                     Dim values() As String = sets(k).Split(" ".ToCharArray)
                     'make sure the current set has exactly 8 fields or 16 fields
                     If values.Length.Equals(8) Or values.Length.Equals(16) Then
