@@ -12,7 +12,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="AngleCorrectionFactor" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">32.61</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="Angle_Reflector_Spacing" Type="System.Double" Scope="User">
       <Value Profile="(Default)">32.61</Value>
@@ -24,7 +24,7 @@
       <Value Profile="(Default)">36</Value>
     </Setting>
     <Setting Name="Temperature" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">25</Value>
+      <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="Pressure" Type="System.Double" Scope="User">
       <Value Profile="(Default)">760</Value>
@@ -39,13 +39,13 @@
       <Value Profile="(Default)">mm/Hg</Value>
     </Setting>
     <Setting Name="TempFactor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0000000</Value>
+      <Value Profile="(Default)">0.999728699</Value>
     </Setting>
     <Setting Name="PresFactor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0000000</Value>
+      <Value Profile="(Default)">0.999732179</Value>
     </Setting>
     <Setting Name="HumiFactor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0000000</Value>
+      <Value Profile="(Default)">1.000000000</Value>
     </Setting>
     <Setting Name="VacuumWavelength" Type="System.String" Scope="User">
       <Value Profile="(Default)">632.991372</Value>
@@ -84,7 +84,7 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="DiagnosticReadoutFlag" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="ErrorDetectionFlag" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
@@ -97,6 +97,15 @@
     </Setting>
     <Setting Name="HumidityCompAutoFlag" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Axis1Flip" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="Axis2Flip" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="Axis3Flip" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

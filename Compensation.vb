@@ -140,19 +140,33 @@ Public Class Compensation
 
     Private Sub NumericUpDown_Humidity_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_Humidity.ValueChanged
         If MainForm.MFLoaded = 1 Then
-            Dim humidityreference As Double = 1.000271375
+            Dim HumidityReference As Double = 1.000271375 * 10 ' 10 is for the 10 percent bins
             HumidityRel = NumericUpDown_Humidity.Value
-            If HumidityRel = 0 Then HCorrection = 1.000271375 / 1.000271799
-            If HumidityRel = 10 Then HCorrection = 1.000271375 / 1.000271714
-            If HumidityRel = 20 Then HCorrection = 1.000271375 / 1.000271629
-            If HumidityRel = 30 Then HCorrection = 1.000271375 / 1.000271544
-            If HumidityRel = 40 Then HCorrection = 1.000271375 / 1.000271459
-            If HumidityRel = 50 Then HCorrection = 1
-            If HumidityRel = 60 Then HCorrection = 1.000271375 / 1.00027129
-            If HumidityRel = 70 Then HCorrection = 1.000271375 / 1.000271205
-            If HumidityRel = 80 Then HCorrection = 1.000271375 / 1.00027112
-            If HumidityRel = 90 Then HCorrection = 1.000271375 / 1.000271035
-            If HumidityRel = 100 Then HCorrection = 1.000271375 / 1.00027095
+            If HumidityRel < 0 Then
+                HCorrection = 1 ' Out of range, assume 50 percent
+            ElseIf HumidityRel < 10 Then  ' 0 to 10%
+                HCorrection = HumidityReference / (((10 - HumidityRel) * 1.000271799) + (HumidityRel * 1.000271714))
+            ElseIf HumidityRel < 20 Then                   ' 10 to 20%
+                HCorrection = HumidityReference / (((20 - HumidityRel) * 1.000271714) + ((HumidityRel - 10) * 1.000271629))
+            ElseIf HumidityRel < 30 Then                   ' 20 to 30%
+                HCorrection = HumidityReference / (((30 - HumidityRel) * 1.000271629) + ((HumidityRel - 20) * 1.000271544))
+            ElseIf HumidityRel < 40 Then                   ' 30 to 40%
+                HCorrection = HumidityReference / (((40 - HumidityRel) * 1.000271544) + ((HumidityRel - 30) * 1.000271459))
+            ElseIf HumidityRel < 50 Then                   ' 40 to 50%
+                HCorrection = HumidityReference / (((50 - HumidityRel) * 1.000271459) + ((HumidityRel - 40) * 1.000271375))
+            ElseIf HumidityRel < 60 Then                   ' 50 to 60%
+                HCorrection = HumidityReference / (((60 - HumidityRel) * 1.000271375) + ((HumidityRel - 50) * 1.00027129))
+            ElseIf HumidityRel < 70 Then                   ' 60 to 70%
+                HCorrection = HumidityReference / (((70 - HumidityRel) * 1.00027129) + ((HumidityRel - 60) * 1.000271205))
+            ElseIf HumidityRel < 80 Then                   ' 70 to 80%
+                HCorrection = HumidityReference / (((80 - HumidityRel) * 1.000271205) + ((HumidityRel - 70) * 1.00027112))
+            ElseIf HumidityRel < 90 Then                   ' 80 to 90%
+                HCorrection = HumidityReference / (((90 - HumidityRel) * 1.00027112) + ((HumidityRel - 80) * 1.000271035))
+            ElseIf HumidityRel <= 100 Then                 ' 90 to 100%
+                HCorrection = HumidityReference / (((100 - HumidityRel) * 1.000271035) + ((HumidityRel - 90) * 1.00027095))
+            Else
+                HCorrection = 1 ' Out of range, assume 50 percent
+            End If
 
             TextBox_HumiFactor.Text = HCorrection.ToString("#0.000000000")
 
@@ -162,6 +176,10 @@ Public Class Compensation
                 MainForm.WLText.Text = MainForm.Wavelength.ToString("000.000000")
             End If
         End If
+    End Sub
+
+    Private Sub ComboBox_Humidity_Units_SelectedIndexChanged(sender As Object, e As EventArgs)
+        NumericUpDown_Humidity.Value = 50
     End Sub
 
     Private Sub ECOn_Button_Click(sender As Object, e As EventArgs) Handles ECOn_Button.Click
@@ -190,4 +208,5 @@ Public Class Compensation
             MainForm.WLText.Text = MainForm.Wavelength.ToString("000.000000")
         End If
     End Sub
+
 End Class

@@ -48,6 +48,10 @@ Partial Class Configuration
         Me.NumericUpDown_SS_Coefficient = New System.Windows.Forms.NumericUpDown()
         Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.Interpolation_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Axis1_Polarity_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Axis2_Polarity_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Axis3_Polarity_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Polarity_Label = New System.Windows.Forms.TextBox()
         CType(Me.NumericUpDown_ARS, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_SL_Coefficient, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_SS_Coefficient, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -60,7 +64,7 @@ Partial Class Configuration
         Me.OK_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.OK_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.OK_Button.ForeColor = System.Drawing.Color.Black
-        Me.OK_Button.Location = New System.Drawing.Point(182, 343)
+        Me.OK_Button.Location = New System.Drawing.Point(182, 385)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -299,8 +303,8 @@ Partial Class Configuration
         Me.NumericUpDown_ARS.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.NumericUpDown_ARS.DecimalPlaces = 3
         Me.NumericUpDown_ARS.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
-        Me.NumericUpDown_ARS.Location = New System.Drawing.Point(250, 233)
-        Me.NumericUpDown_ARS.Minimum = New Decimal(New Integer() {2, 0, 0, 65536})
+        Me.NumericUpDown_ARS.Location = New System.Drawing.Point(250, 275)
+        Me.NumericUpDown_ARS.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown_ARS.Name = "NumericUpDown_ARS"
         Me.NumericUpDown_ARS.Size = New System.Drawing.Size(62, 20)
         Me.NumericUpDown_ARS.TabIndex = 76
@@ -313,7 +317,7 @@ Partial Class Configuration
         Me.AngleSpacingl.BackColor = System.Drawing.SystemColors.Menu
         Me.AngleSpacingl.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.AngleSpacingl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AngleSpacingl.Location = New System.Drawing.Point(102, 235)
+        Me.AngleSpacingl.Location = New System.Drawing.Point(102, 277)
         Me.AngleSpacingl.Name = "AngleSpacingl"
         Me.AngleSpacingl.ReadOnly = True
         Me.AngleSpacingl.Size = New System.Drawing.Size(144, 13)
@@ -325,7 +329,7 @@ Partial Class Configuration
         Me.NumericUpDown_SL_Coefficient.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.NumericUpDown_SL_Coefficient.DecimalPlaces = 2
         Me.NumericUpDown_SL_Coefficient.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
-        Me.NumericUpDown_SL_Coefficient.Location = New System.Drawing.Point(252, 263)
+        Me.NumericUpDown_SL_Coefficient.Location = New System.Drawing.Point(252, 305)
         Me.NumericUpDown_SL_Coefficient.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         Me.NumericUpDown_SL_Coefficient.Minimum = New Decimal(New Integer() {100, 0, 0, 0})
         Me.NumericUpDown_SL_Coefficient.Name = "NumericUpDown_SL_Coefficient"
@@ -340,7 +344,7 @@ Partial Class Configuration
         Me.TextBox1.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(103, 265)
+        Me.TextBox1.Location = New System.Drawing.Point(103, 307)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ReadOnly = True
         Me.TextBox1.Size = New System.Drawing.Size(148, 13)
@@ -353,7 +357,7 @@ Partial Class Configuration
         Me.TextBox2.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox2.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox2.Location = New System.Drawing.Point(103, 295)
+        Me.TextBox2.Location = New System.Drawing.Point(103, 337)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.ReadOnly = True
         Me.TextBox2.Size = New System.Drawing.Size(148, 13)
@@ -365,8 +369,8 @@ Partial Class Configuration
         Me.NumericUpDown_SS_Coefficient.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.NumericUpDown_SS_Coefficient.DecimalPlaces = 3
         Me.NumericUpDown_SS_Coefficient.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
-        Me.NumericUpDown_SS_Coefficient.Location = New System.Drawing.Point(252, 294)
-        Me.NumericUpDown_SS_Coefficient.Minimum = New Decimal(New Integer() {5, 0, 0, 0})
+        Me.NumericUpDown_SS_Coefficient.Location = New System.Drawing.Point(252, 336)
+        Me.NumericUpDown_SS_Coefficient.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDown_SS_Coefficient.Name = "NumericUpDown_SS_Coefficient"
         Me.NumericUpDown_SS_Coefficient.Size = New System.Drawing.Size(62, 20)
         Me.NumericUpDown_SS_Coefficient.TabIndex = 80
@@ -379,7 +383,7 @@ Partial Class Configuration
         Me.TextBox3.BackColor = System.Drawing.SystemColors.Menu
         Me.TextBox3.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox3.Location = New System.Drawing.Point(318, 235)
+        Me.TextBox3.Location = New System.Drawing.Point(318, 277)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.ReadOnly = True
         Me.TextBox3.Size = New System.Drawing.Size(20, 13)
@@ -400,12 +404,65 @@ Partial Class Configuration
         Me.Interpolation_CheckBox.Text = "Interpolation"
         Me.Interpolation_CheckBox.UseVisualStyleBackColor = True
         '
+        'Axis1_Polarity_CheckBox
+        '
+        Me.Axis1_Polarity_CheckBox.AutoSize = True
+        Me.Axis1_Polarity_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Axis1_Polarity_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis1_Polarity_CheckBox.Location = New System.Drawing.Point(165, 233)
+        Me.Axis1_Polarity_CheckBox.Name = "Axis1_Polarity_CheckBox"
+        Me.Axis1_Polarity_CheckBox.Size = New System.Drawing.Size(64, 21)
+        Me.Axis1_Polarity_CheckBox.TabIndex = 109
+        Me.Axis1_Polarity_CheckBox.Text = "Axis 1"
+        Me.Axis1_Polarity_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Axis2_Polarity_CheckBox
+        '
+        Me.Axis2_Polarity_CheckBox.AutoSize = True
+        Me.Axis2_Polarity_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Axis2_Polarity_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis2_Polarity_CheckBox.Location = New System.Drawing.Point(238, 233)
+        Me.Axis2_Polarity_CheckBox.Name = "Axis2_Polarity_CheckBox"
+        Me.Axis2_Polarity_CheckBox.Size = New System.Drawing.Size(64, 21)
+        Me.Axis2_Polarity_CheckBox.TabIndex = 110
+        Me.Axis2_Polarity_CheckBox.Text = "Axis 2"
+        Me.Axis2_Polarity_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Axis3_Polarity_CheckBox
+        '
+        Me.Axis3_Polarity_CheckBox.AutoSize = True
+        Me.Axis3_Polarity_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Axis3_Polarity_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Axis3_Polarity_CheckBox.Location = New System.Drawing.Point(310, 233)
+        Me.Axis3_Polarity_CheckBox.Name = "Axis3_Polarity_CheckBox"
+        Me.Axis3_Polarity_CheckBox.Size = New System.Drawing.Size(64, 21)
+        Me.Axis3_Polarity_CheckBox.TabIndex = 111
+        Me.Axis3_Polarity_CheckBox.Text = "Axis 3"
+        Me.Axis3_Polarity_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Polarity_Label
+        '
+        Me.Polarity_Label.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Polarity_Label.BackColor = System.Drawing.SystemColors.Menu
+        Me.Polarity_Label.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Polarity_Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Polarity_Label.Location = New System.Drawing.Point(56, 234)
+        Me.Polarity_Label.Name = "Polarity_Label"
+        Me.Polarity_Label.ReadOnly = True
+        Me.Polarity_Label.Size = New System.Drawing.Size(110, 16)
+        Me.Polarity_Label.TabIndex = 112
+        Me.Polarity_Label.Text = "Reverse Polarity:"
+        '
         'Configuration
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(428, 393)
+        Me.ClientSize = New System.Drawing.Size(428, 438)
+        Me.Controls.Add(Me.Polarity_Label)
+        Me.Controls.Add(Me.Axis3_Polarity_CheckBox)
+        Me.Controls.Add(Me.Axis2_Polarity_CheckBox)
+        Me.Controls.Add(Me.Axis1_Polarity_CheckBox)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Interpolation_CheckBox)
         Me.Controls.Add(Me.TextBox3)
@@ -469,5 +526,9 @@ Partial Class Configuration
     Friend WithEvents NumericUpDown_SS_Coefficient As System.Windows.Forms.NumericUpDown
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
     Friend WithEvents Interpolation_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Axis1_Polarity_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Axis2_Polarity_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Axis3_Polarity_CheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Polarity_Label As System.Windows.Forms.TextBox
 
 End Class

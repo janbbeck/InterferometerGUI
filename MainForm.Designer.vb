@@ -65,7 +65,6 @@ Partial Public Class MainForm
         Me.Axis_UnitsD = New System.Windows.Forms.Label()
         Me.Axis_S = New System.Windows.Forms.Label()
         Me.Axis_UnitsA = New System.Windows.Forms.Label()
-        Me.Suspend_Label = New System.Windows.Forms.Label()
         Me.AngleLabel = New System.Windows.Forms.Label()
         Me.Frequency_Axis = New System.Windows.Forms.Label()
         Me.ComboBox_DFT_Range = New System.Windows.Forms.ComboBox()
@@ -110,10 +109,12 @@ Partial Public Class MainForm
         Me.DisplacementButton = New System.Windows.Forms.Button()
         Me.ZeroButton = New System.Windows.Forms.Button()
         Me.VelocityButton = New System.Windows.Forms.Button()
-        Me.DP32_Percent_Label = New System.Windows.Forms.Label()
-        Me.DP32_Percent_Value = New System.Windows.Forms.Label()
+        Me.DP32_PRC_Percent_Label = New System.Windows.Forms.Label()
+        Me.DP32_PRC_Percent_Value = New System.Windows.Forms.Label()
         Me.Sample_Frequency_Label = New System.Windows.Forms.Label()
         Me.Sample_Frequency_Value = New System.Windows.Forms.Label()
+        Me.DP32_COM_Percent_Label = New System.Windows.Forms.Label()
+        Me.DP32_COM_Percent_Value = New System.Windows.Forms.Label()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Scale, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -454,18 +455,6 @@ Partial Public Class MainForm
         Me.Axis_UnitsA.TabIndex = 94
         Me.Axis_UnitsA.Text = "degree"
         '
-        'Suspend_Label
-        '
-        Me.Suspend_Label.Font = New System.Drawing.Font("Arial", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Suspend_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.Suspend_Label.Location = New System.Drawing.Point(736, 45)
-        Me.Suspend_Label.Name = "Suspend_Label"
-        Me.Suspend_Label.Size = New System.Drawing.Size(106, 26)
-        Me.Suspend_Label.TabIndex = 95
-        Me.Suspend_Label.Text = "Suspended"
-        Me.Suspend_Label.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Suspend_Label.Visible = False
-        '
         'AngleLabel
         '
         Me.AngleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -566,7 +555,7 @@ Partial Public Class MainForm
         '
         Me.Phase_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Phase_Value.ForeColor = System.Drawing.Color.Blue
-        Me.Phase_Value.Location = New System.Drawing.Point(136, 4)
+        Me.Phase_Value.Location = New System.Drawing.Point(65, 4)
         Me.Phase_Value.Name = "Phase_Value"
         Me.Phase_Value.Size = New System.Drawing.Size(52, 18)
         Me.Phase_Value.TabIndex = 105
@@ -578,11 +567,11 @@ Partial Public Class MainForm
         Me.Phase_Label.AutoSize = True
         Me.Phase_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Phase_Label.ForeColor = System.Drawing.Color.Blue
-        Me.Phase_Label.Location = New System.Drawing.Point(93, 4)
+        Me.Phase_Label.Location = New System.Drawing.Point(44, 4)
         Me.Phase_Label.Name = "Phase_Label"
-        Me.Phase_Label.Size = New System.Drawing.Size(56, 18)
+        Me.Phase_Label.Size = New System.Drawing.Size(33, 18)
         Me.Phase_Label.TabIndex = 106
-        Me.Phase_Label.Text = "Phase:"
+        Me.Phase_Label.Text = "PH:"
         '
         'Graph_Averaging_CheckBox
         '
@@ -603,7 +592,7 @@ Partial Public Class MainForm
         Me.PORTB_Label.AutoSize = True
         Me.PORTB_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PORTB_Label.ForeColor = System.Drawing.Color.Blue
-        Me.PORTB_Label.Location = New System.Drawing.Point(194, 4)
+        Me.PORTB_Label.Location = New System.Drawing.Point(120, 4)
         Me.PORTB_Label.Name = "PORTB_Label"
         Me.PORTB_Label.Size = New System.Drawing.Size(94, 18)
         Me.PORTB_Label.TabIndex = 109
@@ -613,11 +602,11 @@ Partial Public Class MainForm
         '
         Me.PBA_RM_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PBA_RM_Value.ForeColor = System.Drawing.Color.Blue
-        Me.PBA_RM_Value.Location = New System.Drawing.Point(285, 4)
+        Me.PBA_RM_Value.Location = New System.Drawing.Point(211, 4)
         Me.PBA_RM_Value.Name = "PBA_RM_Value"
-        Me.PBA_RM_Value.Size = New System.Drawing.Size(35, 18)
+        Me.PBA_RM_Value.Size = New System.Drawing.Size(36, 18)
         Me.PBA_RM_Value.TabIndex = 108
-        Me.PBA_RM_Value.Text = " -00"
+        Me.PBA_RM_Value.Text = " 000"
         Me.PBA_RM_Value.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'REFMEAS_Label
@@ -625,7 +614,7 @@ Partial Public Class MainForm
         Me.REFMEAS_Label.AutoSize = True
         Me.REFMEAS_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.REFMEAS_Label.ForeColor = System.Drawing.Color.Blue
-        Me.REFMEAS_Label.Location = New System.Drawing.Point(350, 4)
+        Me.REFMEAS_Label.Location = New System.Drawing.Point(274, 4)
         Me.REFMEAS_Label.Name = "REFMEAS_Label"
         Me.REFMEAS_Label.Size = New System.Drawing.Size(97, 18)
         Me.REFMEAS_Label.TabIndex = 111
@@ -635,11 +624,11 @@ Partial Public Class MainForm
         '
         Me.RMA_RM_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RMA_RM_Value.ForeColor = System.Drawing.Color.Blue
-        Me.RMA_RM_Value.Location = New System.Drawing.Point(444, 4)
+        Me.RMA_RM_Value.Location = New System.Drawing.Point(368, 4)
         Me.RMA_RM_Value.Name = "RMA_RM_Value"
-        Me.RMA_RM_Value.Size = New System.Drawing.Size(34, 18)
+        Me.RMA_RM_Value.Size = New System.Drawing.Size(36, 18)
         Me.RMA_RM_Value.TabIndex = 110
-        Me.RMA_RM_Value.Text = " 00"
+        Me.RMA_RM_Value.Text = " 000"
         Me.RMA_RM_Value.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Phase_Error_Label
@@ -647,7 +636,7 @@ Partial Public Class MainForm
         Me.Phase_Error_Label.AutoSize = True
         Me.Phase_Error_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Phase_Error_Label.ForeColor = System.Drawing.Color.Blue
-        Me.Phase_Error_Label.Location = New System.Drawing.Point(505, 4)
+        Me.Phase_Error_Label.Location = New System.Drawing.Point(426, 4)
         Me.Phase_Error_Label.Name = "Phase_Error_Label"
         Me.Phase_Error_Label.Size = New System.Drawing.Size(36, 18)
         Me.Phase_Error_Label.TabIndex = 113
@@ -657,7 +646,7 @@ Partial Public Class MainForm
         '
         Me.Phase_Error_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Phase_Error_Value.ForeColor = System.Drawing.Color.Blue
-        Me.Phase_Error_Value.Location = New System.Drawing.Point(538, 4)
+        Me.Phase_Error_Value.Location = New System.Drawing.Point(459, 4)
         Me.Phase_Error_Value.Name = "Phase_Error_Value"
         Me.Phase_Error_Value.Size = New System.Drawing.Size(44, 18)
         Me.Phase_Error_Value.TabIndex = 112
@@ -668,7 +657,7 @@ Partial Public Class MainForm
         '
         Me.PBA_RP_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PBA_RP_Value.ForeColor = System.Drawing.Color.Blue
-        Me.PBA_RP_Value.Location = New System.Drawing.Point(316, 4)
+        Me.PBA_RP_Value.Location = New System.Drawing.Point(242, 4)
         Me.PBA_RP_Value.Name = "PBA_RP_Value"
         Me.PBA_RP_Value.Size = New System.Drawing.Size(28, 18)
         Me.PBA_RP_Value.TabIndex = 114
@@ -679,7 +668,7 @@ Partial Public Class MainForm
         '
         Me.RMA_RP__Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RMA_RP__Value.ForeColor = System.Drawing.Color.Blue
-        Me.RMA_RP__Value.Location = New System.Drawing.Point(474, 4)
+        Me.RMA_RP__Value.Location = New System.Drawing.Point(398, 4)
         Me.RMA_RP__Value.Name = "RMA_RP__Value"
         Me.RMA_RP__Value.Size = New System.Drawing.Size(28, 18)
         Me.RMA_RP__Value.TabIndex = 115
@@ -689,7 +678,7 @@ Partial Public Class MainForm
         'Axis1_Value
         '
         Me.Axis1_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis1_Value.Location = New System.Drawing.Point(98, 49)
+        Me.Axis1_Value.Location = New System.Drawing.Point(98, 47)
         Me.Axis1_Value.Name = "Axis1_Value"
         Me.Axis1_Value.Size = New System.Drawing.Size(118, 22)
         Me.Axis1_Value.TabIndex = 116
@@ -702,7 +691,7 @@ Partial Public Class MainForm
         Me.Axis1_Label.AutoSize = True
         Me.Axis1_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Axis1_Label.ForeColor = System.Drawing.Color.BlueViolet
-        Me.Axis1_Label.Location = New System.Drawing.Point(41, 49)
+        Me.Axis1_Label.Location = New System.Drawing.Point(41, 47)
         Me.Axis1_Label.Name = "Axis1_Label"
         Me.Axis1_Label.Size = New System.Drawing.Size(53, 18)
         Me.Axis1_Label.TabIndex = 117
@@ -714,7 +703,7 @@ Partial Public Class MainForm
         Me.Axis2_Label.AutoSize = True
         Me.Axis2_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Axis2_Label.ForeColor = System.Drawing.Color.Black
-        Me.Axis2_Label.Location = New System.Drawing.Point(282, 49)
+        Me.Axis2_Label.Location = New System.Drawing.Point(282, 47)
         Me.Axis2_Label.Name = "Axis2_Label"
         Me.Axis2_Label.Size = New System.Drawing.Size(53, 18)
         Me.Axis2_Label.TabIndex = 119
@@ -724,7 +713,7 @@ Partial Public Class MainForm
         'Axis2_Value
         '
         Me.Axis2_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis2_Value.Location = New System.Drawing.Point(340, 49)
+        Me.Axis2_Value.Location = New System.Drawing.Point(340, 47)
         Me.Axis2_Value.Name = "Axis2_Value"
         Me.Axis2_Value.Size = New System.Drawing.Size(115, 22)
         Me.Axis2_Value.TabIndex = 118
@@ -737,7 +726,7 @@ Partial Public Class MainForm
         Me.Axis3_Label.AutoSize = True
         Me.Axis3_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Axis3_Label.ForeColor = System.Drawing.Color.Black
-        Me.Axis3_Label.Location = New System.Drawing.Point(515, 49)
+        Me.Axis3_Label.Location = New System.Drawing.Point(515, 47)
         Me.Axis3_Label.Name = "Axis3_Label"
         Me.Axis3_Label.Size = New System.Drawing.Size(53, 18)
         Me.Axis3_Label.TabIndex = 121
@@ -747,7 +736,7 @@ Partial Public Class MainForm
         'Axis3_Value
         '
         Me.Axis3_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis3_Value.Location = New System.Drawing.Point(573, 49)
+        Me.Axis3_Value.Location = New System.Drawing.Point(573, 47)
         Me.Axis3_Value.Name = "Axis3_Value"
         Me.Axis3_Value.Size = New System.Drawing.Size(119, 22)
         Me.Axis3_Value.TabIndex = 120
@@ -759,7 +748,7 @@ Partial Public Class MainForm
         '
         Me.Axis1_Angle_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Axis1_Angle_Label.ImageAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.Axis1_Angle_Label.Location = New System.Drawing.Point(214, 49)
+        Me.Axis1_Angle_Label.Location = New System.Drawing.Point(214, 47)
         Me.Axis1_Angle_Label.Name = "Axis1_Angle_Label"
         Me.Axis1_Angle_Label.Size = New System.Drawing.Size(56, 18)
         Me.Axis1_Angle_Label.TabIndex = 122
@@ -770,7 +759,7 @@ Partial Public Class MainForm
         'Axis1_Units_Label
         '
         Me.Axis1_Units_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis1_Units_Label.Location = New System.Drawing.Point(214, 47)
+        Me.Axis1_Units_Label.Location = New System.Drawing.Point(214, 45)
         Me.Axis1_Units_Label.Name = "Axis1_Units_Label"
         Me.Axis1_Units_Label.Size = New System.Drawing.Size(32, 22)
         Me.Axis1_Units_Label.TabIndex = 123
@@ -781,7 +770,7 @@ Partial Public Class MainForm
         'Axis1_Time_Label
         '
         Me.Axis1_Time_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis1_Time_Label.Location = New System.Drawing.Point(242, 49)
+        Me.Axis1_Time_Label.Location = New System.Drawing.Point(242, 47)
         Me.Axis1_Time_Label.Name = "Axis1_Time_Label"
         Me.Axis1_Time_Label.Size = New System.Drawing.Size(28, 19)
         Me.Axis1_Time_Label.TabIndex = 124
@@ -791,7 +780,7 @@ Partial Public Class MainForm
         'Axis2_Time_Label
         '
         Me.Axis2_Time_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis2_Time_Label.Location = New System.Drawing.Point(481, 49)
+        Me.Axis2_Time_Label.Location = New System.Drawing.Point(481, 47)
         Me.Axis2_Time_Label.Name = "Axis2_Time_Label"
         Me.Axis2_Time_Label.Size = New System.Drawing.Size(28, 19)
         Me.Axis2_Time_Label.TabIndex = 127
@@ -801,7 +790,7 @@ Partial Public Class MainForm
         'Axis2_Units_Label
         '
         Me.Axis2_Units_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis2_Units_Label.Location = New System.Drawing.Point(453, 47)
+        Me.Axis2_Units_Label.Location = New System.Drawing.Point(453, 45)
         Me.Axis2_Units_Label.Name = "Axis2_Units_Label"
         Me.Axis2_Units_Label.Size = New System.Drawing.Size(32, 22)
         Me.Axis2_Units_Label.TabIndex = 126
@@ -813,7 +802,7 @@ Partial Public Class MainForm
         '
         Me.Axis2_Angle_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Axis2_Angle_Label.ImageAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.Axis2_Angle_Label.Location = New System.Drawing.Point(453, 49)
+        Me.Axis2_Angle_Label.Location = New System.Drawing.Point(453, 47)
         Me.Axis2_Angle_Label.Name = "Axis2_Angle_Label"
         Me.Axis2_Angle_Label.Size = New System.Drawing.Size(56, 18)
         Me.Axis2_Angle_Label.TabIndex = 125
@@ -824,7 +813,7 @@ Partial Public Class MainForm
         'Axis3_Time_Label
         '
         Me.Axis3_Time_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis3_Time_Label.Location = New System.Drawing.Point(718, 49)
+        Me.Axis3_Time_Label.Location = New System.Drawing.Point(718, 47)
         Me.Axis3_Time_Label.Name = "Axis3_Time_Label"
         Me.Axis3_Time_Label.Size = New System.Drawing.Size(28, 19)
         Me.Axis3_Time_Label.TabIndex = 130
@@ -834,7 +823,7 @@ Partial Public Class MainForm
         'Axis3_Units_Label
         '
         Me.Axis3_Units_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Axis3_Units_Label.Location = New System.Drawing.Point(690, 47)
+        Me.Axis3_Units_Label.Location = New System.Drawing.Point(690, 45)
         Me.Axis3_Units_Label.Name = "Axis3_Units_Label"
         Me.Axis3_Units_Label.Size = New System.Drawing.Size(32, 22)
         Me.Axis3_Units_Label.TabIndex = 129
@@ -846,7 +835,7 @@ Partial Public Class MainForm
         '
         Me.Axis3_Angle_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Axis3_Angle_Label.ImageAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.Axis3_Angle_Label.Location = New System.Drawing.Point(690, 49)
+        Me.Axis3_Angle_Label.Location = New System.Drawing.Point(690, 47)
         Me.Axis3_Angle_Label.Name = "Axis3_Angle_Label"
         Me.Axis3_Angle_Label.Size = New System.Drawing.Size(56, 18)
         Me.Axis3_Angle_Label.TabIndex = 128
@@ -998,34 +987,34 @@ Partial Public Class MainForm
         Me.VelocityButton.TabIndex = 32
         Me.VelocityButton.Text = "Velocity"
         '
-        'DP32_Percent_Label
+        'DP32_PRC_Percent_Label
         '
-        Me.DP32_Percent_Label.AutoSize = True
-        Me.DP32_Percent_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DP32_Percent_Label.ForeColor = System.Drawing.Color.Blue
-        Me.DP32_Percent_Label.Location = New System.Drawing.Point(703, 4)
-        Me.DP32_Percent_Label.Name = "DP32_Percent_Label"
-        Me.DP32_Percent_Label.Size = New System.Drawing.Size(66, 18)
-        Me.DP32_Percent_Label.TabIndex = 132
-        Me.DP32_Percent_Label.Text = "DP32 %:"
+        Me.DP32_PRC_Percent_Label.AutoSize = True
+        Me.DP32_PRC_Percent_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DP32_PRC_Percent_Label.ForeColor = System.Drawing.Color.Blue
+        Me.DP32_PRC_Percent_Label.Location = New System.Drawing.Point(618, 4)
+        Me.DP32_PRC_Percent_Label.Name = "DP32_PRC_Percent_Label"
+        Me.DP32_PRC_Percent_Label.Size = New System.Drawing.Size(61, 18)
+        Me.DP32_PRC_Percent_Label.TabIndex = 132
+        Me.DP32_PRC_Percent_Label.Text = "PRC %:"
         '
-        'DP32_Percent_Value
+        'DP32_PRC_Percent_Value
         '
-        Me.DP32_Percent_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DP32_Percent_Value.ForeColor = System.Drawing.Color.Blue
-        Me.DP32_Percent_Value.Location = New System.Drawing.Point(766, 4)
-        Me.DP32_Percent_Value.Name = "DP32_Percent_Value"
-        Me.DP32_Percent_Value.Size = New System.Drawing.Size(52, 18)
-        Me.DP32_Percent_Value.TabIndex = 131
-        Me.DP32_Percent_Value.Text = " 0000"
-        Me.DP32_Percent_Value.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.DP32_PRC_Percent_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DP32_PRC_Percent_Value.ForeColor = System.Drawing.Color.Blue
+        Me.DP32_PRC_Percent_Value.Location = New System.Drawing.Point(677, 4)
+        Me.DP32_PRC_Percent_Value.Name = "DP32_PRC_Percent_Value"
+        Me.DP32_PRC_Percent_Value.Size = New System.Drawing.Size(52, 18)
+        Me.DP32_PRC_Percent_Value.TabIndex = 131
+        Me.DP32_PRC_Percent_Value.Text = " 00.00"
+        Me.DP32_PRC_Percent_Value.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Sample_Frequency_Label
         '
         Me.Sample_Frequency_Label.AutoSize = True
         Me.Sample_Frequency_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Sample_Frequency_Label.ForeColor = System.Drawing.Color.Blue
-        Me.Sample_Frequency_Label.Location = New System.Drawing.Point(588, 4)
+        Me.Sample_Frequency_Label.Location = New System.Drawing.Point(506, 4)
         Me.Sample_Frequency_Label.Name = "Sample_Frequency_Label"
         Me.Sample_Frequency_Label.Size = New System.Drawing.Size(54, 18)
         Me.Sample_Frequency_Label.TabIndex = 134
@@ -1035,20 +1024,44 @@ Partial Public Class MainForm
         '
         Me.Sample_Frequency_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Sample_Frequency_Value.ForeColor = System.Drawing.Color.Blue
-        Me.Sample_Frequency_Value.Location = New System.Drawing.Point(642, 4)
+        Me.Sample_Frequency_Value.Location = New System.Drawing.Point(558, 4)
         Me.Sample_Frequency_Value.Name = "Sample_Frequency_Value"
         Me.Sample_Frequency_Value.Size = New System.Drawing.Size(58, 18)
         Me.Sample_Frequency_Value.TabIndex = 133
         Me.Sample_Frequency_Value.Text = " 000.00"
         Me.Sample_Frequency_Value.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'DP32_COM_Percent_Label
+        '
+        Me.DP32_COM_Percent_Label.AutoSize = True
+        Me.DP32_COM_Percent_Label.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DP32_COM_Percent_Label.ForeColor = System.Drawing.Color.Blue
+        Me.DP32_COM_Percent_Label.Location = New System.Drawing.Point(729, 4)
+        Me.DP32_COM_Percent_Label.Name = "DP32_COM_Percent_Label"
+        Me.DP32_COM_Percent_Label.Size = New System.Drawing.Size(65, 18)
+        Me.DP32_COM_Percent_Label.TabIndex = 136
+        Me.DP32_COM_Percent_Label.Text = "COM %:"
+        '
+        'DP32_COM_Percent_Value
+        '
+        Me.DP32_COM_Percent_Value.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DP32_COM_Percent_Value.ForeColor = System.Drawing.Color.Blue
+        Me.DP32_COM_Percent_Value.Location = New System.Drawing.Point(792, 4)
+        Me.DP32_COM_Percent_Value.Name = "DP32_COM_Percent_Value"
+        Me.DP32_COM_Percent_Value.Size = New System.Drawing.Size(52, 18)
+        Me.DP32_COM_Percent_Value.TabIndex = 135
+        Me.DP32_COM_Percent_Value.Text = " 00.00"
+        Me.DP32_COM_Percent_Value.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'MainForm
         '
         Me.ClientSize = New System.Drawing.Size(880, 572)
+        Me.Controls.Add(Me.DP32_COM_Percent_Label)
+        Me.Controls.Add(Me.DP32_COM_Percent_Value)
         Me.Controls.Add(Me.Sample_Frequency_Label)
         Me.Controls.Add(Me.Sample_Frequency_Value)
-        Me.Controls.Add(Me.DP32_Percent_Label)
-        Me.Controls.Add(Me.DP32_Percent_Value)
+        Me.Controls.Add(Me.DP32_PRC_Percent_Label)
+        Me.Controls.Add(Me.DP32_PRC_Percent_Value)
         Me.Controls.Add(Me.Axis3_Time_Label)
         Me.Controls.Add(Me.Axis3_Units_Label)
         Me.Controls.Add(Me.Axis3_Angle_Label)
@@ -1082,7 +1095,6 @@ Partial Public Class MainForm
         Me.Controls.Add(Me.DFT_Hz)
         Me.Controls.Add(Me.ComboBox_DFT_Range)
         Me.Controls.Add(Me.Frequency_Axis)
-        Me.Controls.Add(Me.Suspend_Label)
         Me.Controls.Add(Me.Axis_UnitsA)
         Me.Controls.Add(Me.Axis_S)
         Me.Controls.Add(Me.Axis_UnitsD)
@@ -1182,7 +1194,6 @@ Partial Public Class MainForm
     Friend WithEvents Axis_UnitsD As System.Windows.Forms.Label
     Friend WithEvents Axis_S As System.Windows.Forms.Label
     Friend WithEvents Axis_UnitsA As System.Windows.Forms.Label
-    Friend WithEvents Suspend_Label As System.Windows.Forms.Label
     Friend WithEvents AngleLabel As System.Windows.Forms.Label
     Friend WithEvents Frequency_Axis As System.Windows.Forms.Label
     Friend WithEvents ComboBox_DFT_Range As System.Windows.Forms.ComboBox
@@ -1217,8 +1228,10 @@ Partial Public Class MainForm
     Friend WithEvents Axis3_Time_Label As System.Windows.Forms.Label
     Friend WithEvents Axis3_Units_Label As System.Windows.Forms.Label
     Friend WithEvents Axis3_Angle_Label As System.Windows.Forms.Label
-    Friend WithEvents DP32_Percent_Label As System.Windows.Forms.Label
-    Friend WithEvents DP32_Percent_Value As System.Windows.Forms.Label
+    Friend WithEvents DP32_PRC_Percent_Label As System.Windows.Forms.Label
+    Friend WithEvents DP32_PRC_Percent_Value As System.Windows.Forms.Label
     Friend WithEvents Sample_Frequency_Label As System.Windows.Forms.Label
     Friend WithEvents Sample_Frequency_Value As System.Windows.Forms.Label
+    Friend WithEvents DP32_COM_Percent_Label As System.Windows.Forms.Label
+    Friend WithEvents DP32_COM_Percent_Value As System.Windows.Forms.Label
 End Class

@@ -28,13 +28,13 @@ Partial Class About
         Me.Developed_Label = New System.Windows.Forms.Label()
         Me.Jan_Label = New System.Windows.Forms.Label()
         Me.Sam_Label = New System.Windows.Forms.Label()
-        Me.uMD_Version = New System.Windows.Forms.Label()
-        Me.Firmware_Version = New System.Windows.Forms.Label()
         Me.About_uMD1 = New System.Windows.Forms.Label()
         Me.Copyright1 = New System.Windows.Forms.Label()
         Me.TMClose_Button = New System.Windows.Forms.Button()
         Me.Sam_Link = New System.Windows.Forms.LinkLabel()
         Me.Jan_Link = New System.Windows.Forms.LinkLabel()
+        Me.uMD_Version = New System.Windows.Forms.TextBox()
+        Me.Firmware_Version = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'uMD_Label
@@ -44,9 +44,9 @@ Partial Class About
         Me.uMD_Label.ForeColor = System.Drawing.Color.Black
         Me.uMD_Label.Location = New System.Drawing.Point(30, 66)
         Me.uMD_Label.Name = "uMD_Label"
-        Me.uMD_Label.Size = New System.Drawing.Size(96, 18)
+        Me.uMD_Label.Size = New System.Drawing.Size(80, 18)
         Me.uMD_Label.TabIndex = 103
-        Me.uMD_Label.Text = "GUI Version:"
+        Me.uMD_Label.Text = "GUI Build:"
         '
         'Firmware_Label
         '
@@ -91,28 +91,6 @@ Partial Class About
         Me.Sam_Label.Size = New System.Drawing.Size(126, 18)
         Me.Sam_Label.TabIndex = 107
         Me.Sam_Label.Text = "Sam Goldwasser"
-        '
-        'uMD_Version
-        '
-        Me.uMD_Version.AutoSize = True
-        Me.uMD_Version.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.uMD_Version.ForeColor = System.Drawing.Color.Black
-        Me.uMD_Version.Location = New System.Drawing.Point(122, 66)
-        Me.uMD_Version.Name = "uMD_Version"
-        Me.uMD_Version.Size = New System.Drawing.Size(12, 18)
-        Me.uMD_Version.TabIndex = 108
-        Me.uMD_Version.Text = " "
-        '
-        'Firmware_Version
-        '
-        Me.Firmware_Version.AutoSize = True
-        Me.Firmware_Version.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Firmware_Version.ForeColor = System.Drawing.Color.Black
-        Me.Firmware_Version.Location = New System.Drawing.Point(160, 95)
-        Me.Firmware_Version.Name = "Firmware_Version"
-        Me.Firmware_Version.Size = New System.Drawing.Size(12, 18)
-        Me.Firmware_Version.TabIndex = 109
-        Me.Firmware_Version.Text = " "
         '
         'About_uMD1
         '
@@ -176,18 +154,42 @@ Partial Class About
         Me.Jan_Link.Text = "(https://sites.google.com/site/janbeck/)"
         Me.Jan_Link.UseCompatibleTextRendering = True
         '
+        'uMD_Version
+        '
+        Me.uMD_Version.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.uMD_Version.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.uMD_Version.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.uMD_Version.Location = New System.Drawing.Point(109, 66)
+        Me.uMD_Version.Name = "uMD_Version"
+        Me.uMD_Version.ReadOnly = True
+        Me.uMD_Version.Size = New System.Drawing.Size(280, 18)
+        Me.uMD_Version.TabIndex = 115
+        Me.uMD_Version.Text = "Unknown"
+        '
+        'Firmware_Version
+        '
+        Me.Firmware_Version.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Firmware_Version.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Firmware_Version.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Firmware_Version.Location = New System.Drawing.Point(165, 95)
+        Me.Firmware_Version.Name = "Firmware_Version"
+        Me.Firmware_Version.ReadOnly = True
+        Me.Firmware_Version.Size = New System.Drawing.Size(128, 18)
+        Me.Firmware_Version.TabIndex = 116
+        Me.Firmware_Version.Text = "Unknown"
+        '
         'About
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(439, 312)
+        Me.Controls.Add(Me.Firmware_Version)
+        Me.Controls.Add(Me.uMD_Version)
         Me.Controls.Add(Me.Jan_Link)
         Me.Controls.Add(Me.Sam_Link)
         Me.Controls.Add(Me.TMClose_Button)
         Me.Controls.Add(Me.Copyright1)
         Me.Controls.Add(Me.About_uMD1)
-        Me.Controls.Add(Me.Firmware_Version)
-        Me.Controls.Add(Me.uMD_Version)
         Me.Controls.Add(Me.Sam_Label)
         Me.Controls.Add(Me.Jan_Label)
         Me.Controls.Add(Me.Developed_Label)
@@ -208,11 +210,11 @@ Partial Class About
     Friend WithEvents Developed_Label As System.Windows.Forms.Label
     Friend WithEvents Jan_Label As System.Windows.Forms.Label
     Friend WithEvents Sam_Label As System.Windows.Forms.Label
-    Friend WithEvents uMD_Version As System.Windows.Forms.Label
-    Friend WithEvents Firmware_Version As System.Windows.Forms.Label
     Friend WithEvents About_uMD1 As System.Windows.Forms.Label
     Friend WithEvents Copyright1 As System.Windows.Forms.Label
     Friend WithEvents TMClose_Button As System.Windows.Forms.Button
     Friend WithEvents Sam_Link As System.Windows.Forms.LinkLabel
     Friend WithEvents Jan_Link As System.Windows.Forms.LinkLabel
+    Friend WithEvents uMD_Version As System.Windows.Forms.TextBox
+    Friend WithEvents Firmware_Version As System.Windows.Forms.TextBox
 End Class

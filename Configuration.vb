@@ -24,6 +24,7 @@ Public Class Configuration
         Button4x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.multiplier = 1
+        MainForm.multipliercoefficient = 1
         My.Settings.Multiplier = 1
     End Sub
 
@@ -35,6 +36,10 @@ Public Class Configuration
         Button4x.BackgroundImage = uMDGUI.My.Resources.Resources.InActiveButton4
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.Black)
         MainForm.multiplier = 2
+        MainForm.multipliercoefficient = 2
+        If ((MainForm.AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)) Or (MainForm.FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText))) Then
+            MainForm.multipliercoefficient = 1
+        End If
         My.Settings.Multiplier = 2
     End Sub
 
@@ -46,6 +51,10 @@ Public Class Configuration
         Button4x.BackgroundImage = uMDGUI.My.Resources.Resources.ActiveButton6
         Button4x.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)
         MainForm.multiplier = 4
+        MainForm.multipliercoefficient = 4
+        If ((MainForm.AngleButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText)) Or (MainForm.FrequencyButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText))) Then
+            MainForm.multipliercoefficient = 1
+        End If
         My.Settings.Multiplier = 4
     End Sub
 
@@ -271,4 +280,57 @@ Public Class Configuration
         My.Settings.AngleCorrectionFactor = 1.0
     End Sub
 
+    Private Sub Axis1_Polarity_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Axis1_Polarity_CheckBox.CheckedChanged
+        If (Axis1_Polarity_CheckBox.Checked = True) Then
+            MainForm.Axis1Flip = -1
+        Else
+            MainForm.Axis1Flip = 1
+        End If
+
+        If (MainForm.PrimaryAxisSelect = 1) Then
+            MainForm.PrimaryAxisFlip = MainForm.Axis1Flip
+        End If
+
+        My.Settings.Axis1Flip = MainForm.Axis1Flip
+    End Sub
+
+    Private Sub Axis2_Polarity_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Axis2_Polarity_CheckBox.CheckedChanged
+        If (Axis2_Polarity_CheckBox.Checked = True) Then
+            MainForm.Axis2Flip = -1
+        Else
+            MainForm.Axis2Flip = 1
+        End If
+
+        If (MainForm.PrimaryAxisSelect = 2) Then
+            MainForm.PrimaryAxisFlip = MainForm.Axis2Flip
+        End If
+
+        My.Settings.Axis2Flip = MainForm.Axis2Flip
+    End Sub
+
+    Private Sub Axis3_Polarity_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Axis3_Polarity_CheckBox.CheckedChanged
+        If (Axis3_Polarity_CheckBox.Checked = True) Then
+            MainForm.Axis3Flip = -1
+        Else
+            MainForm.Axis3Flip = 1
+        End If
+
+        If (MainForm.PrimaryAxisSelect = 3) Then
+            MainForm.PrimaryAxisFlip = MainForm.Axis3Flip
+        End If
+
+        My.Settings.Axis3Flip = MainForm.Axis3Flip
+    End Sub
+
+    Private Sub NumericUpDown_SL_Coefficient_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_SL_Coefficient.ValueChanged
+        If MainForm.StraightnessLongButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+            MainForm.straightnessMultiplier = NumericUpDown_SL_Coefficient.Value
+        End If
+    End Sub
+
+    Private Sub NumericUpDown_SS_Coefficient_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_SS_Coefficient.ValueChanged
+        If MainForm.StraightnessShortButton.ForeColor = Color.FromKnownColor(KnownColor.ActiveCaptionText) Then
+            MainForm.straightnessMultiplier = NumericUpDown_SS_Coefficient.Value
+        End If
+    End Sub
 End Class

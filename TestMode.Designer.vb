@@ -357,8 +357,6 @@ Partial Class TestMode
         '
         Me.Diagnostic_Enable_CheckBox.AutoSize = True
         Me.Diagnostic_Enable_CheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Diagnostic_Enable_CheckBox.Checked = True
-        Me.Diagnostic_Enable_CheckBox.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Diagnostic_Enable_CheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Diagnostic_Enable_CheckBox.Location = New System.Drawing.Point(248, 427)
         Me.Diagnostic_Enable_CheckBox.Name = "Diagnostic_Enable_CheckBox"
