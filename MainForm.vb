@@ -1286,15 +1286,16 @@ Public Class MainForm
             saveFileDialog1.FileName = currentcapturefile
             saveFileDialog1.Filter = "Log Files |*.txt|All Files | *.*"
             saveFileDialog1.Title = "Select a Log File for Capture of Measurement Data"
-            saveFileDialog1.ShowDialog()
-            captureFileName = saveFileDialog1.FileName.ToString()
-            captureFile = My.Computer.FileSystem.OpenTextFileWriter(captureFileName, False)
-            Capture_Enable = 1
-            myMenuItemLogFile.Text = ("&Close Log File")
-            currentcapturefile = System.IO.Path.GetFileName(saveFileDialog1.FileName)
-            Logfile_Text.Visible = True
-            Logfile_Label.Visible = True
-            Logfile_Text.Text = currentcapturefile.ToString
+            If (saveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                captureFileName = saveFileDialog1.FileName.ToString()
+                captureFile = My.Computer.FileSystem.OpenTextFileWriter(captureFileName, False)
+                Capture_Enable = 1
+                myMenuItemLogFile.Text = ("&Close Log File")
+                currentcapturefile = System.IO.Path.GetFileName(saveFileDialog1.FileName)
+                Logfile_Text.Visible = True
+                Logfile_Label.Visible = True
+                Logfile_Text.Text = currentcapturefile.ToString
+            End If
         End If
     End Sub
 
